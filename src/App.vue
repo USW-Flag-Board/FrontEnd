@@ -5,8 +5,15 @@ import { RouterLink, RouterView } from "vue-router";
 <template>
   <nav>
     <RouterLink to="/">Main</RouterLink>
+    <RouterLink to="/list">List</RouterLink>
   </nav>
   <RouterView />
 </template>
 
-<style scoped></style>
+<style scoped>
+nav {
+  position: absolute;
+  color: white;
+  background-color: white;
+}
+</style>
