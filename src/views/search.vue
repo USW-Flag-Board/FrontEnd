@@ -9,7 +9,7 @@
  <body>
 
     <header>
-      <img src="src\logo.JPG" width="300px" height="100px">
+      <img src="/src/assets/logo.JPG" width="300px" height="100px">
         <ul>
           <button class="dropbtn"><h3>FLAG</h3></button>
           <div class="dropdown-content">
