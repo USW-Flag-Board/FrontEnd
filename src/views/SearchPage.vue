@@ -29,7 +29,7 @@ import "../css/search_table.css";
                   <ul>
                     <li>
                       <span class="number">1072</span>
-                      게시글 현재 번호
+                      게시글 현재 번호 
                       <a href="#" class="detail">
                         <span class="title">조던1조던1</span>
                         <span class="writer">준표킴</span>
@@ -42,7 +42,7 @@ import "../css/search_table.css";
 
                     <li>
                       <span class="number">1071</span>
-                      게시글 현재 번호
+                      게시글 현재 번호 
                       <a href="#" class="detail">
                         <span class="title">조던1조던1</span>
                         <span class="writer">준표킴</span>
@@ -79,11 +79,9 @@ import "../css/search_table.css";
                   <div class="selected_c_head">
                     <h6>에어조던11 브레드 미드 2019</h6>
                     <div class="selected_content">
-                      <span
-                        >조던1을 왜 검색어로 만들어서 잘 모르는데 내용을
+                      <span>조던1을 왜 검색어로 만들어서 잘 모르는데 내용을
                         적어야하니 아주 막막하다. 에어조던11 브레드 미드 2019
-                        일단 아무말 열심히 따라 써본다.</span
-                      >
+                        일단 아무말 열심히 따라 써본다.</span>
                     </div>
                   </div>
                 </div>
@@ -118,8 +116,8 @@ body {
   margin-top: 125px;
   width: 100%;
   height: 100%;
-  /* margin: 0;
-  padding: 0; */
+  margin: 0;
+  padding: 0;
   align-items: center;
 }
 
@@ -151,6 +149,7 @@ a {
   border: 2px groove white;
   width: 100%;
   height: 15vh;
+  margin-top: 25vh;
   padding-left: 20vw;
   color: white;
 }
@@ -228,4 +227,5 @@ a {
   height: 21vh;
   border: 2px groove yellow;
 }
+
 </style>
