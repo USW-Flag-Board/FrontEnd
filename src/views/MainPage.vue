@@ -1,35 +1,5 @@
 <template>
   <body>
-    <header>
-      <img src="/src/assets/logo.JPG" width="300px" height="100px" />
-      <ul>
-        <button class="dropbtn"><h3>FLAG</h3></button>
-        <div class="dropdown-content">
-          <a href="#"></a>
-        </div>
-
-        <button class="dropbtn"><h3>BORDER</h3></button>
-        <div class="dropdown-content">
-          <a href="#"></a>
-        </div>
-        <button class="dropbtn"><h3>ACTIVITY</h3></button>
-        <div class="dropdown-content">
-          <a href="#">STUDY</a>
-          <a href="#">PROJECT</a>
-        </div>
-        <button class="dropbtn"><h3>NOTICE</h3></button>
-        <div class="dropdown-content">
-          <a href="#"></a>
-        </div>
-        <li>
-          <div class="search-bar">
-            <i class="fas fa-search" aria-hidden="true"></i>
-            <input class="search-bar__input" type="search" placeholder="검색" />
-          </div>
-        </li>
-      </ul>
-    </header>
-
     <div class="container">
       <div class="box">
         <div class="myactivity">
@@ -94,30 +64,6 @@ body {
 
 a {
   text-decoration-line: none;
-}
-
-header {
-  height: 65px;
-  padding-bottom: 40px;
-  margin-bottom: 20px;
-  background: white;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  position: fixed;
-  top: 0;
-  /* width: 100% */
-  left: 0;
-  right: 0;
-}
-
-ul {
-  display: flex;
-}
-li {
-  margin: 30px;
-  list-style-type: none;
 }
 
 .container {

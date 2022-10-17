@@ -1,0 +1,25 @@
+.listbox {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+}
+
+.number {
+  margin-right: 2vw;
+  padding: 2px;
+  text-align: center;
+  background-color: white;
+  border: 1px solid #e2e2e2;
+  color: #363636;
+  border-radius: 22px;
+}
+.detail {
+	color: white;
+	font-weight: bold;
+}
+
+.title {
+	
+}
