@@ -1,33 +1,5 @@
 <template>
   <body>
-    <header>
-      <img src="src/assets/logo.JPG" width="300px" height="100px" />
-      <ul>
-        <button class="dropbtn"><h3>FLAG</h3></button>
-        <div class="dropdown-content"></div>
-
-        <button class="dropbtn"><h3>BORDER</h3></button>
-        <div class="dropdown-content"></div>
-        <div class="dropdown">
-          <button class="dropbtn"><h3>ACTIVITY</h3></button>
-          <div class="dropdown-content">
-            <a href="#"><h3>STUDY</h3></a>
-            <a href="#"><h3>PROJECT</h3></a>
-          </div>
-        </div>
-        <button class="dropbtn"><h3>NOTICE</h3></button>
-        <div class="dropdown-content">
-          <a href="#"></a>
-        </div>
-        <li>
-          <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input class="search-bar__input" type="search" placeholder="검색" />
-          </div>
-        </li>
-      </ul>
-    </header>
-
     <div class="container">
       <div class="headerbox">
         <h1>검색결과</h1>
@@ -71,13 +43,10 @@
 
 <script>
 import Table from '../components/Table.vue';
-
 export default {
   name: 'SearchPage',
-
   components: {
     Table : Table,
-
   },
   data() {
     return {
@@ -102,11 +71,9 @@ body {
   padding: 0;
   align-items: center;
 }
-
 a {
   text-decoration-line: none;
 }
-
 header {
   height: 65px;
   padding-bottom: 40px;
@@ -122,7 +89,6 @@ header {
   left: 0;
   right: 0;
 }
-
 ul {
   display: flex;
 }
@@ -130,7 +96,6 @@ li {
   margin: 30px;
   list-style-type: none;
 }
-
 .container {
   margin: 0;
   padding: 0;
@@ -142,7 +107,6 @@ li {
   justify-content: center;
   border: 2px groove rgba(19, 16, 16, 0.973);
 }
-
 .box {
   display: flex;
   flex-direction: column;
@@ -150,7 +114,6 @@ li {
   margin: 0;
   padding: 0;
 }
-
 .headerbox {
   border: 2px groove white;
   width: 100%;
@@ -159,7 +122,6 @@ li {
   padding-left: 20vw;
   color: white;
 }
-
 .mainbox {
   margin: 0;
   padding: 0;
@@ -201,7 +163,6 @@ li {
  
   flex-direction: column;
 }
-
 .board2 {
   margin: 0;
   padding-left: 1.5vw;
@@ -210,7 +171,6 @@ li {
   border: 2px groove brown;
   display: flex;
 }
-
 .titlebox {
   width: 100%;
   height: 40px;
@@ -226,7 +186,6 @@ li {
   flex-direction: column;
   background-color: #c2dbdb;
 }
-
 /*목록 list 전체*/
 .bottom {
   margin: 0;
@@ -242,7 +201,6 @@ li {
   display: flex;
   border: 2px groove #ccffff;
 }
-
 .userbox{
   margin: 0;
   padding-top: 4vh;
@@ -251,7 +209,6 @@ li {
   height: 27vh;
   border: 2px groove red;
 }
-
 .popular{
   margin: 0;
   padding-top: 4vh;
@@ -260,7 +217,6 @@ li {
   padding-left: 1.5vw;
   border: 2px groove blue;
 }
-
 .contentbox {
   margin: 0;
   width: 100%;
@@ -268,7 +224,6 @@ li {
   color: white;
   border: 2px groove yellow;
 }
-
 thead tr {
   background-color: grey;
   border: 0px;
@@ -280,5 +235,4 @@ tbody tr {
 tbody tr:nth-child(2n) {
   background-color: grey;
 }
-
 </style>

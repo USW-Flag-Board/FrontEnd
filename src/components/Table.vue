@@ -37,7 +37,6 @@
 export default {
     name: 'Table',
     data() {
-
     return {
       WritingInformation: [
         {
@@ -48,7 +47,6 @@ export default {
           WritingCount: "2",
           WritingComment: "2",
         },
-
         {
           No: "2",
           Header: "제목2",
@@ -57,7 +55,6 @@ export default {
           WritingCount: "2",
           WritingComment: "2",
         },
-
         {
           No: "3",
           Header: "제목2",
@@ -66,7 +63,6 @@ export default {
           WritingCount: "2",
           WritingComment: "2",
         },
-
         {
           No: "4",
           Header: "제목2",
@@ -75,7 +71,6 @@ export default {
           WritingCount: "2",
           WritingComment: "2",
         },
-
         {
           No: "5",
           Header: "제목2",
@@ -96,13 +91,10 @@ tbody tr {
   text-align: center;
   color: white;
 }
-
-
 tr, td{
   border: 1px solid white;
   
 }
-
 .board1 {
   margin: 0;
   padding-left: 1.5vw;
@@ -113,7 +105,6 @@ tr, td{
  
   flex-direction: column;
 }
-
 .board2 {
   margin: 0;
   padding-left: 1.5vw;
@@ -122,14 +113,12 @@ tr, td{
   border: 2px groove brown;
   display: flex;
 }
-
 .titlebox {
   width: 100%;
   height: 40px;
   color: white;
   border: 2px groove blue;
 }
-
 .listmenu {
   display: flex;
   padding: 0;
@@ -139,7 +128,6 @@ tr, td{
   height: 30vh;
   justify-content: space-evenly;
 }
-
 .listbox {
   display: flex;
   margin: 0;
