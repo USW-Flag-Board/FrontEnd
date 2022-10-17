@@ -1,41 +1,19 @@
 <template>
   <body>
-    <header>
-      <img src="/src/assets/logo.JPG" width="300px" height="100px" />
-      <ul>
-        <button class="dropbtn"><h3>FLAG</h3></button>
-        <div class="dropdown-content">
-          <a href="#"></a>
-        </div>
-
-        <button class="dropbtn"><h3>BORDER</h3></button>
-        <div class="dropdown-content">
-          <a href="#"></a>
-        </div>
-        <button class="dropbtn"><h3>ACTIVITY</h3></button>
-        <div class="dropdown-content">
-          <a href="#">STUDY</a>
-          <a href="#">PROJECT</a>
-        </div>
-        <button class="dropbtn"><h3>NOTICE</h3></button>
-        <div class="dropdown-content">
-          <a href="#"></a>
-        </div>
-        <li>
-          <div class="search-bar">
-            <i class="fas fa-search" aria-hidden="true"></i>
-            <input class="search-bar__input" type="search" placeholder="검색" />
-          </div>
-        </li>
-      </ul>
-    </header>
-
     <div class="container">
-      <div class="topbox"></div>
+      <div class="topbox">
+        <div class="namebox">자유게시판</div>
+        <div class="writebox">✏️글쓰기</div>
+      </div>
 
       <div class="midbox">
         <div class="sidebox">
-          <div class="listmenu"></div>
+          <div class="listmenu">
+            <div class="topmenu">BOARD</div>
+            <div class="bottommenu">
+              <a v-for="a in content" :key="a">{{ a }}</a>
+            </div>
+          </div>
         </div>
 
         <div class="twobox">
@@ -106,6 +84,7 @@ export default {
           WritingComment: "2",
         },
       ],
+      content: ["자유게시판", "동아리 이모저모", "사진게시판", "정보게시판"],
     };
   },
   setup() {},
@@ -133,30 +112,6 @@ a {
   text-decoration-line: none;
 }
 
-header {
-  height: 65px;
-  padding-bottom: 40px;
-  margin-bottom: 20px;
-  background: white;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  position: fixed;
-  top: 0;
-  /* width: 100% */
-  left: 0;
-  right: 0;
-}
-
-ul {
-  display: flex;
-}
-li {
-  margin: 30px;
-  list-style-type: none;
-}
-
 .container {
   margin: 0;
   padding: 0;
@@ -178,6 +133,39 @@ li {
   height: 18vh;
 }
 
+.namebox {
+  display: flex;
+  margin-top: 4vw;
+  margin-left: 11vw;
+  padding: 0;
+  border: 0px groove white;
+  flex-direction: row;
+  width: 12vw;
+  height: 7vh;
+  font-size: 2.1vw;
+  justify-content: center;
+  align-items: flex-end;
+  font-weight: bold;
+  color: white;
+}
+
+.writebox {
+  display: flex;
+  margin-top: 6.8vw;
+  margin-left: 65vw;
+  padding: 0;
+  border: 3px groove white;
+  background-color: white;
+  flex-direction: row;
+  width: 5vw;
+  height: 3vh;
+  font-size: 0.9vw;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  border-radius: 12%;
+}
+
 .midbox {
   display: flex;
   margin: 0;
@@ -195,18 +183,48 @@ li {
   border: 3px groove white;
   width: 14vw;
   height: 89.6vh;
-  background-color: rgb(13, 47, 26);
+  background-color: rgb(53, 74, 62);
   justify-content: center;
 }
 
 .listmenu {
   display: flex;
   padding: 0;
-  margin-top: 55px;
-  border: 3px groove white;
+  margin-top: 40px;
+  border: 0px groove white;
   width: 10vw;
   height: 30vh;
-  justify-content: space-evenly;
+  flex-direction: column;
+}
+
+.topmenu {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  border: 0px groove white;
+  justify-content: center;
+  align-items: flex-end;
+  font-size: 1.57vw;
+  font-weight: bold;
+  width: 9.7vw;
+  height: 6vh;
+  color: white;
+}
+
+.bottommenu {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  border: 0px groove white;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+  font-weight: lighter;
+  width: 9.7vw;
+  height: 23.8vh;
+  line-height: 230%;
+  color: white;
 }
 
 .twobox {
