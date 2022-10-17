@@ -1,11 +1,33 @@
-<script setup>
-import "../css/search_table.css";
-// import "../css/search.css";
-// import "./css/menubar.css";
-// import "./css/search.css";
-</script>
 <template>
   <body>
+    <header>
+      <img src="src/assets/logo.JPG" width="300px" height="100px" />
+      <ul>
+        <button class="dropbtn"><h3>FLAG</h3></button>
+        <div class="dropdown-content"></div>
+
+        <button class="dropbtn"><h3>BORDER</h3></button>
+        <div class="dropdown-content"></div>
+        <div class="dropdown">
+          <button class="dropbtn"><h3>ACTIVITY</h3></button>
+          <div class="dropdown-content">
+            <a href="#"><h3>STUDY</h3></a>
+            <a href="#"><h3>PROJECT</h3></a>
+          </div>
+        </div>
+        <button class="dropbtn"><h3>NOTICE</h3></button>
+        <div class="dropdown-content">
+          <a href="#"></a>
+        </div>
+        <li>
+          <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input class="search-bar__input" type="search" placeholder="검색" />
+          </div>
+        </li>
+      </ul>
+    </header>
+
     <div class="container">
       <div class="headerbox">
         <h1>검색결과</h1>
@@ -18,90 +40,48 @@ import "../css/search_table.css";
           <p>사진게시판</p>
           <p>유저</p>
         </div>
-
+      
         <div class="bulletinboard">
+          <Table></Table>
+          <Table></Table>
+      
           <div class="board1">
             <div class="titlebox">
-              <h4>자유게시판</h4>
-              <div class="contentlist">
-                <!-- 게시판 list 들어감-->
-                <div class="listbox">
-                  <ul>
-                    <li>
-                      <span class="number">1072</span>
-                      게시글 현재 번호
-                      <a href="#" class="detail">
-                        <span class="title">조던1조던1</span>
-                        <span class="writer">준표킴</span>
-                        <span class="w_day">2022.08.03</span>
-                        게시글 업로드 시간
-                        <span class="view">1234</span>
-                        <span class="comment">100</span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <span class="number">1071</span>
-                      게시글 현재 번호
-                      <a href="#" class="detail">
-                        <span class="title">조던1조던1</span>
-                        <span class="writer">준표킴</span>
-                        <span class="w_day">2022.08.03</span>
-                        게시글 업로드 시간
-                        <span class="view">1234</span>
-                        <span class="comment">100</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+              <h3>사진게시판</h3>
+            </div> 
           </div>
-          <div class="board1">
-            <div class="titlebox">
-              <h4>사진게시판</h4>
-              <div class="contentlist">
-                <!-- 게시판 list 들어감-->
-              </div>
-            </div>
-          </div>
-
-          <div class="bottom">
-            <div class="bottomcontent">
+          <div class="bottomcontent">
+            <div class="userbox">
               <div class="titlebox">
-                <h4>유저</h4>
+                <h3>유저()</h3>
               </div>
             </div>
-            <div class="bottomcontent">
+            <div class="popular">
               <div class="titlebox">
-                <h4>인기글</h4>
-                <div class="contentbox">
-                  <div class="selected_c_head">
-                    <h6>에어조던11 브레드 미드 2019</h6>
-                    <div class="selected_content">
-                      <span
-                        >조던1을 왜 검색어로 만들어서 잘 모르는데 내용을
-                        적어야하니 아주 막막하다. 에어조던11 브레드 미드 2019
-                        일단 아무말 열심히 따라 써본다.</span
-                      >
-                    </div>
-                  </div>
-                </div>
+                <h3>" "인기글</h3>
               </div>
             </div>
-          </div>
         </div>
+        
       </div>
     </div>
+  </div>
   </body>
 </template>
 
 <script>
+import Table from '../components/Table.vue';
+
 export default {
-  components: {},
+  name: 'SearchPage',
+
+  components: {
+    Table : Table,
+
+  },
   data() {
     return {
-      sampleData: "",
+      
     };
   },
   setup() {},
@@ -118,11 +98,37 @@ body {
   margin-top: 125px;
   width: 100%;
   height: 100%;
+  margin: 0;
+  padding: 0;
   align-items: center;
 }
 
 a {
   text-decoration-line: none;
+}
+
+header {
+  height: 65px;
+  padding-bottom: 40px;
+  margin-bottom: 20px;
+  background: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  position: fixed;
+  top: 0;
+  /* width: 100% */
+  left: 0;
+  right: 0;
+}
+
+ul {
+  display: flex;
+}
+li {
+  margin: 30px;
+  list-style-type: none;
 }
 
 .container {
@@ -137,18 +143,19 @@ a {
   border: 2px groove rgba(19, 16, 16, 0.973);
 }
 
-/*.box {
+.box {
   display: flex;
   flex-direction: column;
   border: 2px groove white;
   margin: 0;
   padding: 0;
-}*/
+}
 
 .headerbox {
   border: 2px groove white;
   width: 100%;
-  height: 15vh;
+  height: 100px;
+  margin-top: 25vh;
   padding-left: 20vw;
   color: white;
 }
@@ -166,7 +173,7 @@ a {
 }
 .sidebox {
   width: 20vw;
-  height: 110vh;
+  height: 100%;
   color: white;
   background-color: #363636;
   border: 2px groove #ff99cc;
@@ -178,30 +185,45 @@ a {
 .bulletinboard {
   margin: 0;
   width: 80vw;
-  height: 110vh;
+  height: 100%;
+  flex-wrap: wrap;
   display: flex;
   flex-direction: column;
   border: 2px groove yellow;
 }
 .board1 {
   margin: 0;
+  padding-left: 1.5vw;
   width: 100%;
   height: 40vh;
-  border: 2px groove greenyellow;
+  border: 2px groove brown;
+  display: flex;
+ 
+  flex-direction: column;
+}
+
+.board2 {
+  margin: 0;
+  padding-left: 1.5vw;
+  width: 100%;
+  height: 35vh;
+  border: 2px groove brown;
   display: flex;
 }
+
 .titlebox {
-  margin: 0;
   width: 100%;
-  height: 8vh;
-  border: 2px groove blueviolet;
+  height: 40px;
   color: white;
+  border: 2px groove blue;
 }
 /*titlebox는 게시판에서 보여주는 내용의 title만 들어감*/
 .contentlist {
   margin: 0;
   width: 100%;
-  height: 28vh;
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
   background-color: #c2dbdb;
 }
 
@@ -215,15 +237,48 @@ a {
 }
 .bottomcontent {
   margin: 0;
-  width: 50vw;
-  height: 30vh;
+  width:100%;
+  height: 33vh;
   display: flex;
   border: 2px groove #ccffff;
 }
+
+.userbox{
+  margin: 0;
+  padding-top: 4vh;
+  padding-left: 1.5vw;
+  width:30vw;
+  height: 27vh;
+  border: 2px groove red;
+}
+
+.popular{
+  margin: 0;
+  padding-top: 4vh;
+  width:100%;
+  height: 27vh;
+  padding-left: 1.5vw;
+  border: 2px groove blue;
+}
+
 .contentbox {
   margin: 0;
   width: 100%;
   height: 21vh;
+  color: white;
   border: 2px groove yellow;
 }
+
+thead tr {
+  background-color: grey;
+  border: 0px;
+}
+tbody tr {
+  text-align: center;
+  color: white;
+}
+tbody tr:nth-child(2n) {
+  background-color: grey;
+}
+
 </style>
