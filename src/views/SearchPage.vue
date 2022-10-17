@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import Table from '../component/Table.vue';
+import Table from '../components/Table.vue';
 
 export default {
   name: 'SearchPage',
