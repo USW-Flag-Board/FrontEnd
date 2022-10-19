@@ -2,7 +2,7 @@
   <body>
     <div class="container">
       <div class="headerbox">
-        <h1>검색결과</h1>
+        <div class="title">검색결과</div>
       </div>
 
       <div class="mainbox">
@@ -12,17 +12,18 @@
           <p>사진게시판</p>
           <p>유저</p>
         </div>
-      
-        <div class="bulletinboard">
-          <Table></Table>
-          <Table></Table>
-      
-          <div class="board1">
+        <div class="Contentbox">
+          <div class="boardbox">
+            <div class="titlebox">
+              <h3>자유게시판</h3>
+            </div>
+            <Table></Table> 
             <div class="titlebox">
               <h3>사진게시판</h3>
-            </div> 
+            </div>
+            <Table></Table> 
           </div>
-          <div class="bottomcontent">
+          <div class="bottombox">
             <div class="userbox">
               <div class="titlebox">
                 <h3>유저()</h3>
@@ -33,11 +34,10 @@
                 <h3>" "인기글</h3>
               </div>
             </div>
+          </div>
         </div>
-        
       </div>
     </div>
-  </div>
   </body>
 </template>
 
@@ -63,39 +63,16 @@ export default {
 
 <style scoped>
 body {
-  background-color: rgba(19, 16, 16, 0.973);
+  background-color: #2c2c2c;
   margin-top: 125px;
   width: 100%;
   height: 100%;
-  margin: 0;
-  padding: 0;
   align-items: center;
 }
 a {
   text-decoration-line: none;
 }
-header {
-  height: 65px;
-  padding-bottom: 40px;
-  margin-bottom: 20px;
-  background: white;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  position: fixed;
-  top: 0;
-  /* width: 100% */
-  left: 0;
-  right: 0;
-}
-ul {
-  display: flex;
-}
-li {
-  margin: 30px;
-  list-style-type: none;
-}
+
 .container {
   margin: 0;
   padding: 0;
@@ -103,136 +80,97 @@ li {
   height: 100%;
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
   justify-content: center;
-  border: 2px groove rgba(19, 16, 16, 0.973);
 }
-.box {
-  display: flex;
-  flex-direction: column;
-  border: 2px groove white;
+
+.headerbox {
   margin: 0;
   padding: 0;
-}
-.headerbox {
-  border: 2px groove white;
   width: 100%;
-  height: 100px;
-  margin-top: 25vh;
-  padding-left: 20vw;
+  height: 18vh;
+}
+/*headerbox 공통*/
+.title {
+  display: flex;
+  margin-top: 4vw;
+  margin-left: 11vw;
+  padding: 0;
+  flex-direction: row;
+  width: 12vw;
+  height: 7vh;
+  font-size: 2.1vw;
+  justify-content: center;
+  align-items: flex-end;
+  font-weight: bold;
   color: white;
 }
+
 .mainbox {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%;
-  border: 2px groove red;
+  height: 90vh;
   display: flex;
-  flex-wrap: nowrap;
   flex-direction: row;
-  justify-content: flex-start;
 }
+/*지금 테이블 높이가 정해져있는것 같은데 여기서 height를 정하면 nowrap이 적용안됨*/
 .sidebox {
-  width: 20vw;
+  width: 25vw;
   height: 100%;
   color: white;
   background-color: #363636;
-  border: 2px groove #ff99cc;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
 }
-.bulletinboard {
+
+.Contentbox {
+  display: flex;
   margin: 0;
-  width: 80vw;
+  padding: 0;
+  width: 100vw;
   height: 100%;
-  flex-wrap: wrap;
-  display: flex;
-  flex-direction: column;
-  border: 2px groove yellow;
-}
-.board1 {
-  margin: 0;
-  padding-left: 1.5vw;
-  width: 100%;
-  height: 40vh;
-  border: 2px groove brown;
-  display: flex;
- 
   flex-direction: column;
 }
-.board2 {
+
+.boardbox {
   margin: 0;
-  padding-left: 1.5vw;
-  width: 100%;
-  height: 35vh;
-  border: 2px groove brown;
+  padding: 0;
+  width: 87vw;
+  height: 70vh;
   display: flex;
+  flex-direction: column;
 }
 .titlebox {
   width: 100%;
   height: 40px;
   color: white;
-  border: 2px groove blue;
+  margin: 10px;
 }
+
 /*titlebox는 게시판에서 보여주는 내용의 title만 들어감*/
-.contentlist {
-  margin: 0;
-  width: 100%;
-  height: 30vh;
+
+.bottombox {
   display: flex;
-  flex-direction: column;
-  background-color: #c2dbdb;
-}
-/*목록 list 전체*/
-.bottom {
   margin: 0;
-  width: 100%;
-  height: 30vh;
-  display: flex;
-  border: 2px groove olivedrab;
-}
-.bottomcontent {
-  margin: 0;
-  width:100%;
+  padding: 0;
+  width: 87vw;
   height: 33vh;
-  display: flex;
-  border: 2px groove #ccffff;
+  border: 2px solid white;
 }
+
 .userbox{
-  margin: 0;
-  padding-top: 4vh;
-  padding-left: 1.5vw;
-  width:30vw;
+  width: 30vw;
   height: 27vh;
-  border: 2px groove red;
+  margin: 0;
+  padding-left: 1.5vw;
 }
 .popular{
-  margin: 0;
-  padding-top: 4vh;
-  width:100%;
-  height: 27vh;
-  padding-left: 1.5vw;
-  border: 2px groove blue;
-}
-.contentbox {
-  margin: 0;
   width: 100%;
-  height: 21vh;
-  color: white;
-  border: 2px groove yellow;
+  height: 27vh;
+  margin: 0;
+  padding-left: 1.5vw;
 }
-thead tr {
-  background-color: grey;
-  border: 0px;
-}
-tbody tr {
-  text-align: center;
-  color: white;
-}
-tbody tr:nth-child(2n) {
-  background-color: grey;
-}
+
 </style>
