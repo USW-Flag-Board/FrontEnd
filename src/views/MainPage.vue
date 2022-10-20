@@ -1,38 +1,38 @@
 <template>
   <body>
-    <div class="container">
-      <div class="box">
-        <div class="myactivity">
-          <div class="titlebox">
+    <div class="Container">
+      <div class="Box">
+        <div class="MyActivityBox">
+          <div class="Title">
             <p>MY ACTIVITY</p>
           </div>
         </div>
-        <div class="grass">
-          <div class="titlebox">
+        <div class="GrassBox">
+          <div class="Title">
             <p>GRASS</p>
           </div>
         </div>
       </div>
-      <div class="box">
-        <div class="feed">
-          <div class="titlebox">
+      <div class="Box">
+        <div class="FeedBox">
+          <div class="Title">
             <p>FEED</p>
           </div>
         </div>
-        <div class="bottombox">
+        <div class="BottomBox">
           <div class="bottomcontent">
-            <div class="titlebox">
+            <div class="Title">
               <h5 style="text-align: left">#NOTICE</h5>
             </div>
           </div>
           <div class="bottomcontent">
-            <div class="titlebox">
+            <div class="Title">
               <h5 style="text-align: left">USER</h5>
             </div>
           </div>
         </div>
       </div>
-      <div class="sidemenu"></div>
+      <div class="SideBox"></div>
     </div>
   </body>
 </template>
@@ -56,7 +56,6 @@ export default {
 <style scoped>
 body {
   background-color: #2c2c2c;
-
   margin-top: 125px;
   width: 100%;
   height: 100%;
@@ -67,7 +66,7 @@ a {
   text-decoration-line: none;
 }
 
-.container {
+.Container {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -77,35 +76,35 @@ a {
   justify-content: center;
 }
 /*border 삭제 border: 2px groove rgba(19, 16, 16, 0.973);*/
-.box {
+.Box {
   display: flex;
   flex-direction: column;
-  
 }
 /*border 삭제 border: 2px groove rgba(19, 16, 16, 0.973);*/
-.myactivity {
+.MyActivityBox {
   display: flex;
   width: 50vw;
   height: 65vh;
   margin: 10px;
+  border: 2px solid black;
 }
 /*border 삭제 border: 2px groove rgba(19, 16, 16, 0.973);*/
-.titlebox {
+.Title {
   width: 100%;
   height: 40px;
   font-weight: 500;
   background-color: #2c2c2c;
   color: white;
 }
-.grass {
-  display: flex;
+.GrassBox {
   width: 46vw;
   height: 28vh;
   margin: 10px;
+  display: flex;
   background-color: #000000;
 }
 /*border 삭제 border: 2px groove rgba(19, 16, 16, 0.973);*/
-.feed {
+.FeedBox {
   display: flex;
   width: 28vw;
   height: 68vh;
@@ -116,7 +115,7 @@ a {
 }
 /*border 삭제 border: 2px groove rgba(19, 16, 16, 0.973);*/
 
-.bottombox {
+.BottomBox {
   display: flex;
   justify-content: center;
   margin: 10px;
@@ -132,7 +131,7 @@ a {
 .bottomcontent h5 {
   margin: 0;
 }
-.sidemenu {
+.SideBox {
   display: flex;
   margin-top: 9px;
   width: 14vw;

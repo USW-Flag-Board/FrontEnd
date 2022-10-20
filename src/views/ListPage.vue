@@ -1,13 +1,13 @@
 <template>
   <body>
-    <div class="container">
-      <div class="headerbox">
-        <div class="title">자유게시판</div>
-        <div class="writebox">✏️글쓰기</div>
+    <div class="Container">
+      <div class="HeaderBox">
+        <div class="Header_Title">자유게시판</div>
+        <div class="write">✏️글쓰기</div>
       </div>
 
-      <div class="mainbox">
-        <div class="sidebox">
+      <div class="MainBox">
+        <div class="SideBox">
           <h2>BOARD</h2>
           <p>자유게시판</p>
           <p>동아리 이모저모</p>
@@ -21,8 +21,8 @@
           </div> -->
         </div>
 
-        <div class="Contentbox">
-          <div class="listbox">
+        <div class="ContentBox">
+          <div class="ListBox">
             <div>
               <table class="board">
                 <colgroup>
@@ -59,7 +59,7 @@
               </table>
             </div>
           </div>
-          <div class="bottombox"></div>
+          <div class="BottomBox"></div>
         </div>
       </div>
     </div>
@@ -121,7 +121,7 @@ a {
   text-decoration-line: none;
 }
 
-.container {
+.Container {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -132,7 +132,7 @@ a {
 }
 /*border 삭제 border: 2px groove rgba(19, 16, 16, 0.973);*/
 
-.headerbox {
+.HeaderBox {
   display: flex;
   margin: 0;
   padding: 0;
@@ -140,7 +140,7 @@ a {
   height: 18vh;
 }
 
-.title {
+.Header_Title {
   display: flex;
   margin-top: 4vw;
   margin-left: 11vw;
@@ -154,9 +154,9 @@ a {
   font-weight: bold;
   color: white;
 }
-/*게시판 헤더, headerbox랑 title은 나중에 공용 css로 만들기*/
+/*게시판 헤더, headerbox랑 TitleBox은 나중에 공용 css로 만들기*/
 
-.writebox {
+.write {
   display: flex;
   width: 5vw;
   height: 3vh;
@@ -166,14 +166,13 @@ a {
   background-color: white;
   flex-direction: row;
   font-size: 0.9vw;
-
   justify-content: center;
   align-items: center;
   color: black;
   border-radius: 12%;
 }
 
-.mainbox {
+.MainBox {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -182,7 +181,7 @@ a {
   flex-direction: row;
 }
 
-.sidebox {
+.SideBox {
   width: 30vw;
   height: 100%;
   color: white;
@@ -192,7 +191,7 @@ a {
   align-items: center;
   justify-content: flex-start;
 }
-/*mainbox, sidebox 공용 css로 통합*/
+/*MainBox, SideBox 공용 css로 통합*/
 
 /*.listmenu {
   display: flex;
@@ -229,7 +228,7 @@ a {
   line-height: 230%;
 }*/
 /*이거 통합할 수 있으면 통합하기*/
-.Contentbox {
+.ContentBox {
   display: flex;
   margin: 0;
   padding: 0;
@@ -238,7 +237,7 @@ a {
   flex-direction: column;
 }
 
-.listbox {
+.ListBox {
   display: flex;
   margin: 0;
   padding: 0;
@@ -246,7 +245,7 @@ a {
   height: 70vh;
 }
 
-.bottombox {
+.BottomBox {
   display: flex;
   margin: 0;
   padding: 0;

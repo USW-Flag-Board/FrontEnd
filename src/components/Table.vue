@@ -1,6 +1,6 @@
 <template>
-  <div class="board">
-    <table>
+  <div>
+    <table class="board">
       <colgroup>
         <col style="width: 5vw" />
         <col style="width: 30vw" />
@@ -85,7 +85,7 @@ export default {
   width: 100%;
   color: white;
   text-align: center;
-  
+  border-collapse: collapse;
 }
 thead tr {
   background-color: #181818;

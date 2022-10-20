@@ -1,36 +1,36 @@
 <template>
   <body>
-    <div class="container">
-      <div class="headerbox">
-        <div class="title">검색결과</div>
+    <div class="Container">
+      <div class="HeaderBox">
+        <div class="Header_Title">검색결과</div>
       </div>
 
-      <div class="mainbox">
-        <div class="sidebox">
+      <div class="MainBox">
+        <div class="SideBox">
           <h2>'조던1'</h2>
           <p>자유게시판</p>
           <p>사진게시판</p>
           <p>유저</p>
         </div>
-        <div class="Contentbox">
-          <div class="boardbox">
-            <div class="titlebox">
+        <div class="ContentBox">
+          <div class="BoardBox">
+            <div class="TitleBox">
               <h3>자유게시판</h3>
             </div>
             <Table></Table> 
-            <div class="titlebox">
+            <div class="TitleBox">
               <h3>사진게시판</h3>
             </div>
             <Table></Table> 
           </div>
-          <div class="bottombox">
-            <div class="userbox">
-              <div class="titlebox">
+          <div class="BottomBox">
+            <div class="UserBox">
+              <div class="TitleBox">
                 <h3>유저()</h3>
               </div>
             </div>
-            <div class="popular">
-              <div class="titlebox">
+            <div class="PopularBox">
+              <div class="TitleBox">
                 <h3>" "인기글</h3>
               </div>
             </div>
@@ -73,7 +73,7 @@ a {
   text-decoration-line: none;
 }
 
-.container {
+.Container {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -83,14 +83,14 @@ a {
   justify-content: center;
 }
 
-.headerbox {
+.HeaderBox {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 18vh;
 }
-/*headerbox 공통*/
-.title {
+/*HeaderBox 공통*/
+.Header_Title {
   display: flex;
   margin-top: 4vw;
   margin-left: 11vw;
@@ -105,7 +105,7 @@ a {
   color: white;
 }
 
-.mainbox {
+.MainBox {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -114,7 +114,7 @@ a {
   flex-direction: row;
 }
 /*지금 테이블 높이가 정해져있는것 같은데 여기서 height를 정하면 nowrap이 적용안됨*/
-.sidebox {
+.SideBox {
   width: 25vw;
   height: 100%;
   color: white;
@@ -125,7 +125,7 @@ a {
   justify-content: flex-start;
 }
 
-.Contentbox {
+.ContentBox {
   display: flex;
   margin: 0;
   padding: 0;
@@ -134,7 +134,7 @@ a {
   flex-direction: column;
 }
 
-.boardbox {
+.BoardBox {
   margin: 0;
   padding: 0;
   width: 87vw;
@@ -142,7 +142,7 @@ a {
   display: flex;
   flex-direction: column;
 }
-.titlebox {
+.TitleBox {
   width: 100%;
   height: 40px;
   color: white;
@@ -151,7 +151,7 @@ a {
 
 /*titlebox는 게시판에서 보여주는 내용의 title만 들어감*/
 
-.bottombox {
+.BottomBox {
   display: flex;
   margin: 0;
   padding: 0;
@@ -160,13 +160,13 @@ a {
   border: 2px solid white;
 }
 
-.userbox{
+.UserBox{
   width: 30vw;
   height: 27vh;
   margin: 0;
   padding-left: 1.5vw;
 }
-.popular{
+.PopularBox{
   width: 100%;
   height: 27vh;
   margin: 0;
