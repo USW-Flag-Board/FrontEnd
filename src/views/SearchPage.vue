@@ -1,33 +1,5 @@
 <template>
   <body>
-    <header>
-      <img src="src/assets/logo.JPG" width="300px" height="100px" />
-      <ul>
-        <button class="dropbtn"><h3>FLAG</h3></button>
-        <div class="dropdown-content"></div>
-
-        <button class="dropbtn"><h3>BORDER</h3></button>
-        <div class="dropdown-content"></div>
-        <div class="dropdown">
-          <button class="dropbtn"><h3>ACTIVITY</h3></button>
-          <div class="dropdown-content">
-            <a href="#"><h3>STUDY</h3></a>
-            <a href="#"><h3>PROJECT</h3></a>
-          </div>
-        </div>
-        <button class="dropbtn"><h3>NOTICE</h3></button>
-        <div class="dropdown-content">
-          <a href="#"></a>
-        </div>
-        <li>
-          <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input class="search-bar__input" type="search" placeholder="검색" />
-          </div>
-        </li>
-      </ul>
-    </header>
-
     <div class="container">
       <div class="headerbox">
         <h1>검색결과</h1>
@@ -40,15 +12,15 @@
           <p>사진게시판</p>
           <p>유저</p>
         </div>
-      
+
         <div class="bulletinboard">
           <Table></Table>
           <Table></Table>
-      
+
           <div class="board1">
             <div class="titlebox">
               <h3>사진게시판</h3>
-            </div> 
+            </div>
           </div>
           <div class="bottomcontent">
             <div class="userbox">
@@ -61,28 +33,24 @@
                 <h3>" "인기글</h3>
               </div>
             </div>
+          </div>
         </div>
-        
       </div>
     </div>
-  </div>
   </body>
 </template>
 
 <script>
-import Table from '../components/Table.vue';
+import Table from "../components/Table.vue";
 
 export default {
-  name: 'SearchPage',
+  name: "SearchPage",
 
   components: {
-    Table : Table,
-
+    Table: Table,
   },
   data() {
-    return {
-      
-    };
+    return {};
   },
   setup() {},
   created() {},
@@ -198,7 +166,7 @@ li {
   height: 40vh;
   border: 2px groove brown;
   display: flex;
- 
+
   flex-direction: column;
 }
 
@@ -237,25 +205,25 @@ li {
 }
 .bottomcontent {
   margin: 0;
-  width:100%;
+  width: 100%;
   height: 33vh;
   display: flex;
   border: 2px groove #ccffff;
 }
 
-.userbox{
+.userbox {
   margin: 0;
   padding-top: 4vh;
   padding-left: 1.5vw;
-  width:30vw;
+  width: 30vw;
   height: 27vh;
   border: 2px groove red;
 }
 
-.popular{
+.popular {
   margin: 0;
   padding-top: 4vh;
-  width:100%;
+  width: 100%;
   height: 27vh;
   padding-left: 1.5vw;
   border: 2px groove blue;
@@ -280,5 +248,4 @@ tbody tr {
 tbody tr:nth-child(2n) {
   background-color: grey;
 }
-
 </style>

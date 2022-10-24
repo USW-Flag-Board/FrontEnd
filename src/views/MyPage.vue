@@ -41,7 +41,7 @@
       </div>
 
       <div class="box2">
-        <img src="src/assets/book.jpg" width="900px" height="1200px" />
+        <img src="src/assets/book.jpg" width="900" height="1200" />
         <div class="botombox">
           <p>잔디</p>
         </div>
