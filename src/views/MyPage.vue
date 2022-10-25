@@ -26,7 +26,7 @@
       </div>
 
       <div class="RightBox">
-        <div class="grass">
+        <div class="grassbox">
           <div class="title">
             <p>GRASS</p>
           </div>
@@ -40,13 +40,13 @@
 
 <style scoped>
 body {
-  background-color: #2c2c2c;
+  margin: 0;
   margin-top: 125px;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   align-items: center;
+  background-color: #2c2c2c;
 }
-
 a {
   text-decoration-line: none;
 }
@@ -54,17 +54,16 @@ a {
 .Container {
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
 .LeftBox {
   margin: 0;
   padding: 0;
-  width: 42vw;
+  width: 49vw;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -78,6 +77,7 @@ a {
   background-color: #2c2c2c;
 }
 .photo {
+  display: inline-block;
   width: 15vw;
   height: 15vw;
   background-color: white;
@@ -120,8 +120,11 @@ a {
 }
 .ActivityHead {
   width: 100%;
-  height: 3vh;
+  height: 40px;
+  font-weight: 500;
+  color: white;
 }
+
 .ContentBox {
   width: 100%;
   height: 10vh;
@@ -134,7 +137,7 @@ a {
 .RightBox {
   margin: 0;
   padding: 0;
-  width: 48vw;
+  width: 50vw;
   height: 100vh;
   display: flex;
   align-items: flex-end;
@@ -143,25 +146,19 @@ a {
   background-repeat: no-repeat;
 }
 
-.grass {
+.grassbox {
   width: 46vw;
   height: 28vh;
   margin: 10px;
   display: flex;
   background-color: #000000;
 }
-.ActivityHead {
-  width: 100%;
-  height: 40px;
-  font-weight: 500;
-  color: white;
-}
-
 .title {
   width: 100%;
-  height: 40px;
+  height: 7vh;
   font-weight: 500;
   background-color: #2c2c2c;
   color: white;
 }
+
 </style>

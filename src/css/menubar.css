@@ -39,4 +39,5 @@
 
 .dropdown:hover .dropbtn {
   background-color: #cec9c8;
+  border-radius: 10px;
 }

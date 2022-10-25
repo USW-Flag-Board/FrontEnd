@@ -1,6 +1,6 @@
 <template>
   <header>
-    <img src="/src/assets/logo.JPG" width="301" height="100" />
+    <img src="/src/assets/logo.JPG" width="301" height="105" />
     <ul>
       <div class="dropdown">
         <button class="dropbtn" @click="MainPage()"><h3>FLAG</h3></button>
@@ -28,10 +28,11 @@
         </div>
       </div>
       <li>
-        <div class="search-bar">
-          <i class="fas fa-search" aria-hidden="true"></i>
-          <input class="search-bar__input" type="search" placeholder="검색" />
-        </div>
+        <form>
+          <div class="search-bar">
+            <input class="search-bar__input" type="search" placeholder="검색" />
+          </div>
+        </form>
       </li>
     </ul>
   </header>
@@ -61,6 +62,7 @@ export default {
 
 <style scoped>
 header {
+  width: 100%;
   height: 65px;
   padding-bottom: 40px;
   margin-bottom: 20px;

@@ -63,11 +63,12 @@ export default {
 
 <style scoped>
 body {
-  background-color: #2c2c2c;
+  margin: 0;
   margin-top: 125px;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   align-items: center;
+  background-color: #2c2c2c;
 }
 a {
   text-decoration-line: none;
@@ -80,7 +81,6 @@ a {
   height: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
 .HeaderBox {

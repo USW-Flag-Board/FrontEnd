@@ -55,11 +55,12 @@ export default {
 
 <style scoped>
 body {
-  background-color: #2c2c2c;
+  margin: 0;
   margin-top: 125px;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   align-items: center;
+  background-color: #2c2c2c;
 }
 
 a {
@@ -69,11 +70,10 @@ a {
 .Container {
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
 }
 /*border 삭제 border: 2px groove rgba(19, 16, 16, 0.973);*/
 .Box {
@@ -85,7 +85,7 @@ a {
   display: flex;
   width: 50vw;
   height: 65vh;
-  margin: 10px;
+  margin: 15px 10px;
   border: 2px solid black;
 }
 /*border 삭제 border: 2px groove rgba(19, 16, 16, 0.973);*/
@@ -97,7 +97,7 @@ a {
   color: white;
 }
 .GrassBox {
-  width: 46vw;
+  width: 50vw;
   height: 28vh;
   margin: 10px;
   display: flex;
@@ -109,9 +109,8 @@ a {
   width: 28vw;
   height: 68vh;
   background-color: white;
-  margin: 2px;
-  margin-right: 20px;
-  margin-top: 9px;
+  margin-right: 10px;
+  margin-top: 10px;
 }
 /*border 삭제 border: 2px groove rgba(19, 16, 16, 0.973);*/
 
@@ -134,7 +133,7 @@ a {
 .SideBox {
   display: flex;
   margin-top: 9px;
-  width: 14vw;
+  width: 18vw;
   height: 100vh;
   margin-right: 1px;
   background-color: #515151;

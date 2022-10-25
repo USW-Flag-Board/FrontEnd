@@ -3,7 +3,9 @@
     <div class="Container">
       <div class="HeaderBox">
         <div class="Header_Title">자유게시판</div>
-        <div class="write">✏️글쓰기</div>
+        <div class="button">
+          <p><a href="#">✏️글쓰기</a></p>
+        </div>
       </div>
 
       <div class="MainBox">
@@ -110,28 +112,27 @@ export default {
 
 <style scoped>
 body {
-  background-color: #2c2c2c;
+  margin: 0;
   margin-top: 125px;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   align-items: center;
+  background-color: #2c2c2c;
 }
 /*background-color 컬러picker로 컬러변경*/
 a {
   text-decoration-line: none;
 }
 
+/*border 삭제 border: 2px groove rgba(19, 16, 16, 0.973);*/
 .Container {
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
 }
-/*border 삭제 border: 2px groove rgba(19, 16, 16, 0.973);*/
-
 .HeaderBox {
   display: flex;
   margin: 0;
@@ -156,20 +157,20 @@ a {
 }
 /*게시판 헤더, headerbox랑 TitleBox은 나중에 공용 css로 만들기*/
 
-.write {
+.button {
   display: flex;
-  width: 5vw;
-  height: 3vh;
+  width: 70px;
+  height: 25px;
   margin-top: 6.8vw;
   margin-left: 65vw;
   padding: 0;
   background-color: white;
   flex-direction: row;
-  font-size: 0.9vw;
+  font-size: 13px;
   justify-content: center;
   align-items: center;
   color: black;
-  border-radius: 12%;
+  border-radius: 10px;
 }
 
 .MainBox {
@@ -182,7 +183,7 @@ a {
 }
 
 .SideBox {
-  width: 30vw;
+  width: 25vw;
   height: 100%;
   color: white;
   background-color: rgb(53, 74, 62);
@@ -193,41 +194,6 @@ a {
 }
 /*MainBox, SideBox 공용 css로 통합*/
 
-/*.listmenu {
-  display: flex;
-  padding: 0;
-  margin-top: 40px;
-  border: 0px groove white;
-  width: 10vw;
-  height: 30vh;
-  flex-direction: column;
-  color: white;
-}
-
-.topmenu {
-  display: flex;
-  margin: 0;
-  padding: 0;
-  justify-content: center;
-  align-items: flex-end;
-  font-size: 1.57vw;
-  font-weight: bold;
-  width: 9.7vw;
-  height: 6vh;
-}
-
-.bottommenu {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  font-size: 1em;
-  font-weight: lighter;
-  width: 9.7vw;
-  height: 23.8vh;
-  line-height: 230%;
-}*/
-/*이거 통합할 수 있으면 통합하기*/
 .ContentBox {
   display: flex;
   margin: 0;
