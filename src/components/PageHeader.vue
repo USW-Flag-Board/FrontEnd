@@ -1,6 +1,7 @@
 <template>
   <header>
     <img src="/src/assets/logo.JPG" width="301" height="105" />
+    <img src="/src/assets/logo.JPG" width="301" height="105" />
     <ul>
       <div class="dropdown">
         <button class="dropbtn" @click="MainPage()"><h3>FLAG</h3></button>
