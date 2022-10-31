@@ -4,6 +4,8 @@ import ListPage from "../views/ListPage.vue";
 import MyPage from "../views/MyPage.vue";
 import SearchPage from "../views/SearchPage.vue";
 import LoginPage from "../views/LoginPage.vue";
+import SignUpPage from "../views/SignUpPage.vue";
+
 
 
 const router = createRouter({
@@ -34,6 +36,12 @@ const router = createRouter({
       name: "LoginPage",
       component: LoginPage,
     },
+    {
+      path: "/SignUpPage",
+      name: "SignUpPage",
+      component: SignUpPage,
+    },
+   
   ],
 });
 
