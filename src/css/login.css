@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 		input {
 			border: 1px solid #666666; 
             border-radius: 20px 20px 20px 20px; 
@@ -28,3 +29,35 @@
 			white-space:nowrap;
 		
 		}
+=======
+		input {
+			border: 1px solid #666666; 
+            border-radius: 20px 20px 20px 20px; 
+			width: 23.2vw; 
+			height: 6vh; 
+			line-height: 20px; 
+			padding: 0;
+			margin: 0;
+			font-size: 1vw;
+			background: #666666;
+			color: white;
+			
+		}
+		h1 {font-size: 20px; font-weight: 800;}
+		.login-form ul {list-style:none; padding:0; margin:0;}
+		.login-form ul > li{margin-bottom:5px;}
+		.login-form button{
+			border: none; 
+			width: 23.2vw; 
+			height: 6vh; 
+			padding: 0; 
+			margin: 0; 
+			background: rgb(55, 133, 117);
+            border-radius: 20px 20px 20px 20px; 
+			color: #fff; 
+			font-weight: 800; 
+			font-size: 14px;
+			white-space:nowrap;
+		
+		}
+>>>>>>> 0baf51120d07e7456658029f8c38b5d8e98a48e8
