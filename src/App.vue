@@ -12,7 +12,6 @@ import { RouterLink, RouterView } from "vue-router";
     <RouterLink to="/SignUpPage">SignUp</RouterLink>
   </nav>
   <RouterView />
-  <RouterView />
 </template>
 
 <style scoped>
