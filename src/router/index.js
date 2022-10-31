@@ -3,6 +3,8 @@ import MainPage from "../views/MainPage.vue";
 import ListPage from "../views/ListPage.vue";
 import MyPage from "../views/MyPage.vue";
 import SearchPage from "../views/SearchPage.vue";
+import LoginPage from "../views/LoginPage.vue";
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +28,11 @@ const router = createRouter({
       path: "/searchPage",
       name: "SearchPage",
       component: SearchPage,
+    },
+    {
+      path: "/LoginPage",
+      name: "LoginPage",
+      component: LoginPage,
     },
   ],
 });

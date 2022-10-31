@@ -9,6 +9,7 @@ import PageHeader from "@/components/PageHeader.vue";
     <RouterLink to="/list">List</RouterLink>
     <RouterLink to="/myPage">MyPage</RouterLink>
     <RouterLink to="/searchPage">Search</RouterLink>
+    <RouterLink to="/LoginPage">Login</RouterLink>
   </nav>
   <PageHeader />
   <RouterView />

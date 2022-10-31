@@ -14,7 +14,7 @@
 .search-bar__input {
 width: 50px;
 border: none;
--webkit-appearance: none;
+webkit-appearance: none;
 text-align: center;
 margin-left: 10px;
 overflow: auto;
