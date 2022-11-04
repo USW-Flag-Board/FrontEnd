@@ -22,16 +22,16 @@
             <p>게시판을 선택해주세요.</p>
           </div>
           <div class="TitleBox">
-            <p style="color:grey;">제목을 입력해주세요.</p>
+            <p style="color:grey; ">제목을 입력해주세요.</p>
           </div>
           <div class="FunctionBox">
-            <p style="color:black;">기능</p>
+            <p style="color:black; ">기능</p>
           </div>
           <div class="SubBox">
-            <p style="color:grey;">내용을 입력하세요.</p>
-          </div>
+            <p style="color:grey; ">내용을 입력하세요.</p>
+          </div> 
           <div class="TagBox">
-            <p style="color:grey;">#태그입력 (최대 10개)</p>
+            <p style="color:grey; ">#태그입력 (최대 10개)</p>
           </div>
         </div>
       </div>
