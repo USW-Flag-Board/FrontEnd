@@ -9,7 +9,6 @@ import DetailPage from "../views/DetailPage.vue";
 import LoginPage from "../views/LoginPage.vue";
 import SignUpPage from "../views/SignUpPage.vue";
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -38,6 +37,16 @@ const router = createRouter({
           name: "SearchPage",
           component: SearchPage,
         },
+        {
+          path: "/detailPage",
+          name: "DetailPage",
+          component: DetailPage,
+        },
+        {
+          path: "/writingPage",
+          name: "WritingPage",
+          component: WritingPage,
+        },
       ],
     },
     {
@@ -49,16 +58,6 @@ const router = createRouter({
       path: "/SignUpPage",
       name: "SignUpPage",
       component: SignUpPage,
-    },
-    {
-      path: "/detailPage",
-      name: "DetailPage",
-      component: DetailPage,
-    },
-    {
-      path: "/writingPage",
-      name: "WritingPage",
-      component: WritingPage,
     },
   ],
 });
