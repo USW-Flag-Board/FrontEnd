@@ -4,9 +4,11 @@ import MainPage from "../views/MainPage.vue";
 import ListPage from "../views/ListPage.vue";
 import MyPage from "../views/MyPage.vue";
 import SearchPage from "../views/SearchPage.vue";
+import WritingPage from "../views/WritingPage.vue";
 import DetailPage from "../views/DetailPage.vue";
 import LoginPage from "../views/LoginPage.vue";
 import SignUpPage from "../views/SignUpPage.vue";
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -52,6 +54,11 @@ const router = createRouter({
       path: "/detailPage",
       name: "DetailPage",
       component: DetailPage,
+    },
+    {
+      path: "/writingPage",
+      name: "WritingPage",
+      component: WritingPage,
     },
   ],
 });
