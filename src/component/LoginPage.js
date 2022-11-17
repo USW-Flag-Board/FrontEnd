@@ -84,7 +84,7 @@ export default function LoginPage() {
               }}
               variant="filled"
               sx={{
-                input: { color: "white", padding: 2, paddingLeft: 2 },
+                input: { color: "white", paddingLeft: 2 },
                 color: "text.secondary",
                 ".MuiFilledInput-root": { borderRadius: 100, borderBottom: 0 },
                 ".MuiFilledInput-root:before": {
@@ -122,16 +122,13 @@ export default function LoginPage() {
               }}
               variant="filled"
               sx={{
-                input: { color: "white", padding: 2, paddingLeft: 2 },
+                input: { color: "white", paddingLeft: 2 },
                 color: "text.secondary",
                 ".MuiFilledInput-root": { borderRadius: 100, borderBottom: 0 },
                 ".MuiFilledInput-root:before": {
                   borderBottom: 0,
                 },
                 ".MuiFilledInput-root:after": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:hover:not": {
                   borderBottom: 0,
                 },
                 ".MuiFilledInput-root:hover": {
@@ -197,6 +194,7 @@ export default function LoginPage() {
               variant="contained"
               sx={{
                 backgroundColor: "#378975",
+                color: "#ffffff",
                 mt: 3,
                 mb: 2,
                 borderRadius: 28,
@@ -217,7 +215,7 @@ export default function LoginPage() {
                 </Link>
               </Grid>
               <Grid item xs sx={{ textAlign: "right" }}>
-                <Link href="#" variant="body2">
+                <Link href="/signup" variant="body2">
                   회원가입
                 </Link>
               </Grid>
