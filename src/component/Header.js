@@ -6,7 +6,7 @@ class Header extends Component {
     return (
       <div>
         <header>
-          <Link href="/">login/</Link>
+          <Link href="/">login / </Link>
           <Link href="/signup">signup</Link>
         </header>
       </div>
