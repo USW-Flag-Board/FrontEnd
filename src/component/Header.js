@@ -8,6 +8,7 @@ class Header extends Component {
         <header>
           <Link href="/">login / </Link>
           <Link href="/signup">signup</Link>
+          <Link href="/my">my</Link>
         </header>
       </div>
     );
