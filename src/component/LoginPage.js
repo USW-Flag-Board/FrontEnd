@@ -14,6 +14,8 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+
+import { styled } from "@mui/material/styles";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 function Copyright(props) {
@@ -33,19 +35,20 @@ function Copyright(props) {
     </Typography>
   );
 }
-
+const TextFieldCustom01 = styled(TextField)`
+  & .MuiFilledInput-root {
+    background-color: #6c6c6c;
+    border-radius: 28px;
+  }
+  & .MuiFilledInput-root:hover {
+    background-color: #575757;
+  }
+`;
 const darkTheme = createTheme({
-  textField: {
-    border: "1px solid blue",
-  },
   palette: {
     mode: "dark",
     background: {
       default: "#2C2C2C",
-    },
-    text: {
-      primary: "#696969",
-      borderRadius: "28",
     },
   },
 });
@@ -74,8 +77,9 @@ export default function LoginPage() {
         >
           <img className="Logo" src="flag.JPG" width="120" height="60" />
           <Box component="form" onSubmit={handleSubmit} Validate sx={{ mt: 5 }}>
-            <TextField
+            <TextFieldCustom01
               InputProps={{
+                disableUnderline: true,
                 startAdornment: (
                   <InputAdornment position="start">
                     <PersonIcon />
@@ -85,23 +89,6 @@ export default function LoginPage() {
               variant="filled"
               sx={{
                 input: { color: "white", paddingLeft: 2 },
-                color: "text.secondary",
-                ".MuiFilledInput-root": { borderRadius: 100, borderBottom: 0 },
-                ".MuiFilledInput-root:before": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:after": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:hover:not": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:hover": {
-                  backgroundColor: "rgb(87, 87, 87)",
-                },
-                "& .MuiFilledInput-root": {
-                  backgroundColor: "rgb(105, 105, 105)",
-                },
               }}
               margin="normal"
               fullWidth
@@ -112,8 +99,9 @@ export default function LoginPage() {
               label="아이디"
               autoFocus
             />
-            <TextField
+            <TextFieldCustom01
               InputProps={{
+                disableUnderline: true,
                 startAdornment: (
                   <InputAdornment position="start">
                     <LockIcon />
@@ -123,20 +111,6 @@ export default function LoginPage() {
               variant="filled"
               sx={{
                 input: { color: "white", paddingLeft: 2 },
-                color: "text.secondary",
-                ".MuiFilledInput-root": { borderRadius: 100, borderBottom: 0 },
-                ".MuiFilledInput-root:before": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:after": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:hover": {
-                  backgroundColor: "rgb(87, 87, 87)",
-                },
-                "& .MuiFilledInput-root": {
-                  backgroundColor: "rgb(105, 105, 105)",
-                },
               }}
               margin="normal"
               fullWidth

@@ -1,8 +1,7 @@
 import * as React from "react";
-import { InputAdornment, MenuItem } from "@mui/material";
+import { InputAdornment, MenuItem, rgbToHex } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -14,7 +13,8 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider, withTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 function Copyright(props) {
   return (
@@ -34,15 +34,20 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme({
+const TextFieldCustom01 = styled(TextField)`
+  & .MuiFilledInput-root {
+    background-color: #6c6c6c;
+    border-radius: 28px;
+  }
+  & .MuiFilledInput-root:hover {
+    background-color: #575757;
+  }
+`;
+const darkTheme = createTheme({
   palette: {
     mode: "dark",
     background: {
       default: "#2C2C2C",
-    },
-    text: {
-      primary: "#ffffff",
-      borderRadius: "28",
     },
   },
 });
@@ -58,7 +63,7 @@ export default function SignUp() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={darkTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -77,8 +82,9 @@ export default function SignUp() {
             onSubmit={handleSubmit}
             sx={{ mt: 5 }}
           >
-            <TextField
+            <TextFieldCustom01
               InputProps={{
+                disableUnderline: true,
                 startAdornment: (
                   <InputAdornment position="start">
                     <PersonIcon />
@@ -88,20 +94,6 @@ export default function SignUp() {
               variant="filled"
               sx={{
                 input: { color: "white", paddingLeft: 2 },
-                color: "text.secondary",
-                ".MuiFilledInput-root": { borderRadius: 100, borderBottom: 0 },
-                ".MuiFilledInput-root:before": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:after": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:hover": {
-                  backgroundColor: "rgb(87, 87, 87)",
-                },
-                "& .MuiFilledInput-root": {
-                  backgroundColor: "rgb(105, 105, 105)",
-                },
               }}
               margin="normal"
               fullWidth
@@ -112,8 +104,9 @@ export default function SignUp() {
               label="아이디"
               autoFocus
             />
-            <TextField
+            <TextFieldCustom01
               InputProps={{
+                disableUnderline: true,
                 startAdornment: (
                   <InputAdornment position="start">
                     <LockIcon />
@@ -123,20 +116,6 @@ export default function SignUp() {
               variant="filled"
               sx={{
                 input: { color: "white", paddingLeft: 2 },
-                color: "text.secondary",
-                ".MuiFilledInput-root": { borderRadius: 100, borderBottom: 0 },
-                ".MuiFilledInput-root:before": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:after": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:hover": {
-                  backgroundColor: "rgb(87, 87, 87)",
-                },
-                "& .MuiFilledInput-root": {
-                  backgroundColor: "rgb(105, 105, 105)",
-                },
               }}
               margin="normal"
               fullWidth
@@ -148,8 +127,9 @@ export default function SignUp() {
               label="비밀번호"
               autoFocus
             />
-            <TextField
+            <TextFieldCustom01
               InputProps={{
+                disableUnderline: true,
                 endAdornment: (
                   <InputAdornment position="end">
                     <LockIcon />
@@ -159,20 +139,6 @@ export default function SignUp() {
               variant="filled"
               sx={{
                 input: { color: "white", paddingLeft: 2 },
-                color: "text.secondary",
-                ".MuiFilledInput-root": { borderRadius: 100, borderBottom: 0 },
-                ".MuiFilledInput-root:before": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:after": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:hover": {
-                  backgroundColor: "rgb(87, 87, 87)",
-                },
-                "& .MuiFilledInput-root": {
-                  backgroundColor: "rgb(105, 105, 105)",
-                },
               }}
               margin="normal"
               fullWidth
@@ -184,24 +150,13 @@ export default function SignUp() {
               label="비밀번호 확인"
               autoFocus
             />
-            <TextField
+            <TextFieldCustom01
+              InputProps={{
+                disableUnderline: true,
+              }}
               variant="filled"
               sx={{
                 input: { color: "white", paddingLeft: 2 },
-                color: "text.secondary",
-                ".MuiFilledInput-root": { borderRadius: 100, borderBottom: 0 },
-                ".MuiFilledInput-root:before": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:after": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:hover": {
-                  backgroundColor: "rgb(87, 87, 87)",
-                },
-                "& .MuiFilledInput-root": {
-                  backgroundColor: "rgb(105, 105, 105)",
-                },
               }}
               margin="normal"
               fullWidth
@@ -212,24 +167,13 @@ export default function SignUp() {
               label="이름"
               autoFocus
             />
-            <TextField
+            <TextFieldCustom01
+              InputProps={{
+                disableUnderline: true,
+              }}
               variant="filled"
               sx={{
                 input: { color: "white", paddingLeft: 2 },
-                color: "text.secondary",
-                ".MuiFilledInput-root": { borderRadius: 100, borderBottom: 0 },
-                ".MuiFilledInput-root:before": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:after": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:hover": {
-                  backgroundColor: "rgb(87, 87, 87)",
-                },
-                "& .MuiFilledInput-root": {
-                  backgroundColor: "rgb(105, 105, 105)",
-                },
               }}
               margin="normal"
               fullWidth
@@ -243,25 +187,14 @@ export default function SignUp() {
             >
               <MenuItem value={10}>1</MenuItem>
               <MenuItem>직접 입력</MenuItem>
-            </TextField>
-            <TextField
+            </TextFieldCustom01>
+            <TextFieldCustom01
+              InputProps={{
+                disableUnderline: true,
+              }}
               variant="filled"
               sx={{
                 input: { color: "white", paddingLeft: 2 },
-                color: "text.secondary",
-                ".MuiFilledInput-root": { borderRadius: 100, borderBottom: 0 },
-                ".MuiFilledInput-root:before": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:after": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:hover": {
-                  backgroundColor: "rgb(87, 87, 87)",
-                },
-                "& .MuiFilledInput-root": {
-                  backgroundColor: "rgb(105, 105, 105)",
-                },
               }}
               margin="normal"
               fullWidth
