@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { styled } from '@mui/system';
 import Header from '../component/Header';
 
@@ -107,6 +107,8 @@ const SideBar = styled('div')({
     height: "89%",
     width: "100%",
 });
+
+
 
 const Home = () => {
     const contents = [

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -44,14 +44,23 @@ const MenuItem = styled('li')({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  flexDirection: "column",
   '&:hover':{
       backgroundColor: "#adb5bd", 
       borderRadius: "10px"
   }
 });
 
+const HomeDropDown = styled('div')({
+  width: "200px",
+  height: "50px",
+  backgroundColor: "white", 
+  borderRadius: "10px",
+});
+
 const Header = () => {
   const sections = ["FLAG", "BOARD", "ACTIBITY", "NOTICE"];
+  const [isHovering, setIsHovering] = useState(0);
   return (
     <Box>
       <HomeHeader>
@@ -61,9 +70,13 @@ const Header = () => {
         <Box>
           <MenuItemBox>
             <MenuItems>
-              {sections.map((item) => <MenuItem key={item}>{item}</MenuItem>)}
+              {sections.map((item) => <MenuItem key={item} 
+                onMouseOver={()=>setIsHovering(1)}
+                onMouseOut={()=>setIsHovering(0)}>{item}
+              {isHovering ? (<HomeDropDown>어준혁</HomeDropDown>) : ("")}
+              </MenuItem>)}
             </MenuItems>
-            <Paper 
+            <Paper
               component="form"
               sx={{display: 'flex', width: 250, height: 30, borderRadius: "15px", ml: 2, border: "1px solid #adb5bd"}}
               >
