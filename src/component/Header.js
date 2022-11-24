@@ -6,6 +6,10 @@ import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Fade from '@mui/material/Fade';
 
 
 const HomeHeader = styled('div')({
@@ -31,36 +35,24 @@ const MenuItemBox = styled('div')({
   marginRight: "5px",
 })
 
-const MenuItems = styled('ul')({
+const MenuItems = styled('div')({
   display: "flex",
   justifyContent: "center",
   alignItems: "flex-end",
   margin: 0,
 });
 
-const MenuItem = styled('li')({
-  width: "200px",
-  height: "50px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  flexDirection: "column",
-  '&:hover':{
-      backgroundColor: "#adb5bd", 
-      borderRadius: "10px"
-  }
-});
-
-const HomeDropDown = styled('div')({
-  width: "200px",
-  height: "50px",
-  backgroundColor: "white", 
-  borderRadius: "10px",
-});
 
 const Header = () => {
   const sections = ["FLAG", "BOARD", "ACTIBITY", "NOTICE"];
-  const [isHovering, setIsHovering] = useState(0);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <Box>
       <HomeHeader>
@@ -70,11 +62,26 @@ const Header = () => {
         <Box>
           <MenuItemBox>
             <MenuItems>
-              {sections.map((item) => <MenuItem key={item} 
-                onMouseOver={()=>setIsHovering(1)}
-                onMouseOut={()=>setIsHovering(0)}>{item}
-              {isHovering ? (<HomeDropDown>어준혁</HomeDropDown>) : ("")}
-              </MenuItem>)}
+              {sections.map((item) => <Button key={item}
+                id="fade-button"
+                aria-controls={open ? 'fade-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}>{item}
+              </Button>)}
+              <Menu 
+                  id="fade-menu"
+                  MenuListProps={{
+                    'aria-labelledby': 'fade-button',
+                  }}
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  TransitionComponent={Fade}>
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>Logout</MenuItem>
+              </Menu>
             </MenuItems>
             <Paper
               component="form"
