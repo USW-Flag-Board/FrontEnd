@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { styled } from '@mui/system';
 import Header from '../component/Header';
 
 const HomeArea = styled('div')({
     backgroundColor: "#212529",
-    height: "90vh",
+    height: "82vh",
     display: "flex",
 });
 
@@ -84,49 +84,23 @@ const SideArea = styled('div')({
     height: "100%",
 });
 
-const ButtonArea = styled('div')({
-    display: "flex",
-    alignItems: 'center',
-    justifyContent: "flex-end",
-    height: "11%",
-});
-
-const ButtonItem = styled('div')({
-    width: "12%",
-    height: "40%", 
-    margin: "5px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontSize: "20px",
-    borderRadius: "12px"
-});
-
 const SideBar = styled('div')({
     backgroundColor: "#868e96",
-    height: "89%",
+    height: "100%",
     width: "100%",
 });
-
-
 
 const Home = () => {
     const contents = [
         {title: "STUDY", content: ["ALGORITHM", "WEB-BACKEND"]}, 
         {title: "PROJECT", content: ["FLAG-게시판"]}
     ];
-    
-    const buttonItem = [
-        {name: "CH", bgColor: "#5c940d", fontColor: "white"}, 
-        {name: "N" , bgColor: "#f8f9fa", fontColor: "black"},
-        {name: "G", bgColor: "#9775fa", fontColor: "white"},
-    ];
-        return (
+    return (
         <>
             <Header/>
             <HomeArea>
                 <MyActivity>
-                    <h3 style={{color: "white", paddingTop: "30px", margin: 0}}>MY ACTIBITY</h3>
+                    <h3 style={{color: "white",  margin: 0}}>MY ACTIBITY</h3>
                     <FlagContents>
                         {contents.map((item)=>(<FlagContent key={item.title}><h4 style={{color: "white"}}>{item.title}</h4></FlagContent>))}
                     </FlagContents>
@@ -141,7 +115,7 @@ const Home = () => {
                     </GrassArea>
                 </MyActivity>
                 <FeedArea>
-                    <h3 style={{color: "white", paddingTop: "30px", margin: 0}}>FEED</h3>
+                    <h3 style={{color: "white",  margin: 0}}>FEED</h3>
                     <FeedBox>
                         <FeedItem/>
                         <FeedItem/>
@@ -159,9 +133,6 @@ const Home = () => {
                     </NoticeArea>
                 </FeedArea>
                 <SideArea>
-                    <ButtonArea>
-                        {buttonItem.map((item)=>(<ButtonItem key={item.name} style={{color: `${item.fontColor}`, backgroundColor: `${item.bgColor}` }}>{item.name}</ButtonItem>))}
-                    </ButtonArea>
                     <SideBar></SideBar>
                 </SideArea>
             </HomeArea>

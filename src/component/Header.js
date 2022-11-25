@@ -42,10 +42,38 @@ const MenuItems = styled('div')({
   margin: 0,
 });
 
+const ButtonArea = styled('div')({
+  display: "flex",
+  alignItems: 'center',
+  justifyContent: "flex-end",
+  height: "3vh",
+  backgroundColor: "#212529",
+  padding: "2.5vh 5px 2.5vh 0",
+});
+
+const ButtonItem = styled('div')({
+  width: "3%",
+  height: "70%", 
+  margin: "5px",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  fontSize: "20px",
+  borderRadius: "12px",
+  padding: "10px 0",
+});
+
 
 const Header = () => {
   const sections = ["FLAG", "BOARD", "ACTIBITY", "NOTICE"];
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const menuItem = ["STUDY", "PROJECT"];
+  const [anchorEl, setAnchorEl] = useState(null);
+  const buttonItem = [
+    {name: "CH", bgColor: "#5c940d", fontColor: "white"}, 
+    {name: "N" , bgColor: "#f8f9fa", fontColor: "black"},
+    {name: "G", bgColor: "#9775fa", fontColor: "white"},
+  ];
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -53,55 +81,60 @@ const Header = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
-    <Box>
-      <HomeHeader>
-        <LogoBox>
-          <img className="logo" src="img/logo.JPG" alt="blog-logo" style={{height: "80%"}}/>
-        </LogoBox>
-        <Box>
-          <MenuItemBox>
-            <MenuItems>
-              {sections.map((item) => <Button key={item}
-                id="fade-button"
-                aria-controls={open ? 'fade-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                onClick={handleClick}>{item}
-              </Button>)}
-              <Menu 
-                  id="fade-menu"
-                  MenuListProps={{
-                    'aria-labelledby': 'fade-button',
-                  }}
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  TransitionComponent={Fade}>
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
-              </Menu>
-            </MenuItems>
-            <Paper
-              component="form"
-              sx={{display: 'flex', width: 250, height: 30, borderRadius: "15px", ml: 2, border: "1px solid #adb5bd"}}
-              >
-                <IconButton type="button" sx={{ p: '10px'}} aria-label="search">
-                  <SearchIcon />
+    <>
+      <Box>
+        <HomeHeader>
+          <LogoBox>
+            <img className="logo" src="img/logo.JPG" alt="blog-logo" style={{height: "80%"}}/>
+          </LogoBox>
+          <Box>
+            <MenuItemBox>
+              <MenuItems>
+                {sections.map((item) => <Button key={item}
+                  id="fade-button"
+                  aria-controls={open ? 'fade-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={handleClick}
+                  sx={{width:"200px", height: "50px", display: "flex", alignItems: "flex-end", fontSize: "18px", color: "black","&:hover": {backgroundColor: "#adb5bd", borderRadius: "10px"}}}>{item}
+                </Button>)}
+                <Menu 
+                    id="fade-menu"
+                    MenuListProps={{
+                      'aria-labelledby': 'fade-button',
+                    }}
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    TransitionComponent={Fade}>
+                  {menuItem.map((item)=> (<MenuItem key={item} onClick={handleClose} sx={{width:"200px", display: "flex", alignItems: "flex-end", justifyContent: "center", fontSize: "13px"}}>{item}</MenuItem>))}
+                </Menu>
+              </MenuItems>
+              <Paper
+                component="form"
+                sx={{display: 'flex', width: 250, height: 30, borderRadius: "15px", ml: 2, border: "1px solid #adb5bd"}}
+                >
+                  <IconButton type="button" sx={{ p: '10px'}} aria-label="search">
+                    <SearchIcon />
+                  </IconButton>
+                  <InputBase
+                    sx={{ ml: 1, flex: 1}}
+                  />
+                </Paper>
+                <IconButton sx={{ p: '8px'}} aria-label="menu">
+                  <MenuIcon />
                 </IconButton>
-                <InputBase
-                  sx={{ ml: 1, flex: 1}}
-                />
-              </Paper>
-              <IconButton sx={{ p: '8px'}} aria-label="menu">
-                <MenuIcon />
-              </IconButton>
-          </MenuItemBox>
-        </Box>
-      </HomeHeader>
-    </Box>
-    );
+            </MenuItemBox>
+          </Box>
+        </HomeHeader>
+      </Box>
+      <ButtonArea>
+        {buttonItem.map((item)=>(<ButtonItem key={item.name} style={{color: `${item.fontColor}`, backgroundColor: `${item.bgColor}` }}>{item.name}</ButtonItem>))}
+      </ButtonArea>
+    </>
+  );
 }
 
 export default Header;
