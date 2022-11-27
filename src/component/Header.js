@@ -10,13 +10,14 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
-
+import { Link } from 'react-router-dom';
 
 const HomeHeader = styled('div')({
   width: "100vw",
   height: "10vh",
   display: "flex",
   alignItems: "flex-end",
+  backgroundColor: "white",
 });
 
 const LogoBox = styled('div')({
@@ -24,7 +25,8 @@ const LogoBox = styled('div')({
   height: "100%",
   display: "flex", 
   alignItems: "center",
-  paddingLeft: "15px"
+  paddingLeft: "15px",
+  cursor: "pointer",
 });
 
 const MenuItemBox = styled('div')({
@@ -47,8 +49,8 @@ const ButtonArea = styled('div')({
   alignItems: 'center',
   justifyContent: "flex-end",
   height: "3vh",
-  backgroundColor: "#212529",
-  padding: "2.5vh 5px 2.5vh 0",
+  // backgroundColor: "#212529",
+  padding: "2.5vh 1vw 2.5vh 0",
 });
 
 const ButtonItem = styled('div')({

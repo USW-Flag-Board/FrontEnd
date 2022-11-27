@@ -1,9 +1,9 @@
 import React from 'react'
 import { styled } from '@mui/system';
-import Header from '../component/Header';
+import SideBar from '../component/SideBar';
 
 const HomeArea = styled('div')({
-    backgroundColor: "#212529",
+    // backgroundColor: "#212529",
     height: "82vh",
     display: "flex",
 });
@@ -79,16 +79,7 @@ const UserBox = styled('div')({
     margin: "10px",
 });
 
-const SideArea = styled('div')({
-    width: "20%",
-    height: "100%",
-});
 
-const SideBar = styled('div')({
-    backgroundColor: "#868e96",
-    height: "100%",
-    width: "100%",
-});
 
 const Home = () => {
     const contents = [
@@ -97,7 +88,6 @@ const Home = () => {
     ];
     return (
         <>
-            <Header/>
             <HomeArea>
                 <MyActivity>
                     <h3 style={{color: "white",  margin: 0}}>MY ACTIBITY</h3>
@@ -132,9 +122,7 @@ const Home = () => {
                         </UserBox>
                     </NoticeArea>
                 </FeedArea>
-                <SideArea>
-                    <SideBar></SideBar>
-                </SideArea>
+                <SideBar/>
             </HomeArea>
         </>
     )

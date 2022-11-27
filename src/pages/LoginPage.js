@@ -72,7 +72,7 @@ export default function LoginPage() {
             alignItems: "center",
           }}
         >
-          <img className="Logo" src="flag.JPG" width="120" height="60" />
+          <img className="Logo" alt="로고입니다." src="flag.JPG" width="120" height="60" />
           <Box component="form" onSubmit={handleSubmit} Validate sx={{ mt: 5 }}>
             <TextField
               InputProps={{
