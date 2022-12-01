@@ -3,7 +3,6 @@ import { styled } from '@mui/system';
 import SideBar from '../component/SideBar';
 
 const HomeArea = styled('div')({
-    // backgroundColor: "#212529",
     height: "82vh",
     display: "flex",
 });
@@ -30,6 +29,7 @@ const FlagContent = styled('li')({
 
 const BookImgBox = styled('div')({
     height: "45%",
+    paddingBottom: "30px",
 });
 
 const GrassArea = styled('div')({
@@ -86,18 +86,19 @@ const Home = () => {
         {title: "STUDY", content: ["ALGORITHM", "WEB-BACKEND"]}, 
         {title: "PROJECT", content: ["FLAG-게시판"]}
     ];
+
     return (
         <>
             <HomeArea>
                 <MyActivity>
-                    <h3 style={{color: "white",  margin: 0}}>MY ACTIBITY</h3>
+                    <h1>MY ACTIBITY</h1>
                     <FlagContents>
-                        {contents.map((item)=>(<FlagContent key={item.title}><h4 style={{color: "white"}}>{item.title}</h4></FlagContent>))}
+                        {contents.map((item)=>(<FlagContent key={item.title}><h4 style={{color: "white", paddingBottom: "20px"}}>{item.title}</h4></FlagContent>))}
                     </FlagContents>
                     <BookImgBox>
                         <img src="img/home-book.jpg" alt="blog-logo" style={{width: "95%",height: "100%"}}/>
                     </BookImgBox>
-                    <h3 style={{color: "white", paddingTop: "30px", margin: 0}}>STUDY_WEB-BACKEND</h3>
+                    <h1>STUDY_WEB-BACKEND</h1>
                     <GrassArea>
                         <GrassBox/>
                         <GrassBox/>
@@ -105,7 +106,7 @@ const Home = () => {
                     </GrassArea>
                 </MyActivity>
                 <FeedArea>
-                    <h3 style={{color: "white",  margin: 0}}>FEED</h3>
+                    <h1>FEED</h1>
                     <FeedBox>
                         <FeedItem/>
                         <FeedItem/>
@@ -113,12 +114,12 @@ const Home = () => {
                     </FeedBox>
                     <NoticeArea>
                         <NoticeBox>
-                            <h4 style={{color: "white", margin: 0, paddingBottom: "5px"}}>#NOTICE</h4>
-                            <p style={{color: "white"}}>할말은 없지만 공지입니다.</p>
+                            <h4>#NOTICE</h4>
+                            <p>할말은 없지만 공지입니다.</p>
                         </NoticeBox>
                         <UserBox>
-                            <h4 style={{color: "white", margin: 0, paddingBottom: "5px"}}>USER</h4>
-                            <p style={{color: "white"}}>강지은, 김준표, 문희조, 이수빈, 어준혁, 임소미, 한지석</p>
+                            <h4>USER</h4>
+                            <p>강지은, 김준표, 문희조, 이수빈, 어준혁, 임소미, 한지석</p>
                         </UserBox>
                     </NoticeArea>
                 </FeedArea>

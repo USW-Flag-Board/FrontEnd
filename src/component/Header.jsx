@@ -17,7 +17,7 @@ const HomeHeader = styled('div')({
   height: "10vh",
   display: "flex",
   alignItems: "flex-end",
-  backgroundColor: "white",
+  backgroundColor: "white !important",
 });
 
 const LogoBox = styled('div')({
@@ -49,7 +49,6 @@ const ButtonArea = styled('div')({
   alignItems: 'center',
   justifyContent: "flex-end",
   height: "3vh",
-  // backgroundColor: "#212529",
   padding: "2.5vh 1vw 2.5vh 0",
 });
 
@@ -111,7 +110,7 @@ const Header = () => {
                     open={open}
                     onClose={handleClose}
                     TransitionComponent={Fade}>
-                  {menuItem.map((item)=> (<MenuItem key={item} onClick={handleClose} sx={{width:"200px", display: "flex", alignItems: "flex-end", justifyContent: "center", fontSize: "13px"}}>{item}</MenuItem>))}
+                  {menuItem.map((item)=> (<MenuItem key={item} onClick={handleClose} sx={{width:"200px", display: "flex", alignItems: "flex-end", justifyContent: "center", fontSize: "13px", borderBottom: "3px solid #adb5bd", "&:last-child": {borderBottom: "none"}}}>{item}</MenuItem>))}
                 </Menu>
               </MenuItems>
               <Paper

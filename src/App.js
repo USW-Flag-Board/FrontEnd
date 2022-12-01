@@ -5,30 +5,35 @@ import SignUp from "./component/SignUp";
 import Home from "./pages/Home";
 import BulletinBoard from "./pages/BulletinBoard";
 import Header from "./component/Header";
-import SideBar from "./component/SideBar";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
 const GlobalStyle = createGlobalStyle`
-  ${reset};
+  ${reset}
   *{
-    // box-sizing: border-box;
-    
+
+  }
+  h1{
+    padding-bottom: 20px;
+    font-size: 20px;
+  }
+  h4{
+    padding-bottom: 10px;
   }  
   body{
-    background-color: "#212529",
+    color: white;
+    margin: 0;
+    background-color: #212529;
   }
 `;
     
 
-function App() {
+const App = () => {
   return (
     <>
       <BrowserRouter>
         <GlobalStyle/>
-        <Header>
-          <SideBar></SideBar>
-        </Header>
+        <Header/>
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
