@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import SearchIcon from '@mui/icons-material/Search';
-import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import Box from '@mui/material/Box';
@@ -66,7 +66,7 @@ const ButtonItem = styled('div')({
 
 
 const Header = () => {
-  const sections = ["FLAG", "BOARD", "ACTIBITY", "NOTICE"];
+  const sections = ["FLAG", "INTRODUCE","BOARD", "ACTIBITY", "NOTICE"];
   const menuItem = ["STUDY", "PROJECT"];
   const [anchorEl, setAnchorEl] = useState(null);
   const buttonItem = [
@@ -99,7 +99,13 @@ const Header = () => {
                   aria-haspopup="true"
                   aria-expanded={open ? 'true' : undefined}
                   onClick={handleClick}
-                  sx={{width:"200px", height: "50px", display: "flex", alignItems: "flex-end", fontSize: "18px", color: "black","&:hover": {backgroundColor: "#adb5bd", borderRadius: "10px"}}}>{item}
+                  sx={{width:"200px", 
+                      height: "50px", 
+                      display: "flex", 
+                      alignItems: "flex-end", 
+                      fontSize: "18px", 
+                      color: "black",
+                      "&:hover": {backgroundColor: "#adb5bd", borderRadius: "10px"}}}>{item}
                 </Button>)}
                 <Menu 
                     id="fade-menu"
@@ -110,12 +116,27 @@ const Header = () => {
                     open={open}
                     onClose={handleClose}
                     TransitionComponent={Fade}>
-                  {menuItem.map((item)=> (<MenuItem key={item} onClick={handleClose} sx={{width:"200px", display: "flex", alignItems: "flex-end", justifyContent: "center", fontSize: "13px", borderBottom: "3px solid #adb5bd", "&:last-child": {borderBottom: "none"}}}>{item}</MenuItem>))}
+                  {menuItem.map((item)=> (<MenuItem 
+                    key={item} 
+                    onClick={handleClose} 
+                    sx={{width:"200px", 
+                        display: "flex", 
+                        alignItems: "flex-end", 
+                        justifyContent: "center", 
+                        fontSize: "13px", 
+                        borderBottom: "3px solid #adb5bd", 
+                        "&:last-child": {borderBottom: "none"}}}>{item}
+                    </MenuItem>))}
                 </Menu>
               </MenuItems>
               <Paper
                 component="form"
-                sx={{display: 'flex', width: 250, height: 30, borderRadius: "15px", ml: 2, border: "1px solid #adb5bd"}}
+                sx={{display: 'flex', 
+                    width: 250, 
+                    height: 30, 
+                    borderRadius: "15px", 
+                    ml: 2, 
+                    border: "1px solid #adb5bd"}}
                 >
                   <IconButton type="button" sx={{ p: '10px'}} aria-label="search">
                     <SearchIcon />
@@ -132,7 +153,11 @@ const Header = () => {
         </HomeHeader>
       </Box>
       <ButtonArea>
-        {buttonItem.map((item)=>(<ButtonItem key={item.name} style={{color: `${item.fontColor}`, backgroundColor: `${item.bgColor}` }}>{item.name}</ButtonItem>))}
+        {buttonItem.map((item)=>(<ButtonItem 
+          key={item.name} 
+          style={{color: `${item.fontColor}`, 
+          backgroundColor: `${item.bgColor}` }}>{item.name}
+        </ButtonItem>))}
       </ButtonArea>
     </>
   );

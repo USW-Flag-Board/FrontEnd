@@ -2,6 +2,7 @@ import React from 'react'
 import { styled } from '@mui/system';
 import SideBar from '../component/SideBar';
 
+
 const HomeArea = styled('div')({
     height: "82vh",
     display: "flex",
@@ -86,7 +87,7 @@ const Home = () => {
         {title: "STUDY", content: ["ALGORITHM", "WEB-BACKEND"]}, 
         {title: "PROJECT", content: ["FLAG-게시판"]}
     ];
-
+    const homeItem = ["USER","전체 멤버 보기", "랭킹?", "관리자 페이지"];
     return (
         <>
             <HomeArea>
@@ -123,7 +124,7 @@ const Home = () => {
                         </UserBox>
                     </NoticeArea>
                 </FeedArea>
-                <SideBar/>
+                <SideBar color={"#868e96"} width={"20%"} items={homeItem} title={"FLAG"}/>
             </HomeArea>
         </>
     )
