@@ -26,7 +26,7 @@ const GlobalStyle = createGlobalStyle`
     background-color: #2C2C2C;
   }
 `;
-    
+
 
 const App = () => {
   return (
@@ -38,7 +38,7 @@ const App = () => {
           <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/signup" element={<SignUp />}></Route>
-          <Route path="/board" element={<BulletinBoard />}></Route>
+          <Route path="/board" element={<BulletinBoard/>}></Route>
         </Routes>
       </BrowserRouter>
     </>

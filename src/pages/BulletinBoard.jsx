@@ -2,6 +2,15 @@ import React from 'react';
 import { styled } from '@mui/system';
 import SideBar from '../component/SideBar';
 import Button from '@mui/material/Button';
+import { Pagination } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const BoardArea = styled('div')({
   height: "82vh",
@@ -46,7 +55,6 @@ const BarItemBox = styled('ul')({
 });
 
 const BarItem = styled('li')({
-  boxSizing: "border-box",
   width: "10%",
   height: "100%",
   color: "white",
@@ -56,8 +64,8 @@ const BarItem = styled('li')({
   paddingBottom: "10px",
   fontSize: "12px",
   fontWeight: "600",
-  "&:nth-of-type(1)": {width: "7%"},
-  "&:nth-of-type(2)": {width: "30%"},
+  "&:nth-of-type(1)": {marginLeft: "10px", paddingLeft: "6%", width: "30%"},
+  "&:nth-of-type(5)": {paddingRight: "24%"},
 });
 
 const ListBox = styled('div')({
@@ -65,42 +73,61 @@ const ListBox = styled('div')({
 });
 
 const ListThem = styled('div')({
-  height: "12.5%",
   display: "flex",
   flexWrap: "wrap",
+  width: "100%",
+  height: "12.5%",
+  "&:nth-of-type(1)": {color: "red"},
+  "&:nth-of-type(odd)": {backgroundColor: "#313131"},
+});
+
+const ItemBox = styled('div')({
+  boxSizing: "border-box",
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 });
 
 const ListItem = styled('div')({
-  boxSizing: "border-box",
   width: "10%",
   height: "100%",
   color: "white",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  // flexDirection: "column",
 
   fontSize: "12px",
   fontWeight: "600",
-  "&:nth-of-type(1)": {width: "7%", backgroundColor: "white", borderRadius: "15px", color: "red", padding: 0},
+  "&:nth-of-type(1)": {width: "6%", height: "50%", backgroundColor: "white", borderRadius: "15px", color: "red", marginLeft: "10px"},
   "&:nth-of-type(2)": {width: "30%"},
+  "&:nth-of-type(6)": {paddingRight: "24%"},
 });
 
-const PageNation = styled('div')({
+
+
+const PaginationArea = styled('div')({
   height: "10%",
-  backgroundColor: "green",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 });
 
 const FilterAndSearch = styled('div')({
   height: "10%",
-  backgroundColor: "blue",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 });
 
-// #313131
+
 const BulletinBoard = () => {
   const boardItem = ["자유게시판", "동아리 이모저모", "사전게시판", "정보게시판"];
-  const barItem = ["", "제목", "작성자", "작성일", "조회수", "댓글"];
+  const barItem = ["제목", "작성자", "작성일", "조회수", "댓글"];
   const itemContents = ["공지", "자유게시판 공지입니다.", "문희조", "2022.08.03", "1234", "123"];
+  const inputItem = ["전체기간", "게시글 + 작성자"];
+
   return (
     <BoardArea>
       <TitleArea>
@@ -125,11 +152,80 @@ const BulletinBoard = () => {
           </ListBar>
           <ListBox>
             <ListThem>
-              {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
+              <ItemBox>
+                {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
+              </ItemBox>
+            </ListThem>
+            <ListThem>
+              <ItemBox>
+                {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
+              </ItemBox>
+            </ListThem>
+            <ListThem>
+              <ItemBox>
+                {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
+              </ItemBox>
+            </ListThem>
+            <ListThem>
+              <ItemBox>
+                {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
+              </ItemBox>
+            </ListThem>
+            <ListThem>
+              <ItemBox>
+                {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
+              </ItemBox>
+            </ListThem>
+            <ListThem>
+              <ItemBox>
+                {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
+              </ItemBox>
+            </ListThem>
+            <ListThem>
+              <ItemBox>
+                {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
+              </ItemBox>
+            </ListThem>
+            <ListThem>
+              <ItemBox>
+                {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
+              </ItemBox>
             </ListThem>
           </ListBox>
-          <PageNation></PageNation>
-          <FilterAndSearch></FilterAndSearch>
+          <PaginationArea>
+            <Pagination count={10} shape="rounded" color='primary'/>
+          </PaginationArea>
+          <FilterAndSearch>
+            {inputItem.map((item) => <FormControl sx={{ m: 1, width: 160}} size="small" key={item}>
+              <InputLabel id="demo-select-small" sx={{fontSize: "12px", p: "1px 0 1px 10px", color: "#adb5bd"}}>{item}</InputLabel>
+              <Select
+                labelId="demo-select-small"
+                id="demo-select-small"
+                label={item}
+                sx={{borderRadius: "15px", backgroundColor: "#4B4B4B"}}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+              </Select>
+            </FormControl>)}
+            <Paper
+              component="form"
+              sx={{display: 'flex', 
+                  width: 250, 
+                  height: 30, 
+                  borderRadius: "15px", 
+                  backgroundColor: "#4B4B4B",
+                  border: "2px solid #adb5bd",
+                  ml: 2,
+                  }}
+              >
+              <IconButton type="button" sx={{pl: "10px"}} aria-label="search">
+                <SearchIcon  sx={{color: "#adb5bd", p: '0 0 0 5px'}}/>
+              </IconButton>
+              <InputBase placeholder="게시글 + 작성자" sx={{ ml: 1, flex: 1, color: "#adb5bd"}}/>
+            </Paper>
+          </FilterAndSearch>
         </ListArea>
       </ContentArea>
     </BoardArea>
