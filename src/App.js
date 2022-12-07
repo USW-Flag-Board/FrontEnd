@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./component/Header";
-import LoginPage from "./component/LoginPage";
-import SignUp from "./component/SignUp";
-import MyPage from "./component/MyPage";
+import LoginPage from "./pages/LoginPage";
+import SignUp from "./pages/SignUp";
+import MyPage from "./pages/MyPage";
 
 function App() {
   return (

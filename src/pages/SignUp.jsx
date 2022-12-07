@@ -5,18 +5,51 @@ import LockIcon from "@mui/icons-material/Lock";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { styled } from "@mui/material/styles";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-function Copyright(props) {
+const CopyRightArea = styled(CopyRight)({
+  marginTop: 160,
+  marginBottom: 32,
+});
+
+const WriteArea = styled(TextField)({
+  input: {
+    color: "white",
+    paddingLeft: 8,
+  },
+  "& .MuiFilledInput-root": {
+    backgroundColor: "#6c6c6c",
+    borderRadius: "28px",
+  },
+  "& .MuiFilledInput-root:hover": {
+    backgroundColor: "#575757",
+  },
+});
+
+const AccountButton = styled(Button)({
+  backgroundColor: "#378975",
+  color: "#ffffff",
+  marginTop: 30,
+  marginBottom: 30,
+  borderRadius: 28,
+  height: 60,
+});
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+    background: {
+      default: "#2C2C2C",
+    },
+  },
+});
+
+function CopyRight(props) {
   return (
     <Typography
       variant="body2"
@@ -34,34 +67,7 @@ function Copyright(props) {
   );
 }
 
-const TextFieldCustom01 = styled(TextField)`
-  & .MuiFilledInput-root {
-    background-color: #6c6c6c;
-    border-radius: 28px;
-  }
-  & .MuiFilledInput-root:hover {
-    background-color: #575757;
-  }
-`;
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-    background: {
-      default: "#2C2C2C",
-    },
-  },
-});
-
 export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
-
   return (
     <ThemeProvider theme={darkTheme}>
       <Container component="main" maxWidth="xs">
@@ -76,13 +82,8 @@ export default function SignUp() {
         >
           <img className="Logo" src="flag.JPG" width="120" height="60" />
 
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 5 }}
-          >
-            <TextFieldCustom01
+          <Box component="form" noValidate sx={{ mt: 5 }}>
+            <WriteArea
               InputProps={{
                 disableUnderline: true,
                 startAdornment: (
@@ -92,9 +93,6 @@ export default function SignUp() {
                 ),
               }}
               variant="filled"
-              sx={{
-                input: { color: "white", paddingLeft: 2 },
-              }}
               margin="normal"
               fullWidth
               id="
@@ -104,7 +102,7 @@ export default function SignUp() {
               label="아이디"
               autoFocus
             />
-            <TextFieldCustom01
+            <WriteArea
               InputProps={{
                 disableUnderline: true,
                 startAdornment: (
@@ -114,9 +112,6 @@ export default function SignUp() {
                 ),
               }}
               variant="filled"
-              sx={{
-                input: { color: "white", paddingLeft: 2 },
-              }}
               margin="normal"
               fullWidth
               type="password"
@@ -127,7 +122,7 @@ export default function SignUp() {
               label="비밀번호"
               autoFocus
             />
-            <TextFieldCustom01
+            <WriteArea
               InputProps={{
                 disableUnderline: true,
                 endAdornment: (
@@ -137,9 +132,6 @@ export default function SignUp() {
                 ),
               }}
               variant="filled"
-              sx={{
-                input: { color: "white", paddingLeft: 2 },
-              }}
               margin="normal"
               fullWidth
               type="password"
@@ -150,14 +142,11 @@ export default function SignUp() {
               label="비밀번호 확인"
               autoFocus
             />
-            <TextFieldCustom01
+            <WriteArea
               InputProps={{
                 disableUnderline: true,
               }}
               variant="filled"
-              sx={{
-                input: { color: "white", paddingLeft: 2 },
-              }}
               margin="normal"
               fullWidth
               id="
@@ -167,14 +156,11 @@ export default function SignUp() {
               label="이름"
               autoFocus
             />
-            <TextFieldCustom01
+            <WriteArea
               InputProps={{
                 disableUnderline: true,
               }}
               variant="filled"
-              sx={{
-                input: { color: "white", paddingLeft: 2 },
-              }}
               margin="normal"
               fullWidth
               id="
@@ -187,15 +173,12 @@ export default function SignUp() {
             >
               <MenuItem value={10}>1</MenuItem>
               <MenuItem>직접 입력</MenuItem>
-            </TextFieldCustom01>
-            <TextFieldCustom01
+            </WriteArea>
+            <WriteArea
               InputProps={{
                 disableUnderline: true,
               }}
               variant="filled"
-              sx={{
-                input: { color: "white", paddingLeft: 2 },
-              }}
               margin="normal"
               fullWidth
               id="
@@ -205,25 +188,12 @@ export default function SignUp() {
               label="학번"
               autoFocus
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                backgroundColor: "#378975",
-
-                color: "#ffffff",
-                mt: 5,
-                mb: 2,
-                borderRadius: 28,
-                height: 60,
-              }}
-            >
+            <AccountButton type="submit" fullWidth variant="contained">
               가입하기
-            </Button>
+            </AccountButton>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
+        <CopyRightArea />
       </Container>
     </ThemeProvider>
   );
