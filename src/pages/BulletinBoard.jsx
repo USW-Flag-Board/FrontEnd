@@ -2,7 +2,7 @@ import React from 'react';
 import { styled } from '@mui/system';
 import SideBar from '../component/SideBar';
 import Button from '@mui/material/Button';
-import { Pagination } from '@mui/material';
+import { Pagination, PaginationItem } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
@@ -11,9 +11,22 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import EditIcon from '@mui/icons-material/Edit';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#4B4B4B",
+    },
+    secondary: {
+      main: '#FFFFFF',
+    },
+  },
+});
 
 const BoardArea = styled('div')({
-  height: "82vh",
+  height: "85.5vh",
 });
 
 const TitleArea = styled('div')({
@@ -62,7 +75,7 @@ const BarItem = styled('li')({
   alignItems: "flex-end",
   justifyContent: "center",
   paddingBottom: "10px",
-  fontSize: "12px",
+  fontSize: "1rem",
   fontWeight: "600",
   "&:nth-of-type(1)": {marginLeft: "10px", paddingLeft: "6%", width: "30%"},
   "&:nth-of-type(5)": {paddingRight: "24%"},
@@ -97,15 +110,12 @@ const ListItem = styled('div')({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-
-  fontSize: "12px",
+  fontSize: "0.8rem",
   fontWeight: "600",
-  "&:nth-of-type(1)": {width: "6%", height: "50%", backgroundColor: "white", borderRadius: "15px", color: "red", marginLeft: "10px"},
-  "&:nth-of-type(2)": {width: "30%"},
+  "&:nth-of-type(1)": {width: "5%", height: "50%", backgroundColor: "white", borderRadius: "15px", color: "red", marginLeft: "10px"},
+  "&:nth-of-type(2)": {width: "31%"},
   "&:nth-of-type(6)": {paddingRight: "24%"},
 });
-
-
 
 const PaginationArea = styled('div')({
   height: "10%",
@@ -121,29 +131,34 @@ const FilterAndSearch = styled('div')({
   alignItems: "center",
 });
 
-
 const BulletinBoard = () => {
   const boardItem = ["자유게시판", "동아리 이모저모", "사전게시판", "정보게시판"];
   const barItem = ["제목", "작성자", "작성일", "조회수", "댓글"];
   const itemContents = ["공지", "자유게시판 공지입니다.", "문희조", "2022.08.03", "1234", "123"];
   const inputItem = ["전체기간", "게시글 + 작성자"];
-
   return (
+  <ThemeProvider theme={theme}>
     <BoardArea>
       <TitleArea>
         <TitleBox>자유게시판</TitleBox>
-        <Button sx={{backgroundColor: "white", 
+        <Button sx={{
+          backgroundColor: "white", 
           height: "3.3vh", 
           color: "black", 
           fontWeight: "700", 
           marginLeft: "75%",
-          "&:hover": {backgroundColor: "white"}}}>글쓰기</Button>
+          "&:hover": {backgroundColor: "white"}
+        }}>
+          <EditIcon/>
+          글쓰기
+        </Button>
       </TitleArea>
       <ContentArea>
         <SideBar title={"BOARD"}
           color={"#2F4842"}
           width={"13%"}
-          items={boardItem}/>
+          items={boardItem}
+          paddingTop={"0"}/>
         <ListArea>
           <ListBar>
             <BarItemBox>
@@ -193,17 +208,26 @@ const BulletinBoard = () => {
             </ListThem>
           </ListBox>
           <PaginationArea>
-            <Pagination count={10} shape="rounded" color='primary'/>
+            <Pagination count={10} shape="rounded" color="primary"
+            renderItem={(item) => (
+              <PaginationItem {...item} sx={{ fontSize: 15, color: "white"}} />
+            )}/>
           </PaginationArea>
           <FilterAndSearch>
-            {inputItem.map((item) => <FormControl sx={{ m: 1, width: 160}} size="small" key={item}>
-              <InputLabel id="demo-select-small" sx={{fontSize: "12px", p: "1px 0 1px 10px", color: "#adb5bd"}}>{item}</InputLabel>
+            {inputItem.map((item) => 
+            <FormControl 
+              sx={{ m: 1, width: 160}} 
+              size="small" key={item}>
+              <InputLabel 
+                id="demo-select-small" 
+                sx={{fontSize: "12px", p: "1px 0 1px 10px", color: "#adb5bd"}}>
+                {item}
+              </InputLabel>
               <Select
                 labelId="demo-select-small"
                 id="demo-select-small"
                 label={item}
-                sx={{borderRadius: "15px", backgroundColor: "#4B4B4B"}}
-              >
+                sx={{borderRadius: "15px", backgroundColor: "#4B4B4B"}}>
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
@@ -229,6 +253,7 @@ const BulletinBoard = () => {
         </ListArea>
       </ContentArea>
     </BoardArea>
+  </ThemeProvider>
   )
 }
 

@@ -10,11 +10,10 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
-import { Link } from 'react-router-dom';
 
 const HomeHeader = styled('div')({
   width: "100vw",
-  height: "10vh",
+  height: "9vh",
   display: "flex",
   alignItems: "flex-end",
   backgroundColor: "white !important",
@@ -26,7 +25,6 @@ const LogoBox = styled('div')({
   display: "flex", 
   alignItems: "center",
   paddingLeft: "15px",
-  cursor: "pointer",
 });
 
 const MenuItemBox = styled('div')({
@@ -48,31 +46,18 @@ const ButtonArea = styled('div')({
   display: "flex",
   alignItems: 'center',
   justifyContent: "flex-end",
-  height: "3vh",
-  padding: "2.5vh 1vw 2.5vh 0",
+  height: "2vh",
+  padding: "2.5vh 1vw 1vh 0",
 });
-
-const ButtonItem = styled('div')({
-  width: "3%",
-  height: "70%", 
-  margin: "5px",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  fontSize: "20px",
-  borderRadius: "12px",
-  padding: "10px 0",
-});
-
 
 const Header = () => {
   const sections = ["FLAG", "INTRODUCE","BOARD", "ACTIBITY", "NOTICE"];
   const menuItem = ["STUDY", "PROJECT"];
   const [anchorEl, setAnchorEl] = useState(null);
   const buttonItem = [
-    {name: "CH", bgColor: "#5c940d", fontColor: "white"}, 
-    {name: "N" , bgColor: "#f8f9fa", fontColor: "black"},
-    {name: "G", bgColor: "#9775fa", fontColor: "white"},
+    {name: "출석체크", bgColor: "#4caf50", fontColor: "white"}, 
+    {name: "Notion" , bgColor: "#f8f9fa", fontColor: "black"},
+    {name: "Github", bgColor: "#9c27b0", fontColor: "white"},
   ];
 
   const open = Boolean(anchorEl);
@@ -88,76 +73,89 @@ const Header = () => {
       <Box>
         <HomeHeader>
           <LogoBox>
-            <img className="logo" src="img/logo.JPG" alt="blog-logo" style={{height: "80%"}}/>
+            <img className="logo" 
+              src="img/logo.JPG" 
+              alt="blog-logo" 
+              style={{height: "80%", cursor: "pointer"
+            }}/>
           </LogoBox>
           <Box>
             <MenuItemBox>
               <MenuItems>
-                {sections.map((item) => <Button key={item}
+                {sections.map((item) => 
+                <Button key={item}
                   id="fade-button"
                   aria-controls={open ? 'fade-menu' : undefined}
                   aria-haspopup="true"
                   aria-expanded={open ? 'true' : undefined}
                   onClick={handleClick}
                   sx={{width:"200px", 
-                      height: "50px", 
-                      display: "flex", 
-                      alignItems: "flex-end", 
-                      fontSize: "18px", 
-                      color: "black",
-                      "&:hover": {backgroundColor: "#adb5bd", borderRadius: "10px"}}}>{item}
+                    height: "50px", 
+                    display: "flex", 
+                    alignItems: "flex-end", 
+                    fontSize: "18px", 
+                    color: "black",
+                    "&:hover": {backgroundColor: "#adb5bd", borderRadius: "10px"}}}>{item}
                 </Button>)}
                 <Menu 
-                    id="fade-menu"
-                    MenuListProps={{
-                      'aria-labelledby': 'fade-button',
-                    }}
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    TransitionComponent={Fade}>
-                  {menuItem.map((item)=> (<MenuItem 
+                  id="fade-menu"
+                  MenuListProps={{'aria-labelledby': 'fade-button',}}
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  TransitionComponent={Fade}>
+                  {menuItem.map((item)=> 
+                  (<MenuItem 
                     key={item} 
                     onClick={handleClose} 
-                    sx={{width:"200px", 
-                        display: "flex", 
-                        alignItems: "flex-end", 
-                        justifyContent: "center", 
-                        fontSize: "13px", 
-                        borderBottom: "3px solid #adb5bd", 
-                        "&:last-child": {borderBottom: "none"}}}>{item}
-                    </MenuItem>))}
+                    sx={{width:"200px",
+                      display: "flex",
+                      alignItems: "flex-end", 
+                      justifyContent: "center", 
+                      fontSize: "13px",
+                      borderBottom: "3px solid #adb5bd",
+                      "&:last-child": {borderBottom: "none"}
+                    }}>
+                    {item}
+                  </MenuItem>))}
                 </Menu>
               </MenuItems>
               <Paper
                 component="form"
                 sx={{display: 'flex', 
-                    width: 250, 
-                    height: 30, 
-                    borderRadius: "15px", 
-                    ml: 2, 
-                    border: "1px solid #adb5bd"}}
+                  width: "20%", 
+                  height: 30, 
+                  borderRadius: "15px", 
+                  ml: 2, 
+                  border: "1px solid #adb5bd"}}
                 >
-                  <IconButton type="button" sx={{ p: '10px'}} aria-label="search">
-                    <SearchIcon />
-                  </IconButton>
-                  <InputBase
-                    sx={{ ml: 1, flex: 1}}
-                  />
-                </Paper>
-                <IconButton sx={{ p: '8px'}} aria-label="menu">
-                  <MenuIcon />
+                <IconButton type="button" sx={{ p: '10px'}} aria-label="search">
+                  <SearchIcon />
                 </IconButton>
+                <InputBase
+                  sx={{ ml: 1, flex: 1}}
+                />
+              </Paper>
+              <IconButton sx={{ p: '8px'}} aria-label="menu">
+                <MenuIcon />
+              </IconButton>
             </MenuItemBox>
           </Box>
         </HomeHeader>
       </Box>
       <ButtonArea>
-        {buttonItem.map((item)=>(<ButtonItem 
-          key={item.name} 
-          style={{color: `${item.fontColor}`, 
-          backgroundColor: `${item.bgColor}` }}>{item.name}
-        </ButtonItem>))}
+        {buttonItem.map((item)=>(<Button 
+          key={item.name}
+          style={{ 
+            color: `${item.fontColor}`, 
+            backgroundColor: `${item.bgColor}`,
+            margin: "1rem 0.5rem 0.5rem 0",
+            height: "2.5rem",
+            fontSize: "1.2rem",
+            borderRadius: "12px",
+          }}>
+          {item.name}
+        </Button>))}
       </ButtonArea>
     </>
   );

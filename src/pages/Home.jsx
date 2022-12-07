@@ -124,7 +124,7 @@ const Home = () => {
                         </UserBox>
                     </NoticeArea>
                 </FeedArea>
-                <SideBar color={"#868e96"} width={"20%"} items={homeItem} title={"FLAG"}/>
+                <SideBar color={"#868e96"} width={"20%"} items={homeItem} title={"FLAG"} paddingTop={"3.5vh"}/>
             </HomeArea>
         </>
     )

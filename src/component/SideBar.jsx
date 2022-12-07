@@ -37,7 +37,7 @@ const Item = styled('li')({
 
 const SideBar = (props) => {
     return (
-        <SideArea sx={{width: props.width}}>
+        <SideArea sx={{width: props.width, paddingTop: props.paddingTop}}>
             <SideBarBox sx={{backgroundColor: props.color}}>
                 <ContentsTitle>
                     {props.title}
