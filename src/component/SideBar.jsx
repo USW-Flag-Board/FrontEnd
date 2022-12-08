@@ -6,8 +6,12 @@ const SideArea = styled('div')({
 });
 
 const SideBarBox = styled('div')({
-    height: "100%",
-    width: "100%",
+    // height: "100%",
+    boxSizing: "border-box",
+});
+
+const SideBarContent = styled('div')({
+    width: "92%",
 });
 
 const ContentsTitle = styled('div')({
@@ -37,14 +41,24 @@ const Item = styled('li')({
 
 const SideBar = (props) => {
     return (
-        <SideArea sx={{width: props.width, paddingTop: props.paddingTop}}>
-            <SideBarBox sx={{backgroundColor: props.color}}>
-                <ContentsTitle>
-                    {props.title}
-                </ContentsTitle>
-                <ItemBox>
-                    {props.items.map((item)=>(<Item key={item}>{item}</Item>))}
-                </ItemBox>
+        <SideArea 
+            sx={{width: props.mainWidth, 
+                paddingTop: props.paddingTop
+            }}>
+            <SideBarBox 
+                sx={{ backgroundColor: props.mainColor, 
+                    height: props.height, 
+                    borderRadius: props.borderRadius,
+                }}>
+                    
+                <SideBarContent sx={{backgroundColor: props.subColor, width: props.subWidth,}}>
+                    <ContentsTitle>
+                        {props.title}
+                    </ContentsTitle>
+                    <ItemBox>
+                        {props.items.map((item)=>(<Item key={item}>{item}</Item>))}
+                    </ItemBox>
+                </SideBarContent>
             </SideBarBox>
         </SideArea>
     )

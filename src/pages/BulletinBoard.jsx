@@ -13,6 +13,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import EditIcon from '@mui/icons-material/Edit';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Footer from "../component/Footer";
 
 const theme = createTheme({
   palette: {
@@ -26,7 +27,7 @@ const theme = createTheme({
 });
 
 const BoardArea = styled('div')({
-  height: "85.5vh",
+  height: "82.5vh",
 });
 
 const TitleArea = styled('div')({
@@ -154,11 +155,14 @@ const BulletinBoard = () => {
         </Button>
       </TitleArea>
       <ContentArea>
-        <SideBar title={"BOARD"}
-          color={"#2F4842"}
-          width={"13%"}
+        <SideBar title="BOARD"
+          mainColor="#4B4B4B"
+          subColor="#3C3C3C"
+          mainWidth="13%"
+          subWidth="90%"
           items={boardItem}
-          paddingTop={"0"}/>
+          paddingTop="0"
+          borderRadius="0 15px 15px 0"/>
         <ListArea>
           <ListBar>
             <BarItemBox>
@@ -166,41 +170,6 @@ const BulletinBoard = () => {
             </BarItemBox>
           </ListBar>
           <ListBox>
-            <ListThem>
-              <ItemBox>
-                {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
-              </ItemBox>
-            </ListThem>
-            <ListThem>
-              <ItemBox>
-                {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
-              </ItemBox>
-            </ListThem>
-            <ListThem>
-              <ItemBox>
-                {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
-              </ItemBox>
-            </ListThem>
-            <ListThem>
-              <ItemBox>
-                {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
-              </ItemBox>
-            </ListThem>
-            <ListThem>
-              <ItemBox>
-                {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
-              </ItemBox>
-            </ListThem>
-            <ListThem>
-              <ItemBox>
-                {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
-              </ItemBox>
-            </ListThem>
-            <ListThem>
-              <ItemBox>
-                {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
-              </ItemBox>
-            </ListThem>
             <ListThem>
               <ItemBox>
                 {itemContents.map((item) => <ListItem key={item}>{item}</ListItem>)}
@@ -253,6 +222,7 @@ const BulletinBoard = () => {
         </ListArea>
       </ContentArea>
     </BoardArea>
+    <Footer/>
   </ThemeProvider>
   )
 }

@@ -11,7 +11,7 @@ import reset from "styled-reset";
 const GlobalStyle = createGlobalStyle`
   ${reset}
   *{
-
+    
   }
   h1{
     padding-bottom: 20px;

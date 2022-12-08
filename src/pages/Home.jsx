@@ -4,17 +4,20 @@ import SideBar from '../component/SideBar';
 
 
 const HomeArea = styled('div')({
+    boxSizing: "border-box",
     height: "82vh",
     display: "flex",
 });
 
 const MyActivity = styled('div')({
+    boxSizing: "border-box",
     width: "50%",
     height: "100%",
     paddingLeft: "30px"
 });
 
 const FlagContents = styled('ul')({
+    boxSizing: "border-box",
     display: "flex",
     listStyle:"none",
     width: "100%",
@@ -22,6 +25,7 @@ const FlagContents = styled('ul')({
 });
 
 const FlagContent = styled('li')({
+    boxSizing: "border-box",
     display: "flex",
     justifyContent: "center",
     width: "25%",
@@ -29,6 +33,7 @@ const FlagContent = styled('li')({
 });
 
 const BookImgBox = styled('div')({
+    
     height: "45%",
     paddingBottom: "30px",
 });
@@ -42,6 +47,7 @@ const GrassArea = styled('div')({
 });
 
 const GrassBox = styled('div')({
+    
     width: "33.3%",
     margin: "5px",
     backgroundColor: "white"
@@ -124,7 +130,13 @@ const Home = () => {
                         </UserBox>
                     </NoticeArea>
                 </FeedArea>
-                <SideBar color={"#868e96"} width={"20%"} items={homeItem} title={"FLAG"} paddingTop={"3.5vh"}/>
+                <SideBar mainColor="#868e96" 
+                    mainWidth="20%" 
+                    subWidth="100%" 
+                    items={homeItem} 
+                    title="FLAG" 
+                    paddingTop="3.5vh" 
+                    height="100%"/>
             </HomeArea>
         </>
     )
