@@ -43,7 +43,7 @@ const HistoryYearList = styled("ul")({
   marginTop: 0,
 });
 
-const BackgroundArea = styled()({
+const BackgroundArea = styled(Box)({
   backgroundImage: `url("/home-book.JPG")`,
   height: "1000px",
 });
