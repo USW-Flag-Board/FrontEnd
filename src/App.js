@@ -5,6 +5,7 @@ import SignUp from "./component/SignUp";
 import Home from "./pages/Home";
 import BulletinBoard from "./pages/BulletinBoard";
 import Header from "./component/Header";
+import WritePost from "./pages/WritePost";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/signup" element={<SignUp />}></Route>
           <Route path="/board" element={<BulletinBoard/>}></Route>
+          <Route path="/board/write" element={<WritePost />}></Route>
         </Routes>
       </BrowserRouter>
     </>

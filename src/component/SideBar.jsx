@@ -6,7 +6,6 @@ const SideArea = styled('div')({
 });
 
 const SideBarBox = styled('div')({
-    // height: "100%",
     boxSizing: "border-box",
 });
 
@@ -15,29 +14,22 @@ const SideBarContent = styled('div')({
 });
 
 const ContentsTitle = styled('div')({
-    height: "5%",
-    width: "100%",
-    boxSizing: "border-box",
-    padding: "25%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
     fontSize: "23px",
     fontWeight: "700",
+    padding: "3rem 0 1rem 2.5rem",
 });
 
 const ItemBox = styled('ul')({
     display: 'flex',
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column"
+    flexDirection: "column",
+    padding: "0 0 3rem 2.5rem",
 });
 
 const Item = styled('li')({
-    padding: "4%",
+    fontSize: "0.8rem",
+    fontWeight: "700",
+    padding: "0 0 1rem 0",
 });
-
-
 
 const SideBar = (props) => {
     return (
@@ -51,7 +43,8 @@ const SideBar = (props) => {
                     borderRadius: props.borderRadius,
                 }}>
                     
-                <SideBarContent sx={{backgroundColor: props.subColor, width: props.subWidth,}}>
+                <SideBarContent sx={{backgroundColor: props.subColor, 
+                    width: props.subWidth,}}>
                     <ContentsTitle>
                         {props.title}
                     </ContentsTitle>

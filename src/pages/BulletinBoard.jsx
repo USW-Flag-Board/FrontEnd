@@ -14,6 +14,7 @@ import Select from '@mui/material/Select';
 import EditIcon from '@mui/icons-material/Edit';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from "../component/Footer";
+import { Link } from 'react-router-dom';
 
 const theme = createTheme({
   palette: {
@@ -31,10 +32,13 @@ const BoardArea = styled('div')({
 });
 
 const TitleArea = styled('div')({
+  boxSizing: "border-box",
+  width: "100%",
   height: "10%",
   display: "flex",
-  paddingLeft: "15%",
-  alignItems: "center",
+  padding: "0 2rem 1rem 2rem",
+  alignItems: "flex-end",
+  justifyContent: "space-between"
 });
 
 const TitleBox = styled('h2')({
@@ -42,7 +46,8 @@ const TitleBox = styled('h2')({
   height: "100%",
   fontSize: "35px",
   display: "flex",
-  alignItems: "center",
+  alignItems: "flex-end",
+  paddingLeft: "14%"
 });
 
 const ContentArea = styled('div')({
@@ -54,6 +59,8 @@ const ContentArea = styled('div')({
 const ListArea = styled('div')({
   width: "87%",
   height: "100%",
+  padding: "0 2rem 0 2rem",
+  boxSizing: "border-box"
 });
 
 const ListBar = styled('div')({
@@ -137,21 +144,24 @@ const BulletinBoard = () => {
   const barItem = ["제목", "작성자", "작성일", "조회수", "댓글"];
   const itemContents = ["공지", "자유게시판 공지입니다.", "문희조", "2022.08.03", "1234", "123"];
   const inputItem = ["전체기간", "게시글 + 작성자"];
+
+
   return (
   <ThemeProvider theme={theme}>
     <BoardArea>
       <TitleArea>
         <TitleBox>자유게시판</TitleBox>
         <Button sx={{
-          backgroundColor: "white", 
-          height: "3.3vh", 
+          backgroundColor: "white",
+          height: "2rem", 
           color: "black", 
           fontWeight: "700", 
-          marginLeft: "75%",
           "&:hover": {backgroundColor: "white"}
         }}>
-          <EditIcon/>
-          글쓰기
+          <Link to="/board/write">
+            <EditIcon sx={{height: "2rem"}}/>
+            글쓰기
+          </Link>
         </Button>
       </TitleArea>
       <ContentArea>
