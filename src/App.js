@@ -6,6 +6,8 @@ import Home from "./pages/Home";
 import BulletinBoard from "./pages/BulletinBoard";
 import Header from "./component/Header";
 import WritePost from "./pages/WritePost";
+import MyPage from "./pages/MyPage";
+import WriteDetail from "./pages/DetailWritePage";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
@@ -28,23 +30,24 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-
 const App = () => {
   return (
     <>
       <BrowserRouter>
-        <GlobalStyle/>
-        <Header/>
+        <GlobalStyle />
+        <Header />
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/signup" element={<SignUp />}></Route>
-          <Route path="/board" element={<BulletinBoard/>}></Route>
+          <Route path="/my" element={<MyPage />}></Route>
+          <Route path="/board/writeDetail" element={<WriteDetail />}></Route>
+          <Route path="/board" element={<BulletinBoard />}></Route>
           <Route path="/board/write" element={<WritePost />}></Route>
         </Routes>
       </BrowserRouter>
     </>
   );
-}
+};
 
 export default App;
