@@ -17,6 +17,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 function Copyright(props) {
+
   return (
     <Typography
       variant="body2"
@@ -33,7 +34,6 @@ function Copyright(props) {
     </Typography>
   );
 }
-
 const darkTheme = createTheme({
   textField: {
     border: "1px solid blue",
@@ -60,6 +60,7 @@ export default function LoginPage() {
     });
   };
 
+
   return (
     <ThemeProvider theme={darkTheme}>
       <Container component="main" maxWidth="xs">
@@ -72,7 +73,7 @@ export default function LoginPage() {
             alignItems: "center",
           }}
         >
-          <img className="Logo" src="flag.JPG" width="120" height="60" />
+          <img className="Logo" alt="로고입니다." src="flag.JPG" width="120" height="60" />
           <Box component="form" onSubmit={handleSubmit} Validate sx={{ mt: 5 }}>
             <TextField
               InputProps={{
@@ -187,7 +188,6 @@ export default function LoginPage() {
                 />
               </Grid>
             </Grid>
-
             <Button
               type="submit"
               fullWidth
