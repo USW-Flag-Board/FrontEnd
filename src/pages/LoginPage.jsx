@@ -14,10 +14,66 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { styled } from "@mui/material/styles";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-function Copyright(props) {
+const CopyRightArea = styled(CopyRight)({
+  marginTop: 160,
+  marginBottom: 32,
+});
 
+const LoginArea = styled(Box)({
+  marginTop: 8,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+});
+
+const WriteArea = styled(TextField)({
+  input: {
+    color: "white",
+    paddingLeft: 8,
+  },
+  "& .MuiFilledInput-root": {
+    backgroundColor: "#6c6c6c",
+    borderRadius: "28px",
+  },
+  "& .MuiFilledInput-root:hover": {
+    backgroundColor: "#575757",
+  },
+});
+
+const CheckLoginState = styled(FormControlLabel)({
+  "	.MuiFormControlLabel-label": {
+    color: "#ffffff",
+  },
+});
+
+const LoginButton = styled(Button)({
+  backgroundColor: "#378975",
+  color: "#ffffff",
+  marginTop: 30,
+  marginBottom: 30,
+  borderRadius: 28,
+  height: 60,
+});
+
+const FindId = styled(Link)({});
+
+const FindPassword = styled(Link)({});
+
+const Account = styled(Link)({});
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+    background: {
+      default: "#2C2C2C",
+    },
+  },
+});
+
+function CopyRight(props) {
   return (
     <Typography
       variant="body2"
@@ -34,49 +90,18 @@ function Copyright(props) {
     </Typography>
   );
 }
-const darkTheme = createTheme({
-  textField: {
-    border: "1px solid blue",
-  },
-  palette: {
-    mode: "dark",
-    background: {
-      default: "#2C2C2C",
-    },
-    text: {
-      primary: "#696969",
-      borderRadius: "28",
-    },
-  },
-});
 
 export default function LoginPage() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
-
-
   return (
     <ThemeProvider theme={darkTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <img className="Logo" alt="로고입니다." src="flag.JPG" width="120" height="60" />
-          <Box component="form" onSubmit={handleSubmit} Validate sx={{ mt: 5 }}>
-            <TextField
+        <LoginArea>
+          <img className="Logo" src="flag.JPG" width="120" height="60" />
+          <Box component="form" sx={{ mt: 5 }}>
+            <WriteArea
               InputProps={{
+                disableUnderline: true,
                 startAdornment: (
                   <InputAdornment position="start">
                     <PersonIcon />
@@ -84,26 +109,6 @@ export default function LoginPage() {
                 ),
               }}
               variant="filled"
-              sx={{
-                input: { color: "white", paddingLeft: 2 },
-                color: "text.secondary",
-                ".MuiFilledInput-root": { borderRadius: 100, borderBottom: 0 },
-                ".MuiFilledInput-root:before": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:after": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:hover:not": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:hover": {
-                  backgroundColor: "rgb(87, 87, 87)",
-                },
-                "& .MuiFilledInput-root": {
-                  backgroundColor: "rgb(105, 105, 105)",
-                },
-              }}
               margin="normal"
               fullWidth
               id="
@@ -113,8 +118,9 @@ export default function LoginPage() {
               label="아이디"
               autoFocus
             />
-            <TextField
+            <WriteArea
               InputProps={{
+                disableUnderline: true,
                 startAdornment: (
                   <InputAdornment position="start">
                     <LockIcon />
@@ -122,23 +128,6 @@ export default function LoginPage() {
                 ),
               }}
               variant="filled"
-              sx={{
-                input: { color: "white", paddingLeft: 2 },
-                color: "text.secondary",
-                ".MuiFilledInput-root": { borderRadius: 100, borderBottom: 0 },
-                ".MuiFilledInput-root:before": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:after": {
-                  borderBottom: 0,
-                },
-                ".MuiFilledInput-root:hover": {
-                  backgroundColor: "rgb(87, 87, 87)",
-                },
-                "& .MuiFilledInput-root": {
-                  backgroundColor: "rgb(105, 105, 105)",
-                },
-              }}
               margin="normal"
               fullWidth
               type="password"
@@ -152,7 +141,7 @@ export default function LoginPage() {
 
             <Grid container columns={12}>
               <Grid item xs>
-                <FormControlLabel
+                <CheckLoginState
                   control={
                     <Checkbox
                       value="remember"
@@ -161,16 +150,11 @@ export default function LoginPage() {
                       checkedIcon={<CircleChecked />}
                     />
                   }
-                  sx={{
-                    "	.MuiFormControlLabel-label": {
-                      color: "#ffffff",
-                    },
-                  }}
                   label="로그인 상태 유지"
                 />
               </Grid>
               <Grid item xs sx={{ textAlign: "right" }}>
-                <FormControlLabel
+                <CheckLoginState
                   control={
                     <Checkbox
                       value="remember"
@@ -179,50 +163,34 @@ export default function LoginPage() {
                       checkedIcon={<CircleChecked />}
                     />
                   }
-                  sx={{
-                    "	.MuiFormControlLabel-label": {
-                      color: "#ffffff",
-                    },
-                  }}
                   label="아이디 기억하기"
                 />
               </Grid>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                backgroundColor: "#378975",
-                color: "#ffffff",
-                mt: 3,
-                mb: 2,
-                borderRadius: 28,
-                height: 60,
-              }}
-            >
+
+            <LoginButton type="submit" fullWidth variant="contained">
               로그인
-            </Button>
+            </LoginButton>
             <Grid container columns={12}>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <FindId href="#" variant="body2">
                   아이디 찾기
-                </Link>
+                </FindId>
               </Grid>
               <Grid item xs sx={{ textAlign: "center" }}>
-                <Link href="#" variant="body2">
+                <FindPassword href="#" variant="body2">
                   비밀번호 찾기
-                </Link>
+                </FindPassword>
               </Grid>
               <Grid item xs sx={{ textAlign: "right" }}>
-                <Link href="/signup" variant="body2">
+                <Account href="/signup" variant="body2">
                   회원가입
-                </Link>
+                </Account>
               </Grid>
             </Grid>
           </Box>
-        </Box>
-        <Copyright sx={{ mt: 20, mb: 4 }} />
+        </LoginArea>
+        <CopyRightArea />
       </Container>
     </ThemeProvider>
   );
