@@ -4,61 +4,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-
-const HomeHeader = styled('div')({
-  boxSizing: "border-box",
-  width: "100vw",
-  height: "9vh",
-  display: "flex",
-  alignItems: "flex-end",
-  backgroundColor: "white",
-});
-
-const LogoBox = styled('div')({
-  width: "10%",
-  height: "100%",
-  display: "flex", 
-  alignItems: "center",
-  paddingLeft: "15px",
-});
-
-const MenuItemBox = styled('div')({
-  width: "70%",
-  display: "flex",
-  justifyContent: "end",
-  alignItems: "center",
-  // marginRight: "5px",
-
-})
-
-const MenuItems = styled('div')({
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "flex-end",
-  margin: 0,
-});
-
-const SearchBox = styled('div')({
-  width: "20%",
-  display: "flex",
-  alignItems: "center",
-})
-
-const ButtonArea = styled('div')({
-  display: "flex",
-  alignItems: 'center',
-  justifyContent: "flex-end",
-  height: "2vh",
-  padding: "2.5vh 1vw 1vh 0",
-  
-});
-
 
 const Header = () => {
   const sections = ["FLAG", "INTRODUCE","BOARD", "ACTIBITY", "NOTICE"];
@@ -170,3 +120,50 @@ const Header = () => {
 }
 
 export default Header;
+
+const HomeHeader = styled('div')({
+  boxSizing: "border-box",
+  width: "100vw",
+  height: "9vh",
+  display: "flex",
+  alignItems: "flex-end",
+  backgroundColor: "white",
+});
+
+const LogoBox = styled('div')({
+  width: "10%",
+  height: "100%",
+  display: "flex", 
+  alignItems: "center",
+  paddingLeft: "15px",
+});
+
+const MenuItemBox = styled('div')({
+  width: "70%",
+  display: "flex",
+  justifyContent: "end",
+  alignItems: "center",
+});
+
+const MenuItems = styled('div')({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "flex-end",
+  margin: 0,
+});
+
+const SearchBox = styled('div')({
+  width: "20%",
+  display: "flex",
+  alignItems: "center",
+})
+
+const ButtonArea = styled('div')({
+  display: "flex",
+  alignItems: 'center',
+  justifyContent: "flex-end",
+  height: "2vh",
+  padding: "2.5vh 1vw 1vh 0",
+  
+});
+
