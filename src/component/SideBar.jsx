@@ -1,6 +1,35 @@
 import React from 'react';
 import { styled } from '@mui/system';
 
+const SideBar = (props) => {
+    return (
+        <SideArea 
+            sx={{width: props.mainWidth, 
+                paddingTop: props.paddingTop
+            }}>
+            <SideBarBox 
+                sx={{ backgroundColor: props.mainColor, 
+                    height: props.height, 
+                    borderRadius: props.borderRadius,
+                }}>
+                    
+                <SideBarContent sx={{backgroundColor: props.subColor, 
+                    width: props.subWidth,}}>
+                    <ContentsTitle>
+                        {props.title}
+                    </ContentsTitle>
+                    <ItemBox>
+                        {props.items.map((item)=>(<Item key={item}>{item}</Item>))}
+                    </ItemBox>
+                </SideBarContent>
+            </SideBarBox>
+        </SideArea>
+    )
+}
+
+export default SideBar;
+
+
 const SideArea = styled('div')({
     height: "100%",
 });
@@ -30,31 +59,3 @@ const Item = styled('li')({
     fontWeight: "700",
     padding: "0 0 1rem 0",
 });
-
-const SideBar = (props) => {
-    return (
-        <SideArea 
-            sx={{width: props.mainWidth, 
-                paddingTop: props.paddingTop
-            }}>
-            <SideBarBox 
-                sx={{ backgroundColor: props.mainColor, 
-                    height: props.height, 
-                    borderRadius: props.borderRadius,
-                }}>
-                    
-                <SideBarContent sx={{backgroundColor: props.subColor, 
-                    width: props.subWidth,}}>
-                    <ContentsTitle>
-                        {props.title}
-                    </ContentsTitle>
-                    <ItemBox>
-                        {props.items.map((item)=>(<Item key={item}>{item}</Item>))}
-                    </ItemBox>
-                </SideBarContent>
-            </SideBarBox>
-        </SideArea>
-    )
-}
-
-export default SideBar;
