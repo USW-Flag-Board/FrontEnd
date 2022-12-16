@@ -1,6 +1,5 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import { InputAdornment } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
@@ -95,7 +94,6 @@ export default function LoginPage() {
   return (
     <ThemeProvider theme={darkTheme}>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <LoginArea>
           <img className="Logo" src="flag.JPG" width="120" height="60" />
           <Box component="form" sx={{ mt: 5 }}>
