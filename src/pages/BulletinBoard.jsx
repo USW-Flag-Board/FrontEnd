@@ -2,7 +2,7 @@ import React from 'react';
 import { styled } from '@mui/system';
 import SideBar from '../component/SideBar';
 import Button from '@mui/material/Button';
-import { Pagination, PaginationItem } from '@mui/material';
+// import { Pagination, PaginationItem } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
@@ -16,6 +16,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Footer from "../component/Footer";
 import { Link } from 'react-router-dom';
 import ListThem from '../component/ListThem';
+import Pagination from '../component/Pagination';
 
 const BulletinBoard = () => {
   const boardItem = ["자유게시판", "동아리 이모저모", "사전게시판", "정보게시판"];
@@ -60,10 +61,11 @@ const BulletinBoard = () => {
             <ListThem themList={itemContents}/>
           </ListBox>
           <PaginationArea>
-            <Pagination count={10} shape="rounded" color="primary"
+            {/* <Pagination count={10} shape="rounded" color="primary"
             renderItem={(item) => (
               <PaginationItem {...item} sx={{ fontSize: 15, color: "white"}} />
-            )}/>
+            )}/> */}
+            <Pagination/>
           </PaginationArea>
           <FilterAndSearch>
             {inputItem.map((item) => 
