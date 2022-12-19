@@ -2,7 +2,6 @@ import React from 'react';
 import { styled } from '@mui/system';
 import SideBar from '../component/SideBar';
 import Button from '@mui/material/Button';
-// import { Pagination, PaginationItem } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
@@ -61,10 +60,6 @@ const BulletinBoard = () => {
             <ListThem themList={itemContents}/>
           </ListBox>
           <PaginationArea>
-            {/* <Pagination count={10} shape="rounded" color="primary"
-            renderItem={(item) => (
-              <PaginationItem {...item} sx={{ fontSize: 15, color: "white"}} />
-            )}/> */}
             <Pagination/>
           </PaginationArea>
           <FilterAndSearch>

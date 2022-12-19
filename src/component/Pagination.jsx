@@ -1,21 +1,46 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactPaginate from "react-paginate";
+import styled from "styled-components";
 
 const Pagination = () => {
     return (
-        <ReactPaginate 
-            pageCount={10}
-            pageRangeDisplayed={8}
-            breakLabel={""}
-            previousLabel={"PREV"}
-            nextLabel={"NEXT"}
-            // onPageChange={changePage}
-            containerClassName={"pagination-ul"}
-            activeClassName={"currentPage"}
-            previousClassName={"pageLabel-btn"}
-            nextClassName={"pageLabel-btn"}
-        />
+        <StyledPaginateContainer>
+            <ReactPaginate
+                pageCount={10}
+                pageRangeDisplayed={8}
+                breakLabel={""}
+                previousLabel={"< PREV"}
+                nextLabel={"NEXT >"}
+                // onPageChange={changePage}
+                containerClassName={"pagination"}
+                previousClassName={"pageLabel-btn"}
+                nextClassName={"pageLabel-btn"}
+            />
+        </StyledPaginateContainer>
     )
 }
 
 export default Pagination;
+
+const StyledPaginateContainer = styled.div`
+    .pagination{
+        display: flex;
+    }
+
+    li{ 
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0.6rem;
+        font-size: 1rem;
+        padding: 0.4rem 0.6rem;
+        cursor: pointer;
+        &:hover{
+            border-radius: 7px;
+            background-color: #4B4B4B;
+        }
+    }
+
+
+`;
