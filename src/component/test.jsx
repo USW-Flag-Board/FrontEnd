@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import { styled } from "@mui/material/styles";
 
 const WriteTitle = styled("h1")({

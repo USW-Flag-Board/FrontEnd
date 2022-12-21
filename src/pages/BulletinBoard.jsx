@@ -1,4 +1,3 @@
-import React from 'react';
 import { styled } from '@mui/system';
 import SideBar from '../component/SideBar';
 import Button from '@mui/material/Button';
