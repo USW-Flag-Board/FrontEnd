@@ -10,8 +10,6 @@ const ListThem = (props) => {
     )
 }
 
-export default ListThem;
-
 const ListThemBox = styled('div')({
     display: "flex",
     flexWrap: "wrap",
@@ -43,3 +41,5 @@ const ListItem = styled('div')({
     "&:nth-of-type(2)": {width: "31%"},
     "&:nth-of-type(6)": {paddingRight: "24%"},
 });
+
+export default ListThem;

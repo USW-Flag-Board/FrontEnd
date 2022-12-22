@@ -26,9 +26,6 @@ const SideBar = (props) => {
     )
 }
 
-export default SideBar;
-
-
 const SideArea = styled('div')({
     height: "100%",
 });
@@ -58,3 +55,5 @@ const Item = styled('li')({
     fontWeight: "700",
     padding: "0 0 1rem 0",
 });
+
+export default SideBar;

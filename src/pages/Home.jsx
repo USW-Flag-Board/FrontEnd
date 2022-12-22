@@ -1,59 +1,54 @@
-import React from 'react'
 import { styled } from '@mui/system';
-import SideBar from '../component/SideBar';
-import Grass from '../component/Grass';
+import { SideBar, Grass } from '../components/';
+
+const contents = [
+    {title: "STUDY", content: ["ALGORITHM", "WEB-BACKEND"]}, 
+    {title: "PROJECT", content: ["FLAG-게시판"]},
+];
+const homeItem = ["USER","전체 멤버 보기", "랭킹?", "관리자 페이지"];
 
 const Home = () => {
-    const contents = [
-        {title: "STUDY", content: ["ALGORITHM", "WEB-BACKEND"]}, 
-        {title: "PROJECT", content: ["FLAG-게시판"]}
-    ];
-    const homeItem = ["USER","전체 멤버 보기", "랭킹?", "관리자 페이지"];
     return (
-        <>
-            <HomeArea>
-                <MyActivity>
-                    <h1>MY ACTIBITY</h1>
-                    <FlagContents>
-                        {contents.map((item)=>(<FlagContent key={item.title}><h4 style={{color: "white", paddingBottom: "20px"}}>{item.title}</h4></FlagContent>))}
-                    </FlagContents>
-                    <BookImgBox>
-                        <img src="img/home-book.jpg" alt="blog-logo" style={{width: "95%",height: "100%"}}/>
-                    </BookImgBox>
-                    <h1>STUDY_WEB-BACKEND</h1>
-                    <Grass/>
-                </MyActivity>
-                <FeedArea>
-                    <h1>FEED</h1>
-                    <FeedBox>
-                        <FeedItem/>
-                        <FeedItem/>
-                        <FeedItem/>
-                    </FeedBox>
-                    <NoticeArea>
-                        <NoticeBox>
-                            <h4>#NOTICE</h4>
-                            <p>할말은 없지만 공지입니다.</p>
-                        </NoticeBox>
-                        <UserBox>
-                            <h4>USER</h4>
-                            <p>강지은, 김준표, 문희조, 이수빈, 어준혁, 임소미, 한지석</p>
-                        </UserBox>
-                    </NoticeArea>
-                </FeedArea>
-                <SideBar mainColor="#868e96" 
-                    mainWidth="20%" 
-                    subWidth="100%" 
-                    items={homeItem} 
-                    title="FLAG" 
-                    paddingTop="3.5vh" 
-                    height="100%"/>
-            </HomeArea>
-        </>
+        <HomeArea>
+            <MyActivity>
+                <h1>MY ACTIBITY</h1>
+                <FlagContents>
+                    {contents.map((item)=>(<FlagContent key={item.title}><h4 style={{color: "white", paddingBottom: "20px"}}>{item.title}</h4></FlagContent>))}
+                </FlagContents>
+                <BookImgBox>
+                    <img src="img/home-book.jpg" alt="blog-logo" style={{width: "95%",height: "100%"}}/>
+                </BookImgBox>
+                <h1>STUDY_WEB-BACKEND</h1>
+                <Grass/>
+            </MyActivity>
+            <FeedArea>
+                <h1>FEED</h1>
+                <FeedBox>
+                    <FeedItem/>
+                    <FeedItem/>
+                    <FeedItem/>
+                </FeedBox>
+                <NoticeArea>
+                    <NoticeBox>
+                        <h4>#NOTICE</h4>
+                        <p>할말은 없지만 공지입니다.</p>
+                    </NoticeBox>
+                    <UserBox>
+                        <h4>USER</h4>
+                        <p>강지은, 김준표, 문희조, 이수빈, 어준혁, 임소미, 한지석</p>
+                    </UserBox>
+                </NoticeArea>
+            </FeedArea>
+            <SideBar mainColor="#868e96" 
+                mainWidth="20%" 
+                subWidth="100%" 
+                items={homeItem} 
+                title="FLAG" 
+                paddingTop="3.5vh" 
+                height="100%"/>
+        </HomeArea>
     )
 }
-
-export default Home;
 
 const HomeArea = styled('div')({
     boxSizing: "border-box",
@@ -90,8 +85,6 @@ const BookImgBox = styled('div')({
     paddingBottom: "30px",
 });
 
-
-
 const FeedArea = styled('div')({
     width: "30%",
 });
@@ -124,3 +117,5 @@ const UserBox = styled('div')({
     width: "50%",
     margin: "10px",
 });
+
+export default Home;

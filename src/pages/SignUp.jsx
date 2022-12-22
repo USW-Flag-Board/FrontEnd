@@ -1,4 +1,3 @@
-import * as React from "react";
 import { InputAdornment, MenuItem, rgbToHex } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
@@ -67,7 +66,7 @@ function CopyRight(props) {
   );
 }
 
-export default function SignUp() {
+const SignUp = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <Container component="main" maxWidth="xs">
@@ -198,3 +197,5 @@ export default function SignUp() {
     </ThemeProvider>
   );
 }
+
+export default SignUp;

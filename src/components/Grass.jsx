@@ -10,8 +10,6 @@ const Grass = () => {
     )
 }
 
-export default Grass;
-
 const GrassArea = styled('div')({
     width: "95%",
     height: "25%",
@@ -25,3 +23,5 @@ const GrassBox = styled('div')({
     margin: "5px",
     backgroundColor: "white"
 });
+
+export default Grass;

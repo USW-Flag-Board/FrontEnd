@@ -1,5 +1,6 @@
 import { styled } from '@mui/system';
-import SideBar from '../component/SideBar';
+import { SideBar, Footer, ListThem, Pagination } from '../components/';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
@@ -10,18 +11,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import EditIcon from '@mui/icons-material/Edit';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Footer from "../component/Footer";
 import { Link } from 'react-router-dom';
-import ListThem from '../component/ListThem';
-import Pagination from '../component/Pagination';
 
 const BulletinBoard = () => {
-  const boardItem = ["자유게시판", "동아리 이모저모", "사전게시판", "정보게시판"];
-  const barItem = ["제목", "작성자", "작성일", "조회수", "댓글"];
-  const itemContents = ["공지", "자유게시판 공지입니다.", "문희조", "2022.08.03", "1234", "123"];
-  const inputItem = ["전체기간", "게시글 + 작성자"];
-
   return (
   <ThemeProvider theme={theme}>
     <BoardArea>
@@ -106,7 +98,10 @@ const BulletinBoard = () => {
   )
 }
 
-export default BulletinBoard;
+const boardItem = ["자유게시판", "동아리 이모저모", "사전게시판", "정보게시판"];
+const barItem = ["제목", "작성자", "작성일", "조회수", "댓글"];
+const itemContents = ["공지", "자유게시판 공지입니다.", "문희조", "2022.08.03", "1234", "123"];
+const inputItem = ["전체기간", "게시글 + 작성자"];
 
 const theme = createTheme({
   palette: {
@@ -198,3 +193,6 @@ const FilterAndSearch = styled('div')({
   justifyContent: "center",
   alignItems: "center",
 });
+
+export default BulletinBoard;
+

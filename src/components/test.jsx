@@ -4,10 +4,10 @@ const WriteTitle = styled("h1")({
   marginBottom: 10,
 });
 
-export default function test() {
+const test = () => {
   return (
-    <>
-      <WriteTitle>알고리즘 (코테반)</WriteTitle>
-    </>
+    <WriteTitle>알고리즘 (코테반)</WriteTitle>
   );
 }
+
+export default test;

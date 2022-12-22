@@ -19,13 +19,10 @@ const Pagination = () => {
     )
 }
 
-export default Pagination;
-
 const StyledPaginateContainer = styled.div`
     .pagination{
         display: flex;
     }
-
     li{ 
         box-sizing: border-box;
         display: flex;
@@ -40,6 +37,6 @@ const StyledPaginateContainer = styled.div`
             background-color: #4B4B4B;
         }
     }
-
-
 `;
+
+export default Pagination;

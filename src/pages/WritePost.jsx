@@ -1,6 +1,4 @@
-import React from 'react';
-import Footer from '../component/Footer';
-import SideBar from '../component/SideBar';
+import {Footer, SideBar, } from '../components/';
 import { styled } from '@mui/system';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
@@ -11,7 +9,6 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 
 const WritePost = () => {
-    const boardItem = ["자유게시판", "동아리 이모저모", "사전게시판", "정보게시판"];
 
     return (
         <>
@@ -86,7 +83,7 @@ const WritePost = () => {
     )
 }
 
-export default WritePost;
+const boardItem = ["자유게시판", "동아리 이모저모", "사전게시판", "정보게시판"];
 
 const BoardArea = styled('div')({
     height: "82.5vh",
@@ -208,3 +205,5 @@ fontSize: "1rem",
 color: "white",
 "&:focus": {outline: "none"},
 });
+
+export default WritePost;

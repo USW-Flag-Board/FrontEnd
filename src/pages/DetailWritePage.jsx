@@ -1,8 +1,7 @@
-import * as React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Container from "@mui/material/Container";
 import { CssBaseline } from "@mui/material";
-import Test from "../component/test";
+import Test from "../components/test";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 

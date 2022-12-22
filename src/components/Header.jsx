@@ -11,15 +11,7 @@ import Fade from '@mui/material/Fade';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 const Header = () => {
-  const sections = ["FLAG", "INTRODUCE","BOARD", "ACTIBITY", "NOTICE"];
-  const menuItem = ["STUDY", "PROJECT"];
   const [anchorEl, setAnchorEl] = useState(null);
-  const buttonItem = [
-    {name: "출석체크", bgColor: "#378975", fontColor: "white"}, 
-    {name: "Notion" , bgColor: "#768699", fontColor: "black"},
-    {name: "Github", bgColor: "#656565", fontColor: "white"},
-  ];
-
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -119,7 +111,13 @@ const Header = () => {
   );
 }
 
-export default Header;
+const sections = ["FLAG", "INTRODUCE","BOARD", "ACTIBITY", "NOTICE"];
+const menuItem = ["STUDY", "PROJECT"];
+const buttonItem = [
+  {name: "출석체크", bgColor: "#378975", fontColor: "white"}, 
+  {name: "Notion" , bgColor: "#768699", fontColor: "black"},
+  {name: "Github", bgColor: "#656565", fontColor: "white"},
+];
 
 const HomeHeader = styled('div')({
   boxSizing: "border-box",
@@ -163,7 +161,9 @@ const ButtonArea = styled('div')({
   alignItems: 'center',
   justifyContent: "flex-end",
   height: "2vh",
-  padding: "2.5vh 1vw 1vh 0",
-  
+  padding: "2.5vh 1vw 1vh 0",  
 });
+
+export default Header;
+
 
