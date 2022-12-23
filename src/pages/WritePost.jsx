@@ -1,4 +1,4 @@
-import {Footer, SideBar, } from '../components/';
+import { Footer, SideBar, } from '../components/';
 import { styled } from '@mui/system';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
