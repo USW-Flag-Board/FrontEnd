@@ -25,7 +25,7 @@ const Header = () => {
       <HomeHeader>
         <LogoBox>
           <img className="logo" 
-            src="img/logo.JPG" 
+            src="images/logo.JPG" 
             alt="blog-logo" 
             style={{height: "80%", cursor: "pointer"
           }}/>
@@ -93,31 +93,12 @@ const Header = () => {
           </IconButton>
         </SearchBox>
       </HomeHeader>
-      <ButtonArea>
-        {buttonItem.map((item)=>(<Button 
-          key={item.name}
-          style={{ 
-            color: item.fontColor, 
-            backgroundColor: item.bgColor,
-            margin: "1rem 0.5rem 0.5rem 0",
-            height: "2rem",
-            fontSize: "0.6rem",
-            borderRadius: "12px",
-          }}>
-          {item.name}
-        </Button>))}
-      </ButtonArea>
     </>
   );
 }
 
 const sections = ["FLAG", "INTRODUCE","BOARD", "ACTIBITY", "NOTICE"];
 const menuItem = ["STUDY", "PROJECT"];
-const buttonItem = [
-  {name: "출석체크", bgColor: "#378975", fontColor: "white"}, 
-  {name: "Notion" , bgColor: "#768699", fontColor: "black"},
-  {name: "Github", bgColor: "#656565", fontColor: "white"},
-];
 
 const HomeHeader = styled('div')({
   boxSizing: "border-box",
@@ -156,13 +137,7 @@ const SearchBox = styled('div')({
   alignItems: "center",
 })
 
-const ButtonArea = styled('div')({
-  display: "flex",
-  alignItems: 'center',
-  justifyContent: "flex-end",
-  height: "2vh",
-  padding: "2.5vh 1vw 1vh 0",  
-});
+
 
 export default Header;
 

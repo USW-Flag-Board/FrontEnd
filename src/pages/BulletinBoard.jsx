@@ -12,8 +12,10 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import EditIcon from '@mui/icons-material/Edit';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const BulletinBoard = () => {
+  const [menu, setMenu] = useState('');
   return (
   <ThemeProvider theme={theme}>
     <BoardArea>
@@ -67,8 +69,9 @@ const BulletinBoard = () => {
                 labelId="demo-select-small"
                 id="demo-select-small"
                 label={item}
+                value={menu}
                 sx={{borderRadius: "15px", backgroundColor: "#4B4B4B"}}>
-                <MenuItem value="">
+                <MenuItem value=''>
                   <em>None</em>
                 </MenuItem>
               </Select>

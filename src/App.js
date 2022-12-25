@@ -10,13 +10,6 @@ const GlobalStyle = createGlobalStyle`
   *{
     
   }
-  h1{
-    padding-bottom: 20px;
-    font-size: 20px;
-  }
-  h4{
-    padding-bottom: 10px;
-  }  
   body{
     color: white;
     margin: 0;

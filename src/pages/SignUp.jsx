@@ -94,8 +94,7 @@ const SignUp = () => {
               variant="filled"
               margin="normal"
               fullWidth
-              id="
-              id"
+              id="id"
               name="id"
               autoComplete="email"
               label="아이디"
