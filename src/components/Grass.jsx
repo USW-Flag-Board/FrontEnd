@@ -4,7 +4,17 @@ const Grass = () => {
     return (
         <GrassArea>
             <GrassBox>
-                <GrassItem/>
+                <GrassItem>
+                    <svg>
+                        <g>
+                            <g>
+                                <rect>
+                                    
+                                </rect>
+                            </g>
+                        </g>
+                    </svg>
+                </GrassItem>
                 <GrassItem/>
                 <GrassItem/>
             </GrassBox>

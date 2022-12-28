@@ -136,7 +136,7 @@ const FeedItem = styled('div')({
     borderRadius: "30px",
     boxSizing: "border-box",
     "&:first-of-type":{
-        marginBottom: "12.5px",
+        marginBottom: "1rem",
     },
     display: "flex",
     flexDirection: "column",
