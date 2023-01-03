@@ -43,7 +43,7 @@ const WriteArea = styled(TextField)({
 });
 
 const CheckLoginState = styled(FormControlLabel)({
-  "	.MuiFormControlLabel-label": {
+  "& .MuiFormControlLabel-label": {
     color: "#ffffff",
   },
 });
@@ -68,6 +68,11 @@ const darkTheme = createTheme({
     mode: "dark",
     background: {
       default: "#2C2C2C",
+    },
+  },
+  primary: {
+    background: {
+      default: "#ffffff",
     },
   },
 });
