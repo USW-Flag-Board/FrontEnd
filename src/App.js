@@ -11,6 +11,9 @@ import WriteDetail from "./pages/DetailWritePage";
 import SearchPage from "./pages/SearchPage";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
+import ChangePw from "./pages/ChangePw";
+import EditUser from "./pages/EditUser";
+import Resume from "./pages/Resume";
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -46,6 +49,9 @@ const App = () => {
           <Route path="/board" element={<BulletinBoard />}></Route>
           <Route path="/board/write" element={<WritePost />}></Route>
           <Route path="/search" element={<SearchPage />}></Route>
+          <Route path="/changepw" element={<ChangePw/>}></Route>
+          <Route path="/edit" element={<EditUser/>}></Route>
+          <Route path="/resume" element={<Resume/>}></Route>
         </Routes>
       </BrowserRouter>
     </>
