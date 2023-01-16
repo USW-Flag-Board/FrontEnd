@@ -1,4 +1,4 @@
-import { styled } from '@mui/system';
+import styled from 'styled-components';
 import { SideBar, Footer, ListThem, Pagination } from '../components/';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
@@ -117,11 +117,11 @@ const theme = createTheme({
   },
 });
 
-const BoardArea = styled('div')({
+const BoardArea = styled.div`
   height: "82.5vh",
-});
+`;
 
-const TitleArea = styled('div')({
+const TitleArea = styled.div`
   boxSizing: "border-box",
   width: "100%",
   height: "10%",
@@ -129,43 +129,43 @@ const TitleArea = styled('div')({
   padding: "0 2rem 1rem 2rem",
   alignItems: "flex-end",
   justifyContent: "space-between"
-});
+`;
 
-const TitleBox = styled('h2')({
+const TitleBox = styled.h2`
   fontWeight: "700",
   height: "100%",
   fontSize: "35px",
   display: "flex",
   alignItems: "flex-end",
   paddingLeft: "14%"
-});
+`;
 
-const ContentArea = styled('div')({
+const ContentArea = styled.div`
   width: "100%",
   height: "90%",
   display: "flex",
-});
+`;
 
-const ListArea = styled('div')({
+const ListArea = styled.div`
   width: "87%",
   height: "100%",
   padding: "0 2rem 0 2rem",
   boxSizing: "border-box"
-});
+`;
 
-const ListBar = styled('div')({
+const ListBar = styled.div`
   height: "10%",
   backgroundColor: "black",
-});
+`;
 
-const BarItemBox = styled('ul')({
+const BarItemBox = styled.ul`
   width: "100%",
   height: "100%",
   display: "flex",
   alignItems: "flex-end",
-});
+`;
 
-const BarItem = styled('li')({
+const BarItem = styled.li`
   width: "10%",
   height: "100%",
   color: "white",
@@ -177,25 +177,25 @@ const BarItem = styled('li')({
   fontWeight: "600",
   "&:nth-of-type(1)": {marginLeft: "10px", paddingLeft: "6%", width: "30%"},
   "&:nth-of-type(5)": {paddingRight: "24%"},
-});
+`;
 
-const ListBox = styled('div')({
+const ListBox = styled.div`
   height: "70%",
-});
+`;
 
-const PaginationArea = styled('div')({
+const PaginationArea = styled.div`
   height: "10%",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-});
+`;
 
-const FilterAndSearch = styled('div')({
+const FilterAndSearch = styled.div`
   height: "10%",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-});
+`;
 
 export default BulletinBoard;
 

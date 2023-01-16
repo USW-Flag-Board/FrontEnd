@@ -1,4 +1,4 @@
-import { styled } from '@mui/system';
+import styled from 'styled-components';
 import { SideBar, Grass } from '../components/';
 
 const Home = () => {
@@ -66,70 +66,70 @@ const contents = [
 ];
 const homeItem = ["USER", "마이페이지", "내가 쓴 글", "댓글 단 글", "스트랩", "관리자 페이지", "유저 관리", "게시판 관리"];
 
-const HomeArea = styled('div')({
+const HomeArea = styled.div`
     width: "100%",
     height: "91vh",
     display: "flex"
-});
+`;
 
-const HomeBox = styled('div')({
+const HomeBox = styled.div`
     boxSizing: "border-box",
     width: "80%",
     height: "100%",
-});
+`;
 
-const HomeContents = styled('div')({
+const HomeContents = styled.div`
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     width: "95%",
     height: "100%",
-});
+`;
 
-const MyActivityArea = styled('div')({
+const MyActivityArea = styled.div`
     boxSizing: "border-box",
     width: "100%",
     height: "80%",
     display: "flex",
     justifyContent: "center"
-});
+`;
 
-const MyActivityBox = styled('div')({
+const MyActivityBox = styled.div`
     width: "45%",
     height: "100%",
     marginLeft: "2rem",
-});
+`;
 
-const FlagContents = styled('ul')({
+const FlagContents = styled.ul`
     boxSizing: "border-box",
     display: "flex",
     justifyContent: "space-evenly",
     listStyle:"none",
     width: "100%",
-});
+`;
 
-const FlagContent = styled('li')({
+const FlagContent = styled.li`
     boxSizing: "border-box",
-});
+`;
 
-const BookImgBox = styled('div')({
+const BookImgBox = styled.div`
     width: "100%",
     height: "60%",
     marginBottom: "3rem",
-});
+`;
 
-const FeedArea = styled('div')({
+const FeedArea = styled.div`
     height: "60%",
     marginBottom: "3rem",
-});
+`;
 
-const FeedBox = styled('div')({
+const FeedBox = styled.div`
     width: "100%",
     height: "100%",
-});
+`;
 
-const FeedItem = styled('div')({
+const FeedItem = styled.div`
     width: "100%",
     height: "48%",
     border: "1px solid #9A9A9A",
@@ -142,9 +142,9 @@ const FeedItem = styled('div')({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-});
+`;
 
-const FeedContent = styled('div')({
+const FeedContent = styled.div`
     width: "85%",
     height: "18%",
     border: "1px solid #9A9A9A",
@@ -154,11 +154,11 @@ const FeedContent = styled('div')({
     padding: "0.1rem 0.7rem",
     margin: "0.2rem 0",
     fontSize: "12px",
-});
+`;
 
-const NoticeArea = styled('div')({
+const NoticeArea = styled.div`
     height: "30%",
     width: "100%",
-});
+`;
 
 export default Home;

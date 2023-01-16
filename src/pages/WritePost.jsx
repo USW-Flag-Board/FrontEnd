@@ -1,5 +1,5 @@
 import { Footer, SideBar, } from '../components/';
-import { styled } from '@mui/system';
+import styled from 'styled-components';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -9,7 +9,6 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 
 const WritePost = () => {
-
     return (
         <>
             <BoardArea>
@@ -84,126 +83,125 @@ const WritePost = () => {
 }
 
 const boardItem = ["자유게시판", "동아리 이모저모", "사전게시판", "정보게시판"];
-
-const BoardArea = styled('div')({
+const BoardArea = styled.div`
     height: "82.5vh",
-});
+`;
 
-const TitleArea = styled('div')({
-boxSizing: "border-box",
-width: "100%",
-height: "10%",
-display: "flex",
-padding: "0 2rem 1rem 2rem",
-alignItems: "flex-end",
-justifyContent: "space-between"
-});
+const TitleArea = styled.div`
+    boxSizing: "border-box",
+    width: "100%",
+    height: "10%",
+    display: "flex",
+    padding: "0 2rem 1rem 2rem",
+    alignItems: "flex-end",
+    justifyContent: "space-between"
+`;
 
-const TitleBox = styled('h2')({
-fontWeight: "700",
-height: "100%",
-fontSize: "35px",
-display: "flex",
-alignItems: "flex-end",
-paddingLeft: "14%",
-});
+const TitleBox = styled.h2`
+    fontWeight: "700",
+    height: "100%",
+    fontSize: "35px",
+    display: "flex",
+    alignItems: "flex-end",
+    paddingLeft: "14%",
+`;
 
-const ContentArea = styled('div')({
-width: "100%",
-height: "90%",
-display: "flex",
-});
+const ContentArea = styled.div`
+    width: "100%",
+    height: "90%",
+    display: "flex",
+`;
 
-const ListArea = styled('div')({
-width: "87%",
-height: "100%",
-padding: "0 2rem 0 2rem",
-boxSizing: "border-box"
-});
+const ListArea = styled.div`
+    width: "87%",
+    height: "100%",
+    padding: "0 2rem 0 2rem",
+    boxSizing: "border-box"
+`;
 
-const SelectArea = styled('div')({
-width: "100%",
-height: "10%",
-display: "flex",
-boxSizing: "border-box",
-justifyContent: "space-between",
-marginTop: "0.6rem",
-alignItems:"flex-end",
-paddingBottom: "0.8rem"
-});
+const SelectArea = styled.div`
+    width: "100%",
+    height: "10%",
+    display: "flex",
+    boxSizing: "border-box",
+    justifyContent: "space-between",
+    marginTop: "0.6rem",
+    alignItems:"flex-end",
+    paddingBottom: "0.8rem"
+`;
 
-const TitleInputBox = styled('div')({
-width: "100%",
-height: "8%",
-border: "1px solid white",
-borderRadius: "7px",
-margin: "0.2rem  0 1.3rem 0",
-boxSizing: "border-box",
-display: "flex",
-alignItems: "center",
-padding: "0 1rem",
-});
+const TitleInputBox = styled.div`
+    width: "100%",
+    height: "8%",
+    border: "1px solid white",
+    borderRadius: "7px",
+    margin: "0.2rem  0 1.3rem 0",
+    boxSizing: "border-box",
+    display: "flex",
+    alignItems: "center",
+    padding: "0 1rem",
+`;
 
-const TitleInput = styled('input')({
-boxSizing: "border-box",
-width: "100%",
-height: "60%",
-backgroundColor: "#2C2C2C",
-border: "none",
-fontSize: "1rem",
-color: "white",
-"&:focus": {outline: "none"},
-});
+const TitleInput = styled.input`
+    boxSizing: "border-box",
+    width: "100%",
+    height: "60%",
+    backgroundColor: "#2C2C2C",
+    border: "none",
+    fontSize: "1rem",
+    color: "white",
+    "&:focus": {outline: "none"},
+`;
 
-const ContentInputBox = styled('div')({
-boxSizing: "border-box",
-width: "100%",
-height: "60%",
-border: "1px solid white",
-borderRadius: "7px",
-padding: "1rem"
-});
+const ContentInputBox = styled.div`
+    boxSizing: "border-box",
+    width: "100%",
+    height: "60%",
+    border: "1px solid white",
+    borderRadius: "7px",
+    padding: "1rem"
+`;
 
-const ContentButtonBox = styled('div')({
-boxSizing: "border-box",
-width: "100%",
-height: "20%",
-display: "flex",
-});
+const ContentButtonBox = styled.div`
+    boxSizing: "border-box",
+    width: "100%",
+    height: "20%",
+    display: "flex",
+`;
 
-const ContentInput = styled('textarea')({
-boxSizing: "border-box",
-width: "100%",
-height: "80%",
-resize: "none",
-backgroundColor: "#2C2C2C",
-border: "none",
-fontSize: "1rem",
-color: "white",
-"&:focus": {outline: "none"},
-});
+const ContentInput = styled.textarea`
+    boxSizing: "border-box",
+    width: "100%",
+    height: "80%",
+    resize: "none",
+    backgroundColor: "#2C2C2C",
+    border: "none",
+    fontSize: "1rem",
+    color: "white",
+    "&:focus": {outline: "none"},
+`;
 
-const TagInputBox = styled('div')({
-boxSizing: "border-box",
-width: "100%",
-height: "8%",
-border: "1px solid white",
-borderRadius: "7px",
-margin: "1rem 0",
-display: "flex",
-alignItems: "center",
-padding: "0 1rem"
-});
+const TagInputBox = styled.div`
+    boxSizing: "border-box",
+    width: "100%",
+    height: "8%",
+    border: "1px solid white",
+    borderRadius: "7px",
+    margin: "1rem 0",
+    display: "flex",
+    alignItems: "center",
+    padding: "0 1rem",
+`;
 
-const TagInput = styled('input')({
-boxSizing: "border-box",
-width: "100%",
-height: "60%",
-backgroundColor: "#2C2C2C",
-border: "none",
-fontSize: "1rem",
-color: "white",
-"&:focus": {outline: "none"},
-});
+const TagInput = styled.input`
+    boxSizing: "border-box",
+    width: "100%",
+    height: "60%",
+    backgroundColor: "#2C2C2C",
+    border: "none",
+    fontSize: "1rem",
+    color: "white",
+    "&:focus": {outline: "none"},
+`;
 
 export default WritePost;

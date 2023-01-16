@@ -1,4 +1,4 @@
-import { styled } from '@mui/system';
+import styled from 'styled-components';
 
 const ListThem = (props) => {
     return(
@@ -10,25 +10,25 @@ const ListThem = (props) => {
     )
 }
 
-const ListThemBox = styled('div')({
+const ListThemBox = styled.div`
     display: "flex",
     flexWrap: "wrap",
     width: "100%",
     height: "12.5%",
     "&:nth-of-type(1)": {color: "red"},
     "&:nth-of-type(odd)": {backgroundColor: "#313131"},
-});
+`;
 
-const ItemBox = styled('div')({
+const ItemBox = styled.div`
     boxSizing: "border-box",
     width: "100%",
     height: "100%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-});
+`;
 
-const ListItem = styled('div')({
+const ListItem = styled.div`
     width: "10%",
     height: "100%",
     color: "white",
@@ -40,6 +40,6 @@ const ListItem = styled('div')({
     "&:nth-of-type(1)": {width: "5%", height: "50%", backgroundColor: "white", borderRadius: "15px", color: "red", marginLeft: "10px"},
     "&:nth-of-type(2)": {width: "31%"},
     "&:nth-of-type(6)": {paddingRight: "24%"},
-});
+`;
 
 export default ListThem;

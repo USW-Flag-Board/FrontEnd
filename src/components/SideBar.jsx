@@ -1,4 +1,4 @@
-import { styled } from '@mui/system';
+import styled from 'styled-components';
 
 const SideBar = (props) => {
     return (
@@ -29,36 +29,36 @@ const SideBar = (props) => {
     )
 }
 
-const SideArea = styled('div')({
+const SideArea = styled.div`
     boxSizing: "border-box",
     height: "100%",
-});
+`;
 
-const SideBarBox = styled('div')({
+const SideBarBox = styled.div`
     boxSizing: "border-box",
-});
+`;
 
-const SideBarContent = styled('div')({
+const SideBarContent = styled.div`
     width: "92%",
-});
+`;
 
-const ContentsTitle = styled('div')({
+const ContentsTitle = styled.div`
     fontSize: "23px",
     fontWeight: "700",
     padding: "3rem 0 1rem 2.5rem",
     borderBottom: "1px solid #CCCCCC"
-});
+`;
 
-const ItemBox = styled('ul')({
+const ItemBox = styled.ul`
     display: 'flex',
     flexDirection: "column",
     padding: "1rem 0 3rem 2.5rem",
-});
+`;
 
-const Item = styled('li')({
+const Item = styled.li`
     fontSize: "0.8rem",
     fontWeight: "700",
     padding: "0 0 1rem 0",
-});
+`;
 
 export default SideBar;

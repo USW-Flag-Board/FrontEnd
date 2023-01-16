@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { styled } from '@mui/system';
+import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
@@ -100,44 +100,42 @@ const Header = () => {
 const sections = ["FLAG", "INTRODUCE","BOARD", "ACTIBITY", "NOTICE"];
 const menuItem = ["STUDY", "PROJECT"];
 
-const HomeHeader = styled('div')({
+const HomeHeader = styled.div`
   boxSizing: "border-box",
   width: "100vw",
   height: "9vh",
   display: "flex",
   alignItems: "flex-end",
   backgroundColor: "white",
-});
+`;
 
-const LogoBox = styled('div')({
+const LogoBox = styled.div`
   width: "10%",
   height: "100%",
   display: "flex", 
   alignItems: "center",
   paddingLeft: "15px",
-});
+`;
 
-const MenuItemBox = styled('div')({
+const MenuItemBox = styled.div`
   width: "70%",
   display: "flex",
   justifyContent: "end",
   alignItems: "center",
-});
+`;
 
-const MenuItems = styled('div')({
+const MenuItems = styled.div`
   display: "flex",
   justifyContent: "center",
   alignItems: "flex-end",
   margin: 0,
-});
+`;
 
-const SearchBox = styled('div')({
+const SearchBox = styled.div`
   width: "20%",
   display: "flex",
   alignItems: "center",
-})
-
-
+`;
 
 export default Header;
 
