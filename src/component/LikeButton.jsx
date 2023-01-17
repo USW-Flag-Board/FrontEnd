@@ -1,10 +1,11 @@
 import * as React from "react";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import { useState } from "react";
-import { styled } from "@mui/system";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faHeart as regularHeart} from "@fortawesome/free-regular-svg-icons";
+import {faHeart as solidHeart} from "@fortawesome/free-solid-svg-icons";
+import {useState} from "react";
+import {styled} from "@mui/system";
 
-const LikeButtonFullin = styled(FavoriteIcon)({
+const LikeButtonFullin = styled(FontAwesomeIcon)({
   color: "red",
   "&:hover": {
     transform: "scale(1.1)",
@@ -12,7 +13,7 @@ const LikeButtonFullin = styled(FavoriteIcon)({
   fontSize: "10px",
 });
 
-const LikeButtonOutLine = styled(FavoriteBorderOutlinedIcon)({
+const LikeButtonOutLine = styled(FontAwesomeIcon)({
   "&:hover": {
     transform: "scale(1.1)",
   },
@@ -27,11 +28,11 @@ const LikeButton = () => {
   };
 
   return (
-    <div style={{ display: "inline-block" }}>
+    <div style={{display: "inline-block"}}>
       {state ? (
-        <LikeButtonFullin onClick={Like} />
+        <LikeButtonFullin icon={solidHeart} onClick={Like} />
       ) : (
-        <LikeButtonOutLine onClick={Like} />
+        <LikeButtonOutLine icon={regularHeart} onClick={Like} />
       )}
     </div>
   );

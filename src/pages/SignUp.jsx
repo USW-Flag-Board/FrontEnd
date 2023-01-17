@@ -1,198 +1,145 @@
 import * as React from "react";
-import { InputAdornment, MenuItem, rgbToHex } from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
-import LockIcon from "@mui/icons-material/Lock";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { styled } from "@mui/material/styles";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faUser} from "@fortawesome/free-regular-svg-icons";
+import {faLock} from "@fortawesome/free-solid-svg-icons";
+import {styled} from "@mui/material/styles";
 
-const CopyRightArea = styled(CopyRight)({
-  marginTop: 160,
-  marginBottom: 32,
+const PageArea = styled("div")({
+  width: "100%",
+  height: "100vh",
+  alignItems: "center",
+  display: "flex",
+  justifyContent: "center",
 });
 
-const WriteArea = styled(TextField)({
-  input: {
-    color: "white",
-    paddingLeft: 8,
-  },
-  "& .MuiFilledInput-root": {
-    backgroundColor: "#6c6c6c",
-    borderRadius: "28px",
-  },
-  "& .MuiFilledInput-root:hover": {
+const SignUpArea = styled("div")({
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  display: "flex",
+  width: 400,
+});
+
+const WriteArea = styled("input")({
+  color: "white",
+  paddingRight: 30,
+  paddingLeft: 20,
+  height: 60,
+  width: 350,
+  backgroundColor: "#6c6c6c",
+  borderRadius: 28,
+  border: 0,
+  outline: "none",
+  margin: 20,
+  marginTop: 10,
+  marginBottom: 10,
+  transition: "0.2s",
+  ":hover": {
+    transition: "0.2s",
     backgroundColor: "#575757",
   },
+  "::placeholder": {
+    color: "#ffffffcc",
+  },
 });
 
-const AccountButton = styled(Button)({
+const AddIcon = styled(FontAwesomeIcon)({
+  color: "white",
+  position: "absolute",
+  left: 390,
+  top: 32,
+});
+
+const RelativeArea = styled("div")({
+  position: "relative",
+});
+
+const SuwonEmail = styled("p")({
+  color: "white",
+  position: "absolute",
+  left: 290,
+  top: 32,
+});
+
+const AccountButton = styled("button")({
   backgroundColor: "#378975",
   color: "#ffffff",
   marginTop: 30,
   marginBottom: 30,
   borderRadius: 28,
   height: 60,
-});
-
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-    background: {
-      default: "#2C2C2C",
-    },
+  width: 400,
+  border: 0,
+  transition: "0.2s",
+  ":hover": {
+    transition: "0.2s",
+    backgroundColor: "#38b597",
   },
 });
 
-function CopyRight(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Flag
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+const SelectSpecialize = styled("select")({
+  color: "white",
+  paddingRight: 30,
+  paddingLeft: 20,
+  height: 60,
+  width: 400,
+  backgroundColor: "#6c6c6c",
+  borderRadius: 28,
+  border: 0,
+  outline: "none",
+  margin: 20,
+  marginTop: 10,
+  marginBottom: 10,
+  transition: "0.2s",
+  ":hover": {
+    transition: "0.2s",
+    backgroundColor: "#575757",
+  },
+});
+
+const specialized = [
+  {
+    label: "전공 여기다 나중에 추가",
+    value: "전공 여기다 나중에 추가",
+  },
+  {
+    label: "국어국문학",
+    value: "국어국문학",
+  },
+];
 
 export default function SignUp() {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <img className="Logo" src="flag.JPG" width="120" height="60" />
-
-          <Box component="form" noValidate sx={{ mt: 5 }}>
-            <WriteArea
-              InputProps={{
-                disableUnderline: true,
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <PersonIcon />
-                  </InputAdornment>
-                ),
-              }}
-              variant="filled"
-              margin="normal"
-              fullWidth
-              id="
-              id"
-              name="id"
-              autoComplete="email"
-              label="아이디"
-              autoFocus
-            />
-            <WriteArea
-              InputProps={{
-                disableUnderline: true,
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <LockIcon />
-                  </InputAdornment>
-                ),
-              }}
-              variant="filled"
-              margin="normal"
-              fullWidth
-              type="password"
-              id="
-              password"
-              name="password"
-              autoComplete="current-password"
-              label="비밀번호"
-              autoFocus
-            />
-            <WriteArea
-              InputProps={{
-                disableUnderline: true,
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <LockIcon />
-                  </InputAdornment>
-                ),
-              }}
-              variant="filled"
-              margin="normal"
-              fullWidth
-              type="password"
-              id="
-              passwordVerify"
-              name="passwordVerify"
-              autoComplete="current-password"
-              label="비밀번호 확인"
-              autoFocus
-            />
-            <WriteArea
-              InputProps={{
-                disableUnderline: true,
-              }}
-              variant="filled"
-              margin="normal"
-              fullWidth
-              id="
-              name"
-              name="userName"
-              autoComplete="name"
-              label="이름"
-              autoFocus
-            />
-            <WriteArea
-              InputProps={{
-                disableUnderline: true,
-              }}
-              variant="filled"
-              margin="normal"
-              fullWidth
-              id="
-              major"
-              name="major"
-              autoComplete="major"
-              label="전공"
-              autoFocus
-              select
-            >
-              <MenuItem value={10}>1</MenuItem>
-              <MenuItem>직접 입력</MenuItem>
-            </WriteArea>
-            <WriteArea
-              InputProps={{
-                disableUnderline: true,
-              }}
-              variant="filled"
-              margin="normal"
-              fullWidth
-              id="
-              studentId"
-              name="studentId"
-              autoComplete="studentId"
-              label="학번"
-              autoFocus
-            />
-            <AccountButton type="submit" fullWidth variant="contained">
-              가입하기
-            </AccountButton>
-          </Box>
-        </Box>
-        <CopyRightArea />
-      </Container>
-    </ThemeProvider>
+    <PageArea>
+      <SignUpArea>
+        <img className="Logo" src="flag.JPG" width="200" height="100" />
+        <RelativeArea>
+          <WriteArea type="text" placeholder="아이디" />
+          <AddIcon icon={faUser} />
+        </RelativeArea>
+        <RelativeArea>
+          <WriteArea type="text" placeholder="비밀번호" />
+          <AddIcon icon={faLock} />
+        </RelativeArea>
+        <RelativeArea>
+          <WriteArea type="text" placeholder="비밀번호 확인" />
+          <AddIcon icon={faLock} />
+        </RelativeArea>
+        <RelativeArea>
+          <WriteArea type="text" placeholder="E-Mail" />
+          <SuwonEmail>@suwon.ac.kr</SuwonEmail>
+        </RelativeArea>
+        <WriteArea type="text" placeholder="이름" />
+        <SelectSpecialize>
+          {specialized.map((special) => (
+            <option value={special.value}>{special.label}</option>
+          ))}
+        </SelectSpecialize>
+        <WriteArea type="text" placeholder="학번" />
+        <AccountButton type="submit" fullWidth variant="contained">
+          가입하기
+        </AccountButton>
+      </SignUpArea>
+    </PageArea>
   );
 }
