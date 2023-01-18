@@ -53,7 +53,7 @@ const WritePost = () => {
                                     flexDirection: "column", 
                                     backgroundColor: "white",
                                     borderRadius: "4px 0 0 4px",
-                                    height: "70%"
+                                    height: "70%",
                                 }}>
                                     <InsertPhotoIcon sx={{}}/>
                                     <p>사진</p>
@@ -84,124 +84,124 @@ const WritePost = () => {
 
 const boardItem = ["자유게시판", "동아리 이모저모", "사전게시판", "정보게시판"];
 const BoardArea = styled.div`
-    height: "82.5vh",
+    height: 82.5vh;
 `;
 
 const TitleArea = styled.div`
-    boxSizing: "border-box",
-    width: "100%",
-    height: "10%",
-    display: "flex",
-    padding: "0 2rem 1rem 2rem",
-    alignItems: "flex-end",
-    justifyContent: "space-between"
+    box-sizing: border-box;
+    width: 100%;
+    height: 10%;
+    display: flex;
+    padding: 0 2rem 1rem 2rem;
+    align-items: flex-end;
+    justify-content: space-between;
 `;
 
 const TitleBox = styled.h2`
-    fontWeight: "700",
-    height: "100%",
-    fontSize: "35px",
-    display: "flex",
-    alignItems: "flex-end",
-    paddingLeft: "14%",
+    font-weight: 700;
+    height: 100%;
+    font-size: 35px;
+    display: flex;
+    align-items: flex-end;
+    padding-left: 14%;
 `;
 
 const ContentArea = styled.div`
-    width: "100%",
-    height: "90%",
-    display: "flex",
+    width: 100%;
+    height: 90%;
+    display: flex;
 `;
 
 const ListArea = styled.div`
-    width: "87%",
-    height: "100%",
-    padding: "0 2rem 0 2rem",
-    boxSizing: "border-box"
+    width: 87%,
+    height: 100%;
+    padding: 0 2rem 0 2rem;
+    box-sizing: border-box;
 `;
 
 const SelectArea = styled.div`
-    width: "100%",
-    height: "10%",
-    display: "flex",
-    boxSizing: "border-box",
-    justifyContent: "space-between",
-    marginTop: "0.6rem",
-    alignItems:"flex-end",
-    paddingBottom: "0.8rem"
+    width: 100%;
+    height: 10%;
+    display: flex;
+    box-sizing: border-box;
+    justify-content: space-between;
+    margin-top: 0.6rem;
+    align-items: flex-end;
+    padding-bottom: 0.8rem;
 `;
 
 const TitleInputBox = styled.div`
-    width: "100%",
-    height: "8%",
-    border: "1px solid white",
-    borderRadius: "7px",
-    margin: "0.2rem  0 1.3rem 0",
-    boxSizing: "border-box",
-    display: "flex",
-    alignItems: "center",
-    padding: "0 1rem",
+    width: 100%;
+    height: 8%;
+    border: 1px solid white;
+    border-radius: 7px;
+    margin: 0.2rem  0 1.3rem 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
 `;
 
 const TitleInput = styled.input`
-    boxSizing: "border-box",
-    width: "100%",
-    height: "60%",
-    backgroundColor: "#2C2C2C",
-    border: "none",
-    fontSize: "1rem",
-    color: "white",
-    "&:focus": {outline: "none"},
+    box-sizing: border-box;
+    width: 100%;
+    height: 60%;
+    background-color: #2C2C2C;
+    border: none;
+    font-size: 1rem;
+    color: white;
+    &:focus{outline: none};
 `;
 
 const ContentInputBox = styled.div`
-    boxSizing: "border-box",
-    width: "100%",
-    height: "60%",
-    border: "1px solid white",
-    borderRadius: "7px",
-    padding: "1rem"
+    boxSizing: border-box;
+    width: 100%;
+    height: 60%;
+    border: 1px solid white;
+    border-radius: 7px;
+    padding: 1rem;
 `;
 
 const ContentButtonBox = styled.div`
-    boxSizing: "border-box",
-    width: "100%",
-    height: "20%",
-    display: "flex",
+    box-sizing: border-box;
+    width: 100%;
+    height: 20%;
+    display: flex;
 `;
 
 const ContentInput = styled.textarea`
-    boxSizing: "border-box",
-    width: "100%",
-    height: "80%",
-    resize: "none",
-    backgroundColor: "#2C2C2C",
-    border: "none",
-    fontSize: "1rem",
-    color: "white",
-    "&:focus": {outline: "none"},
+    box-sizing: border-box;
+    width: 100%;
+    height: 80%;
+    resize: none;
+    background-color: #2C2C2C;
+    border: none;
+    font-size: 1rem;
+    color: white;
+    &:focus{outline: none};
 `;
 
 const TagInputBox = styled.div`
-    boxSizing: "border-box",
-    width: "100%",
-    height: "8%",
-    border: "1px solid white",
-    borderRadius: "7px",
-    margin: "1rem 0",
-    display: "flex",
-    alignItems: "center",
-    padding: "0 1rem",
+    box-sizing: border-box;
+    width: 100%;
+    height: 8%;
+    border: 1px solid white;
+    border-radius: 7px;
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
 `;
 
 const TagInput = styled.input`
-    boxSizing: "border-box",
-    width: "100%",
-    height: "60%",
-    backgroundColor: "#2C2C2C",
-    border: "none",
-    fontSize: "1rem",
-    color: "white",
-    "&:focus": {outline: "none"},
+    box-sizing: border-box;
+    width: 100%;
+    height: 60%;
+    background-color: #2C2C2C;
+    border: none;
+    font-size: 1rem;
+    color: white;
+    &:focus{outline: none};
 `;
 
 export default WritePost;

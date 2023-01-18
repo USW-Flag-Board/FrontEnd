@@ -30,35 +30,35 @@ const SideBar = (props) => {
 }
 
 const SideArea = styled.div`
-    boxSizing: "border-box",
-    height: "100%",
+    box-sizing: border-box;
+    height: 100%;
 `;
 
 const SideBarBox = styled.div`
-    boxSizing: "border-box",
+    box-sizing: border-box;
 `;
 
 const SideBarContent = styled.div`
-    width: "92%",
+    width: 92%;
 `;
 
 const ContentsTitle = styled.div`
-    fontSize: "23px",
-    fontWeight: "700",
-    padding: "3rem 0 1rem 2.5rem",
-    borderBottom: "1px solid #CCCCCC"
+    font-size: 23px;
+    font-weight: 700;
+    padding: 3rem 0 1rem 2.5rem;
+    border-bottom: 1px solid #CCCCCC
 `;
 
 const ItemBox = styled.ul`
-    display: 'flex',
-    flexDirection: "column",
-    padding: "1rem 0 3rem 2.5rem",
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0 3rem 2.5rem;
 `;
 
 const Item = styled.li`
-    fontSize: "0.8rem",
-    fontWeight: "700",
-    padding: "0 0 1rem 0",
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0 0 1rem 0;
 `;
 
 export default SideBar;

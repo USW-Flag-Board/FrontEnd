@@ -17,7 +17,7 @@ const Home = () => {
                             </BookImgBox>
                             <NoticeArea>
                                 <h1 style={{fontSize: "1.1rem", marginBottom: "0.8rem", paddingLeft: "1.4rem"}}>NOTICE</h1>
-                                <FeedItem sx={{height: "70%"}}>
+                                <FeedItem style={{height: "70%"}}>
                                     <FeedContent>공지 안녕하세요 현회장 정충일입니다.</FeedContent>
                                     <FeedContent>공지 안녕하세요 차기회장 이수빈입니다.</FeedContent>
                                 </FeedItem>
@@ -67,98 +67,98 @@ const contents = [
 const homeItem = ["USER", "마이페이지", "내가 쓴 글", "댓글 단 글", "스트랩", "관리자 페이지", "유저 관리", "게시판 관리"];
 
 const HomeArea = styled.div`
-    width: "100%",
-    height: "91vh",
-    display: "flex"
+    width: 100%;
+    height: 91vh;
+    display: flex;
 `;
 
 const HomeBox = styled.div`
-    boxSizing: "border-box",
-    width: "80%",
-    height: "100%",
+    box-sizing: border-box;
+    width: 80%;
+    height: 100%;
 `;
 
 const HomeContents = styled.div`
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "95%",
-    height: "100%",
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+    height: 100%;
 `;
 
 const MyActivityArea = styled.div`
-    boxSizing: "border-box",
-    width: "100%",
-    height: "80%",
-    display: "flex",
-    justifyContent: "center"
+    box-sizing: border-box;
+    width: 100%;
+    height: 80%;
+    display: flex;
+    justify-content: center
 `;
 
 const MyActivityBox = styled.div`
-    width: "45%",
-    height: "100%",
-    marginLeft: "2rem",
+    width: 45%;
+    height: 100%;
+    margin-left: 2rem;
 `;
 
 const FlagContents = styled.ul`
-    boxSizing: "border-box",
-    display: "flex",
-    justifyContent: "space-evenly",
-    listStyle:"none",
-    width: "100%",
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-evenly;
+    list-style: none;
+    width: 100%;
 `;
 
 const FlagContent = styled.li`
-    boxSizing: "border-box",
+    box-sizing: border-box;
 `;
 
 const BookImgBox = styled.div`
-    width: "100%",
-    height: "60%",
-    marginBottom: "3rem",
+    width: 100%;
+    height: 60%;
+    margin-bottom: 3rem;
 `;
 
 const FeedArea = styled.div`
-    height: "60%",
-    marginBottom: "3rem",
+    height: 60%;
+    margin-bottom: 3rem;
 `;
 
 const FeedBox = styled.div`
-    width: "100%",
-    height: "100%",
+    width: 100%;
+    height: 100%;
 `;
 
 const FeedItem = styled.div`
-    width: "100%",
-    height: "48%",
-    border: "1px solid #9A9A9A",
-    borderRadius: "30px",
-    boxSizing: "border-box",
-    "&:first-of-type":{
-        marginBottom: "1rem",
-    },
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    width: 100%;
+    height: 48%;
+    border: 1px solid #9A9A9A;
+    border-radius: 30px;
+    box-sizing: border-box;
+    &:first-of-type{
+        margin-bottom: 1rem;
+    };
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 `;
 
 const FeedContent = styled.div`
-    width: "85%",
-    height: "18%",
-    border: "1px solid #9A9A9A",
-    borderRadius: "18px",
-    display: "flex",
-    alignItems: "center",
-    padding: "0.1rem 0.7rem",
-    margin: "0.2rem 0",
-    fontSize: "12px",
+    width: 85%;
+    height: 18%;
+    border: 1px solid #9A9A9A;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    padding: 0.1rem 0.7rem;
+    margin: 0.2rem 0;
+    font-size: 12px;
 `;
 
 const NoticeArea = styled.div`
-    height: "30%",
-    width: "100%",
+    height: 30%;
+    width: 100%;
 `;
 
 export default Home;

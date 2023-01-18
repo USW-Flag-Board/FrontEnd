@@ -118,83 +118,83 @@ const theme = createTheme({
 });
 
 const BoardArea = styled.div`
-  height: "82.5vh",
+  height: 82.5vh;
 `;
 
 const TitleArea = styled.div`
-  boxSizing: "border-box",
-  width: "100%",
-  height: "10%",
-  display: "flex",
-  padding: "0 2rem 1rem 2rem",
-  alignItems: "flex-end",
-  justifyContent: "space-between"
+  box-sizing: border-box;
+  width: 100%;
+  height: 10%;
+  display: flex;
+  padding: 0 2rem 1rem 2rem;
+  align-items: flex-end;
+  justify-content: space-between
 `;
 
 const TitleBox = styled.h2`
-  fontWeight: "700",
-  height: "100%",
-  fontSize: "35px",
-  display: "flex",
-  alignItems: "flex-end",
-  paddingLeft: "14%"
+  font-weight: 700;
+  height: 100%;
+  font-size: 35px;
+  display: flex;
+  align-items: flex-end;
+  padding-left: 14%
 `;
 
 const ContentArea = styled.div`
-  width: "100%",
-  height: "90%",
-  display: "flex",
+  width: 100%;
+  height: 90%;
+  display: flex;
 `;
 
 const ListArea = styled.div`
-  width: "87%",
-  height: "100%",
-  padding: "0 2rem 0 2rem",
-  boxSizing: "border-box"
+  width: 87%;
+  height: 100%;
+  padding: 0 2rem 0 2rem;
+  box-sizing: border-box
 `;
 
 const ListBar = styled.div`
-  height: "10%",
-  backgroundColor: "black",
+  height: 10%;
+  background-color: black;
 `;
 
 const BarItemBox = styled.ul`
-  width: "100%",
-  height: "100%",
-  display: "flex",
-  alignItems: "flex-end",
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
 `;
 
 const BarItem = styled.li`
-  width: "10%",
-  height: "100%",
-  color: "white",
-  display: "flex",
-  alignItems: "flex-end",
-  justifyContent: "center",
-  paddingBottom: "10px",
-  fontSize: "1rem",
-  fontWeight: "600",
-  "&:nth-of-type(1)": {marginLeft: "10px", paddingLeft: "6%", width: "30%"},
-  "&:nth-of-type(5)": {paddingRight: "24%"},
+  width: 10%;
+  height: 100%;
+  color: white;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  &:nth-of-type(1){margin-left: 10px; padding-left: 6%; width: 30%};
+  &:nth-of-type(5){padding-right: 24%};
 `;
 
 const ListBox = styled.div`
-  height: "70%",
+  height: 70%;
 `;
 
 const PaginationArea = styled.div`
-  height: "10%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const FilterAndSearch = styled.div`
-  height: "10%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default BulletinBoard;
