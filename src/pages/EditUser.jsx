@@ -189,6 +189,7 @@ const TitleBox = styled.div`
 const InputFiled = styled.input`
   width: 30%;
   height: 3vh;
+  color: white;
   background: transparent;
   border-radius: 2vh;
   border: 1px solid gray;

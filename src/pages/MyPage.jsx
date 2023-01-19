@@ -99,7 +99,7 @@ const ProfileArea = styled.div`
 
 const EditProfile = styled.button`
   position: absolute;
-  fontsize: 5px;
+  font-size: 5px;
   color: white;
   background-color: #434343;
   height: 25px;
@@ -189,7 +189,7 @@ const GrassArea = styled.div`
 const GrassName = styled.h3`
   color: white;
   padding-top: 600px;
-  margin: 0;
+  margin: 0px;
   font-weight: bold;
 `;
 

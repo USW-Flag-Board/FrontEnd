@@ -85,13 +85,13 @@ const TitleArea = styled.div`
   width: 100%;
   height: 10%;
   display: flex;
-  padding: 0 2rem 1rem 2rem;
+  padding: 0px 2rem 1rem 2rem;
   align-items: flex-end;
   justify-content: space-between;
 `;
 
 const TitleBox = styled.h2`
-  font-weight: 700;
+  font-weight: 700px;
   height: 100%;
   font-size: 35px;
   display: flex;
@@ -108,7 +108,7 @@ const ContentArea = styled.div`
 const ListArea = styled.div`
   width: 87%;
   height: 100%;
-  padding: 0 2rem 0 2rem;
+  padding: 0px 2rem 0 2rem;
   box-sizing: border-box;
 `;
 
@@ -133,7 +133,7 @@ const BarItem = styled.li`
   justify-content: center;
   padding-bottom: 10px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 600px;
   &:nth-of-type(1) {
     margin-left: 10px;
     padding-left: 6%;
@@ -183,7 +183,7 @@ const WriteButton = styled.button`
   background-color: white;
   height: 2rem;
   color: black;
-  font-weight: 700;
+  font-weight: 700px;
   &:hover {
     backgroundcolor: white;
   }

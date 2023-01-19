@@ -67,7 +67,7 @@ const YearBox = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 2.2rem;
-  font-weight: 800;
+  font-weight: 800px;
   border-right: 1px solid white;
 `;
 
@@ -85,7 +85,7 @@ const Resumebox = styled.div`
   margin-bottom: 10vh;
   border-radius: 2.5vh;
   font-size: 1vw;
-  font-weight: 700;
+  font-weight: 700px;
   list-style: none;
 `;
 
@@ -103,7 +103,7 @@ const Studybox = styled.div`
   border-radius: 2.5vh;
   text-align: left;
   font-size: 1vw;
-  font-weight: 700;
+  font-weight: 700px;
   list-style: none;
 `;
 
@@ -114,7 +114,7 @@ const ResumeTitle = styled.div`
   margin-left: 17vw;
   margin-top: 2vh;
   font-size: 2.5rem;
-  font-weight: 800;
+  font-weight: 800px;
 `;
 
 const StudyTitle = styled.div`
