@@ -1,199 +1,196 @@
-import * as React from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Grass from "../component/Grass";
-import { styled } from "@mui/system";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faUser} from "@fortawesome/free-regular-svg-icons";
+import styled from "styled-components";
+import Grass from "../components/Grass";
 
-const ProfileArea = styled(Box)({
-  height: "400px",
-  position: "relative",
-  marginRight: "200px",
-});
-
-const Profile = styled(Avatar)({
-  position: "absolute",
-  width: 160,
-  height: 160,
-  marginTop: "10px",
-  left: "100%",
-  zIndex: "1",
-});
-
-const EditProfile = styled(Button)({
-  position: "absolute",
-  marginBottom: "10px",
-  marginLeft: "60px",
-  zIndex: "2",
-  fontSize: "12px",
-  color: "white",
-  backgroundColor: "#434343",
-  height: "25px",
-  width: "100px",
-  left: "100%",
-  top: "150px",
-  borderRadius: "28px",
-  "&:hover": {
-    backgroundColor: "#4d4d4d",
-  },
-});
-
-const NickName = styled(Box)({
-  display: "flex",
-  height: "80px",
-  fontSize: "40px",
-  fontWeight: "bold",
-  alignItems: "start",
-});
-
-const Introduce = styled(Box)({
-  display: "flex",
-  height: "60px",
-  fontSize: "20px",
-  alignItems: "center",
-});
-
-const IntroduceTag = styled(Box)({
-  display: "flex",
-  height: "60px",
-  alignItems: "center",
-});
-
-const Tag = styled("p")({
-  margin: 0,
-});
-
-const HistoryArea = styled(Box)({
-  backgroundColor: "rgba(0, 0, 0, 0.2)",
-  height: "600px",
-});
-
-const HistoryContent = styled(Box)({
-  marginLeft: "150px",
-  paddingTop: "100px",
-});
-
-const HistoryYear = styled("h1")({
-  fontSize: "25px",
-  paddingTop: "20px",
-});
-
-const HistoryYearList = styled("ul")({
-  marginBottom: "10px",
-});
-
-const HistoryYearListItem = styled("li")({
-  marginBottom: "3px",
-  listStyleType: "disc",
-  marginLeft: "20px",
-});
-
-const BackgroundArea = styled(Box)({
-  backgroundImage: `url("/home-book.JPG")`,
-  height: "1000px",
-});
-
-const GrassArea = styled("div")({
-  paddingLeft: "80px",
-  height: "1000px",
-});
-
-const GrassName = styled("h3")({
-  color: "white",
-  paddingTop: "80px",
-  margin: 0,
-  fontWeight: "bold",
-});
-
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-    background: {
-      default: "#2C2C2C",
-    },
-  },
-});
-
-export default function MyPage() {
+const MyPage = () => {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <Container component="main" maxWidth="xs" md></Container>
-      <Box>
-        <Grid container>
-          <Grid item alignContent="center" justifyContent="center" xs={5}>
-            <Grid>
-              <Grid item>
-                <Box sx={{ backgroundColor: "#2C2C2C", height: "100px" }}></Box>
-                <Box sx={{ backgroundColor: "#2C2C2C", height: "300px" }}>
-                  <Grid container>
-                    <Grid
-                      item
-                      alignContent="center"
-                      justifyContent="center"
-                      xs={6}
-                    >
-                      <ProfileArea>
-                        <Profile src="/broken-image.jpg" />
-                        <EditProfile>Edit Profile</EditProfile>
-                      </ProfileArea>
-                    </Grid>
-                    <Grid
-                      item
-                      alignContent="center"
-                      justifyContent="center"
-                      height="100px"
-                      xs={6}
-                    >
-                      <NickName>문희조</NickName>
-                      <Introduce>
-                        Hi
-                        <br />
-                        Korean Language Is Broken...
-                      </Introduce>
-                      <IntroduceTag>
-                        <Tag>
-                          #Spring #Java #FullStack
-                          <br />
-                          #Be #응애
-                        </Tag>
-                      </IntroduceTag>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Grid>
-            </Grid>
-            <HistoryArea>
-              <HistoryContent>
-                <HistoryYear>2021</HistoryYear>
-                <HistoryYearList>
-                  <HistoryYearListItem>
-                    알고리즘 스터디(기초반)
-                  </HistoryYearListItem>
-                </HistoryYearList>
-                <HistoryYear>2022</HistoryYear>
-                <HistoryYearList>
-                  <HistoryYearListItem>
-                    알고리즘 스터디(코테반)
-                  </HistoryYearListItem>
-                  <HistoryYearListItem>FLAG-게시판 (BE)</HistoryYearListItem>
-                </HistoryYearList>
-              </HistoryContent>
-            </HistoryArea>
-          </Grid>
-          <Grid item xs={7}>
-            <BackgroundArea>
-              <GrassArea>
-                <Box style={{ height: "600px" }}></Box>
-                <GrassName>STUDY_WEB-BACKEND</GrassName>
-                <Grass />
-              </GrassArea>
-            </BackgroundArea>
-          </Grid>
-        </Grid>
-      </Box>
-    </ThemeProvider>
+    <PageArea>
+      <LeftPage>
+        <UserPage>
+          <ProfileArea>
+            <RelativeArea>
+              <FontAwesomeIcon
+                icon={faUser}
+                style={{width: 120, height: 120, marginBottom: 30}}
+              />
+              <EditProfile>Edit Profile</EditProfile>
+            </RelativeArea>
+          </ProfileArea>
+          <NickNameArea>
+            <NickName>문희조</NickName>
+            <IntroduceArea>
+              <Introduce>
+                Hi
+                <br />
+                Korean Language Is Broken...
+              </Introduce>
+              <IntroduceTag>
+                <Tag>
+                  #Spring #Java #FullStack
+                  <br />
+                  #Be #응애
+                </Tag>
+              </IntroduceTag>
+            </IntroduceArea>
+          </NickNameArea>
+        </UserPage>
+        <HistoryArea>
+          <HistoryContent>
+            <HistoryYear>2021</HistoryYear>
+            <HistoryYearList>
+              <HistoryYearListItem>알고리즘 스터디(기초반)</HistoryYearListItem>
+            </HistoryYearList>
+            <HistoryYear>2022</HistoryYear>
+            <HistoryYearList>
+              <HistoryYearListItem>알고리즘 스터디(코테반)</HistoryYearListItem>
+              <HistoryYearListItem>FLAG-게시판 (BE)</HistoryYearListItem>
+            </HistoryYearList>
+          </HistoryContent>
+        </HistoryArea>
+      </LeftPage>
+      <RightPage>
+        <GrassArea>
+          <GrassName>STUDY_WEB-BACKEND</GrassName>
+          <Grass />
+        </GrassArea>
+      </RightPage>
+    </PageArea>
   );
-}
+};
+
+const PageArea = styled.div`
+  width: 100%;
+  height: 82.5vh;
+  display: flex;
+`;
+
+const LeftPage = styled.div`
+  width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const RightPage = styled.div`
+  width: 60%;
+  height: 100%;
+  background-image: url(/home-book.JPG);
+`;
+
+const UserPage = styled.div`
+  width: 100%;
+  height: 40%;
+  display: flex;
+`;
+
+const RelativeArea = styled.div`
+  position: relative;
+`;
+
+const ProfileArea = styled.div`
+  width: 45%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 40px;
+`;
+
+const EditProfile = styled.button`
+  position: absolute;
+  font-size: 5px;
+  color: white;
+  background-color: #434343;
+  height: 25px;
+  width: 80px;
+  left: 70px;
+  top: 100px;
+  outline: none;
+  border-radius: 28px;
+  :hover {
+    background-color: #4d4d4d;
+  }
+`;
+
+const NickNameArea = styled.div`
+  display: flex;
+  width: 55%;
+  height: 100%;
+  flex-direction: column;
+`;
+
+const NickName = styled.div`
+  display: flex;
+  height: 40%;
+  font-size: 40px;
+  font-weight: bold;
+  align-items: flex-end;
+`;
+
+const IntroduceArea = styled.div`
+  width: 100%;
+  height: 60%;
+`;
+
+const Introduce = styled.div`
+  display: flex;
+  font-size: 20px;
+  align-items: flex-end;
+  height: 40%;
+`;
+
+const IntroduceTag = styled.div`
+  display: flex;
+  font-size: 15px;
+  align-items: center;
+  height: 40%;
+`;
+
+const Tag = styled.p`
+  margin: 0px;
+`;
+
+const HistoryArea = styled.div`
+  background-color: rgba(0; 0; 0; 0.2);
+  width: 100%;
+  height: 60%;
+  display: flex;
+`;
+
+const HistoryContent = styled.div`
+  margin-left: 20%;
+  padding-top: 10%;
+`;
+
+const HistoryYear = styled.h1`
+  font-size: 25px;
+  padding-top: 20px;
+`;
+
+const HistoryYearList = styled.ul`
+  margin-bottom: 10px;
+`;
+
+const HistoryYearListItem = styled.li`
+  margin-bottom: 3px;
+  list-style-type: disc;
+  margin-left: 20px;
+`;
+
+const GrassArea = styled.div`
+  padding-left: 80px;
+  height: 100%;
+  top: 700px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const GrassName = styled.h3`
+  color: white;
+  padding-top: 600px;
+  margin: 0px;
+  font-weight: bold;
+`;
+
+export default MyPage;

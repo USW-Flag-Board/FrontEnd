@@ -1,10 +1,10 @@
-import React from "react";
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import BulletinBoard from "./pages/BulletinBoard";
-import Header from "./component/Header";
+import Header from "./components/Header";
 import WritePost from "./pages/WritePost";
 import MyPage from "./pages/MyPage";
 import WriteDetail from "./pages/DetailWritePage";
@@ -20,13 +20,6 @@ const GlobalStyle = createGlobalStyle`
   *{
     
   }
-  h1{
-    padding-bottom: 20px;
-    font-size: 20px;
-  }
-  h4{
-    padding-bottom: 10px;
-  }  
   body{
     color: white;
     margin: 0;
@@ -35,11 +28,12 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const App = () => {
+  const [header, setHeader] = useState(true);
+  console.log(header);
   return (
-    <>
       <BrowserRouter>
         <GlobalStyle />
-        <Header />
+        {header && <Header setHeader={setHeader}/>}
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
@@ -54,7 +48,6 @@ const App = () => {
           <Route path="/resume" element={<Resume/>}></Route>
         </Routes>
       </BrowserRouter>
-    </>
   );
 };
 
