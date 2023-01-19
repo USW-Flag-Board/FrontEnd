@@ -1,17 +1,7 @@
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-<<<<<<< HEAD
-import Container from "@mui/material/Container";
-import { CssBaseline } from "@mui/material";
-import Test from "../components/test";
-=======
->>>>>>> 2d1f05f6a4c0df5f3a6592cd570b067123894275
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import ListThem from "../component/ListThem";
-import SideBar from "../component/SideBar";
-import LikeButton from "../component/LikeButton";
-import Button from "@mui/material/Button";
-import { styled } from "@mui/system";
+import ListThem from "../components/ListThem";
+import SideBar from "../components/SideBar";
+import LikeButton from "../components/LikeButton";
+import {styled} from "@mui/system";
 
 const BoardArea = styled("div")({
   height: "82.5vh",
@@ -51,6 +41,8 @@ const PostArea = styled("div")({
 
 const PostBox = styled("div")({
   height: "70%",
+  display: "flex",
+  flexDirection: "column",
 });
 
 const PostContentBox = styled("div")({
@@ -116,26 +108,35 @@ const PostLike = styled("div")({
   display: "inline-block",
 });
 
-const ReplyButton = styled(TextField)({
+const RelativeArea = styled("div")({
+  position: "relative",
+});
+
+const ReplyButton = styled("input")({
+  width: `calc(100% - 122px)`,
   marginTop: "25px",
-  width: "100%",
   border: "1px solid rgba(255, 255, 255, 0.5)",
+  outline: "none",
   borderRadius: "28px",
-  input: {
-    color: "white",
-    padding: "20px",
-    paddingLeft: "60px",
-  },
-  "& .MuiFilledInput-root": {
-    backgroundColor: "rgba(0, 0, 0, 0)",
-    borderRadius: "28px",
-  },
-  "& .MuiFilledInput-root:hover": {
-    backgroundColor: "rgba(0, 0, 0, 0)",
+  backgroundColor: "rgba(0, 0, 0, 0)",
+  paddingTop: 20,
+  paddingBottom: 20,
+  paddingLeft: 60,
+  paddingRight: 60,
+  color: "white",
+  "::placeholder": {
+    color: "#ffffffcc",
   },
 });
 
-const ReplyArea = styled(Box)({
+const AddIcon = styled("label")({
+  color: "white",
+  position: "absolute",
+  left: `calc(100% - 60px)`,
+  top: 44,
+});
+
+const ReplyArea = styled("div")({
   marginTop: "25px",
   width: "100%",
   border: "1px solid rgba(255, 255, 255, 0.5)",
@@ -143,21 +144,10 @@ const ReplyArea = styled(Box)({
 });
 
 const ReplyContent = styled("div")({
-  marginTop: "20px",
-  marginBottom: "20px",
-  marginLeft: "60px",
-  marginRight: "60px",
-});
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#4B4B4B",
-    },
-    secondary: {
-      main: "#FFFFFF",
-    },
-  },
+  marginTop: 20,
+  marginBottom: 20,
+  marginLeft: 60,
+  marginRight: 60,
 });
 
 const DetailWritePage = () => {
@@ -172,66 +162,61 @@ const DetailWritePage = () => {
   const boardItem = ["스터디", "프로젝트"];
 
   return (
-    <ThemeProvider theme={theme}>
-      <BoardArea>
-        <TitleArea>
-          <TitleBox>알고리즘(코테반)</TitleBox>
-        </TitleArea>
-        <ContentArea>
-          <SideBar
-            title="ACTIVITY"
-            mainColor="#4B4B4B"
-            subColor="#3C3C3C"
-            mainWidth="13%"
-            subWidth="90%"
-            items={boardItem}
-            paddingTop="0"
-            borderRadius="0 15px 15px 0"
-          />
-          <PostArea>
-            <PostBox>
-              <ListThem themList={itemContents} />
-              <PostContentBox>
-                <PostContentSort>
-                  <PostHeader style={{}}>
-                    <PostHeaderLeftArea>
-                      <PostAuthor>글쓴이 {itemContents[2]}</PostAuthor>
-                      <PostTime>{itemContents[3]} 22:07</PostTime>
-                    </PostHeaderLeftArea>
-                    <PostHeaderRightArea>
-                      <PostModify>수정하기</PostModify>
-                      <PostDelete>삭제하기</PostDelete>
-                    </PostHeaderRightArea>
-                  </PostHeader>
-                  <PostContentTitle>{itemContents[1]}</PostContentTitle>
-                  <PostContent>
-                    내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
-                  </PostContent>
-                  <PostViews>view {itemContents[4]}</PostViews>
-                  <PostLike>
-                    <LikeButton />
-                    {itemContents[5]}
-                  </PostLike>
-                </PostContentSort>
-              </PostContentBox>
+    <BoardArea>
+      <TitleArea>
+        <TitleBox>알고리즘(코테반)</TitleBox>
+      </TitleArea>
+      <ContentArea>
+        <SideBar
+          title="ACTIVITY"
+          mainColor="#4B4B4B"
+          subColor="#3C3C3C"
+          mainWidth="13%"
+          subWidth="90%"
+          items={boardItem}
+          paddingTop="0"
+          borderRadius="0 15px 15px 0"
+        />
+        <PostArea>
+          <PostBox>
+            <ListThem themList={itemContents} />
+            <PostContentBox>
+              <PostContentSort>
+                <PostHeader style={{}}>
+                  <PostHeaderLeftArea>
+                    <PostAuthor>글쓴이 {itemContents[2]}</PostAuthor>
+                    <PostTime>{itemContents[3]} 22:07</PostTime>
+                  </PostHeaderLeftArea>
+                  <PostHeaderRightArea>
+                    <PostModify>수정하기</PostModify>
+                    <PostDelete>삭제하기</PostDelete>
+                  </PostHeaderRightArea>
+                </PostHeader>
+                <PostContentTitle>{itemContents[1]}</PostContentTitle>
+                <PostContent>
+                  내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
+                </PostContent>
+                <PostViews>view {itemContents[4]}</PostViews>
+                <PostLike>
+                  <LikeButton />
+                  {itemContents[5]}
+                </PostLike>
+              </PostContentSort>
+            </PostContentBox>
+            <RelativeArea>
               <ReplyButton
-                InputProps={{
-                  disableUnderline: true,
-                  endAdornment: <Button sx={{ color: "white" }}>등록</Button>,
-                }}
-                variant="filled"
-                fullWidth
-                defaultValue="댓글을 입력하세요."
-                autoFocus
+                type="text"
+                placeholder="댓글을 입력하세요."
               ></ReplyButton>
-              <ReplyArea>
-                <ReplyContent>여기에 댓글 컴포넌트 넣을 예정</ReplyContent>
-              </ReplyArea>
-            </PostBox>
-          </PostArea>
-        </ContentArea>
-      </BoardArea>
-    </ThemeProvider>
+              <AddIcon>dd</AddIcon>
+            </RelativeArea>
+            <ReplyArea>
+              <ReplyContent>여기에 댓글 컴포넌트 넣을 예정</ReplyContent>
+            </ReplyArea>
+          </PostBox>
+        </PostArea>
+      </ContentArea>
+    </BoardArea>
   );
 };
 
