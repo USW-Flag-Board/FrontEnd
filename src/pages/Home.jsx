@@ -67,8 +67,8 @@ const contents = [
 const homeItem = ["USER", "마이페이지", "내가 쓴 글", "댓글 단 글", "스트랩", "관리자 페이지", "유저 관리", "게시판 관리"];
 
 const HomeArea = styled.div`
-    width: 100%;
-    height: 91vh;
+    width: 100vw;
+    height: 87vh;
     display: flex;
 `;
 

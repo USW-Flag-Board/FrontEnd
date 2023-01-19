@@ -3,15 +3,15 @@ import styled from 'styled-components';
 const SideBar = (props) => {
     return (
         <SideArea 
-            sx={{width: props.mainWidth, 
+            style={{width: props.mainWidth, 
                 paddingTop: props.paddingTopMain
             }}>
             <SideBarBox 
-                sx={{ backgroundColor: props.mainColor, 
+                style={{ backgroundColor: props.mainColor, 
                     height: props.height, 
                     borderRadius: props.borderRadius,
                 }}>
-                <SideBarContent sx={{
+                <SideBarContent style={{
                     backgroundColor: props.subColor, 
                     width: props.subWidth,
                     borderRadius: props.borderRadius,

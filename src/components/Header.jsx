@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
   return (
@@ -23,12 +23,21 @@ const Header = () => {
         </MenuItemBox>
         <SearchBox>
           <SearchPaper>
-            <FontAwesomeIcon icon={ faMagnifyingGlass } style={{width: "14%",color: "#BABABA", display: "flex", alignItems: "center"}}/>
-            <InputBase
-              type="text"
+            <FontAwesomeIcon 
+              icon={ faMagnifyingGlass } 
+              style={{width: "14%", 
+                    color: "#BABABA", 
+                    display: "flex", 
+                    alignItems: "center"}}
             />
+            <InputBase type="text"/>
           </SearchPaper>
-          <FontAwesomeIcon icon={ faUser } style={{width: "14%", color: "#BABABA", height: "50%"}}/>
+          <FontAwesomeIcon 
+            icon={ faUser } 
+            style={{width: "14%", 
+                  color: "#BABABA", 
+                  height: "50%"}}
+          />
         </SearchBox>
       </HomeHeader>
   );
@@ -77,6 +86,7 @@ const MenuButton = styled.div`
   font-weight: 500; 
   color: black;
   &:hover{background-color: #adb5bd; border-radius: 10px};
+  cursor: pointer;
 `;
 
 const SearchBox = styled.div`

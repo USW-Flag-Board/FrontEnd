@@ -1,124 +1,66 @@
 import styled from 'styled-components';
 import { SideBar, Footer, ListThem, Pagination } from '../components/';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import SearchIcon from '@mui/icons-material/Search';
-import IconButton from '@mui/material/IconButton';
-import Paper from '@mui/material/Paper';
-import InputBase from '@mui/material/InputBase';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import EditIcon from '@mui/icons-material/Edit';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 
 const BulletinBoard = () => {
-  const [menu, setMenu] = useState('');
   return (
-  <ThemeProvider theme={theme}>
-    <BoardArea>
-      <TitleArea>
-        <TitleBox>자유게시판</TitleBox>
-        <Button sx={{
-          backgroundColor: "white",
-          height: "2rem", 
-          color: "black", 
-          fontWeight: "700", 
-          "&:hover": {backgroundColor: "white"}
-        }}>
-          <Link to="/board/write">
-            <EditIcon sx={{height: "2rem"}}/>
-            글쓰기
-          </Link>
-        </Button>
-      </TitleArea>
-      <ContentArea>
-        <SideBar title="BOARD"
-          mainColor="#4B4B4B"
-          subColor="#3C3C3C"
-          mainWidth="13%"
-          subWidth="90%"
-          items={boardItem}
-          paddingTop="0"
-          borderRadius="0 15px 15px 0"/>
-        <ListArea>
-          <ListBar>
-            <BarItemBox>
-              {barItem.map((item) => <BarItem key={item}>{item}</BarItem>)}
-            </BarItemBox>
-          </ListBar>
-          <ListBox>
-            <ListThem themList={itemContents}/>
-          </ListBox>
-          <PaginationArea>
-            <Pagination/>
-          </PaginationArea>
-          <FilterAndSearch>
-            {inputItem.map((item) => 
-            <FormControl 
-              sx={{ m: 1, width: 160}} 
-              size="small" key={item}>
-              <InputLabel 
-                id="demo-select-small" 
-                sx={{fontSize: "12px", p: "1px 0 1px 10px", color: "#adb5bd"}}>
-                {item}
-              </InputLabel>
-              <Select
-                labelId="demo-select-small"
-                id="demo-select-small"
-                label={item}
-                value={menu}
-                sx={{borderRadius: "15px", backgroundColor: "#4B4B4B"}}>
-                <MenuItem value=''>
-                  <em>None</em>
-                </MenuItem>
-              </Select>
-            </FormControl>)}
-            <Paper
-              component="form"
-              sx={{display: 'flex', 
-                  width: 250, 
-                  height: 30, 
-                  borderRadius: "15px", 
-                  backgroundColor: "#4B4B4B",
-                  border: "2px solid #adb5bd",
-                  ml: 2,
-                  }}
-              >
-              <IconButton type="button" sx={{pl: "10px"}} aria-label="search">
-                <SearchIcon  sx={{color: "#adb5bd", p: '0 0 0 5px'}}/>
-              </IconButton>
-              <InputBase placeholder="게시글 + 작성자" sx={{ ml: 1, flex: 1, color: "#adb5bd"}}/>
-            </Paper>
-          </FilterAndSearch>
-        </ListArea>
-      </ContentArea>
-    </BoardArea>
-    <Footer/>
-  </ThemeProvider>
+    <>
+      <BoardArea>
+        <TitleArea> 
+          <TitleBox>자유게시판</TitleBox>
+          <WriteButton>
+            <Link to="/board/write"  style={{textDecoration: "none"}}>
+              <FontAwesomeIcon icon={faPen}/>
+              글쓰기
+            </Link>
+          </WriteButton>
+        </TitleArea>
+        <ContentArea>
+          <SideBar title="BOARD"
+            mainColor="#4B4B4B"
+            subColor="#3C3C3C"
+            mainWidth="13%"
+            subWidth="90%"
+            items={boardItem}
+            paddingTop="0"
+            borderRadius="0 15px 15px 0"/>
+          <ListArea>
+            <ListBar>
+              <BarItemBox>
+                {barItem.map((item) => <BarItem key={item}>{item}</BarItem>)}
+              </BarItemBox>
+            </ListBar>
+            <ListBox>
+              <ListThem themList={itemContents}/>
+            </ListBox>
+            <PaginationArea>
+              <Pagination/>
+            </PaginationArea>
+            <FilterAndSearchForm>
+                {selectItems.map((item) =>
+                  <FilterSelect key={item}><option>{item}</option></FilterSelect>
+                )}
+                <SearchArea>
+                  <FontAwesomeIcon icon={ faMagnifyingGlass } style={{paddingRight: "0.5rem"}}/>
+                  <InputBase type="text" placeholder="게시글 + 작성자"/>
+                </SearchArea>
+            </FilterAndSearchForm>
+          </ListArea>
+        </ContentArea>
+      </BoardArea>
+      <Footer/>
+    </>
   )
 }
 
 const boardItem = ["자유게시판", "동아리 이모저모", "사전게시판", "정보게시판"];
 const barItem = ["제목", "작성자", "작성일", "조회수", "댓글"];
 const itemContents = ["공지", "자유게시판 공지입니다.", "문희조", "2022.08.03", "1234", "123"];
-const inputItem = ["전체기간", "게시글 + 작성자"];
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#4B4B4B",
-    },
-    secondary: {
-      main: '#FFFFFF',
-    },
-  },
-});
-
+const selectItems = ["전체기간", "게시물 + 작성자"];
 const BoardArea = styled.div`
-  height: 82.5vh;
+  height: 88vh;
 `;
 
 const TitleArea = styled.div`
@@ -128,7 +70,7 @@ const TitleArea = styled.div`
   display: flex;
   padding: 0 2rem 1rem 2rem;
   align-items: flex-end;
-  justify-content: space-between
+  justify-content: space-between;
 `;
 
 const TitleBox = styled.h2`
@@ -137,7 +79,7 @@ const TitleBox = styled.h2`
   font-size: 35px;
   display: flex;
   align-items: flex-end;
-  padding-left: 14%
+  padding-left: 14%;
 `;
 
 const ContentArea = styled.div`
@@ -150,7 +92,7 @@ const ListArea = styled.div`
   width: 87%;
   height: 100%;
   padding: 0 2rem 0 2rem;
-  box-sizing: border-box
+  box-sizing: border-box;
 `;
 
 const ListBar = styled.div`
@@ -190,12 +132,55 @@ const PaginationArea = styled.div`
   align-items: center;
 `;
 
-const FilterAndSearch = styled.div`
+const FilterAndSearchForm = styled.form`
   height: 10%;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+
+const FilterSelect = styled.select`
+  box-sizing: border-box;
+  width: 10rem;
+  background-color: #535353CC;
+  border: 1px solid #535353;
+  border-radius: 16px;
+  padding: 0.6rem 0.4rem 0.6rem 1.5rem;
+  &:first-of-type{
+    padding: 0.6rem 0.4rem 0.6rem 2.7rem;
+  };
+  color: #9B9B9B;
+  margin-right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const WriteButton = styled.button`
+  background-color: white;
+  height: 2rem; 
+  color: black; 
+  font-weight: 700; 
+  &:hover{backgroundColor: white};
+`;
+
+const SearchArea = styled.div`
+  
+  border: 2px solid #535353;
+  border-radius: 15px;
+  padding: 0.6rem 0.4rem 0.6rem 0.4rem;
+  background-color: #535353CC;
+`;
+
+const InputBase = styled.input`
+  box-sizing: border-box;
+  width: 85%;
+  border: none;
+  background-color: #535353CC;
+  &:focus{outline: none};
+  color: #9B9B9B;
+`;
+
 
 export default BulletinBoard;
 
