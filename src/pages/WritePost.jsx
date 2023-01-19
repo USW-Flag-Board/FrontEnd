@@ -9,6 +9,7 @@ const boardItems = [
   "사전게시판",
   "정보게시판",
 ];
+
 const buttonItems = [
   {
     id: 1,

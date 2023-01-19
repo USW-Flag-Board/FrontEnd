@@ -4,22 +4,6 @@ import {faCircleCheck} from "@fortawesome/free-solid-svg-icons";
 import {faCircle} from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
 
-const SortArea = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-evenly;
-  margin-top: 20px;
-`;
-
-const CheckArea = styled.label`
-  display: flex;
-  align-items: center;
-`;
-
-const CheckLabel = styled.p`
-  margin-left: 10px;
-`;
-
 const JoinTypeButton = (props) => {
   const [firstState, setFirstState] = useState(false);
   const [secondState, setSecondState] = useState(false);
@@ -107,5 +91,21 @@ const JoinTypeButton = (props) => {
     </SortArea>
   );
 };
+
+const SortArea = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 20px;
+`;
+
+const CheckArea = styled.label`
+  display: flex;
+  align-items: center;
+`;
+
+const CheckLabel = styled.p`
+  margin-left: 10px;
+`;
 
 export default JoinTypeButton;
