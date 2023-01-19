@@ -1,7 +1,6 @@
-import * as React from "react";
-import ListThem from "../component/ListThem";
-import SideBar from "../component/SideBar";
-import LikeButton from "../component/LikeButton";
+import ListThem from "../components/ListThem";
+import SideBar from "../components/SideBar";
+import LikeButton from "../components/LikeButton";
 import {styled} from "@mui/system";
 
 const BoardArea = styled("div")({
@@ -211,7 +210,6 @@ const DetailWritePage = () => {
               ></ReplyButton>
               <AddIcon>dd</AddIcon>
             </RelativeArea>
-
             <ReplyArea>
               <ReplyContent>여기에 댓글 컴포넌트 넣을 예정</ReplyContent>
             </ReplyArea>

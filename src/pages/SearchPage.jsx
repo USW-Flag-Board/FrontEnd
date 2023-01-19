@@ -1,8 +1,8 @@
 import React from 'react'
 import { styled } from '@mui/system';
 import Box from "@mui/material/Box";
-import SideBar from '../component/SideBar';
-import SearchList from '../component/SearchList';
+import SideBar from '../components/SideBar';
+import SearchList from '../components/SearchList';
 
 const searchItem = ["자유게시판(2)", "동아리 이모저모(0)"];
 const searchContent = ["'조던'"];

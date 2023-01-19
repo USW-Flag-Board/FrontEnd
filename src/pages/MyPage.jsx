@@ -1,7 +1,6 @@
-import * as React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
-import Grass from "../component/Grass";
+import Grass from "../components/Grass";
 import {styled} from "@mui/system";
 
 const PageArea = styled("div")({

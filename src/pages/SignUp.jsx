@@ -1,12 +1,11 @@
-import * as React from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUser} from "@fortawesome/free-regular-svg-icons";
-import {faLock} from "@fortawesome/free-solid-svg-icons";
-import {styled} from "@mui/material/styles";
-import {useState, useEffect} from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { styled } from "@mui/material/styles";
+import { useState } from "react";
 import axios from "axios";
-import InfoState from "../component/InfoState";
-import JoinTypeButton from "../component/JoinTypeButton";
+import InfoState from "../components/InfoState";
+import JoinTypeButton from "../components/JoinTypeButton";
 
 const PageArea = styled("div")({
   width: "100%",
@@ -403,3 +402,5 @@ export default function SignUp() {
     </PageArea>
   );
 }
+
+
