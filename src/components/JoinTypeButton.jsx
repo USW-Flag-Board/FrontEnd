@@ -1,9 +1,8 @@
-import * as React from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCircleCheck} from "@fortawesome/free-solid-svg-icons";
-import {faCircle} from "@fortawesome/free-regular-svg-icons";
-import {useState} from "react";
-import {styled} from "@mui/system";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { faCircle } from "@fortawesome/free-regular-svg-icons";
+import { styled } from "@mui/system";
+import { useState } from "react";
 
 const CheckedButton = styled(FontAwesomeIcon)({
   filter:

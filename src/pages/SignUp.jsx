@@ -1,150 +1,58 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { styled } from "@mui/material/styles";
+import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
 import InfoState from "../components/InfoState";
 import JoinTypeButton from "../components/JoinTypeButton";
 
-const PageArea = styled("div")({
-  width: "100%",
-  height: "100vh",
-  alignItems: "center",
-  display: "flex",
-  justifyContent: "center",
-});
-
-const SignUpArea = styled("div")({
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  display: "flex",
-  width: 400,
-});
-
-const WriteArea = styled("input")({
-  fontSize: "16px",
-  color: "white",
-  paddingRight: 30,
-  paddingLeft: 20,
-  height: 60,
-  width: 350,
-  backgroundColor: "#6c6c6c",
-  borderRadius: 28,
-  border: 0,
-  outline: "none",
-  margin: 20,
-  marginTop: 10,
-  marginBottom: 20,
-  transition: "0.2s",
-  ":hover": {
-    transition: "0.2s",
-    backgroundColor: "#575757",
+const specialized = [
+  {
+    label: "전공을 선택하세요",
+    value: "전공을 선택하세요",
   },
-  "::placeholder": {
-    color: "#ffffffcc",
+  {
+    label: "국어국문",
+    value: "국어국문",
   },
-});
-
-const AddIcon = styled(FontAwesomeIcon)({
-  color: "white",
-  position: "absolute",
-  left: 390,
-  top: 42,
-});
-
-const RelativeArea = styled("div")({
-  position: "relative",
-});
-
-const SuwonEmail = styled("p")({
-  color: "white",
-  position: "absolute",
-  left: 290,
-  top: 42,
-});
-
-const AccountButton = styled("button")({
-  backgroundColor: "#378975",
-  color: "#ffffff",
-  marginTop: 30,
-  marginBottom: 30,
-  borderRadius: 28,
-  height: 60,
-  width: 400,
-  border: 0,
-  transition: "0.2s",
-  ":hover": {
-    transition: "0.2s",
-    backgroundColor: "#38b597",
+  {
+    label: "컴퓨터SW",
+    value: "컴퓨터SW",
   },
-});
+];
 
-const SelectSpecialize = styled("select")({
-  color: "white",
-  paddingRight: 30,
-  paddingLeft: 20,
-  height: 60,
-  width: 400,
-  backgroundColor: "#6c6c6c",
-  borderRadius: 28,
-  border: 0,
-  outline: "none",
-  margin: 20,
-  marginTop: 10,
-  marginBottom: 20,
-  transition: "0.2s",
-  ":hover": {
-    transition: "0.2s",
-    backgroundColor: "#575757",
-  },
-});
+// eslint-disable-next-line
+const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+const korExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
+const numExp = /[0-9]/g;
+const spaceExp = /\s/;
+const engExp = /[a-zA-Z]/g;
 
-export default function SignUp() {
-  let [idStateMessage, setIdStateMessage] = useState(" ");
-  let [passwordMessage, setPasswordMessage] = useState("");
-  let [passwordVerifyMessage, setPasswordVerifyMessage] = useState("");
-  let [emailStateMessage, setEmailStateMessage] = useState("");
-  let [nameStateMessage, setNameStateMessage] = useState("");
-  let [majorStateMessage, setMajorStateMessage] = useState("");
-  let [studentIdStateMessage, setStudentIdStateMessage] = useState("");
-  let [loginId, setLoginId] = useState("");
-  let [email, setEmail] = useState("");
-  let [originEmail, setOriginEmail] = useState("");
-  let [joinType, setJoinType] = useState("");
-  let [major, setMajor] = useState("");
-  let [name, setName] = useState("");
-  let [password, setPassword] = useState("");
-  let [passwordVerify, setPasswordVerify] = useState("");
-  let [studentId, setStudentId] = useState("");
-  // eslint-disable-next-line
-  const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
-  const korExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
-  const numExp = /[0-9]/g;
-  const spaceExp = /\s/;
-  const engExp = /[a-zA-Z]/g;
+const SignUp = () => {
+  const [idStateMessage, setIdStateMessage] = useState(" ");
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [passwordVerifyMessage, setPasswordVerifyMessage] = useState("");
+  const [emailStateMessage, setEmailStateMessage] = useState("");
+  const [nameStateMessage, setNameStateMessage] = useState("");
+  const [majorStateMessage, setMajorStateMessage] = useState("");
+  const [studentIdStateMessage, setStudentIdStateMessage] = useState("");
+  const [loginId, setLoginId] = useState("");
+  const [email, setEmail] = useState("");
+  const [originEmail, setOriginEmail] = useState("");
+  const [joinType, setJoinType] = useState("");
+  const [major, setMajor] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordVerify, setPasswordVerify] = useState("");
+  const [studentId, setStudentId] = useState("");
 
-  function getValue(text) {
+
+  const getValue = (text) => {
     setJoinType(text);
   }
 
-  const specialized = [
-    {
-      label: "전공을 선택하세요",
-      value: "전공을 선택하세요",
-    },
-    {
-      label: "국어국문",
-      value: "국어국문",
-    },
-    {
-      label: "컴퓨터SW",
-      value: "컴퓨터SW",
-    },
-  ];
-
-  function Sign() {
+  const Sign = () => {
     const suwonEmail = originEmail + "@suwon.ac.kr";
     setEmail(suwonEmail);
     IdValid();
@@ -157,7 +65,7 @@ export default function SignUp() {
     SignInfo();
   }
 
-  function IdValid() {
+  const IdValid = () => {
     if (loginId === "") {
       setIdStateMessage("아이디를 정확히 입력해주세요.");
     } else if (regExp.test(loginId)) {
@@ -180,7 +88,7 @@ export default function SignUp() {
     }
   }
 
-  function PasswordValid() {
+  const PasswordValid = () => {
     if (password === "") {
       setPasswordMessage("비밀번호를 정확히 입력해주세요.");
     } else if (password.length < 8 || password.length > 20) {
@@ -198,7 +106,7 @@ export default function SignUp() {
     }
   }
 
-  function PasswordVerifyValid() {
+  const PasswordVerifyValid = () => {
     if (passwordVerify === "") {
       setPasswordVerifyMessage("비밀번호 확인을 입력해주세요.");
     } else if (password !== passwordVerify) {
@@ -208,7 +116,7 @@ export default function SignUp() {
     }
   }
 
-  function EmailValid() {
+  const EmailValid = () => {
     if (originEmail === "") {
       setEmailStateMessage("이메일을 정확하게 입력하세요.");
     } else if (regExp.test(originEmail)) {
@@ -231,7 +139,7 @@ export default function SignUp() {
     }
   }
 
-  function NameValid() {
+  const NameValid = () => {
     if (name === "") {
       setNameStateMessage("이름을 정확히 입력해주세요.");
     } else if (regExp.test(name)) {
@@ -245,7 +153,7 @@ export default function SignUp() {
     }
   }
 
-  function MajorValid() {
+  const MajorValid = () => {
     if (major === "" || major === "전공을 선택하세요") {
       setMajorStateMessage("전공을 선택해주세요.");
     } else {
@@ -253,7 +161,7 @@ export default function SignUp() {
     }
   }
 
-  function StudentIdValid() {
+  const StudentIdValid = () => {
     if (studentId === "") {
       setStudentIdStateMessage("학번을 입력해주세요.");
     } else if (regExp.test(studentId)) {
@@ -271,7 +179,7 @@ export default function SignUp() {
     }
   }
 
-  function SignInfo() {
+  const SignInfo = () =>{
     const data = {
       email,
       joinType,
@@ -327,7 +235,7 @@ export default function SignUp() {
               setLoginId(e.target.value);
             }}
           />
-          <AddIcon icon={faUser} />
+          <FontAwesomeIcon icon={faUser} style={{ color: "white", position: "absolute", left: "390px", top: "42px"}}/>
         </RelativeArea>
         <RelativeArea>
           <InfoState message={passwordMessage} />
@@ -338,7 +246,7 @@ export default function SignUp() {
               setPassword(e.target.value);
             }}
           />
-          <AddIcon icon={faLock} />
+          <FontAwesomeIcon icon={faLock} style={{ color: "white", position: "absolute", left: "390px", top: "42px"}}/>
         </RelativeArea>
         <RelativeArea>
           <InfoState message={passwordVerifyMessage} />
@@ -349,7 +257,7 @@ export default function SignUp() {
               setPasswordVerify(e.target.value);
             }}
           />
-          <AddIcon icon={faLock} />
+          <FontAwesomeIcon icon={faLock} style={{ color: "white", position: "absolute", left: "390px", top: "42px"}}/>
         </RelativeArea>
         <RelativeArea>
           <InfoState message={emailStateMessage} />
@@ -403,4 +311,92 @@ export default function SignUp() {
   );
 }
 
+const PageArea = styled.div`
+  width: 100%;
+  height: 100vh;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+`;
+
+const SignUpArea = styled.div`
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  width: 400px;
+`;
+
+const WriteArea = styled.input`
+  font-size: 16px;
+  color: white;
+  padding-right: 30px;
+  padding-left: 20px;
+  height: 60px;
+  width: 350px;
+  background-color: #6c6c6c;
+  border-radius: 28px;
+  border: 0;
+  outline: none;
+  margin: 20px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  transition: 0.2s;
+  :hover{
+    transition: 0.2s;
+    background-color: #575757;
+  };
+  ::placeholder{
+    color: #ffffffcc;
+  };
+`;
+
+const RelativeArea = styled.div`
+  position: relative;
+`;
+
+const SuwonEmail = styled.p`
+  color: white;
+  position: absolute;
+  left: 290px;
+  top: 42px;
+`;
+
+const AccountButton = styled.button`
+  background-color: #378975;
+  color: #ffffff;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-radius: 28px;
+  height: 60px;
+  width: 400px;
+  border: 0;
+  transition: 0.2s;
+  :hover{
+    transition: 0.2s;
+    background-color: #38b597;
+  };
+`;
+
+const SelectSpecialize = styled.select`
+  color: white;
+  padding-right: 30px;
+  padding-left: 20px;
+  height: 60px;
+  width: 400px;
+  background-color: #6c6c6c;
+  border-radius: 28px;
+  border: 0;
+  outline: none;
+  margin: 20px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  transition: 0.2s;
+  :hover{
+    transition: 0.2s;
+    background-color: #575757;
+  };
+`;
+
+export default SignUp;
 
