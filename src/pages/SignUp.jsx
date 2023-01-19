@@ -6,6 +6,7 @@ import { useState } from "react";
 import axios from "axios";
 import InfoState from "../components/InfoState";
 import JoinTypeButton from "../components/JoinTypeButton";
+import {useState} from "react";
 
 const specialized = [
   {
@@ -47,10 +48,9 @@ const SignUp = () => {
   const [passwordVerify, setPasswordVerify] = useState("");
   const [studentId, setStudentId] = useState("");
 
-
   const getValue = (text) => {
     setJoinType(text);
-  }
+  };
 
   const Sign = () => {
     const suwonEmail = originEmail + "@suwon.ac.kr";
@@ -63,7 +63,7 @@ const SignUp = () => {
     MajorValid();
     StudentIdValid();
     SignInfo();
-  }
+  };
 
   const IdValid = () => {
     if (loginId === "") {
@@ -86,7 +86,7 @@ const SignUp = () => {
           }
         });
     }
-  }
+  };
 
   const PasswordValid = () => {
     if (password === "") {
@@ -104,7 +104,7 @@ const SignUp = () => {
     } else {
       setPasswordMessage("사용 가능한 비밀번호입니다.");
     }
-  }
+  };
 
   const PasswordVerifyValid = () => {
     if (passwordVerify === "") {
@@ -114,7 +114,7 @@ const SignUp = () => {
     } else {
       setPasswordVerifyMessage("비밀번호와 일치합니다.");
     }
-  }
+  };
 
   const EmailValid = () => {
     if (originEmail === "") {
@@ -137,7 +137,7 @@ const SignUp = () => {
           }
         });
     }
-  }
+  };
 
   const NameValid = () => {
     if (name === "") {
@@ -151,7 +151,7 @@ const SignUp = () => {
     } else {
       setNameStateMessage("사용 가능한 이름입니다.");
     }
-  }
+  };
 
   const MajorValid = () => {
     if (major === "" || major === "전공을 선택하세요") {
@@ -159,7 +159,7 @@ const SignUp = () => {
     } else {
       setMajorStateMessage("");
     }
-  }
+  };
 
   const StudentIdValid = () => {
     if (studentId === "") {
@@ -177,9 +177,9 @@ const SignUp = () => {
     } else {
       setStudentIdStateMessage("");
     }
-  }
+  };
 
-  const SignInfo = () =>{
+  const SignInfo = () => {
     const data = {
       email,
       joinType,
@@ -214,7 +214,7 @@ const SignUp = () => {
           }
         });
     }
-  }
+  };
 
   return (
     <PageArea>
@@ -309,7 +309,54 @@ const SignUp = () => {
       </SignUpArea>
     </PageArea>
   );
-}
+};
+
+const PageArea = styled("div")({
+  width: "100%",
+  height: "100vh",
+  alignItems: "center",
+  display: "flex",
+  justifyContent: "center",
+});
+
+const SignUpArea = styled("div")({
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  display: "flex",
+  width: 400,
+});
+
+const WriteArea = styled("input")({
+  fontSize: "16px",
+  color: "white",
+  paddingRight: 30,
+  paddingLeft: 20,
+  height: 60,
+  width: 350,
+  backgroundColor: "#6c6c6c",
+  borderRadius: 28,
+  border: 0,
+  outline: "none",
+  margin: 20,
+  marginTop: 10,
+  marginBottom: 20,
+  transition: "0.2s",
+  ":hover": {
+    transition: "0.2s",
+    backgroundColor: "#575757",
+  },
+  "::placeholder": {
+    color: "#ffffffcc",
+  },
+});
+
+const AddIcon = styled(FontAwesomeIcon)({
+  color: "white",
+  position: "absolute",
+  left: 390,
+  top: 42,
+});
 
 const PageArea = styled.div`
   width: 100%;
@@ -399,4 +446,3 @@ const SelectSpecialize = styled.select`
 `;
 
 export default SignUp;
-
