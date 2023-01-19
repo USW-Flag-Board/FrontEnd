@@ -1,12 +1,11 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { faLock } from "@fortawesome/free-solid-svg-icons";
+import {useState} from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faUser} from "@fortawesome/free-regular-svg-icons";
+import {faLock} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import { useState } from "react";
 import axios from "axios";
 import InfoState from "../components/InfoState";
 import JoinTypeButton from "../components/JoinTypeButton";
-import {useState} from "react";
 
 const specialized = [
   {
@@ -235,7 +234,15 @@ const SignUp = () => {
               setLoginId(e.target.value);
             }}
           />
-          <FontAwesomeIcon icon={faUser} style={{ color: "white", position: "absolute", left: "390px", top: "42px"}}/>
+          <FontAwesomeIcon
+            icon={faUser}
+            style={{
+              color: "white",
+              position: "absolute",
+              left: "390px",
+              top: "42px",
+            }}
+          />
         </RelativeArea>
         <RelativeArea>
           <InfoState message={passwordMessage} />
@@ -246,7 +253,15 @@ const SignUp = () => {
               setPassword(e.target.value);
             }}
           />
-          <FontAwesomeIcon icon={faLock} style={{ color: "white", position: "absolute", left: "390px", top: "42px"}}/>
+          <FontAwesomeIcon
+            icon={faLock}
+            style={{
+              color: "white",
+              position: "absolute",
+              left: "390px",
+              top: "42px",
+            }}
+          />
         </RelativeArea>
         <RelativeArea>
           <InfoState message={passwordVerifyMessage} />
@@ -257,7 +272,15 @@ const SignUp = () => {
               setPasswordVerify(e.target.value);
             }}
           />
-          <FontAwesomeIcon icon={faLock} style={{ color: "white", position: "absolute", left: "390px", top: "42px"}}/>
+          <FontAwesomeIcon
+            icon={faLock}
+            style={{
+              color: "white",
+              position: "absolute",
+              left: "390px",
+              top: "42px",
+            }}
+          />
         </RelativeArea>
         <RelativeArea>
           <InfoState message={emailStateMessage} />
@@ -311,53 +334,6 @@ const SignUp = () => {
   );
 };
 
-const PageArea = styled("div")({
-  width: "100%",
-  height: "100vh",
-  alignItems: "center",
-  display: "flex",
-  justifyContent: "center",
-});
-
-const SignUpArea = styled("div")({
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  display: "flex",
-  width: 400,
-});
-
-const WriteArea = styled("input")({
-  fontSize: "16px",
-  color: "white",
-  paddingRight: 30,
-  paddingLeft: 20,
-  height: 60,
-  width: 350,
-  backgroundColor: "#6c6c6c",
-  borderRadius: 28,
-  border: 0,
-  outline: "none",
-  margin: 20,
-  marginTop: 10,
-  marginBottom: 20,
-  transition: "0.2s",
-  ":hover": {
-    transition: "0.2s",
-    backgroundColor: "#575757",
-  },
-  "::placeholder": {
-    color: "#ffffffcc",
-  },
-});
-
-const AddIcon = styled(FontAwesomeIcon)({
-  color: "white",
-  position: "absolute",
-  left: 390,
-  top: 42,
-});
-
 const PageArea = styled.div`
   width: 100%;
   height: 100vh;
@@ -389,13 +365,13 @@ const WriteArea = styled.input`
   margin-top: 10px;
   margin-bottom: 20px;
   transition: 0.2s;
-  :hover{
+  :hover {
     transition: 0.2s;
     background-color: #575757;
-  };
-  ::placeholder{
+  }
+  ::placeholder {
     color: #ffffffcc;
-  };
+  }
 `;
 
 const RelativeArea = styled.div`
@@ -419,10 +395,10 @@ const AccountButton = styled.button`
   width: 400px;
   border: 0;
   transition: 0.2s;
-  :hover{
+  :hover {
     transition: 0.2s;
     background-color: #38b597;
-  };
+  }
 `;
 
 const SelectSpecialize = styled.select`
@@ -439,10 +415,10 @@ const SelectSpecialize = styled.select`
   margin-top: 10px;
   margin-bottom: 20px;
   transition: 0.2s;
-  :hover{
+  :hover {
     transition: 0.2s;
     background-color: #575757;
-  };
+  }
 `;
 
 export default SignUp;

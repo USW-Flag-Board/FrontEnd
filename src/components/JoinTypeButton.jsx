@@ -1,40 +1,29 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
-import { faCircle } from "@fortawesome/free-regular-svg-icons";
-import { styled } from "@mui/system";
-import { useState } from "react";
+import {useState} from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCircleCheck} from "@fortawesome/free-solid-svg-icons";
+import {faCircle} from "@fortawesome/free-regular-svg-icons";
+import styled from "styled-components";
 
-const CheckedButton = styled(FontAwesomeIcon)({
-  filter:
-    "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
-  transition: "opacity 0.2s",
-});
+const SortArea = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 20px;
+`;
 
-const UnCheckedButton = styled(FontAwesomeIcon)({
-  filter:
-    "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
-  transition: "opacity 0.2s",
-});
+const CheckArea = styled.label`
+  display: flex;
+  align-items: center;
+`;
 
-const SortArea = styled("div")({
-  width: "100%",
-  display: "flex",
-  justifyContent: "space-evenly",
-  marginTop: 20,
-});
-
-const CheckArea = styled("label")({
-  display: "flex",
-  alignItems: "center",
-});
-
-const CheckLabel = styled("p")({
-  marginLeft: 10,
-});
+const CheckLabel = styled.p`
+  margin-left: 10px;
+`;
 
 const JoinTypeButton = (props) => {
   const [firstState, setFirstState] = useState(false);
   const [secondState, setSecondState] = useState(false);
+
   const Checked = (type) => {
     if (type === 1) {
       if (firstState) {
@@ -66,9 +55,25 @@ const JoinTypeButton = (props) => {
       <CheckArea>
         <div style={{display: "inline-block"}}>
           {firstState ? (
-            <CheckedButton icon={faCircleCheck} onClick={() => Checked(1)} />
+            <FontAwesomeIcon
+              icon={faCircleCheck}
+              style={{
+                filter:
+                  "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
+                transition: "opacity 0.2s",
+              }}
+              onClick={() => Checked(1)}
+            />
           ) : (
-            <UnCheckedButton icon={faCircle} onClick={() => Checked(1)} />
+            <FontAwesomeIcon
+              icon={faCircle}
+              style={{
+                filter:
+                  "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
+                transition: "opacity 0.2s",
+              }}
+              onClick={() => Checked(1)}
+            />
           )}
         </div>
         <CheckLabel>FLAG 동아리원</CheckLabel>
@@ -76,9 +81,25 @@ const JoinTypeButton = (props) => {
       <CheckArea>
         <div style={{display: "inline-block"}}>
           {secondState ? (
-            <CheckedButton icon={faCircleCheck} onClick={() => Checked(2)} />
+            <FontAwesomeIcon
+              icon={faCircleCheck}
+              style={{
+                filter:
+                  "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
+                transition: "opacity 0.2s",
+              }}
+              onClick={() => Checked(2)}
+            />
           ) : (
-            <UnCheckedButton icon={faCircle} onClick={() => Checked(2)} />
+            <FontAwesomeIcon
+              icon={faCircle}
+              style={{
+                filter:
+                  "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
+                transition: "opacity 0.2s",
+              }}
+              onClick={() => Checked(2)}
+            />
           )}
         </div>
         <CheckLabel>일반유저</CheckLabel>

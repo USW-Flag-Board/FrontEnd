@@ -3,17 +3,17 @@ import ListThem from "../components/ListThem";
 import SideBar from "../components/SideBar";
 import LikeButton from "../components/LikeButton";
 
-const DetailWritePage = () => {
-  const itemContents = [
-    "공지",
-    "자유게시판 공지입니다.",
-    "문희조",
-    "2022.08.03",
-    "1234",
-    "123",
-  ];
-  const boardItem = ["스터디", "프로젝트"];
+const itemContents = [
+  "공지",
+  "자유게시판 공지입니다.",
+  "문희조",
+  "2022.08.03",
+  "1234",
+  "123",
+];
+const boardItem = ["스터디", "프로젝트"];
 
+const DetailWritePage = () => {
   return (
     <BoardArea>
       <TitleArea>
@@ -163,7 +163,7 @@ const PostContentTitle = styled.h2`
   margin-bottom: 10px;
 `;
 
-const PostContent = styled.div``
+const PostContent = styled.div``;
 
 const PostViews = styled.div`
   margintop: 20px;
@@ -194,9 +194,9 @@ const ReplyButton = styled.input`
   padding-left: 60px;
   padding-right: 60px;
   color: white;
-  ::placeholder{
+  ::placeholder {
     color: #ffffffcc;
-  };
+  }
 `;
 
 const AddIcon = styled.label`

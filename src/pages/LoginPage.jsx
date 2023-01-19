@@ -1,10 +1,10 @@
+import {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
 import {faLock} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import axios from "axios";
 import CheckButton from "../components/CheckButton";
-import {useState} from "react";
 
 const LoginPage = () => {
   let [loginId, setLoginId] = useState("");

@@ -5,53 +5,24 @@ import SearchList from "../components/SearchList";
 
 const searchItem = ["자유게시판(2)", "동아리 이모저모(0)"];
 const searchContent = ["'조던'"];
-const allUser = ["조던1", "조던2", "조던 범고래", "조던던", "조던일걸", "조던아님" ];
-const itemContents = [
-    "1",
-    "조던.",
-    "문희조",
-    "2022.08.03",
-    "1234",
-    "123",
-    
-  ];
+const allUser = [
+  "조던1",
+  "조던2",
+  "조던 범고래",
+  "조던던",
+  "조던일걸",
+  "조던아님",
+];
+const itemContents = ["1", "조던.", "문희조", "2022.08.03", "1234", "123"];
 
 const SearchPage = () => {
-    return (
-      <>
-        <Main>
-            <SearchResults>
-                <br></br>
-                {searchContent} 검색결과
-            </SearchResults>
-            <Content>
-            <SideBar title={searchContent}
-                    mainColor="#4B4B4B"
-                    subColor="#3C3C3C"
-                    mainWidth="210px"
-                    subWidth="90%"
-                    items={searchItem}
-                    paddingTop="0"
-                    borderRadius="0 15px 15px 0"/>
-                <MainPost>
-                <SearchPost/>
-                <SearchPost/>
-                <BotomBox>
-                      <NormalBox>
-                        <User/>
-                      </NormalBox>
-                      <NormalBox>
-                        <PopularPosts/>
-                      </NormalBox>
-                    </BotomBox>
-                    
-                </MainPost>
-            </Content>
-        </Main>
-      </>
-    )
-}
-
+  return (
+    <>
+      <Main>
+        <SearchResults>
+          <br></br>
+          {searchContent} 검색결과
+        </SearchResults>
         <Content>
           <SideBar
             title={searchContent}
@@ -85,101 +56,106 @@ const PopularPosts = () => {
   return (
     <Box
       sx={{
-        height:"30vh",
-      }}>
-        <Box
-        sx={{
-          height:"40px",
-          color:"white",
-          
-        }}>
-          <TitleBox>{searchContent} 인기글</TitleBox>
-        </Box>
-        <Box
-          sx={{
-            width:"100",
-            height:"100",
-            display:"flex",
-            flexWrap: "wrap",
-            justifyContent: "spacearound",
-            padding:"5",
-          }}>
-          <PopularBox>
-            <PopularList></PopularList>
-            <PopularList></PopularList>
-          </PopularBox>
-          </Box>
-      </Box>
-    );
-  }
-  const NameField = styled('div')({
-    textAlign: "right",
-    paddingRight: "1vw",
-})
-
-const PopularList = () =>{
-    return(
+        height: "30vh",
+      }}
+    >
       <Box
+        sx={{
+          height: "40px",
+          color: "white",
+        }}
+      >
+        <TitleBox>{searchContent} 인기글</TitleBox>
+      </Box>
+      <Box
+        sx={{
+          width: "100",
+          height: "100",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "spacearound",
+          padding: "5",
+        }}
+      >
+        <PopularBox>
+          <PopularList></PopularList>
+          <PopularList></PopularList>
+        </PopularBox>
+      </Box>
+    </Box>
+  );
+};
+const NameField = styled("div")({
+  textAlign: "right",
+  paddingRight: "1vw",
+});
+
+const PopularList = () => {
+  return (
+    <Box
       sx={{
-        width:"auto",
-        height:"auto",
-        backgroundColor:"#3b3b3b",
-        color:"white",
-        marginRight:'5px',
-        marginLeft:'5px',
-        borderRadius:"8px",
-      }}>
-        <Box
+        width: "auto",
+        height: "auto",
+        backgroundColor: "#3b3b3b",
+        color: "white",
+        marginRight: "5px",
+        marginLeft: "5px",
+        borderRadius: "8px",
+      }}
+    >
+      <Box
         sx={{
           paddingLeft: "5px",
           lineHeight: "30px",
-        }}>
-            <h3>조던뭐시기</h3>
-            <p>
-              abcdefghijkabcdefghijkabcdefghijk
-              abcdefghijkabcdefghijkabcdefghijk
-              </p>
-            <NameField>
-              <h4>이수빈</h4>
-            </NameField>
-        </Box>
+        }}
+      >
+        <h3>조던뭐시기</h3>
+        <p>
+          abcdefghijkabcdefghijkabcdefghijk abcdefghijkabcdefghijkabcdefghijk
+        </p>
+        <NameField>
+          <h4>이수빈</h4>
+        </NameField>
       </Box>
     </Box>
   );
 };
 
-  const User = () => {
-    return (
-        <Box>
-            <TitleBox>
-                유저
-            </TitleBox>
-            <Box
-                sx={{
-                width:"35vw",
-                height:"100",
-                display:"flex",
-                flexWrap: "wrap",
-                marginRight:'5px',
-                marginLeft:'5px',
-                paddingLeft:'2',
-                justifyContent: "spacearound",       
-                
-              }}>
-              {allUser.map((i) => (
-                <SearchUser>
-                    <img className="logo" 
-                      src="img/logo.JPG" 
-                      style={{height: "70%", width: "30%", margin: "10px", borderRadius:"7px",}}/>
-                      {i}
-                </SearchUser>
-              ))}
-              </Box>
-          </Box>
-        );
-  }
-
-  const SearchPost = () =>{
+const User = () => {
+  return (
+    <Box>
+      <TitleBox>유저</TitleBox>
+      <Box
+        sx={{
+          width: "35vw",
+          height: "100",
+          display: "flex",
+          flexWrap: "wrap",
+          marginRight: "5px",
+          marginLeft: "5px",
+          paddingLeft: "2",
+          justifyContent: "spacearound",
+        }}
+      >
+        {allUser.map((i) => (
+          <SearchUser>
+            <img
+              className="logo"
+              src="img/logo.JPG"
+              style={{
+                height: "70%",
+                width: "30%",
+                margin: "10px",
+                borderRadius: "7px",
+              }}
+            />
+            {i}
+          </SearchUser>
+        ))}
+      </Box>
+    </Box>
+  );
+};
 
 const SearchPost = () => {
   return (

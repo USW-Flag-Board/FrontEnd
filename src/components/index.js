@@ -8,4 +8,3 @@ export {default as ListThem} from "./ListThem";
 export {default as Pagination} from "./Pagination";
 export {default as SearchList} from "./SearchList";
 export {default as SideBar} from "./SideBar";
-export {default as test} from "./test";
