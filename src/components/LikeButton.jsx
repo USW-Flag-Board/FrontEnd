@@ -1,9 +1,8 @@
-import * as React from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faHeart as regularHeart} from "@fortawesome/free-regular-svg-icons";
-import {faHeart as solidHeart} from "@fortawesome/free-solid-svg-icons";
-import {useState} from "react";
-import {styled} from "@mui/system";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
+import { styled } from "@mui/system";
+import { useState } from "react";
 
 const LikeButtonFullin = styled(FontAwesomeIcon)({
   color: "red",

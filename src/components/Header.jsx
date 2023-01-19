@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
+const sections = ["FLAG", "BOARD", "프로그램 모집", "NOTICE"];
+
 const Header = () => {
   return (
       <HomeHeader>
@@ -42,8 +44,6 @@ const Header = () => {
       </HomeHeader>
   );
 }
-
-const sections = ["FLAG", "BOARD", "프로그램 모집", "NOTICE"];
 
 const HomeHeader = styled.div`
   box-sizing: border-box;
