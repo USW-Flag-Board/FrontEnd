@@ -17,11 +17,15 @@ const UnCheckedButton = styled(FontAwesomeIcon)({
   transition: "opacity 0.2s",
 });
 
-const CheckButton = () => {
+const CheckButton = (props) => {
   const [state, setState] = useState(false);
 
   const Checked = () => {
-    state ? setState(false) : setState(true);
+    if (state) {
+      setState(false);
+    } else {
+      setState(true);
+    }
   };
 
   return (
