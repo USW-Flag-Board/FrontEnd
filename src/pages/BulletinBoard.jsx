@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { SideBar, Footer, ListThem, Pagination } from '../components/';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { SideBar, Footer, ListThem, Pagination } from '../components/';
+
 
 const BulletinBoard = () => {
   return (

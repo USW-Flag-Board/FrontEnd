@@ -1,5 +1,5 @@
+import styled from 'styled-components';
 import React, {useState} from 'react';
-import { styled } from '@mui/system';
 
 const ChangePw = () => {
     
@@ -7,15 +7,12 @@ const [password,setPassword] = useState('');
 const [passwordCheck,setPasswordCheck] = useState('');
 const [passwordError,setPasswordError] = useState(false);
 
-
 const onSubmit = (e) => {
     e.preventDefault();
 
     if(password !== passwordCheck){
         return setPasswordError(true);
     }
-
-
 };
 
 const onChangePassword = (e) => {
@@ -26,7 +23,6 @@ const onChangePasswordChk = (e) => {
     setPasswordError(e.target.value !== password);
     setPasswordCheck(e.target.value);
 };
-
 
     return(
     <>
@@ -41,98 +37,96 @@ const onChangePasswordChk = (e) => {
                 </Pwfield>
             </Pwbox>
         </Mainbox>
-    
     </>
-
     );
 }
 
+const Mainbox = styled.div`
+    display: flex;
+    width: auto;
+    height: auto;
+    justify-content: center;
+    flex-direction: column; 
+    align-items: center;
+  `;
+
+const Pwbox = styled.div`
+    display: flex;
+    width: 53%;
+    height: 26vh;
+    margin-top: 3vh;
+    flex-direction: column; 
+    align-items: center;
+    border: 1px solid gray;
+    border-radius:"2.5vh";
+`;
+
+const Box = styled.div`
+    display: flex;
+    margin: 4px;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    font-size: 1rem;
+`;
+
+const TextBox = styled.div`
+    width: 110px;
+    align-items: center;
+    text-align: left;
+    font-size: 1rem;
+`;
+
+const PwChange = styled.input`
+    width: 16vw;
+    height: 5vh;
+    margin-left: 3vw;
+    padding-left: 2vw;
+    background-color: transparent;
+    border: 2px solid gray;
+    border-radius:"2vh";
+    font-size: 1rem;
+    color: white;
+`;
+
+const Pwfield = styled.div`
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 40vw;
+    height: 15vh;
+    font-size: 1rem;
+    margin-top: 5.5vh;
+
+`;
+
+const PwTitle = styled.div`
+    display: flex;
+    width: 500px;
+    height: 55px;
+    margin-top: 17vh;
+    margin-right: 15%;
+    font-size: 2.2rem;
+    font-weight: 800;
+  `;
+
+  const ErrorBox = styled.div`
+    width:200px;
+    margin-left: 2vw;
+    font-size: 0.8rem;
+    align-items: center;
+  `;
+
+  const SaveButton =  styled.button`
+    width:20%;
+    height: 50%;
+    background: gray;
+    color: white;
+    border-radius:"1vh";
+    border: 2px solid gray;
+    margin-left: 5%;
+    margin-top: 1%;
+  `;
+
 export default ChangePw;
-
-const Mainbox = styled("div")({
-    display: 'flex',
-    width: 'auto',
-    height: 'auto',
-    justifyContent: 'center',
-    flexDirection: 'column', 
-    alignItems: 'center',
-  });
-
-const Pwbox = styled("div")({
-    display: 'flex',
-    width: '53%',
-    height: '26vh',
-    marginTop: '3vh',
-    flexDirection: 'column', 
-    alignItems: 'center',
-    border: '1px solid gray',
-    borderRadius:"2.5vh",
-});
-
-const Box = styled("div")({
-    display: 'flex',
-    margin: '4px',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'left',
-    fontSize: '1rem',
-});
-
-const TextBox = styled("div")({
-    width: '110px',
-    alignItems: 'center',
-    textAlign: 'left',
-    fontSize: '1rem',
-});
-
-const PwChange = styled("input")({
-    width: '16vw',
-    height: '5vh',
-    marginLeft: '3vw',
-    paddingLeft: '2vw',
-    backgroundColor: 'transparent',
-    border: '2px solid gray',
-    borderRadius:"2vh",
-    fontSize: '1rem',
-    color: 'white',
-})
-
-const Pwfield = styled("div")({
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: '40vw',
-    height: '15vh',
-    fontSize: '1rem',
-    marginTop: '5.5vh',
-
-});
-
-const PwTitle = styled("div")({
-    display: 'flex',
-    width: '500px',
-    height: '55px',
-    marginTop: '17vh',
-    marginRight: '15%',
-    fontSize: '2.2rem',
-    fontWeight: '800',
-  });
-
-  const ErrorBox = styled("div")({
-    width:'200px',
-    marginLeft: '2vw',
-    fontSize: '0.8rem',
-    alignItems: 'center',
-  });
-
-  const SaveButton = styled("button")({
-    width:'20%',
-    height: '50%',
-    background: 'gray',
-    color: 'white',
-    borderRadius:"1vh",
-    border: '2px solid gray',
-    marginLeft: '5%',
-    marginTop: '1%',
-  });
