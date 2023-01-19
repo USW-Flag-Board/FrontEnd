@@ -1,9 +1,7 @@
-import React from "react";
 import { styled } from "@mui/system";
 
 const SearchList = (props) => {
   return (
-    
     <ListThemBox>
       <ItemBox>
         {props.themList.map((item) => (
@@ -13,8 +11,6 @@ const SearchList = (props) => {
     </ListThemBox>
   );
 };
-
-export default SearchList;
 
 const ListThemBox = styled("div")({
   display: "flex",
@@ -55,3 +51,5 @@ const ListItem = styled("div")({
   "&:nth-of-type(2)": { width: "31%" },
   "&:nth-of-type(6)": { paddingRight: "24%" },
 });
+
+export default SearchList;

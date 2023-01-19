@@ -17,43 +17,39 @@ const itemContents = [
     
   ];
 
-
 const SearchPage = () => {
-    
     return (
-        <>
-             <Main>
-                <SearchResults>
-                    <br></br>
-                    {searchContent} 검색결과
-                </SearchResults>
-               
-                <Content>
-                <SideBar title={searchContent}
-                        mainColor="#4B4B4B"
-                        subColor="#3C3C3C"
-                        mainWidth="210px"
-                        subWidth="90%"
-                        items={searchItem}
-                        paddingTop="0"
-                        borderRadius="0 15px 15px 0"/>
-                    <MainPost>
-                    <SearchPost/>
-                    <SearchPost/>
-                    <BotomBox>
-                          <NormalBox>
-                            <User/>
-                          </NormalBox>
-                          <NormalBox>
-                            <PopularPosts/>
-                          </NormalBox>
-                        </BotomBox>
-                        
-                    </MainPost>
-                </Content>
-             </Main>
-            
-        </>
+      <>
+        <Main>
+            <SearchResults>
+                <br></br>
+                {searchContent} 검색결과
+            </SearchResults>
+            <Content>
+            <SideBar title={searchContent}
+                    mainColor="#4B4B4B"
+                    subColor="#3C3C3C"
+                    mainWidth="210px"
+                    subWidth="90%"
+                    items={searchItem}
+                    paddingTop="0"
+                    borderRadius="0 15px 15px 0"/>
+                <MainPost>
+                <SearchPost/>
+                <SearchPost/>
+                <BotomBox>
+                      <NormalBox>
+                        <User/>
+                      </NormalBox>
+                      <NormalBox>
+                        <PopularPosts/>
+                      </NormalBox>
+                    </BotomBox>
+                    
+                </MainPost>
+            </Content>
+        </Main>
+      </>
     )
 }
 
@@ -64,9 +60,7 @@ const PopularPosts = ()=> {
     return( 
       <Box
       sx={{
-  
         height:"30vh",
-  
       }}>
         <Box
         sx={{
@@ -74,8 +68,7 @@ const PopularPosts = ()=> {
           color:"white",
           
         }}>
-           <TitleBox>{searchContent} 인기글</TitleBox>
-          
+          <TitleBox>{searchContent} 인기글</TitleBox>
         </Box>
         <Box
           sx={{
@@ -85,7 +78,6 @@ const PopularPosts = ()=> {
             flexWrap: "wrap",
             justifyContent: "spacearound",
             padding:"5",
-         
           }}>
           <PopularBox>
             <PopularList></PopularList>
@@ -93,39 +85,29 @@ const PopularPosts = ()=> {
           </PopularBox>
           </Box>
       </Box>
-  
-  
     );
-  
   }
   const NameField = styled('div')({
     textAlign: "right",
     paddingRight: "1vw",
-      
 })
 
 const PopularList = () =>{
     return(
       <Box
       sx={{
- 
         width:"auto",
         height:"auto",
         backgroundColor:"#3b3b3b",
         color:"white",
         marginRight:'5px',
         marginLeft:'5px',
-        color:"white",
         borderRadius:"8px",
-
       }}>
-
-
         <Box
         sx={{
           paddingLeft: "5px",
           lineHeight: "30px",
-
         }}>
             <h3>조던뭐시기</h3>
             <p>
@@ -135,9 +117,7 @@ const PopularList = () =>{
             <NameField>
               <h4>이수빈</h4>
             </NameField>
-            
         </Box>
- 
       </Box>
       );
   }
@@ -165,7 +145,7 @@ const PopularList = () =>{
                     <img className="logo" 
                       src="img/logo.JPG" 
                       style={{height: "70%", width: "30%", margin: "10px", borderRadius:"7px",}}/>
-                     {i}
+                      {i}
                 </SearchUser>
               ))}
               </Box>
