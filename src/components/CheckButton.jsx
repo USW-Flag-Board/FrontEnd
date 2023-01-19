@@ -1,20 +1,7 @@
-import { useState } from "react";
-import styled from 'styled-components';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
-import { faCircle  } from "@fortawesome/free-regular-svg-icons";
-
-const CheckedButton = styled(FontAwesomeIcon)({
-  filter:
-    "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
-  transition: "opacity 0.2s",
-});
-
-const UnCheckedButton = styled(FontAwesomeIcon)({
-  filter:
-    "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
-  transition: "opacity 0.2s",
-});
+import {useState} from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCircleCheck} from "@fortawesome/free-solid-svg-icons";
+import {faCircle} from "@fortawesome/free-regular-svg-icons";
 
 const CheckButton = (props) => {
   const [state, setState] = useState(false);
@@ -30,9 +17,25 @@ const CheckButton = (props) => {
   return (
     <div style={{display: "inline-block"}}>
       {state ? (
-        <CheckedButton icon={faCircleCheck} onClick={Checked} />
+        <FontAwesomeIcon
+          icon={faCircleCheck}
+          style={{
+            filter:
+              "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
+            transition: "opacity 0.2s",
+          }}
+          onClick={Checked}
+        />
       ) : (
-        <UnCheckedButton icon={faCircle} onClick={Checked} />
+        <FontAwesomeIcon
+          icon={faCircle}
+          style={{
+            filter:
+              "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
+            transition: "opacity 0.2s",
+          }}
+          onClick={Checked}
+        />
       )}
     </div>
   );

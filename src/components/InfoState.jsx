@@ -1,9 +1,7 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 function InfoState(props) {
-  return (
-      <InfoStatePosition>{props.message}</InfoStatePosition>
-  );
+  return <InfoStatePosition>{props.message}</InfoStatePosition>;
 }
 
 const InfoStatePosition = styled.div`
@@ -12,7 +10,7 @@ const InfoStatePosition = styled.div`
   width: 100%;
   font-size: 12px;
   justify-content: end;
-  height: 12;
+  height: 12px;
 `;
 
 export default InfoState;
