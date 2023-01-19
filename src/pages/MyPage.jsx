@@ -1,28 +1,64 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Container from "@mui/material/Container";
-import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Grass from "../component/Grass";
 import { styled } from "@mui/system";
 
+const ProfileArea = styled(Box)({
+  height: "400px",
+  position: "relative",
+  marginRight: "200px",
+});
+
 const Profile = styled(Avatar)({
+  position: "absolute",
   width: 160,
   height: 160,
-  float: "right",
-  marginRight: "10px",
   marginTop: "10px",
+  left: "100%",
+  zIndex: "1",
+});
+
+const EditProfile = styled(Button)({
+  position: "absolute",
+  marginBottom: "10px",
+  marginLeft: "60px",
+  zIndex: "2",
+  fontSize: "12px",
+  color: "white",
+  backgroundColor: "#434343",
+  height: "25px",
+  width: "100px",
+  left: "100%",
+  top: "150px",
+  borderRadius: "28px",
+  "&:hover": {
+    backgroundColor: "#4d4d4d",
+  },
 });
 
 const NickName = styled(Box)({
   display: "flex",
-  height: "100px",
-  fontSize: "30px",
+  height: "80px",
+  fontSize: "40px",
+  fontWeight: "bold",
+  alignItems: "start",
+});
+
+const Introduce = styled(Box)({
+  display: "flex",
+  height: "60px",
+  fontSize: "20px",
   alignItems: "center",
 });
 
 const IntroduceTag = styled(Box)({
-  height: "100px",
+  display: "flex",
+  height: "60px",
+  alignItems: "center",
 });
 
 const Tag = styled("p")({
@@ -34,12 +70,24 @@ const HistoryArea = styled(Box)({
   height: "600px",
 });
 
-const HistoryYear = styled("h2")({
-  marginBottom: "0px",
+const HistoryContent = styled(Box)({
+  marginLeft: "150px",
+  paddingTop: "100px",
+});
+
+const HistoryYear = styled("h1")({
+  fontSize: "25px",
+  paddingTop: "20px",
 });
 
 const HistoryYearList = styled("ul")({
-  marginTop: 0,
+  marginBottom: "10px",
+});
+
+const HistoryYearListItem = styled("li")({
+  marginBottom: "3px",
+  listStyleType: "disc",
+  marginLeft: "20px",
 });
 
 const BackgroundArea = styled(Box)({
@@ -47,25 +95,16 @@ const BackgroundArea = styled(Box)({
   height: "1000px",
 });
 
+const GrassArea = styled("div")({
+  paddingLeft: "80px",
+  height: "1000px",
+});
+
 const GrassName = styled("h3")({
   color: "white",
-  paddingLeft: "80px",
   paddingTop: "80px",
   margin: 0,
-});
-
-const GrassArea = styled("div")({
-  width: "80%",
-  height: "20%",
-  marginTop: "10px",
-  backgroundColor: "black",
-  display: "flex",
-});
-
-const GrassBox = styled("div")({
-  width: "33.3%",
-  margin: "5px",
-  backgroundColor: "white",
+  fontWeight: "bold",
 });
 
 const darkTheme = createTheme({
@@ -86,8 +125,8 @@ export default function MyPage() {
           <Grid item alignContent="center" justifyContent="center" xs={5}>
             <Grid>
               <Grid item>
-                <Box sx={{ backgroundColor: "#2C2C2C", height: "200px" }}></Box>
-                <Box sx={{ backgroundColor: "#2C2C2C", height: "200px" }}>
+                <Box sx={{ backgroundColor: "#2C2C2C", height: "100px" }}></Box>
+                <Box sx={{ backgroundColor: "#2C2C2C", height: "300px" }}>
                   <Grid container>
                     <Grid
                       item
@@ -95,7 +134,10 @@ export default function MyPage() {
                       justifyContent="center"
                       xs={6}
                     >
-                      <Profile src="/broken-image.jpg" />
+                      <ProfileArea>
+                        <Profile src="/broken-image.jpg" />
+                        <EditProfile>Edit Profile</EditProfile>
+                      </ProfileArea>
                     </Grid>
                     <Grid
                       item
@@ -105,9 +147,17 @@ export default function MyPage() {
                       xs={6}
                     >
                       <NickName>문희조</NickName>
+                      <Introduce>
+                        Hi
+                        <br />
+                        Korean Language Is Broken...
+                      </Introduce>
                       <IntroduceTag>
-                        <Tag>#Spring #Java #FullStack</Tag>
-                        <Tag>#Be #응애</Tag>
+                        <Tag>
+                          #Spring #Java #FullStack
+                          <br />
+                          #Be #응애
+                        </Tag>
                       </IntroduceTag>
                     </Grid>
                   </Grid>
@@ -115,33 +165,34 @@ export default function MyPage() {
               </Grid>
             </Grid>
             <HistoryArea>
-              <Box style={{ marginLeft: "150px", paddingTop: "100px" }}>
+              <HistoryContent>
                 <HistoryYear>2021</HistoryYear>
                 <HistoryYearList>
-                  <li>알고리즘 스터디(기초반)</li>
+                  <HistoryYearListItem>
+                    알고리즘 스터디(기초반)
+                  </HistoryYearListItem>
                 </HistoryYearList>
                 <HistoryYear>2022</HistoryYear>
                 <HistoryYearList>
-                  <li>알고리즘 스터디(코테반)</li>
-                  <li>FLAG-게시판 (BE)</li>
+                  <HistoryYearListItem>
+                    알고리즘 스터디(코테반)
+                  </HistoryYearListItem>
+                  <HistoryYearListItem>FLAG-게시판 (BE)</HistoryYearListItem>
                 </HistoryYearList>
-              </Box>
+              </HistoryContent>
             </HistoryArea>
           </Grid>
           <Grid item xs={7}>
             <BackgroundArea>
-              <Box style={{ height: "600px" }}></Box>
-              <GrassName>STUDY_WEB-BACKEND</GrassName>
               <GrassArea>
-                <GrassBox />
-                <GrassBox />
-                <GrassBox />
+                <Box style={{ height: "600px" }}></Box>
+                <GrassName>STUDY_WEB-BACKEND</GrassName>
+                <Grass />
               </GrassArea>
             </BackgroundArea>
           </Grid>
         </Grid>
       </Box>
-      <CssBaseline />
     </ThemeProvider>
   );
 }

@@ -183,4 +183,3 @@ const InputBase = styled.input`
 
 
 export default BulletinBoard;
-
