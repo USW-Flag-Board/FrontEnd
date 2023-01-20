@@ -1,33 +1,60 @@
 import {useState} from "react";
+import {useNavigate, useLocation} from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 
 const ChangePw = () => {
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [currentPassword, setCurrentPassword] = useState(location.state.pw);
+  const [newPassword, setNewPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
   const [passwordError, setPasswordError] = useState(false);
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (password !== passwordCheck) {
+    if (newPassword !== passwordCheck) {
       return setPasswordError(true);
     }
   };
 
   const onChangePassword = (e) => {
-    setPassword(e.target.value);
+    setNewPassword(e.target.value);
   };
+
   const onChangePasswordChk = (e) => {
     //비밀번호를 입력할때마다 password 를 검증하는 함수
-    setPasswordError(e.target.value !== password);
+    setPasswordError(e.target.value !== newPassword);
     setPasswordCheck(e.target.value);
+  };
+
+  const ReplacePassword = () => {
+    if (!passwordError & (newPassword !== "") & (passwordCheck !== "")) {
+      const data = {
+        currentPassword,
+        newPassword,
+      };
+      axios
+        .patch("/api/member/password", data)
+        .then((response) => {
+          alert("비밀번호 변경 완료");
+          navigate("/edit");
+        })
+        .catch((error) => {
+          if (error.response.state === 409) {
+            alert("기존과 같은 비밀번호는 사용할 수 없습니다.");
+          }
+        });
+    }
   };
 
   return (
     <>
       <Mainbox>
         <PwTitle>
-          비밀번호 변경 <SaveButton>저장하기</SaveButton>
+          새 비밀번호{" "}
+          <SaveButton onClick={() => ReplacePassword()}>저장하기</SaveButton>
         </PwTitle>
         <Pwbox>
           <Pwfield>
@@ -37,7 +64,7 @@ const ChangePw = () => {
                 <PwChange
                   name="user-password"
                   type="password"
-                  value={password}
+                  value={newPassword}
                   required
                   onChange={onChangePassword}
                 ></PwChange>
@@ -68,7 +95,7 @@ const ChangePw = () => {
 
 const Mainbox = styled.div`
   display: flex;
-  width: auto;
+  width: 100%;
   height: auto;
   justify-content: center;
   flex-direction: column;
@@ -77,7 +104,7 @@ const Mainbox = styled.div`
 
 const Pwbox = styled.div`
   display: flex;
-  width: 53%;
+  width: 60%;
   height: 26vh;
   margin-top: 3vh;
   flex-direction: column;
@@ -93,6 +120,7 @@ const Box = styled.div`
   align-items: center;
   text-align: left;
   font-size: 1rem;
+  width: 80%;
 `;
 
 const TextBox = styled.div`
@@ -103,7 +131,7 @@ const TextBox = styled.div`
 `;
 
 const PwChange = styled.input`
-  width: 16vw;
+  width: 100%;
   height: 5vh;
   margin-left: 3vw;
   padding-left: 2vw;
@@ -133,6 +161,7 @@ const PwTitle = styled.div`
   margin-right: 15%;
   font-size: 2.2rem;
   font-weight: 800;
+  justify-content: flex-start;
 `;
 
 const ErrorBox = styled.div`
@@ -145,12 +174,18 @@ const ErrorBox = styled.div`
 const SaveButton = styled.button`
   width: 20%;
   height: 50%;
-  background: gray;
+  background: #6c6c6c;
   color: white;
   border-radius: 1vh;
-  border: 2px solid gray;
+  border: 0px;
+  outline: none;
   margin-left: 5%;
   margin-top: 1%;
+  transition: 0.2s;
+  :hover {
+    transition: 0.2s;
+    background-color: #575757;
+  }
 `;
 
 export default ChangePw;

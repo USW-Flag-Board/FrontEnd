@@ -1,4 +1,5 @@
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
 import {faLock} from "@fortawesome/free-solid-svg-icons";
@@ -7,8 +8,9 @@ import axios from "axios";
 import CheckButton from "../components/CheckButton";
 
 const LoginPage = () => {
-  let [loginId, setLoginId] = useState("");
-  let [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const [loginId, setLoginId] = useState("");
+  const [password, setPassword] = useState("");
 
   function OnLogin(loginId, password) {
     const data = {
@@ -23,8 +25,10 @@ const LoginPage = () => {
       axios
         .post("/api/auth/login", data)
         .then((response) => {
-          const {accessToken} = response.data;
-          localStorage.setItem("jwtToken", response.accessToken);
+          const accessToken = response.data.accessToken;
+          sessionStorage.setItem("jwt", accessToken);
+
+          navigate("/myPage", {state: {id: loginId}});
         })
         .catch((error) => {
           if (error.response.status === 404) {
