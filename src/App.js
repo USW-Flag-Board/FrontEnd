@@ -28,12 +28,10 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const App = () => {
-  const [header, setHeader] = useState(true);
-  console.log(header);
   return (
       <BrowserRouter>
         <GlobalStyle />
-        {header && <Header setHeader={setHeader}/>}
+        <Header/>
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>

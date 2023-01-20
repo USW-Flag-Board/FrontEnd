@@ -1,8 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { faLock } from "@fortawesome/free-solid-svg-icons";
+import {useState} from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faUser} from "@fortawesome/free-regular-svg-icons";
+import {faLock} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import { useState } from "react";
 import axios from "axios";
 import InfoState from "../components/InfoState";
 import JoinTypeButton from "../components/JoinTypeButton";
@@ -47,10 +47,9 @@ const SignUp = () => {
   const [passwordVerify, setPasswordVerify] = useState("");
   const [studentId, setStudentId] = useState("");
 
-
   const getValue = (text) => {
     setJoinType(text);
-  }
+  };
 
   const Sign = () => {
     const suwonEmail = originEmail + "@suwon.ac.kr";
@@ -63,7 +62,7 @@ const SignUp = () => {
     MajorValid();
     StudentIdValid();
     SignInfo();
-  }
+  };
 
   const IdValid = () => {
     if (loginId === "") {
@@ -86,7 +85,7 @@ const SignUp = () => {
           }
         });
     }
-  }
+  };
 
   const PasswordValid = () => {
     if (password === "") {
@@ -104,7 +103,7 @@ const SignUp = () => {
     } else {
       setPasswordMessage("사용 가능한 비밀번호입니다.");
     }
-  }
+  };
 
   const PasswordVerifyValid = () => {
     if (passwordVerify === "") {
@@ -114,7 +113,7 @@ const SignUp = () => {
     } else {
       setPasswordVerifyMessage("비밀번호와 일치합니다.");
     }
-  }
+  };
 
   const EmailValid = () => {
     if (originEmail === "") {
@@ -137,7 +136,7 @@ const SignUp = () => {
           }
         });
     }
-  }
+  };
 
   const NameValid = () => {
     if (name === "") {
@@ -151,7 +150,7 @@ const SignUp = () => {
     } else {
       setNameStateMessage("사용 가능한 이름입니다.");
     }
-  }
+  };
 
   const MajorValid = () => {
     if (major === "" || major === "전공을 선택하세요") {
@@ -159,7 +158,7 @@ const SignUp = () => {
     } else {
       setMajorStateMessage("");
     }
-  }
+  };
 
   const StudentIdValid = () => {
     if (studentId === "") {
@@ -177,9 +176,9 @@ const SignUp = () => {
     } else {
       setStudentIdStateMessage("");
     }
-  }
+  };
 
-  const SignInfo = () =>{
+  const SignInfo = () => {
     const data = {
       email,
       joinType,
@@ -214,7 +213,7 @@ const SignUp = () => {
           }
         });
     }
-  }
+  };
 
   return (
     <PageArea>
@@ -235,7 +234,15 @@ const SignUp = () => {
               setLoginId(e.target.value);
             }}
           />
-          <FontAwesomeIcon icon={faUser} style={{ color: "white", position: "absolute", left: "390px", top: "42px"}}/>
+          <FontAwesomeIcon
+            icon={faUser}
+            style={{
+              color: "white",
+              position: "absolute",
+              left: "390px",
+              top: "42px",
+            }}
+          />
         </RelativeArea>
         <RelativeArea>
           <InfoState message={passwordMessage} />
@@ -246,7 +253,15 @@ const SignUp = () => {
               setPassword(e.target.value);
             }}
           />
-          <FontAwesomeIcon icon={faLock} style={{ color: "white", position: "absolute", left: "390px", top: "42px"}}/>
+          <FontAwesomeIcon
+            icon={faLock}
+            style={{
+              color: "white",
+              position: "absolute",
+              left: "390px",
+              top: "42px",
+            }}
+          />
         </RelativeArea>
         <RelativeArea>
           <InfoState message={passwordVerifyMessage} />
@@ -257,7 +272,15 @@ const SignUp = () => {
               setPasswordVerify(e.target.value);
             }}
           />
-          <FontAwesomeIcon icon={faLock} style={{ color: "white", position: "absolute", left: "390px", top: "42px"}}/>
+          <FontAwesomeIcon
+            icon={faLock}
+            style={{
+              color: "white",
+              position: "absolute",
+              left: "390px",
+              top: "42px",
+            }}
+          />
         </RelativeArea>
         <RelativeArea>
           <InfoState message={emailStateMessage} />
@@ -309,7 +332,7 @@ const SignUp = () => {
       </SignUpArea>
     </PageArea>
   );
-}
+};
 
 const PageArea = styled.div`
   width: 100%;
@@ -342,13 +365,13 @@ const WriteArea = styled.input`
   margin-top: 10px;
   margin-bottom: 20px;
   transition: 0.2s;
-  :hover{
+  :hover {
     transition: 0.2s;
     background-color: #575757;
-  };
-  ::placeholder{
+  }
+  ::placeholder {
     color: #ffffffcc;
-  };
+  }
 `;
 
 const RelativeArea = styled.div`
@@ -372,10 +395,10 @@ const AccountButton = styled.button`
   width: 400px;
   border: 0;
   transition: 0.2s;
-  :hover{
+  :hover {
     transition: 0.2s;
     background-color: #38b597;
-  };
+  }
 `;
 
 const SelectSpecialize = styled.select`
@@ -392,11 +415,10 @@ const SelectSpecialize = styled.select`
   margin-top: 10px;
   margin-bottom: 20px;
   transition: 0.2s;
-  :hover{
+  :hover {
     transition: 0.2s;
     background-color: #575757;
-  };
+  }
 `;
 
 export default SignUp;
-
