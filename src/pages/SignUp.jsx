@@ -6,6 +6,7 @@ import styled from "styled-components";
 import axios from "axios";
 import InfoState from "../components/InfoState";
 import JoinTypeButton from "../components/JoinTypeButton";
+import {useNavigate} from "react-router-dom";
 
 const specialized = [
   {
@@ -29,6 +30,8 @@ const numExp = /[0-9]/g;
 const spaceExp = /\s/;
 const engExp = /[a-zA-Z]/g;
 
+//1. 회원가입 시도 성공 하면서 email로 넘어가는거 서버 오류로 진행 불가능
+
 const SignUp = () => {
   const [idStateMessage, setIdStateMessage] = useState(" ");
   const [passwordMessage, setPasswordMessage] = useState("");
@@ -46,6 +49,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState("");
   const [studentId, setStudentId] = useState("");
+  const navigate = useNavigate();
 
   const getValue = (text) => {
     setJoinType(text);
@@ -203,7 +207,21 @@ const SignUp = () => {
             password,
             studentId
           );
-          alert("로그인 성공");
+          const emailPost = {
+            email,
+          };
+          axios
+            .post("/api/auth/email", emailPost)
+            .then((response) => {
+              alert("재학생 인증 메일 전송 완료");
+              navigate("/EmailAuth", {state: {CheckEmail: email}});
+            })
+            .catch((error) => {
+              if (error.response.status === 500) {
+                alert("서버 오류입니다. 관리자에게 문의하세요.");
+                navigate("/EmailAuth", {state: {CheckEmail: email}});
+              }
+            });
         })
         .catch((error) => {
           if (error.response.status === 400) {

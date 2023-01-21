@@ -12,6 +12,9 @@ const LoginPage = () => {
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
 
+  //1. 자동로그인, 아이디 자동 기억 기능 추가해야함.
+  //2. accessToken으로 쏼라쏼라 해야함.
+
   function OnLogin(loginId, password) {
     const data = {
       loginId,
@@ -27,7 +30,6 @@ const LoginPage = () => {
         .then((response) => {
           const accessToken = response.data.accessToken;
           sessionStorage.setItem("jwt", accessToken);
-
           navigate("/myPage", {state: {id: loginId}});
         })
         .catch((error) => {
