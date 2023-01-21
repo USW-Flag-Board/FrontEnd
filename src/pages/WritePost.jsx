@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faImage, faFile} from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
@@ -26,6 +27,7 @@ const buttonItems = [
 ];
 
 const WritePost = () => {
+  const navigate = useNavigate();
   const [image, setImage] = useState({
     image_file: "",
     priview_URL: "",
@@ -60,28 +62,31 @@ const WritePost = () => {
 
   const canSubmit = useCallback(() => {
     return content !== "" && title !== "";
-  },[title, content]);
+  }, [title, content]);
 
-  const handleSubmit = useCallback(async() => {
-    try{
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("content", content);
+  // const handleSubmit = useCallback(async() => {
+  //   try{
+  //     const formData = new FormData();
+  //     formData.append("title", title);
+  //     formData.append("content", content);
 
-      await axios
-        .post("/api/post", formData)
-        .then((response)=>{
-          console.log(response)
-        })
-        window.alert("등록이 완료되었습니다.");
-    }catch(e){
-      console.log(e)
-    }
-  },[canSubmit]);
+  //     await axios
+  //       .post("/api/post", formData)
+  //       .then((response)=>{
+  //         console.log(response);
+  //       });
+  //       window.alert("등록이 완료되었습니다.");
+  //       navigate("/board");
+  //   }catch(e){
+  //     console.log(e);
+  //   }
+  // }, [content, navigate, title]);
   
-
-
-
+  const handleSubmit = () => {
+        window.alert("등록이 완료되었습니다.");
+        navigate("/board");
+  }
+  
   return (
     <>
       <BoardArea>
@@ -107,8 +112,11 @@ const WritePost = () => {
                   <option key={item}>{item}</option>
                 ))}
               </BoardSelect>
-              {canSubmit() ?? 
+              {canSubmit() ?
                 <button
+                  onClick={() => {
+                    handleSubmit()
+                  }}
                   type="submit"
                   style={{
                     backgroundColor: "white",
@@ -122,13 +130,26 @@ const WritePost = () => {
                   }}
                 >
                   등록
-                </button>}
+                </button> : ""} 
             </SelectArea>
             <TitleInputBox>
-              <TitleInput type="text" placeholder="제목을 입력해주세요." />
+              <TitleInput 
+                type="text" 
+                value={title} 
+                placeholder="제목을 입력해주세요." 
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+              />
             </TitleInputBox>
             <ContentInputBox>
-              <ContentInput placeholder="내용을 입력해주세요." />
+              <ContentInput 
+                value={content} 
+                placeholder="내용을 입력해주세요." 
+                onChange={(e) => {
+                  setContent(e.target.value);
+                }}
+              />
               <ContentButtonBox>
                 {buttonItems.map((item) => (
                   <ContentButton key={item.id}>
@@ -144,7 +165,7 @@ const WritePost = () => {
           </ListArea>
         </ContentArea>
       </BoardArea>
-      <Footer />
+      <Footer/>
     </>
   );
 };
