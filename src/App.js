@@ -14,6 +14,7 @@ import reset from "styled-reset";
 import ChangePw from "./pages/ChangePw";
 import EditUser from "./pages/EditUser";
 import Resume from "./pages/Resume";
+import EmailAuth from "./pages/EmailAuth";
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -46,6 +47,7 @@ const App = () => {
         <Route path="/changepw" element={<ChangePw />}></Route>
         <Route path="/edit" element={<EditUser />}></Route>
         <Route path="/resume" element={<Resume />}></Route>
+        <Route path="/emailAuth" element={<EmailAuth />}></Route>
       </Routes>
     </BrowserRouter>
   );
