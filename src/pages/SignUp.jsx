@@ -78,8 +78,11 @@ const SignUp = () => {
     } else if (spaceExp.test(loginId)) {
       setIdStateMessage("아이디에는 공백을 포함할 수 없습니다.");
     } else {
+      const data = {
+        loginId,
+      };
       axios
-        .get(`/api/auth?id=${loginId}`)
+        .post("/api/auth/check/id", data)
         .then(() => {
           setIdStateMessage("사용 가능한 아이디입니다.");
         })
@@ -129,8 +132,11 @@ const SignUp = () => {
     } else if (spaceExp.test(originEmail)) {
       setEmailStateMessage("이메일에는 공백을 포함할 수 없습니다.");
     } else {
+      const data = {
+        email,
+      };
       axios
-        .get(`/api/auth/${originEmail}@suwon.ac.kr`)
+        .post("/api/auth/check/email", data)
         .then(() => {
           setEmailStateMessage("사용 가능한 이메일입니다.");
         })

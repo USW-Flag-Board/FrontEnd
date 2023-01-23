@@ -12,9 +12,8 @@ import axios from "axios";
 
 const MyPage = () => {
   const navigate = useNavigate();
-  const loginId = "asd";
   const location = useLocation();
-  // const loginId = location.state.id;
+  const loginId = location.state.id;
   const [nickname, setNickname] = useState("");
   const [introduceMessage, setIntroduceMessage] = useState("");
   useEffect(() => {

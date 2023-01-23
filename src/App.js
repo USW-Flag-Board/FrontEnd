@@ -15,6 +15,8 @@ import ChangePw from "./pages/ChangePw";
 import EditUser from "./pages/EditUser";
 import Resume from "./pages/Resume";
 import EmailAuth from "./pages/EmailAuth";
+import FindId from "./pages/FindId";
+import FindPw from "./pages/FindPw";
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -48,6 +50,8 @@ const App = () => {
         <Route path="/edit" element={<EditUser />}></Route>
         <Route path="/resume" element={<Resume />}></Route>
         <Route path="/emailAuth" element={<EmailAuth />}></Route>
+        <Route path="/findid" element={<FindId />}></Route>
+        <Route path="/findpw" element={<FindPw />}></Route>
       </Routes>
     </BrowserRouter>
   );
