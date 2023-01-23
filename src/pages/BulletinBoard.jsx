@@ -15,7 +15,7 @@ const itemContents = [
   "123",
 ];
 const selectItems = ["전체기간", "게시물 + 작성자"];
-
+const WriteItems = [{}];
 const BulletinBoard = () => {
   return (
     <>
