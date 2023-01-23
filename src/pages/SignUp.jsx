@@ -82,7 +82,7 @@ const SignUp = () => {
         loginId,
       };
       axios
-        .post("/api/auth/check/id", data)
+        .post("http://3.39.36.239:8080/api/auth/check/id", data)
         .then(() => {
           setIdStateMessage("사용 가능한 아이디입니다.");
         })
