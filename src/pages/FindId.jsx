@@ -1,91 +1,97 @@
 import {useState} from "react";
-import {useNavigate, useLocation} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 
+//1. 메일 관련 유효성 검사 추가 예정 ( suwon.ac.kr 이 아닐 경우 등등 )
+
 // eslint-disable-next-line
 const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+const emailExp = /[\{\}\[\]\/?,;:|\)*~`!^\-_+<>\#$%&\\\=\(\'\"]/g;
 const korExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
+const numExp = /[0-9]/g;
 const spaceExp = /\s/;
-const engExp = /[a-zA-Z]/g;
 
-const EmailAuth = () => {
+const FindId = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const email = location.state.CheckEmail;
-  const [certification, setCertification] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
-  const EmailAuthCheck = () => {
+  const Find = () => {
     const data = {
-      certification,
-      email,
-    };
-    if (certification === "") {
-      alert("인증번호가 입력되지 않았습니다.");
-    } else if (certification.length !== 6) {
-      alert("인증번호는 6자리 숫자입니다.");
-    } else if (regExp.test(certification)) {
-      alert("특수문자는 입력할 수 없습니다. 인증번호는 6자리 숫자입니다.");
-    } else if (korExp.test(certification)) {
-      alert("한글은 입력할 수 없습니다. 인증번호는 6자리 숫자입니다.");
-    } else if (spaceExp.test(certification)) {
-      alert("공백은 입력할 수 없습니다. 인증번호는 6자리 숫자입니다.");
-    } else if (engExp.test(certification)) {
-      alert("영어는 입력할 수 없습니다. 인증번호는 6자리 숫자입니다.");
-    } else {
-      axios
-        .post("/api/auth/sign-up", data)
-        .then((response) => {
-          navigate("/login");
-        })
-        .catch((error) => {
-          if (error.response.status === 500) {
-            alert("서버 오류입니다. 관리자에게 문의하세요.");
-          }
-        });
-    }
-  };
-
-  const RefreshEmailAuth = () => {
-    const emailPost = {
       email,
     };
     axios
-      .post("/api/auth/email", emailPost)
+      .post("/api/member/mail/id", data)
       .then((response) => {
-        alert("재학생 인증 메일이 재전송 되었습니다.");
+        alert("아이디 찾기 결과 메일 발송 성공");
+        navigate("/login");
       })
       .catch((error) => {
-        if (error.response.status === 500) {
-          alert("서버 오류입니다. 관리자에게 문의하세요.");
+        if (error.response.status === 404) {
+          alert("가입된 아이디가 없습니다.");
+        } else if (error.response.status === 500) {
+          alert("서버 에러입니다.");
         }
       });
   };
 
+  const NameValid = () => {
+    if (name === "") {
+      alert("이름을 정확히 입력해주세요.");
+    } else if (regExp.test(name)) {
+      alert("이름에는 특수문자를 입력할 수 없습니다.");
+    } else if (numExp.test(name)) {
+      alert("이름에는 숫자를 포함할 수 없습니다.");
+    } else if (spaceExp.test(name)) {
+      alert("이름에는 공백을 포함할 수 없습니다.");
+    } else {
+      EmailValid();
+    }
+  };
+
+  const EmailValid = () => {
+    if (email === "") {
+      alert("이메일을 정확하게 입력하세요.");
+    } else if (emailExp.test(email)) {
+      alert("이메일에는 특수문자를 입력할 수 없습니다.");
+    } else if (korExp.test(email)) {
+      alert("이메일에는 한글을 포함할 수 없습니다.");
+    } else if (spaceExp.test(email)) {
+      alert("이메일에는 공백을 포함할 수 없습니다.");
+    } else {
+      setEmail(email + "@suwon.ac.kr");
+      Find();
+    }
+  };
   return (
     <>
       <Mainbox>
         <EmailTitle>
-          이메일 인증
-          <AuthButton onClick={() => EmailAuthCheck()}>인증하기</AuthButton>
+          아이디 찾기
+          <FindButton onClick={() => NameValid()}>찾기</FindButton>
         </EmailTitle>
         <Emailbox>
           <Emailfield>
             <Box>
-              <TextBox>인증번호 입력</TextBox>
+              <TextBox>이름</TextBox>
               <InsertBox>
-                <AuthNum
-                  name="user-password"
+                <Insert
                   type="text"
-                  onChange={(e) => {
-                    setCertification(e.target.value);
-                  }}
+                  onChange={(e) => setName(e.target.value)}
                   required
                 />
               </InsertBox>
-              <ResendButton onClick={() => RefreshEmailAuth()}>
-                재전송
-              </ResendButton>
+            </Box>
+            <Box>
+              <TextBox>이메일</TextBox>
+              <InsertBox>
+                <Insert
+                  type="text"
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </InsertBox>
             </Box>
           </Emailfield>
         </Emailbox>
@@ -114,7 +120,7 @@ const EmailTitle = styled.div`
   justify-content: flex-start;
 `;
 
-const AuthButton = styled.button`
+const FindButton = styled.button`
   width: 20%;
   height: 50%;
   background: #6c6c6c;
@@ -171,7 +177,7 @@ const TextBox = styled.div`
   font-size: 16px;
 `;
 
-const AuthNum = styled.input`
+const Insert = styled.input`
   width: 100%;
   height: 5vh;
   padding-left: 2vw;
@@ -214,4 +220,4 @@ const ResendButton = styled.button`
   }
 `;
 
-export default EmailAuth;
+export default FindId;

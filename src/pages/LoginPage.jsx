@@ -95,10 +95,10 @@ const LoginPage = () => {
           로그인
         </LoginButton>
         <SortArea>
-          <LinkText href="#" variant="body2">
+          <LinkText href="/findid" variant="body2">
             아이디 찾기
           </LinkText>
-          <LinkText href="#" variant="body2">
+          <LinkText href="/findpw" variant="body2">
             비밀번호 찾기
           </LinkText>
           <LinkText href="/signup" variant="body2">
