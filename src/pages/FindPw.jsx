@@ -23,7 +23,7 @@ const FindPw = () => {
       email,
     };
     axios
-      .post("/api/member/mail/password", data)
+      .post("http://3.39.36.239:8080/api/member/mail/password", data)
       .then((response) => {
         alert("새 비밀번호 메일 발송 성공");
         navigate("/login");

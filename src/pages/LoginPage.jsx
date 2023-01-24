@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
@@ -6,9 +6,11 @@ import {faLock} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import axios from "axios";
 import CheckButton from "../components/CheckButton";
+import Cookies from "universal-cookie";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const cookies = new Cookies();
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
 
@@ -26,20 +28,27 @@ const LoginPage = () => {
       alert("비밀번호를 입력해주세요.");
     } else {
       axios
-        .post("/api/auth/login", data)
+        .post("http://3.39.36.239:8080/api/auth/login", data)
         .then((response) => {
           const accessToken = response.data.accessToken;
-          sessionStorage.setItem("jwt", accessToken);
-          navigate("/myPage", {state: {id: loginId}});
+          sessionStorage.setItem("UserToken", accessToken);
+          sessionStorage.setItem("id", loginId);
+          cookies.set("refresh_token", response.data.refreshToken);
+          navigate("/my", {state: {id: loginId}});
         })
         .catch((error) => {
           if (error.response.status === 404) {
             alert("존재하지 않는 사용자입니다.");
-            // localStorage.setItem("jwtToken", "asd");
           }
         });
     }
   }
+
+  useEffect(() => {
+    if (sessionStorage.getItem("UserToken")) {
+      navigate("/my", {state: {id: sessionStorage.getItem("id")}});
+    }
+  });
 
   return (
     <PageArea>

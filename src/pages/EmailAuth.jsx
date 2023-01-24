@@ -12,7 +12,16 @@ const engExp = /[a-zA-Z]/g;
 const EmailAuth = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const email = location.state.CheckEmail;
+  const email = location.state.CheckEmail.email;
+  const joinInfo = {
+    email,
+    joinType: location.state.CheckEmail.joinType,
+    loginId: location.state.CheckEmail.loginId,
+    major: location.state.CheckEmail.major,
+    name: location.state.CheckEmail.name,
+    password: location.state.CheckEmail.password,
+    studentId: location.state.CheckEmail.studentId,
+  };
   const [certification, setCertification] = useState("");
 
   const EmailAuthCheck = () => {
@@ -34,7 +43,7 @@ const EmailAuth = () => {
       alert("영어는 입력할 수 없습니다. 인증번호는 6자리 숫자입니다.");
     } else {
       axios
-        .post("/api/auth/sign-up", data)
+        .post("http://3.39.36.239:8080/api/auth/sign-up", data)
         .then((response) => {
           navigate("/login");
         })
@@ -47,11 +56,8 @@ const EmailAuth = () => {
   };
 
   const RefreshEmailAuth = () => {
-    const emailPost = {
-      email,
-    };
     axios
-      .post("/api/auth/email", emailPost)
+      .post("http://3.39.36.239:8080/api/auth/join", joinInfo)
       .then((response) => {
         alert("재학생 인증 메일이 재전송 되었습니다.");
       })

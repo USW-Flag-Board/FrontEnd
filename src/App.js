@@ -18,18 +18,6 @@ import EmailAuth from "./pages/EmailAuth";
 import FindId from "./pages/FindId";
 import FindPw from "./pages/FindPw";
 
-const GlobalStyle = createGlobalStyle`
-  ${reset}
-  *{
-    
-  }
-  body{
-    color: white;
-    margin: 0;
-    background-color: #2C2C2C;
-  }
-`;
-
 const App = () => {
   const [header, setHeader] = useState(true);
   console.log(header);
@@ -56,5 +44,17 @@ const App = () => {
     </BrowserRouter>
   );
 };
+
+const GlobalStyle = createGlobalStyle`
+  ${reset}
+  *{
+    
+  }
+  body{
+    color: white;
+    margin: 0;
+    background-color: #2C2C2C;
+  }
+`;
 
 export default App;
