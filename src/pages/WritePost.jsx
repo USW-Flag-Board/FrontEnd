@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faImage, faFile} from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faImage, faFile } from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
-import {Footer, SideBar} from "../components/";
+import { Footer, SideBar } from "../components/";
 import axios from 'axios';
 
 const boardItems = [
@@ -28,14 +28,14 @@ const buttonItems = [
 
 const WritePost = () => {
   const navigate = useNavigate();
-  const [image, setImage] = useState({
-    image_file: "",
-    priview_URL: "",
-  });
+  // const [image, setImage] = useState({
+  //   image_file: "",
+  //   priview_URL: "",
+  // });
   const [title, setTitle] = useState(""); // 글 제목
   const [content, setContent] = useState(""); // 글 내용
 
-  const TodayTime = () => {
+  const todayTime = () => {
     let now = new Date(); // 현재 날짜 및 시간
     let todayYear = now.getFullYear(); // 연
     let todayMonth = now.getMonth() + 1 // 월
@@ -64,28 +64,28 @@ const WritePost = () => {
     return content !== "" && title !== "";
   }, [title, content]);
 
-  // const handleSubmit = useCallback(async() => {
-  //   try{
-  //     const formData = new FormData();
-  //     formData.append("title", title);
-  //     formData.append("content", content);
-
-  //     await axios
-  //       .post("/api/post", formData)
-  //       .then((response)=>{
-  //         console.log(response);
-  //       });
-  //       window.alert("등록이 완료되었습니다.");
-  //       navigate("/board");
-  //   }catch(e){
-  //     console.log(e);
-  //   }
-  // }, [content, navigate, title]);
-  
-  const handleSubmit = () => {
-        window.alert("등록이 완료되었습니다.");
-        navigate("/board");
+  const data = {
+    title: `${title}`,
+    content: `${content}`,
+    // createAt: todayTime(),
   }
+
+  const handleSubmit = async() => {
+    try{
+      axios
+        .post("/api/post", data, {
+          header: {
+          Authorization: `Bearer ${sessionStorage.getItem("UserToken")}`, },
+          })
+        .then((response) => {
+          console.log(response);
+          window.alert("등록이 완료되었습니다.");
+        });
+        // navigate("/board");
+    }catch(e){
+      console.log(e);
+    }
+  };
   
   return (
     <>
@@ -117,6 +117,25 @@ const WritePost = () => {
                   onClick={() => {
                     handleSubmit()
                   }}
+                  type="button"
+                  style={{
+                    backgroundColor: "white",
+                    height: "2rem",
+                    color: "black",
+                    fontWeight: "700",
+                    borderRadius: "5px",
+                    width: "6rem",
+                    cursor: "pointer",
+                    border: "none",
+                  }}
+                >
+                  등록
+                </button> :""}
+                
+                {/* <button
+                  onClick={() => {
+                    handleSubmit()
+                  }}
                   type="submit"
                   style={{
                     backgroundColor: "white",
@@ -130,7 +149,7 @@ const WritePost = () => {
                   }}
                 >
                   등록
-                </button> : ""} 
+                </button> */}
             </SelectArea>
             <TitleInputBox>
               <TitleInput 
