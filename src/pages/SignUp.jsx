@@ -136,7 +136,7 @@ const SignUp = () => {
         email,
       };
       axios
-        .post("/api/auth/check/email", data)
+        .post("http://3.39.36.239:8080/api/auth/check/email", data)
         .then(() => {
           setEmailStateMessage("사용 가능한 이메일입니다.");
         })
@@ -202,7 +202,7 @@ const SignUp = () => {
       alert("가입 유형을 선택해주세요.");
     } else {
       axios
-        .post("/api/auth/join", data)
+        .post("http://3.39.36.239:8080/api/auth/join", data)
         .then((response) => {
           console.log(
             email,
@@ -216,24 +216,18 @@ const SignUp = () => {
           const emailPost = {
             email,
           };
-          axios
-            .post("/api/auth/email", emailPost)
-            .then((response) => {
-              alert("재학생 인증 메일 전송 완료");
-              navigate("/EmailAuth", {state: {CheckEmail: email}});
-            })
-            .catch((error) => {
-              if (error.response.status === 500) {
-                alert("서버 오류입니다. 관리자에게 문의하세요.");
-                navigate("/EmailAuth", {state: {CheckEmail: email}});
-              }
-            });
+          alert("재학생 인증 메일 전송 완료");
+          navigate("/EmailAuth", {state: {CheckEmail: data}});
         })
         .catch((error) => {
           if (error.response.status === 400) {
             alert("가입 정보를 정확히 입력해주세요.");
           } else if (error.response.status === 422) {
             alert("422번 비번 형식 오류");
+          }
+          if (error.response.status === 500) {
+            alert("서버 오류입니다. 관리자에게 문의하세요.");
+            navigate("/EmailAuth", {state: {CheckEmail: email}});
           }
         });
     }

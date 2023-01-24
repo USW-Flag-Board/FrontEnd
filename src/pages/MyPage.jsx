@@ -17,7 +17,7 @@ const MyPage = () => {
   const [nickname, setNickname] = useState("");
   const [introduceMessage, setIntroduceMessage] = useState("");
   useEffect(() => {
-    if (sessionStorage.getItem("jwt") === null) {
+    if (sessionStorage.getItem("UserToken") === null) {
       console.log("로그인 화면으로 보내버릴 예정");
     } else {
       console.log("정보 받아오기 시작");
@@ -27,7 +27,7 @@ const MyPage = () => {
 
   const SetMyData = () => {
     axios
-      .get(`/api/member/${loginId}`)
+      .get(`http://3.39.36.239:8080/api/member/${loginId}`)
       .then((response) => {
         setNickname(response.data.loginId);
         setIntroduceMessage(response.data.bio);
@@ -55,11 +55,9 @@ const MyPage = () => {
             </RelativeArea>
           </ProfileArea>
           <NickNameArea>
-            <NickName>문희조</NickName>
-            {/* <NickName>{nickname}</NickName> */}
+            <NickName>{nickname}</NickName>
             <IntroduceArea>
-              <Introduce>설명설명 설명</Introduce>
-              {/* <Introduce>{introduceMessage}</Introduce> */}
+              <Introduce>{introduceMessage}</Introduce>
             </IntroduceArea>
           </NickNameArea>
         </UserPage>

@@ -22,7 +22,7 @@ const FindId = () => {
       email,
     };
     axios
-      .post("/api/member/mail/id", data)
+      .post("http://3.39.36.239:8080/api/member/mail/id", data)
       .then((response) => {
         alert("아이디 찾기 결과 메일 발송 성공");
         navigate("/login");
