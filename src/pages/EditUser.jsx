@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -12,6 +12,7 @@ const profileUpdateExample = [
 
 const EditUser = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [password, SetPassword] = useState("password");
   const [bio, setBio] = useState(profileUpdateExample[0]);
   const [major, setMajor] = useState(profileUpdateExample[1]);
@@ -26,7 +27,7 @@ const EditUser = () => {
       studentId,
     };
     axios
-      .patch("/api/member/profile", data)
+      .patch("http://3.39.36.239:8080/api/member/profile", data)
       .then((response) => {
         alert("값 변경 완료");
       })
@@ -37,8 +38,11 @@ const EditUser = () => {
 
   const DeleteUser = () => {
     //나중에 여기에 모달창 추가해서 삭제 디자인에 맞게 적용 예정
+    const passwordPost = {
+      password,
+    };
     axios
-      .delete("/api/member", password)
+      .delete("http://3.39.36.239:8080/api/member", passwordPost)
       .then((response) => {
         alert("계정 삭제 완료");
       })

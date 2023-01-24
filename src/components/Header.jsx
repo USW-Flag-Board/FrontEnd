@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
 import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
@@ -6,6 +7,8 @@ import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 const sections = ["FLAG", "BOARD", "프로그램 모집", "NOTICE"];
 
 const Header = () => {
+  const navigate = useNavigate();
+
   return (
     <HomeHeader>
       <LogoBox>
@@ -13,6 +16,7 @@ const Header = () => {
           className="logo"
           src="../images/logo.JPG"
           alt="blog-logo"
+          onClick={() => navigate("/")}
           style={{height: "80%", cursor: "pointer"}}
         />
       </LogoBox>

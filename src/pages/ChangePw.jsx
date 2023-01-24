@@ -36,7 +36,7 @@ const ChangePw = () => {
         newPassword,
       };
       axios
-        .patch("/api/member/password", data)
+        .patch("http://3.39.36.239:8080/api/member/password", data)
         .then((response) => {
           alert("비밀번호 변경 완료");
           navigate("/edit");

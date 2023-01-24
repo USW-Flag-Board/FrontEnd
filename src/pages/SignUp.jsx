@@ -6,6 +6,7 @@ import styled from "styled-components";
 import axios from "axios";
 import InfoState from "../components/InfoState";
 import JoinTypeButton from "../components/JoinTypeButton";
+import {useNavigate} from "react-router-dom";
 
 const specialized = [
   {
@@ -29,6 +30,8 @@ const numExp = /[0-9]/g;
 const spaceExp = /\s/;
 const engExp = /[a-zA-Z]/g;
 
+//1. 회원가입 시도 성공 하면서 email로 넘어가는거 서버 오류로 진행 불가능
+
 const SignUp = () => {
   const [idStateMessage, setIdStateMessage] = useState(" ");
   const [passwordMessage, setPasswordMessage] = useState("");
@@ -46,6 +49,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState("");
   const [studentId, setStudentId] = useState("");
+  const navigate = useNavigate();
 
   const getValue = (text) => {
     setJoinType(text);
@@ -74,8 +78,11 @@ const SignUp = () => {
     } else if (spaceExp.test(loginId)) {
       setIdStateMessage("아이디에는 공백을 포함할 수 없습니다.");
     } else {
+      const data = {
+        loginId,
+      };
       axios
-        .get(`/api/auth?id=${loginId}`)
+        .post("http://3.39.36.239:8080/api/auth/check/id", data)
         .then(() => {
           setIdStateMessage("사용 가능한 아이디입니다.");
         })
@@ -125,8 +132,11 @@ const SignUp = () => {
     } else if (spaceExp.test(originEmail)) {
       setEmailStateMessage("이메일에는 공백을 포함할 수 없습니다.");
     } else {
+      const data = {
+        email,
+      };
       axios
-        .get(`/api/auth/${originEmail}@suwon.ac.kr`)
+        .post("http://3.39.36.239:8080/api/auth/check/email", data)
         .then(() => {
           setEmailStateMessage("사용 가능한 이메일입니다.");
         })
@@ -192,7 +202,7 @@ const SignUp = () => {
       alert("가입 유형을 선택해주세요.");
     } else {
       axios
-        .post("/api/auth/join", data)
+        .post("http://3.39.36.239:8080/api/auth/join", data)
         .then((response) => {
           console.log(
             email,
@@ -203,13 +213,21 @@ const SignUp = () => {
             password,
             studentId
           );
-          alert("로그인 성공");
+          const emailPost = {
+            email,
+          };
+          alert("재학생 인증 메일 전송 완료");
+          navigate("/EmailAuth", {state: {CheckEmail: data}});
         })
         .catch((error) => {
           if (error.response.status === 400) {
             alert("가입 정보를 정확히 입력해주세요.");
           } else if (error.response.status === 422) {
             alert("422번 비번 형식 오류");
+          }
+          if (error.response.status === 500) {
+            alert("서버 오류입니다. 관리자에게 문의하세요.");
+            navigate("/EmailAuth", {state: {CheckEmail: email}});
           }
         });
     }

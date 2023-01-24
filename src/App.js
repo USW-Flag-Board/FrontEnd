@@ -15,18 +15,9 @@ import ChangePw from "./pages/ChangePw";
 import EditUser from "./pages/EditUser";
 import Resume from "./pages/Resume";
 import Activity from "./pages/Activity";
-
-const GlobalStyle = createGlobalStyle`
-  ${reset}
-  *{
-    
-  }
-  body{
-    color: white;
-    margin: 0;
-    background-color: #2C2C2C;
-  }
-`;
+import EmailAuth from "./pages/EmailAuth";
+import FindId from "./pages/FindId";
+import FindPw from "./pages/FindPw";
 
 const App = () => {
   const [header, setHeader] = useState(true);
@@ -48,9 +39,24 @@ const App = () => {
         <Route path="/edit" element={<EditUser />}></Route>
         <Route path="/resume" element={<Resume />}></Route>
         <Route path="/activity" element={<Activity/>}></Route>
+        <Route path="/emailAuth" element={<EmailAuth />}></Route>
+        <Route path="/findid" element={<FindId />}></Route>
+        <Route path="/findpw" element={<FindPw />}></Route>
       </Routes>
     </BrowserRouter>
   );
 };
+
+const GlobalStyle = createGlobalStyle`
+  ${reset}
+  *{
+    
+  }
+  body{
+    color: white;
+    margin: 0;
+    background-color: #2C2C2C;
+  }
+`;
 
 export default App;
