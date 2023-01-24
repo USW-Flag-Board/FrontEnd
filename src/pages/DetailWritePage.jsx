@@ -1,7 +1,12 @@
+import {useState} from "react";
 import styled from "styled-components";
+import axios from "axios";
 import ListThem from "../components/ListThem";
 import SideBar from "../components/SideBar";
 import LikeButton from "../components/LikeButton";
+import Reply from "../components/Reply";
+
+
 
 const itemContents = [
   "공지",
@@ -13,7 +18,64 @@ const itemContents = [
 ];
 const boardItem = ["스터디", "프로젝트"];
 
+
+
 const DetailWritePage = () => {
+
+  const [input, setInput] = useState('')
+  const [comments, setComments] = useState([])
+
+  const onChange = (e) => {
+    setInput(e.target.value);
+  };
+
+  const addComment = () => { // 코멘트 추가
+    setComments(
+      comments.concat({
+        id: comments.length + 1,
+        content: input,
+      })
+    );
+    setInput("");
+  };
+
+  const addReply = () => {
+    setComments(
+      comments.concat({
+        ids: comments.length + 1,
+        content: input,
+      })
+    );
+  }
+
+  const removeComment = (id) => { // 코멘트 삭제
+    return setComments(comments.filter((comment) => comment.id !== id));
+  };
+
+  const removeReply = (ids) => { // 코멘트 삭제
+    return setComments(comments.filter((comment) => comment.ids !== ids));
+  };
+
+  const abcde = () =>{
+    return(
+      <>
+    <RelativeArea>
+              <ReplyButton
+                placeholder="댓글을 입력하세요."
+                value={input}
+                onChange={onChange}
+              ></ReplyButton>
+              <AddIcon><Button
+                onClick={() => {
+                  addReply(input);
+                  setInput("");
+                }}>등록</Button></AddIcon>
+            </RelativeArea>
+            </>
+      );
+  };
+
+
   return (
     <BoardArea>
       <TitleArea>
@@ -58,13 +120,23 @@ const DetailWritePage = () => {
             </PostContentBox>
             <RelativeArea>
               <ReplyButton
-                type="text"
                 placeholder="댓글을 입력하세요."
+                value={input}
+                onChange={onChange}
               ></ReplyButton>
-              <AddIcon>dd</AddIcon>
+              <AddIcon><Button
+                onClick={() => {
+                  addComment(input);
+                  setInput("");
+                }}>등록</Button></AddIcon>
             </RelativeArea>
             <ReplyArea>
-              <ReplyContent>여기에 댓글 컴포넌트 넣을 예정</ReplyContent>
+              <ReplyContent>
+              {comments.map((comment, index) => (
+                <Reply key={`${comment}_${index}`} name = '이수빈' delete = {<Deletebutton onClick={() => removeComment(comment.id)}>삭제하기</Deletebutton>}  Comment = {comment.content} />
+                ))}
+
+            </ReplyContent>
             </ReplyArea>
           </PostBox>
         </PostArea>
@@ -218,6 +290,21 @@ const ReplyContent = styled.div`
   margin-bottom: 20px;
   margin-left: 60px;
   margin-right: 60px;
+`;
+
+//댓글 답글 입력 버튼
+const Button = styled.button`
+  color: white;
+  background-color:transparent;
+  border:none;
+  cursor: pointer;
+`
+const Deletebutton = styled.button`
+    color: white;
+    background-color:transparent;
+    border:none;
+    font-size: 12px;
+    cursor: pointer;
 `;
 
 export default DetailWritePage;

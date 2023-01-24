@@ -14,6 +14,7 @@ import reset from "styled-reset";
 import ChangePw from "./pages/ChangePw";
 import EditUser from "./pages/EditUser";
 import Resume from "./pages/Resume";
+import Activity from "./pages/Activity";
 import EmailAuth from "./pages/EmailAuth";
 import FindId from "./pages/FindId";
 import FindPw from "./pages/FindPw";
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/changepw" element={<ChangePw />}></Route>
         <Route path="/edit" element={<EditUser />}></Route>
         <Route path="/resume" element={<Resume />}></Route>
+        <Route path="/activity" element={<Activity/>}></Route>
         <Route path="/emailAuth" element={<EmailAuth />}></Route>
         <Route path="/findid" element={<FindId />}></Route>
         <Route path="/findpw" element={<FindPw />}></Route>
