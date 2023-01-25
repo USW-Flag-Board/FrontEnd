@@ -1,11 +1,21 @@
 import styled from "styled-components";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUser} from "@fortawesome/free-regular-svg-icons";
-import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const sections = ["FLAG", "BOARD", "ACTIVITY", "NOTICE"];
 
 const Header = () => {
+  const navigate = useNavigate();
+  const handleMenuClick = (menu) => {
+    if(menu === "BOARD"){
+      navigate("/board");
+    }else if(menu === "ACTIVITY"){
+      navigate("/activity");
+    }
+  }
+
   return (
     <HomeHeader>
       <LogoBox>
@@ -13,13 +23,14 @@ const Header = () => {
           className="logo"
           src="../images/logo.JPG"
           alt="blog-logo"
-          style={{height: "80%", cursor: "pointer"}}
+          onClick={() => navigate("/")}
+          style={{width: "30%", height: "80%", cursor: "pointer"}}
         />
       </LogoBox>
       <MenuItemBox>
         <MenuItems>
           {sections.map((item) => (
-            <MenuButton key={item}>{item}</MenuButton>
+            <MenuButton key={item} onClick={() => handleMenuClick(item)}>{item}</MenuButton>
           ))}
         </MenuItems>
       </MenuItemBox>
@@ -47,7 +58,7 @@ const Header = () => {
 
 const HomeHeader = styled.div`
   box-sizing: border-box;
-  width: 100vw;
+  width: 100%;
   height: 9vh;
   display: flex;
   align-items: flex-end;

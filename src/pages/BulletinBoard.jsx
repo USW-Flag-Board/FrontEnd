@@ -7,15 +7,24 @@ import {SideBar, Footer, ListThem, Pagination} from "../components/";
 const boardItem = ["자유게시판", "동아리 이모저모", "사전게시판", "정보게시판"];
 const barItem = ["제목", "작성자", "작성일", "조회수", "댓글"];
 const itemContents = [
-  "공지",
-  "자유게시판 공지입니다.",
-  "문희조",
-  "2022.08.03",
-  "1234",
-  "123",
+  {
+    boardId: "공지",
+    title: "자유게시판 공지입니다.",
+    userName: "문희조",
+    date: "2022.08.03",
+    count: "1234",
+    comment: "123",
+  },
+  {
+    boardId: "1",
+    title: "임시 게시물입니다.",
+    userName: "어준혁",
+    date: "2023.01.25",
+    count: "1234",
+    comment: "123",
+  },
 ];
 const selectItems = ["전체기간", "게시물 + 작성자"];
-const WriteItems = [{}];
 const BulletinBoard = () => {
   return (
     <>
@@ -77,6 +86,7 @@ const BulletinBoard = () => {
 };
 
 const BoardArea = styled.div`
+  width: 100vw;
   height: 88vh;
 `;
 

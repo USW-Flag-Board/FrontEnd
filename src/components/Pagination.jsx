@@ -1,7 +1,11 @@
 import ReactPaginate from "react-paginate";
+import { useState } from 'react';
 import styled from "styled-components";
 
 const Pagination = () => {
+    const [pageCount, setPageCount] = useState(0);
+    const [itemOffset, setItemOffset] = useState(0);
+    
     return (
         <StyledPaginateContainer>
             <ReactPaginate

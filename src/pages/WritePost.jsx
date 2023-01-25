@@ -32,6 +32,7 @@ const WritePost = () => {
   //   image_file: "",
   //   priview_URL: "",
   // });
+  const [board, setBoard] = useState(""); // 게시판 종류
   const [title, setTitle] = useState(""); // 글 제목
   const [content, setContent] = useState(""); // 글 내용
 
@@ -60,26 +61,29 @@ const WritePost = () => {
       )
     }
 
+  const handleBoardChange = (e) => {
+    setBoard(e.target.value);
+  }
+  
   const canSubmit = useCallback(() => {
     return content !== "" && title !== "";
   }, [title, content]);
 
   const data = {
+    board: `${board}`,
     title: `${title}`,
     content: `${content}`,
-    // createAt: todayTime(),
   }
 
   const handleSubmit = async() => {
     try{
       axios
-        .post("/api/post", data, {
-          header: {
-          Authorization: `Bearer ${sessionStorage.getItem("UserToken")}`, },
-          })
+        .post("/api/post", data)
+          // header: {
+          // Authorization: `Bearer ${sessionStorage.getItem("UserToken")}`, }, })
         .then((response) => {
-          console.log(response);
           window.alert("등록이 완료되었습니다.");
+          console.log("서버에서 내려온 값:", response);
         });
         // navigate("/board");
     }catch(e){
@@ -106,10 +110,10 @@ const WritePost = () => {
           />
           <ListArea>
             <SelectArea>
-              <BoardSelect>
+              <BoardSelect onChange={handleBoardChange}>
                 <option>게시판을 선택해주세요</option>
                 {boardItems.map((item) => (
-                  <option key={item}>{item}</option>
+                  <option key={item} >{item}</option>
                 ))}
               </BoardSelect>
               {canSubmit() ?
@@ -131,25 +135,6 @@ const WritePost = () => {
                 >
                   등록
                 </button> :""}
-                
-                {/* <button
-                  onClick={() => {
-                    handleSubmit()
-                  }}
-                  type="submit"
-                  style={{
-                    backgroundColor: "white",
-                    height: "2rem",
-                    color: "black",
-                    fontWeight: "700",
-                    borderRadius: "5px",
-                    width: "6rem",
-                    cursor: "pointer",
-                    border: "none",
-                  }}
-                >
-                  등록
-                </button> */}
             </SelectArea>
             <TitleInputBox>
               <TitleInput 

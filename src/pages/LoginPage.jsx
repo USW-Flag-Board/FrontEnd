@@ -8,12 +8,12 @@ import axios from "axios";
 import CheckButton from "../components/CheckButton";
 import Cookies from "universal-cookie";
 
-const LoginPage = () => {
+const LoginPage = ({setHeader}) => {
   const navigate = useNavigate();
   const cookies = new Cookies();
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
-
+  setHeader(false)
   //1. 자동로그인, 아이디 자동 기억 기능 추가해야함.
   //2. accessToken으로 쏼라쏼라 해야함.
 

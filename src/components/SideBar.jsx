@@ -36,16 +36,18 @@ const SideArea = styled.div`
   box-sizing: border-box;
   height: 100%;
 `;
-
+  
 const SideBarBox = styled.div`
   box-sizing: border-box;
 `;
 
 const SideBarContent = styled.div`
+  box-sizing: border-box;
   width: 92%;
 `;
 
 const ContentsTitle = styled.div`
+  box-sizing: border-box;
   font-size: 23px;
   font-weight: 700;
   padding: 3rem 0px 1rem 2.5rem;
@@ -53,12 +55,14 @@ const ContentsTitle = styled.div`
 `;
 
 const ItemBox = styled.ul`
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   padding: 1rem 0px 3rem 2.5rem;
 `;
 
 const Item = styled.li`
+  box-sizing: border-box;
   font-size: 0.8rem;
   font-weight: 700;
   padding: 0px 0px 1rem 0px;

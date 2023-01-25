@@ -1,12 +1,21 @@
 import styled from 'styled-components';
 
-const ListThem = (props) => {
+const ListThem = ({themList}) => {
     return(
-        <ListThemBox>
-            <ItemBox>
-                {props.themList.map((item) => <ListItem key={item}>{item}</ListItem>)}
-            </ItemBox>
-        </ListThemBox>
+        <>
+            {themList.map((item) => (
+                <ListThemBox key={item.boardId}>
+                    <ItemBox>
+                        <ListItem>{item.boardId}</ListItem>
+                        <ListItem>{item.title}</ListItem>
+                        <ListItem>{item.userName}</ListItem>
+                        <ListItem>{item.date}</ListItem>
+                        <ListItem>{item.count}</ListItem>
+                        <ListItem>{item.comment}</ListItem>
+                    </ItemBox>
+                </ListThemBox>
+            ))}
+        </>
     )
 }
 
