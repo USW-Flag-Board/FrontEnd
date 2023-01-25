@@ -1,4 +1,4 @@
-export {default as CheckButton} from "./CheckButton";
+export {default as AutoLoginButton} from "./AutoLoginButton";
 export {default as Footer} from "./Footer";
 export {default as Grass} from "./Grass";
 export {default as Header} from "./Header";
@@ -10,5 +10,3 @@ export {default as SearchList} from "./SearchList";
 export {default as SideBar} from "./SideBar";
 export {default as Reply} from "./Reply";
 export {default as ActivityCard} from "./ActivityCard";
-
-
