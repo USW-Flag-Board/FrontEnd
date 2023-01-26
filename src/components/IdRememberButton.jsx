@@ -1,9 +1,13 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleCheck} from "@fortawesome/free-solid-svg-icons";
 import {faCircle} from "@fortawesome/free-regular-svg-icons";
+import Cookies from "universal-cookie";
+import {useNavigate} from "react-router-dom";
 
 const IdRememberButton = (props) => {
+  const cookies = new Cookies();
+  const navigate = useNavigate();
   const [state, setState] = useState(false);
 
   const Checked = () => {
@@ -15,6 +19,12 @@ const IdRememberButton = (props) => {
       props.getValue(true);
     }
   };
+
+  useEffect(() => {
+    if (cookies.get("remember_id")) {
+      setState(true);
+    }
+  }, [navigate]);
 
   return (
     <div style={{display: "inline-block"}}>

@@ -54,7 +54,7 @@ const LoginPage = () => {
             sessionStorage.setItem("UserToken", accessToken);
             sessionStorage.setItem("id", loginId);
             cookies.set("refresh_token", response.data.refreshToken);
-            navigate("/my", {state: {id: loginId}});
+            navigate("/my");
           })
           .catch((error) => {
             if (error.response.status === 404) {
@@ -70,7 +70,7 @@ const LoginPage = () => {
             localStorage.setItem("UserToken", accessToken);
             localStorage.setItem("id", loginId);
             cookies.set("refresh_token", response.data.refreshToken);
-            navigate("/my", {state: {id: loginId}});
+            navigate("/my");
           })
           .catch((error) => {
             if (error.response.status === 404) {
@@ -83,9 +83,9 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (sessionStorage.getItem("UserToken")) {
-      navigate("/my", {state: {id: sessionStorage.getItem("id")}});
+      navigate("/my");
     } else if (localStorage.getItem("UserToken")) {
-      navigate("/my", {state: {id: localStorage.getItem("id")}});
+      navigate("/my");
     }
   });
 
