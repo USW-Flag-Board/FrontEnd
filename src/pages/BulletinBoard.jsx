@@ -1,11 +1,13 @@
-import {Link} from "react-router-dom";
+import { useState } from 'react';
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPen, faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
-import {SideBar, Footer, ListThem, Pagination} from "../components/";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { SideBar, Footer, ListThem, Pagination } from "../components/";
 
 const boardItem = ["자유게시판", "동아리 이모저모", "사전게시판", "정보게시판"];
 const barItem = ["제목", "작성자", "작성일", "조회수", "댓글"];
+const selectItems = ["전체기간", "게시물 + 작성자"];
 const itemContents = [
   {
     boardId: "공지",
@@ -24,7 +26,6 @@ const itemContents = [
     comment: "123",
   },
 ];
-const selectItems = ["전체기간", "게시물 + 작성자"];
 const BulletinBoard = () => {
   return (
     <>

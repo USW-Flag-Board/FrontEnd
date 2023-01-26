@@ -3,14 +3,16 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleCheck} from "@fortawesome/free-solid-svg-icons";
 import {faCircle} from "@fortawesome/free-regular-svg-icons";
 
-const CheckButton = (props) => {
+const AutoLoginButton = (props) => {
   const [state, setState] = useState(false);
 
   const Checked = () => {
     if (state) {
       setState(false);
+      props.getValue(1);
     } else {
       setState(true);
+      props.getValue(2);
     }
   };
 
@@ -24,7 +26,7 @@ const CheckButton = (props) => {
               "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
             transition: "opacity 0.2s",
           }}
-          onClick={Checked}
+          onClick={() => Checked()}
         />
       ) : (
         <FontAwesomeIcon
@@ -34,11 +36,11 @@ const CheckButton = (props) => {
               "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
             transition: "opacity 0.2s",
           }}
-          onClick={Checked}
+          onClick={() => Checked()}
         />
       )}
     </div>
   );
 };
 
-export default CheckButton;
+export default AutoLoginButton;

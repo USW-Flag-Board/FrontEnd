@@ -5,7 +5,8 @@ import {faUser} from "@fortawesome/free-regular-svg-icons";
 import {faLock} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import axios from "axios";
-import CheckButton from "../components/CheckButton";
+import AutoLoginButton from "../components/AutoLoginButton";
+import IdRememberButton from "../components/IdRememberButton";
 import Cookies from "universal-cookie";
 
 const LoginPage = ({setHeader}) => {
@@ -14,8 +15,26 @@ const LoginPage = ({setHeader}) => {
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   setHeader(false)
+  const [loginType, setLoginType] = useState(1);
+  const [idRemember, setIdRemember] = useState(false);
+
+  const getValue = (text) => {
+    setLoginType(text);
+  };
+
+  const RememberState = (text) => {
+    setIdRemember(text);
+  };
+
   //1. 자동로그인, 아이디 자동 기억 기능 추가해야함.
-  //2. accessToken으로 쏼라쏼라 해야함.
+
+  const RememberCookie = () => {
+    if (idRemember) {
+      cookies.set("remember_id", loginId);
+    } else {
+      cookies.remove("remember_id");
+    }
+  };
 
   function OnLogin(loginId, password) {
     const data = {
@@ -27,28 +46,55 @@ const LoginPage = ({setHeader}) => {
     } else if (password === "") {
       alert("비밀번호를 입력해주세요.");
     } else {
-      axios
-        .post("http://3.39.36.239:8080/api/auth/login", data)
-        .then((response) => {
-          const accessToken = response.data.accessToken;
-          sessionStorage.setItem("UserToken", accessToken);
-          sessionStorage.setItem("id", loginId);
-          cookies.set("refresh_token", response.data.refreshToken);
-          navigate("/my", {state: {id: loginId}});
-        })
-        .catch((error) => {
-          if (error.response.status === 404) {
-            alert("존재하지 않는 사용자입니다.");
-          }
-        });
+      if (loginType === 1) {
+        axios
+          .post("http://3.39.36.239:8080/api/auth/login", data)
+          .then((response) => {
+            RememberCookie();
+            const accessToken = response.data.accessToken;
+            sessionStorage.setItem("UserToken", accessToken);
+            sessionStorage.setItem("id", loginId);
+            cookies.set("refresh_token", response.data.refreshToken);
+            navigate("/my", {state: {id: loginId}});
+          })
+          .catch((error) => {
+            if (error.response.status === 404) {
+              alert("존재하지 않는 사용자입니다.");
+            }
+          });
+      } else if (loginType === 2) {
+        axios
+          .post("http://3.39.36.239:8080/api/auth/login", data)
+          .then((response) => {
+            RememberCookie();
+            const accessToken = response.data.accessToken;
+            localStorage.setItem("UserToken", accessToken);
+            localStorage.setItem("id", loginId);
+            cookies.set("refresh_token", response.data.refreshToken);
+            navigate("/my", {state: {id: loginId}});
+          })
+          .catch((error) => {
+            if (error.response.status === 404) {
+              alert("존재하지 않는 사용자입니다.");
+            }
+          });
+      }
     }
   }
 
   useEffect(() => {
     if (sessionStorage.getItem("UserToken")) {
       navigate("/my", {state: {id: sessionStorage.getItem("id")}});
+    } else if (localStorage.getItem("UserToken")) {
+      navigate("/my", {state: {id: localStorage.getItem("id")}});
     }
   });
+
+  useEffect(() => {
+    if (cookies.get("remember_id") !== undefined) {
+      setLoginId(cookies.get("remember_id"));
+    }
+  }, [navigate]);
 
   return (
     <PageArea>
@@ -64,6 +110,7 @@ const LoginPage = ({setHeader}) => {
           <WriteArea
             type="text"
             placeholder="아이디"
+            defaultValue={loginId}
             onChange={(e) => {
               setLoginId(e.target.value);
             }}
@@ -75,7 +122,7 @@ const LoginPage = ({setHeader}) => {
         </RelativeArea>
         <RelativeArea>
           <WriteArea
-            type="text"
+            type="password"
             placeholder="비밀번호"
             onChange={(e) => {
               setPassword(e.target.value);
@@ -88,11 +135,11 @@ const LoginPage = ({setHeader}) => {
         </RelativeArea>
         <SortArea>
           <CheckArea>
-            <CheckButton />
+            <AutoLoginButton getValue={getValue} />
             <CheckLabel>로그인 상태 유지</CheckLabel>
           </CheckArea>
           <CheckArea>
-            <CheckButton />
+            <IdRememberButton getValue={RememberState} />
             <CheckLabel>아이디 기억하기</CheckLabel>
           </CheckArea>
         </SortArea>

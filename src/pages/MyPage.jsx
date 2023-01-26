@@ -17,8 +17,8 @@ const MyPage = () => {
   const [nickname, setNickname] = useState("");
   const [introduceMessage, setIntroduceMessage] = useState("");
   useEffect(() => {
-    if (sessionStorage.getItem("UserToken") === null) {
-      console.log("로그인 화면으로 보내버릴 예정");
+    if (localStorage.getItem("UserToken")) {
+      console.log("???");
     } else {
       console.log("정보 받아오기 시작");
       SetMyData();
@@ -39,6 +39,11 @@ const MyPage = () => {
       });
   };
 
+  const LogOut = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+  };
+
   return (
     <PageArea>
       <LeftPage>
@@ -53,6 +58,7 @@ const MyPage = () => {
                 Edit Profile
               </EditProfile>
             </RelativeArea>
+            <EditProfile onClick={() => LogOut()}>logout</EditProfile>
           </ProfileArea>
           <NickNameArea>
             <NickName>{nickname}</NickName>
