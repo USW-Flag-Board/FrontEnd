@@ -3,11 +3,21 @@ import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
 import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
+import Cookies from "universal-cookie";
 
-const sections = ["FLAG", "BOARD", "프로그램 모집", "NOTICE"];
+const sections = ["BOARD", "프로그램 모집", "NOTICE"];
 
 const Header = () => {
   const navigate = useNavigate();
+  const cookies = new Cookies();
+
+  const LoginCheck = () => {
+    if (cookies.get("refresh_token")) {
+      navigate("/my");
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <HomeHeader>
@@ -22,6 +32,7 @@ const Header = () => {
       </LogoBox>
       <MenuItemBox>
         <MenuItems>
+          <MenuButton onClick={() => navigate("/resume")}>FLAG</MenuButton>
           {sections.map((item) => (
             <MenuButton key={item}>{item}</MenuButton>
           ))}
@@ -42,6 +53,7 @@ const Header = () => {
         </SearchPaper>
         <FontAwesomeIcon
           icon={faUser}
+          onClick={() => LoginCheck()}
           style={{width: "14%", color: "#BABABA", height: "50%"}}
         />
       </SearchBox>

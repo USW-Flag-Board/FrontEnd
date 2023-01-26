@@ -2,6 +2,7 @@ import {useState} from "react";
 import {useNavigate, useLocation} from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
+import Cookies from "universal-cookie";
 
 const profileUpdateExample = [
   "백엔드 개발자 문희조입니다.",
@@ -13,7 +14,8 @@ const profileUpdateExample = [
 const EditUser = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [password, SetPassword] = useState("password");
+  const cookies = new Cookies();
+  const [password, SetPassword] = useState("");
   const [bio, setBio] = useState(profileUpdateExample[0]);
   const [major, setMajor] = useState(profileUpdateExample[1]);
   const [phoneNumber, setPhoneNumber] = useState(profileUpdateExample[2]);
@@ -42,9 +44,17 @@ const EditUser = () => {
       password,
     };
     axios
-      .delete("http://3.39.36.239:8080/api/member", passwordPost)
+      .delete("http://3.39.36.239:8080/api/member", {
+        data: {
+          password: "asdasd72!@",
+        },
+      })
       .then((response) => {
         alert("계정 삭제 완료");
+        cookies.remove("refresh_token");
+        cookies.remove("remember_id");
+        localStorage.clear();
+        sessionStorage.clear();
       })
       .catch((error) => {
         if (error.response.state === 400) {

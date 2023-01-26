@@ -1,7 +1,8 @@
+import axios from "axios";
+import {useEffect, useState} from "react";
 import styled from "styled-components";
 
-const year = ["2022"];
-const study = [
+const study_2022 = [
   "2022 2학기 - 코딩테스트 [6명] (진행중)",
   "2022 2학기 - 알고리즘 [6명] (진행중)",
   "2022 2학기 - 모의 해킹 (웹) [4명] (진행중)",
@@ -9,45 +10,118 @@ const study = [
   "2022 2학기 - 네트워크 [6명] (진행중)]",
 ];
 
-const resume = [
-  `2021 2학기 - DB 스터디 [4명] (완료)
-   2021 2학기 - 자료구조 스터디 [6명] (완료)
-   2021 2학기 - 코딩 스터디 [5명] (완료)
-   2022 겨울방학 - 정보처리기사 스터디 [3명] (완료)
-   2022 1학기 - JAVA 스터디 [6명] (완료)
-   2022 1학기 - 알고리즘 - 코테반 [4명] (완료)`,
+const resume = ["2021 겨울방학", "2021 1학기", "2021 1학기"];
+const resume2 = [
+  "2022 겨울방학 - 정보처리기사 스터디 [3명] (완료)",
+  "2022 1학기 - JAVA 스터디 [6명] (완료)",
+  "2022 1학기 - 알고리즘 - 코테반 [4명] (완료)",
 ];
 
 const Resume = () => {
-  const studyList = study.map((study, key) => <li key={key}>{study}</li>);
-  const resumeList = study.map((resume, key) => <li key={key}>{resume}</li>);
+  const [year, setYear] = useState(2022);
+  const study = study_2022.map((study, key) => <li key={key}>{study}</li>);
+  const [resumeList, setResumeList] = useState("");
+
+  const PrevYear = (currentYear) => {
+    if (currentYear !== 2021) {
+      setYear(currentYear - 1);
+    }
+  };
+
+  const NextYear = (currentYear) => {
+    if (currentYear !== 2022) {
+      setYear(currentYear + 1);
+    }
+  };
+
+  useEffect(() => {
+    axios.get("http://3.39.36.239:8080/api/activities").then((response) => {});
+
+    if (year === 2021) {
+      setResumeList(resume.map((resume, key) => <li key={key}>{resume}</li>));
+    } else if (year === 2022) {
+      setResumeList(resume2.map((resume, key) => <li key={key}>{resume}</li>));
+    }
+  }, [year]);
+
   return (
     <>
       <Mainbox>
         <Box>
+          <FlexArea>
+            <YearSelectButton onClick={() => PrevYear(year)}>
+              &lt;
+            </YearSelectButton>
+            <YearTitle>{year}</YearTitle>
+            <YearSelectButton onClick={() => NextYear(year)}>
+              &gt;
+            </YearSelectButton>
+          </FlexArea>
           <ResumeTitle>동아리 활동 이력</ResumeTitle>
-          <Resumebox>
-            <YearBox>{year}</YearBox>
+        </Box>
+        <Resumebox>
+          <RelativeArea>
+            <TextTitle>강의 목록</TextTitle>
             <TextBox>{resumeList}</TextBox>
-          </Resumebox>
-        </Box>
-        <Box>
-          <StudyTitle>현재 진행중인 스터디</StudyTitle>
-          <Studybox>{studyList}</Studybox>
-        </Box>
+          </RelativeArea>
+          <RelativeArea>
+            <TextTitle>Project</TextTitle>
+            <TextBox>{resumeList}</TextBox>
+          </RelativeArea>
+          <RelativeArea>
+            <TextTitle>멘토링</TextTitle>
+            <TextBox>{resumeList}</TextBox>
+          </RelativeArea>
+          <RelativeArea>
+            <TextTitle>스터디</TextTitle>
+            <TextBox>{study}</TextBox>
+          </RelativeArea>
+        </Resumebox>
       </Mainbox>
     </>
   );
 };
 
+const YearSelectButton = styled.button`
+  width: 50px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  background: none;
+  outline: none;
+  border: none;
+  margin-bottom: 50px;
+`;
+
+const TextTitle = styled.div`
+  display: flex;
+  margin: 20px;
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+const RelativeArea = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const FlexArea = styled.div`
+  display: flex;
+  align-items: space-evenly;
+`;
+
 const Mainbox = styled.div`
   display: flex;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 88vh;
 `;
 
 const Box = styled.div`
   display: flex;
+  width: 45%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
 `;
 
@@ -55,76 +129,50 @@ const TextBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  line-height: 3.5vh;
-`;
-
-const YearBox = styled.div`
-  margin-top: 3vw;
-  margin-bottom: 3vw;
-  width: 15vw;
+  border: 1px solid white;
+  border-radius: 2.5vh;
   height: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2.2rem;
-  font-weight: 800px;
-  border-right: 1px solid white;
-`;
-
-const ListBox = styled.div`
-  display: flex;
-  flex-direction: column;
+  padding: 20px;
 `;
 
 const Resumebox = styled.div`
   display: flex;
   border: 1px solid white;
-  width: 45vw;
-  height: 80vh;
-  margin-left: 15vw;
-  margin-bottom: 10vh;
+  height: auto;
   border-radius: 2.5vh;
   font-size: 1vw;
   font-weight: 700px;
   list-style: none;
-`;
-
-const Studybox = styled.div`
-  display: flex;
-  border: 1px solid white;
-  width: 25vw;
-  height: 38vh;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-right: 2%;
   flex-direction: column;
-  justify-content: center;
-  padding-left: 2vw;
-  line-height: 5vh;
-  margin-left: 15px;
-  margin-bottom: 10vh;
-  border-radius: 2.5vh;
-  text-align: left;
-  font-size: 1vw;
-  font-weight: 700px;
-  list-style: none;
+  padding: 50px;
+  align-items: center;
+  padding-left: 100px;
+  padding-right: 100px;
+  width: 60%;
+  flex-wrap: wrap;
 `;
 
 const ResumeTitle = styled.div`
   display: flex;
   width: 500px;
   height: 55px;
-  margin-left: 17vw;
-  margin-top: 2vh;
   font-size: 2.5rem;
   font-weight: 800px;
+  justify-content: center;
+  margin-bottom: 50px;
 `;
 
-const StudyTitle = styled.div`
+const YearTitle = styled.div`
   display: flex;
-  width: 300px;
-  height: 30px;
-  margin-left: 30px;
-  font-size: 1.3rem;
+  width: 200px;
+  height: 55px;
+  font-size: 2.5rem;
   font-weight: 800px;
-  margin-top: 47.5vh;
+  justify-content: center;
+  margin-bottom: 50px;
 `;
 
 export default Resume;
