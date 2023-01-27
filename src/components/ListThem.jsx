@@ -1,13 +1,42 @@
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { increment } from "../features/toDos";
 
-const ListThem = ({themList}) => {
+// 작성한 게시물 배열
+const itemContents = [
+    {
+        id: 1,
+        boardId: "공지",
+        title: "자유게시판 공지입니다.",
+        userName: "문희조",
+        date: "2022.08.03",
+        count: 1234,
+        comment: 123,
+    },
+    {
+        id: 2,
+        boardId: "1",
+        title: "임시 게시물입니다.",
+        userName: "어준혁",
+        date: "2023.01.25",
+        count: 1234,
+        comment: 123,
+    },
+];
+
+const ListThem = () => {
+    const counter = useSelector(state => state.toDo.value);
+    const dispatch = useDispatch();
+    const handleTitleClick = () => {
+        dispatch(increment());
+    }
     return(
         <>
-            {themList.map((item) => (
+            {itemContents.map((item) => (
                 <ListThemBox key={item.boardId}>
                     <ItemBox>
                         <ListItem>{item.boardId}</ListItem>
-                        <ListItem>{item.title}</ListItem>
+                        <ListItem style={{cursor: "pointer"}} onClick={handleTitleClick}>{item.title}</ListItem>
                         <ListItem>{item.userName}</ListItem>
                         <ListItem>{item.date}</ListItem>
                         <ListItem>{item.count}</ListItem>

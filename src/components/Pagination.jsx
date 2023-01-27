@@ -7,11 +7,11 @@ const Pagination = ({itemsPerPage, items}) => {
     const [itemOffset, setItemOffset] = useState(0) // 데이터를 가져왔는데 어디서부터 어디까지 자를건지
     const [currentItems, setCurrentItems] = useState([]);
     
-    useEffect(()=>{
-            const endOffset = itemOffset + itemsPerPage;
-            setCurrentItems(items.slice(itemOffset, endOffset))
-            setPageCount(Math.ceil((items.length ?? 0) / itemsPerPage))
-    },[itemOffset, itemsPerPage, setCurrentItems, items])
+    // useEffect(()=>{
+    //         const endOffset = itemOffset + itemsPerPage;
+    //         setCurrentItems(items.slice(itemOffset, endOffset))
+    //         setPageCount(Math.ceil((items.length ?? 0) / itemsPerPage))
+    // },[itemOffset, itemsPerPage, setCurrentItems, items])
 
     const handlePageClick = (e)=>{
       setItemOffset((e.selected * itemsPerPage) % items.length)

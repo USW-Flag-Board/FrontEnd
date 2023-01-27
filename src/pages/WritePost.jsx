@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { add } from "../features/toDos";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faFile } from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
@@ -32,6 +34,7 @@ const WritePost = () => {
   //   image_file: "",
   //   priview_URL: "",
   // });
+  const dispatch = useDispatch();
   const [board, setBoard] = useState(""); // 게시판 종류
   const [title, setTitle] = useState(""); // 글 제목
   const [content, setContent] = useState(""); // 글 내용
@@ -90,6 +93,10 @@ const WritePost = () => {
       console.log(e);
     }
   };
+
+  const onSubmit = (e) => {
+    dispatch(add())
+  }
   
   return (
     <>
@@ -120,6 +127,7 @@ const WritePost = () => {
                 <button
                   onClick={() => {
                     handleSubmit()
+                    onSubmit()
                   }}
                   type="button"
                   style={{

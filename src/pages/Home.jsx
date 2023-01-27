@@ -1,5 +1,6 @@
+import { height } from "@mui/system";
 import styled from "styled-components";
-import {SideBar, Grass} from "../components/";
+import { SideBar } from "../components/";
 
 const contents = [
   {title: "STUDY", content: ["ALGORITHM", "WEB-BACKEND"]},
@@ -12,9 +13,6 @@ const homeItem = [
   "내가 쓴 글",
   "댓글 단 글",
   "스트랩",
-  "관리자 페이지",
-  "유저 관리",
-  "게시판 관리",
 ];
 
 const Home = () => {
@@ -118,16 +116,23 @@ const Home = () => {
                   </FeedItem>
                 </FeedBox>
               </FeedArea>
-              <h1
+              {/* <h1
                 style={{
                   fontSize: "1.1rem",
                   marginBottom: "0.8rem",
                   paddingLeft: "1.4rem",
                 }}
               >
-                JANDI
-              </h1>
-              <Grass />
+                좋아요순, 최근순
+              </h1> */}
+              <FlagContents style={{marginBottom: "0.8rem", justifyContent: "flex-start"}}>
+                <FlagContent style={{width: "50%", margin: "0 0.5rem 0 0"}}>좋아요순</FlagContent>
+                <FlagContent style={{width: "50%"}}>최근순</FlagContent>
+              </FlagContents>
+              <NoticeArea style={{display: "flex"}}>
+                <FeedContent style={{width: "45%", height: "65%", margin: "0 0.5rem 0 0", borderRadius: "14px"}}/>
+                <FeedContent style={{width: "45%", height: "65%", margin: 0, borderRadius: "14px"}}/>
+              </NoticeArea>
             </MyActivityBox>
           </MyActivityArea>
         </HomeContents>
@@ -140,7 +145,7 @@ const Home = () => {
         title="FLAG"
         height="100%"
         borderRadius="50px 0 0 50px"
-        paddingTopMain="5rem"
+        paddingTopMain="7rem"
       />
     </HomeArea>
   );

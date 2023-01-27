@@ -3,7 +3,6 @@ import {useNavigate, useLocation} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
-import Grass from "../components/Grass";
 import axios from "axios";
 
 //1. member api가 이상함. 수정되면 작업 진행.
@@ -82,10 +81,6 @@ const MyPage = () => {
         </HistoryArea>
       </LeftPage>
       <RightPage>
-        <GrassArea>
-          <GrassName>STUDY_WEB-BACKEND</GrassName>
-          <Grass />
-        </GrassArea>
       </RightPage>
     </PageArea>
   );

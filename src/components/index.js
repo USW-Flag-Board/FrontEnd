@@ -1,6 +1,5 @@
 export {default as AutoLoginButton} from "./AutoLoginButton";
 export {default as Footer} from "./Footer";
-export {default as Grass} from "./Grass";
 export {default as Header} from "./Header";
 export {default as InfoState} from "./InfoState";
 export {default as JoinTypeButton} from "./JoinTypeButton";

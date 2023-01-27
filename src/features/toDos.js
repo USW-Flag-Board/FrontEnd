@@ -1,18 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+let nextId = 1;
 export const toDos = createSlice({
     name: 'toDoReducer',
-    initialState: {
-        arr: [],
-        value: 0,
-    },
+    initialState: [],
     reducers: {
         add: (state, action) => {
-            state.arr.concat({text: action.payload})
+            state.concat(action.todo)
         },
-        remove: (state, action) => {
-            state.filter()
-        },
+        // remove: (state, action) => {
+        //     state.filter()
+        // },
         increment: (state) => {
             state.value += 1
         },
