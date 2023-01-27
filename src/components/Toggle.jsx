@@ -6,7 +6,7 @@ import styled from 'styled-components';
 const ToggleBox = styled.div`
   position: relative;
 
-  > .toggle-box { // >의 뜻은 해당 component의 자식 중이라는 의미다.
+  > .toggle-box {
     background-color: #3C3C3C;
     border: 1px solid white;
     border-radius: 15px;

@@ -10,3 +10,6 @@ export {default as SearchList} from "./SearchList";
 export {default as SideBar} from "./SideBar";
 export {default as Reply} from "./Reply";
 export {default as ActivityCard} from "./ActivityCard";
+export {default as ActivityManagerModal} from "./ActivityManagerModal";
+export {default as ActivityUserModal} from "./ActivityUserModal";
+export {default as ActivityWrite} from "./ActivityWrite";
