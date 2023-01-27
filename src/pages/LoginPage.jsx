@@ -9,9 +9,10 @@ import AutoLoginButton from "../components/AutoLoginButton";
 import IdRememberButton from "../components/IdRememberButton";
 import Cookies from "universal-cookie";
 
-const LoginPage = () => {
+const LoginPage = ({setHeader}) => {
   const navigate = useNavigate();
   const cookies = new Cookies();
+  setHeader(false);
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const [loginType, setLoginType] = useState(1);

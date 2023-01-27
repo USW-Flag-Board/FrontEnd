@@ -6,7 +6,7 @@ import axios from "axios";
 const ChangePw = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [currentPassword, setCurrentPassword] = useState(location.state.pw);
+  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
   const [passwordError, setPasswordError] = useState(false);
@@ -17,6 +17,10 @@ const ChangePw = () => {
     if (newPassword !== passwordCheck) {
       return setPasswordError(true);
     }
+  };
+
+  const onChangeCurrentPassword = (e) => {
+    setCurrentPassword(e.target.value);
   };
 
   const onChangePassword = (e) => {
@@ -58,6 +62,19 @@ const ChangePw = () => {
         </PwTitle>
         <Pwbox>
           <Pwfield>
+            <Box>
+              <TextBox>현재 비밀번호</TextBox>
+              <Box>
+                <PwChange
+                  name="user-current-password"
+                  type="password"
+                  value={currentPassword}
+                  required
+                  onChange={onChangeCurrentPassword}
+                ></PwChange>
+              </Box>
+              <ErrorBox></ErrorBox>
+            </Box>
             <Box>
               <TextBox>비밀번호</TextBox>
               <Box>

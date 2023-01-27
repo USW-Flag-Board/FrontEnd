@@ -23,7 +23,6 @@ import axios from "axios";
 
 const App = () => {
   const [header, setHeader] = useState(true);
-  console.log(header);
   const cookies = new Cookies();
 
   useEffect(() => {
@@ -72,11 +71,18 @@ const App = () => {
   return (
     <BrowserRouter>
       <GlobalStyle />
-      {header && <Header setHeader={setHeader} />}
+      {header ? <Header /> : ""}
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/login" element={<LoginPage />}></Route>
-        <Route path="/signup" element={<SignUp />}></Route>
+        <Route
+          path="/login"
+          element={<LoginPage setHeader={setHeader} />}
+          setHeader={setHeader}
+        ></Route>
+        <Route
+          path="/signup"
+          element={<SignUp setHeader={setHeader} />}
+        ></Route>
         <Route path="/my" element={<MyPage />}></Route>
         <Route path="/board/writeDetail" element={<WriteDetail />}></Route>
         <Route path="/board" element={<BulletinBoard />}></Route>
