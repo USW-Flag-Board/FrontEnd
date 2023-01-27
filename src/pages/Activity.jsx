@@ -1,72 +1,68 @@
-import {useState} from "react";
+import {useState, useRef} from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy, faFolderClosed } from "@fortawesome/free-regular-svg-icons";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import ActivityCard from "../components/ActivityCard";
 import { Toggle } from "../components/Toggle";
+import ActivityUserModal from "../components/ActivityUserModal";
+import ActivityManagerModal from "../components/ActivityManagerModal";
+import ActivityWrite from "../components/ActivityWrite";
 
 const name = ['이수빈'];
-const day = ['2023.1.20' ,'2023.01.30'];
+const day = ['2023.1.20 ~ 2023.01.30'];
 const title = ['알고리즘 스터디 초급반 모집합니다.'];
 const tag = ['#flag #flag2'];
-const git = ['Https://www.naver.com']
-
-const ActivityModal = () =>{
-
-    const [on, setOn] = useState(false);
-
-    const applyHandler = () => {
-        setOn(!on);
-    };
-
-    return(
-        <>
-            <ModalBackground>
-                <ModalBox>
-                    <Box>
-                        <ModalTitle>{title}<ModalNamebox>{name}</ModalNamebox></ModalTitle>
-                        <RowBox><Modaltype>project</Modaltype><ModalPeriod>{day[0]} ~ {day[1]}</ModalPeriod></RowBox>
-                        <ModalMain type="text"></ModalMain>
-                        <Modalgit>깃허브 링크:{git}</Modalgit>
-                        <RowBox><OffapplyButton>
-                          신청하기 </OffapplyButton> {!on ? '' : '신청이 완료되었습니다'}</RowBox>
-                    </Box>
-                </ModalBox>
-            </ModalBackground>
-        </>
-    );
-};
+const git = ['Https://www.naver.com'];
 
 const Activity = () => {
 
-    const [modal, setModal] = useState(false)
+    const [user, setUser] = useState(false)
+    const [manager, setManager] = useState(false)
+    const [write, setWrite] = useState(false)
+    const outside = useRef();
+
+    const Click = () => {
+        setUser(!user)
+    };
 
     return (
         <>
             <Mainbox>
                 <HeaderMenu>
-                    <ActivityButton onClick={()=>{setModal(true)}}><FontAwesomeIcon icon={faCopy}/> All</ActivityButton>
-                    <ActivityButton><FontAwesomeIcon icon={faFolderClosed}/>  Project</ActivityButton>
+                    <ActivityButton><FontAwesomeIcon icon={faCopy}/> All</ActivityButton>
+                    <ActivityButton onClick={() => setManager(!manager)}><FontAwesomeIcon icon={faFolderClosed}/>  Project</ActivityButton>
                     <ActivityButton><FontAwesomeIcon icon={faPencil}/>  Study</ActivityButton>
+                    <ActivityButton><PostButton onClick={() => setWrite(!write)}>글 작성하기</PostButton></ActivityButton>
                     <ActivityButton><Toggle/></ActivityButton>
                 </HeaderMenu>
                 <MainContent>
-                    <ActivityCard title = {title} text = {day[1]} tag = {tag} name = {name}/>
-                    <ActivityCard title = '테스트 입니다' text = '모집 마감일: 2023.01.30' tag = '#flag #flag2' name = '이수빈'/>
-                    <ActivityCard title = '테스트 입니다' text = '모집 마감일: 2023.01.30' tag = '#flag #flag2' name = '이수빈'/>
-                    <ActivityCard title = '테스트 입니다' text = '모집 마감일: 2023.01.30' tag = '#flag #flag2' name = '이수빈'/>
-                    <ActivityCard title = '테스트 입니다' text = '모집 마감일: 2023.01.30' tag = '#flag #flag2' name = '이수빈'/>
-                    {modal == true ? <ActivityModal /> : null}
+                    <ButtonBox onClick={() => setUser(!user)}><ActivityCard title = {title} text = {day} tag = {tag} name = {name}/></ButtonBox>
+                    <ButtonBox onClick={() => setManager(!manager)}><ActivityCard title = '누르면 개설자 컴포넌트 나와요' text = '모집 마감일: 2023.01.30' tag = '#flag #flag2' name = '이수빈'/></ButtonBox>
+                    <ButtonBox onClick={() => setUser(!user)}><ActivityCard title = '테스트 입니다' text = '모집 마감일: 2023.01.30' tag = '#flag #flag2' name = '이수빈'/></ButtonBox>
+                    <ButtonBox onClick={() => setUser(!user)}><ActivityCard title = '테스트 입니다' text = '모집 마감일: 2023.01.30' tag = '#flag #flag2' name = '이수빈'/></ButtonBox>
+                    <ButtonBox onClick={() => setUser(!user)}><ActivityCard title = '테스트 입니다' text = '모집 마감일: 2023.01.30' tag = '#flag #flag2' name = '이수빈'/></ButtonBox>
+    
+                    {write && (
+                    <ActivityWrite closeModal={() => setWrite(!write)}>
+                        </ActivityWrite>
+                    )}
+                    {user && (
+                    <ActivityUserModal closeModal={() => setUser(!user)}>
+                        </ActivityUserModal>
+                    )}
+                    {manager && (
+                    <ActivityManagerModal closeModal={() => setManager(!manager)}>
+                        </ActivityManagerModal>
+                    )}
+                    
                 </MainContent>
                 
             </Mainbox>
         </>
     );
 
-}
-
-export default Activity;
+};
 
 const ActivityButton = styled.div`
 
@@ -107,116 +103,22 @@ const MainContent = styled.div`
     height: auto;
 `;
 
-const ModalBackground = styled.div`
-    position: fixed;
-    top:0; left: 0; bottom: 0; right: 0;
-    background: rgba(0, 0, 0, 0);
-`;
-
-const ModalBox = styled.div`
-    position: absolute;
-    top: calc(23vh); left: calc(31vw);
-    background-color: white;
-    display: flex; 
-    justify-content: center;
-    align-items: center;
-    border-radius: 20px;
-    width: 38vw;
+const PostButton = styled.button`
+    width: auto;
     height: auto;
-    color: black;
-`;
-
-const ModalTitle = styled.div`
-    margin: 8px;
-    font-weight: 800;
-    font-size: 23px;
-    width: auto;
-    display:flex;
-`;
-
-const Modaltype = styled.div`
-    border: 1px solid black;
-    border-radius: 20px;
-    font-weight: 700;
-    font-size: 18px;
-    display: flex;
-    padding-right: 30px;
-    padding-left: 30px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    justify-content: center;
-    margin-left: 10px;
-    margin-top: 7px;
-    align-items: center;
-`;
-
-const ModalPeriod = styled.div`
-    border: 1px solid black;
-    border-radius: 20px;
-    font-weight: 700;
-    font-size: 18px;
-    display: flex;
-    padding-right: 20px;
-    padding-left: 20px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    justify-content: center;
-    margin-left: 10px;
-    margin-top: 7px;
-    align-items: center;
-`;
-
-const ModalMain = styled.div`
-    width: auto;
-    height: 30vh;
-    margin: 10px;
-    border: 1px solid black;
-    border-radius: 20px;
-    padding: 5px;
-`;
-
-const ModalNamebox = styled.div`
-    font-size: 17px;
-    margin-top: 1.5%;
-    text-align: right;
-    width: 7vw;
-    font-weight: 800;
-`;
-
-const Box = styled.div`
-    margin: 5px;
-    width: 95%;
-    height: 95%;
-    flex-direction: column;
-`;
-
-const RowBox = styled.div`
-    display: flex;
-    margin-top: 12px;
-`;
-
-const Modalgit = styled.div`
-    border: 1px solid black;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 15px;
-    padding: 10px;
-    margin-right: 10px;
-    margin-left: 10px;
-    align-items: center;
-`;
-
-const OffapplyButton = styled.button`
-    width: 80px;
-    height: 30px;
-    font-weight: 1000;
-    font-size: 13px;
-    margin-bottom: 10px;
-    border-radius: 20px; 
-    margin-left: 10px;
-    background-color: ${({ on }) => (on ? '#008d62' : '#ff5b7c')}};
     border: none;
+    background: transparent;
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+    cursor:pointer;
 `;
 
+const ButtonBox = styled.button`  
+    margin: 5px;
+    color: white;
+    border: none;
+    background: transparent;
+`
 
-
+export default Activity;

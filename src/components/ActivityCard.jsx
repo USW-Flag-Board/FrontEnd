@@ -6,7 +6,6 @@ const ActivityCard = (props) => {
             <Mainbox>
                 <span><Title>{props.title}</Title></span>
                 <span><Text>{props.text}</Text></span>
-                <span><Tag>{props.tag}</Tag></span>
                 <span><Name>{props.name}</Name></span>
             </Mainbox>       
         </>
@@ -14,7 +13,7 @@ const ActivityCard = (props) => {
 } 
 
 const Mainbox = styled.div`
-    width: 29.5%;
+    width: 30vw;
     height: 130px;
     display: flex;
     flex-wrap: wrap;
@@ -23,9 +22,7 @@ const Mainbox = styled.div`
     border-radius: 20px;
     padding-right: 13px;
     padding-left: 13px;
-    margin-right: 12px;
-    margin-top: 12px;
-    marign-bottom: 12px;
+    cursor:pointer;
     
 `;
 
@@ -35,7 +32,8 @@ const Title = styled.div`
     font-size: 18px;
     font-weight: bold;
     maigin: 8px;
-    
+    display: flex;
+    justify-content: flex-start;
 `;
 
 const Text = styled.div`
@@ -43,20 +41,18 @@ const Text = styled.div`
     font-size: 14px;
     maigin: 5px;
     padding: 10px;
+    display: flex;
+    justify-content: flex-start;
 `;
 
-const Tag = styled.div`
-    width: 100%;
-    font-size: 12px;
-    padding-left: 10px;
-    padding-bottom: 18px;
 
-`;
 
 const Name = styled.div`
-    width:'100%';
+    width:100%;
     font-size: 14px;
-    text-align:right;
+    display: flex;
+    justify-content: flex-end;
+    
 `;
 
 export default ActivityCard;
