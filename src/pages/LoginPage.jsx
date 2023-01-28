@@ -17,7 +17,6 @@ const LoginPage = ({setHeader}) => {
   setHeader(false)
   const [loginType, setLoginType] = useState(1);
   const [idRemember, setIdRemember] = useState(false);
-
   const getValue = (text) => {
     setLoginType(text);
   };

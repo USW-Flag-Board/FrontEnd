@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { increment } from "../features/toDos";
+import axios from 'axios';
 
 // 작성한 게시물 배열
 const itemContents = [
@@ -30,6 +32,19 @@ const ListThem = () => {
     const handleTitleClick = () => {
         dispatch(increment());
     }
+    useEffect(()=>{
+        try{
+            axios
+                .get("http://3.39.36.239:8080/api/posts", {
+
+                })
+                .then((response) => {
+                    console.log(response);
+                })
+        }catch(e){
+            console.log(e);
+        }
+    },[])
     return(
         <>
             {itemContents.map((item) => (

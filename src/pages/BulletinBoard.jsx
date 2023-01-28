@@ -1,15 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { SideBar, Footer, ListThem, Pagination } from "../components/";
+import axios from 'axios';
 
 const boardItem = ["자유게시판", "동아리 이모저모", "사전게시판", "정보게시판"];
 const barItem = ["제목", "작성자", "작성일", "조회수", "댓글"];
 const selectItems = ["전체기간", "게시물 + 작성자"];
 
 const BulletinBoard = () => {
+  const [selectBoard, setSelectBoard] = useState("");
+  
+  useEffect(()=>{
+    axios.get(`http://3.39.36.239:8080/api/boards?name=${selectBoard}`)
+      .then((response)=>{
+        console.log(response);
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+    },[selectBoard])
   return (
     <>
       <BoardArea>
@@ -23,7 +35,7 @@ const BulletinBoard = () => {
           </WriteButton>
         </TitleArea>
         <ContentArea>
-          <SideBar
+          <SideBar 
             title="BOARD"
             mainColor="#4B4B4B"
             subColor="#3C3C3C"
@@ -32,6 +44,7 @@ const BulletinBoard = () => {
             items={boardItem}
             paddingTop="0"
             borderRadius="0 15px 15px 0"
+            setSelectBoard={setSelectBoard}
           />
           <ListArea>
             <ListBar>
@@ -45,7 +58,10 @@ const BulletinBoard = () => {
               <ListThem />
             </ListBox>
             <PaginationArea>
-              <Pagination />
+              <Pagination 
+                itemsPerPage={8}
+                // items={}
+              />
             </PaginationArea>
             <FilterAndSearchForm>
               {selectItems.map((item) => (

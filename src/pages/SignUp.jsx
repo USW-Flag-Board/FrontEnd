@@ -8,6 +8,7 @@ import InfoState from "../components/InfoState";
 import JoinTypeButton from "../components/JoinTypeButton";
 import {useNavigate} from "react-router-dom";
 
+
 const specialized = [
   {
     label: "전공을 선택하세요",
@@ -47,6 +48,8 @@ const SignUp = ({setHeader}) => {
   const [password, setPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState("");
   const [studentId, setStudentId] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
   const navigate = useNavigate();
 
   const getValue = (text) => {
@@ -255,6 +258,7 @@ const SignUp = ({setHeader}) => {
       name,
       password,
       studentId,
+      phoneNumber,
     };
     if (joinType === "") {
       alert("가입 유형을 선택해주세요.");
@@ -400,6 +404,16 @@ const SignUp = ({setHeader}) => {
             placeholder="학번"
             onChange={(e) => {
               setStudentId(e.target.value);
+            }}
+          />
+        </RelativeArea>
+        <RelativeArea>
+          <InfoState message={studentIdStateMessage} />
+          <WriteArea
+            type="text"
+            placeholder="전화번호"
+            onChange={(e) => {
+              setPhoneNumber(e.target.value);
             }}
           />
         </RelativeArea>
