@@ -85,25 +85,25 @@ const WritePost = () => {
     proceed: "오프라인"    
   }
 
-  const handleSubmit = () => {
-      axios.post("http://3.39.36.239:8080/api/activities", 
-          {
-            data: data,
-            headers: {
-              'Authorization': `Bearer ${sessionStorage.getItem("UserToken")}`,
-              'Content-Type': 'application/json'
-            },
-          })
-        .then((response) => {
-          window.alert("등록이 완료되었습니다.");
-          console.log("서버에서 내려온 값:", response);
-        })
-        // navigate("/board");
-        .catch((error)=>{
-          // 에러 핸들링
-          console.log(error);
-        })
-      };
+  // const handleSubmit = () => {
+  //     axios.post("http://3.39.36.239:8080/api/activities", 
+  //         {
+  //           data: data,
+  //           headers: {
+  //             'Authorization': `Bearer ${sessionStorage.getItem("UserToken")}`,
+  //             'Content-Type': 'application/json'
+  //           },
+  //         })
+  //       .then((response) => {
+  //         window.alert("등록이 완료되었습니다.");
+  //         console.log("서버에서 내려온 값:", response);
+  //       })
+  //       // navigate("/board");
+  //       .catch((error)=>{
+  //         // 에러 핸들링
+  //         console.log(error);
+  //       })
+  //     };
 
   // const onSubmit = (e) => {
   //   dispatch(add())
@@ -137,7 +137,7 @@ const WritePost = () => {
               {canSubmit() ?
                 <button
                   onClick={() => {
-                    handleSubmit()
+                    // handleSubmit()
                     // onSubmit()
                   }}
                   type="button"

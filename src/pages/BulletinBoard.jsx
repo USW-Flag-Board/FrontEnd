@@ -13,27 +13,18 @@ const selectItems = ["전체기간", "게시물 + 작성자"];
 const BulletinBoard = () => {
   const [selectBoard, setSelectBoard] = useState("");
   
-  useEffect(()=>{
-    axios.get(`http://3.39.36.239:8080/api/boards?name=${selectBoard}`)
-      .then((response)=>{
-        console.log(response);
-      })
-      .catch((error)=>{
-        console.log(error);
-      })
-    },[selectBoard])
+  // useEffect(()=>{
+  //   axios.get(`http://3.39.36.239:8080/api/boards?name=${selectBoard}`)
+  //     .then((response)=>{
+  //       console.log(response);
+  //     })
+  //     .catch((error)=>{
+  //       console.log(error);
+  //     })
+  //   },[selectBoard])
   return (
     <>
       <BoardArea>
-        <TitleArea>
-          <TitleBox>자유게시판</TitleBox>
-          <WriteButton>
-            <Link to="/board/write" style={{textDecoration: "none"}}>
-              <FontAwesomeIcon icon={faPen}/>
-              글쓰기
-            </Link>
-          </WriteButton>
-        </TitleArea>
         <ContentArea>
           <SideBar 
             title="BOARD"
@@ -43,10 +34,20 @@ const BulletinBoard = () => {
             subWidth="90%"
             items={boardItem}
             paddingTop="0"
+            paddingTopMain="75px"
             borderRadius="0 15px 15px 0"
             setSelectBoard={setSelectBoard}
           />
           <ListArea>
+          <TitleArea>
+            <TitleBox>자유게시판</TitleBox>
+            <WriteButton>
+              <Link to="/board/write" style={{textDecoration: "none"}}>
+                <FontAwesomeIcon icon={faPen}/>
+                글쓰기
+              </Link>
+            </WriteButton>
+          </TitleArea>
             <ListBar>
               <BarItemBox>
                 {barItem.map((item) => (
@@ -95,7 +96,7 @@ const TitleArea = styled.div`
   width: 100%;
   height: 10%;
   display: flex;
-  padding: 0px 2rem 1rem 2rem;
+  padding: 0 0 1rem 0;
   align-items: flex-end;
   justify-content: space-between;
 `;
@@ -106,7 +107,6 @@ const TitleBox = styled.h2`
   font-size: 35px;
   display: flex;
   align-items: flex-end;
-  padding-left: 14%;
 `;
 
 const ContentArea = styled.div`

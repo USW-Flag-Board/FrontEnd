@@ -20,13 +20,13 @@ const SideBar = (props) => {
             backgroundColor: props.subColor,
             width: props.subWidth,
             borderRadius: props.borderRadius,
-            // paddingTop: props.paddingTop
+            paddingTop: props.paddingTop
           }}
         >
           <ContentsTitle>{props.title}</ContentsTitle>
           <ItemBox>
             {props.items.map((item) => (
-              <Item key={item} onClick={handleBoardClick(item)}>{item}</Item>
+              <Item key={item} onClick={()=> handleBoardClick(item)}>{item}</Item>
             ))}
           </ItemBox>
         </SideBarContent>
@@ -38,6 +38,9 @@ const SideBar = (props) => {
 const SideArea = styled.div`
   box-sizing: border-box;
   height: 100%;
+  @media screen and (max-width: 1200px){
+    display: none;
+  }
 `;
   
 const SideBarBox = styled.div`
@@ -69,6 +72,10 @@ const Item = styled.li`
   font-size: 0.8rem;
   font-weight: 700;
   padding: 0px 0px 1rem 0px;
+  cursor: pointer;
+  &:hover{
+    color: black;
+  }
 `;
 
 export default SideBar;
