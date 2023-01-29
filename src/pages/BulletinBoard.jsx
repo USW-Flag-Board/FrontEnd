@@ -6,22 +6,42 @@ import { faPen, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { SideBar, Footer, ListThem, Pagination } from "../components/";
 import axios from 'axios';
 
-const boardItem = ["자유게시판", "동아리 이모저모", "사전게시판", "정보게시판"];
-const barItem = ["제목", "작성자", "작성일", "조회수", "댓글"];
+const boardItems = [
+  { id: 1,
+    krName: "자유게시판",
+    engName: "free_board"
+  }, 
+  { id: 2,
+    krName: "동아리 이모저모",
+    engName: ""
+  }, 
+  { id: 3,
+    krName: "사전게시판",
+    engName: ""
+  }, 
+  { id: 4,
+    krName: "정보게시판",
+    engName: ""
+  }
+];
+const barItem = ["제목", "작성자", "작성일", "조회수", "좋아요"];
 const selectItems = ["전체기간", "게시물 + 작성자"];
 
-const BulletinBoard = () => {
-  const [selectBoard, setSelectBoard] = useState("");
+const BulletinBoard = ({postId, setPostId}) => {
+  const [selectBoard, setSelectBoard] = useState("free_board");
+  const [boardData, setBoardData] = useState([]);
+  const [currentItems, setCurrentItems] = useState([]); // 페이지당 보여줄 데이터 배열
   
-  // useEffect(()=>{
-  //   axios.get(`http://3.39.36.239:8080/api/boards?name=${selectBoard}`)
-  //     .then((response)=>{
-  //       console.log(response);
-  //     })
-  //     .catch((error)=>{
-  //       console.log(error);
-  //     })
-  //   },[selectBoard])
+  useEffect(()=>{
+    axios.get(`http://3.39.36.239:8080/api/boards?name=${selectBoard}`)
+      .then((response)=>{
+        setBoardData(response.data);
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+    },[selectBoard])
+
   return (
     <>
       <BoardArea>
@@ -32,7 +52,7 @@ const BulletinBoard = () => {
             subColor="#3C3C3C"
             mainWidth="13%"
             subWidth="90%"
-            items={boardItem}
+            items={boardItems}
             paddingTop="0"
             paddingTopMain="75px"
             borderRadius="0 15px 15px 0"
@@ -56,12 +76,17 @@ const BulletinBoard = () => {
               </BarItemBox>
             </ListBar>
             <ListBox>
-              <ListThem />
+              <ListThem 
+                itemContents={currentItems}
+                postId={postId}
+                setPostId={setPostId}
+              />
             </ListBox>
             <PaginationArea>
               <Pagination 
                 itemsPerPage={8}
-                // items={}
+                items={boardData}
+                setCurrentItems={setCurrentItems}
               />
             </PaginationArea>
             <FilterAndSearchForm>

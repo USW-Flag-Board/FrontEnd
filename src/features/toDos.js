@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-let nextId = 1;
 export const toDos = createSlice({
     name: 'toDoReducer',
     initialState: [],

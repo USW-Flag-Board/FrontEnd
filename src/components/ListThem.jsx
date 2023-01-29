@@ -1,64 +1,43 @@
 import { useEffect } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { increment } from "../features/toDos";
-import axios from 'axios';
 
-// 작성한 게시물 배열
-const itemContents = [
-    {
-        id: 1,
-        boardId: "공지",
-        title: "자유게시판 공지입니다.",
-        userName: "문희조",
-        date: "2022.08.03",
-        count: 1234,
-        comment: 123,
-    },
-    {
-        id: 2,
-        boardId: "1",
-        title: "임시 게시물입니다.",
-        userName: "어준혁",
-        date: "2023.01.25",
-        count: 1234,
-        comment: 123,
-    },
-];
 
-const ListThem = () => {
+const ListThem = ({itemContents, themList, setPostId}) => {
     const counter = useSelector(state => state.toDo.value);
     const dispatch = useDispatch();
-    const handleTitleClick = () => {
-        dispatch(increment());
+    const navigate = useNavigate();
+    const handleTitleClick = (num) => {
+        setPostId(num);
+        navigate("/board/writeDetail");
     }
-    useEffect(()=>{
-        try{
-            axios
-                .get("http://3.39.36.239:8080/api/posts", {
-
-                })
-                .then((response) => {
-                    console.log(response);
-                })
-        }catch(e){
-            console.log(e);
-        }
-    },[])
+    
     return(
         <>
-            {itemContents.map((item) => (
-                <ListThemBox key={item.boardId}>
+            {itemContents ?itemContents.map((item) => (
+                <ListThemBox key={item.id}>
                     <ItemBox>
-                        <ListItem>{item.boardId}</ListItem>
-                        <ListItem style={{cursor: "pointer"}} onClick={handleTitleClick}>{item.title}</ListItem>
-                        <ListItem>{item.userName}</ListItem>
-                        <ListItem>{item.date}</ListItem>
-                        <ListItem>{item.count}</ListItem>
-                        <ListItem>{item.comment}</ListItem>
+                        <ListItem>{item.id}</ListItem>
+                        <ListItem style={{cursor: "pointer"}} onClick={()=>handleTitleClick(item.id)}>{item.title}</ListItem>
+                        <ListItem>{item.memberName}</ListItem>
+                        <ListItem>{item.createdAt.slice(0, 3).join('.')}</ListItem>
+                        <ListItem>{item.viewCount}</ListItem>
+                        <ListItem>{item.likeCount}</ListItem>
                     </ItemBox>
                 </ListThemBox>
-            ))}
+            )) :  
+            <ListThemBox>
+                <ItemBox>
+                    <ListItem>{themList.id}</ListItem>
+                    <ListItem style={{cursor: "pointer"}}>{themList.title}</ListItem>
+                    <ListItem>{themList.memberName}</ListItem>
+                    <ListItem>{themList.createdAt}</ListItem>
+                    <ListItem>{themList.viewCount}</ListItem>
+                    <ListItem>{themList.likeCount}</ListItem>
+                </ItemBox>
+            </ListThemBox>}
         </>
     )
 }
@@ -90,7 +69,7 @@ const ListItem = styled.div`
     justify-content: center;
     fontSize: 0.8rem;
     fontWeight: 600;
-    &:nth-of-type(1){width: 5%; height: 50%; background-color: white; border-radius: 15px; color: red; margin-left: 10px};
+    &:nth-of-type(1){width: 5%; height: 50%; background-color: white; border-radius: 15px; color: black; margin-left: 10px};
     &:nth-of-type(2){width: 31%};
     &:nth-of-type(6){padding-right: 24%};
 `;

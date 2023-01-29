@@ -18,25 +18,22 @@ axios.interceptors.response.use(
       response: {status},
     } = error;
     if (status === 401) {
-      if (error.response.data.message === "TokenExpiredError") {
-        const originalRequest = config;
-        const accessToken = sessionStorage.getItem("UserToken");
-        const refreshToken = await cookies.get("refresh_token");
-        const {data} = await axios.post(
-          `http://3.39.36.239:8080/api/auth/reissue`,
-          {
-            accessToken,
-            refreshToken,
-          }
-        );
-        const {accessToken: newAccessToken, refreshToken: newRefreshToken} =
-          data;
-        sessionStorage.setItem("UserToken", newAccessToken);
-        await cookies.set("refresh_token", newRefreshToken);
-        axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return axios(originalRequest);
-      }
+      const originalRequest = config;
+      const accessToken = sessionStorage.getItem("UserToken");
+      const refreshToken = await cookies.get("refresh_token");
+      const {data} = await axios.post(
+        `http://3.39.36.239:8080/api/auth/reissue`,
+        {
+          accessToken,
+          refreshToken,
+        }
+      );
+      const {accessToken: newAccessToken, refreshToken: newRefreshToken} = data;
+      sessionStorage.setItem("UserToken", newAccessToken);
+      await cookies.set("refresh_token", newRefreshToken);
+      axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
+      originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+      return axios(originalRequest);
     }
     return Promise.reject(error);
   }

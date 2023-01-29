@@ -4,6 +4,7 @@ const SideBar = (props) => {
   const handleBoardClick = (board) => {
     props.setSelectBoard(board)
   }
+  
   return (
     <SideArea
       style={{width: props.mainWidth, paddingTop: props.paddingTopMain}}
@@ -26,7 +27,7 @@ const SideBar = (props) => {
           <ContentsTitle>{props.title}</ContentsTitle>
           <ItemBox>
             {props.items.map((item) => (
-              <Item key={item} onClick={()=> handleBoardClick(item)}>{item}</Item>
+              <Item key={item.id} onClick={()=> handleBoardClick(item.engName)}>{item.krName}</Item>
             ))}
           </ItemBox>
         </SideBarContent>

@@ -39,31 +39,6 @@ const WritePost = () => {
   const [content, setContent] = useState(""); // 글 내용
   const [board, setBoard] = useState(""); // 게시판 종류
   
-  const todayTime = () => {
-    let now = new Date(); // 현재 날짜 및 시간
-    let todayYear = now.getFullYear(); // 연
-    let todayMonth = now.getMonth() + 1 // 월
-    let todayDate = now.getDate(); // 일
-    let hours = now.getHours(); // 시간
-    let minutes = now.getMinutes(); // 분
-
-    if(("" + todayMonth).length === 1){
-      todayMonth = "0" + todayMonth;
-    }
-    if(("" + todayDate).length === 1){
-      todayDate = "0" + todayDate;
-    }
-    if(("" + hours).length === 1){
-      hours = "0" + hours;
-    }
-    if(("" + minutes).length === 1){
-      minutes = "0" + minutes;
-    }
-    return(
-        `${todayYear}.${todayMonth}.${todayDate}.${hours}.${minutes}`
-      )
-    }
-
   const handleBoardChange = (e) => {
     setBoard(e.target.value);
   }
@@ -71,34 +46,29 @@ const WritePost = () => {
   const canSubmit = useCallback(() => {
     return content !== "" && title !== "";
   }, [title, content]);
-  
-  // activityType: "PROJECT",
-  // bookName: "원피스",
-  // bookUsage: "미사용",
-  // description: "어준혁",
-  // githubLink: "어준혁",
-  // name: "어준혁",
-  // proceed: "오프라인"    
+
   const data = {
-    board: `${board}`,
+    userId: 3,
+    boardId: 1,
     title: `${title}`,
     content: `${content}`,
+    status: "NORMAL",
   }
 
   const handleSubmit = () => {
-      axios.post("http://3.39.36.239:8080/api/posts", 
-          {
-            data: data,
-            headers: {
-              'Authorization': `Bearer ${sessionStorage.getItem("UserToken")}`,
-              'Content-Type': 'application/json'
-            },
-          })
+      axios.post("http://3.39.36.239:8080/api/posts", data)
+          // {
+          //   data: data,
+          //   headers: {
+          //     'Authorization': `Bearer ${sessionStorage.getItem("UserToken")}`,
+          //     'Content-Type': 'application/json'
+          //   },
+          // })
         .then((response) => {
           window.alert("등록이 완료되었습니다.");
           console.log("서버에서 내려온 값:", response);
+          navigate("/board");
         })
-        // navigate("/board");
         .catch((error)=>{
           // 에러 핸들링
           console.log(error);

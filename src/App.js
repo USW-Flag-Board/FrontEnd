@@ -10,6 +10,7 @@ import axios from "axios";
 
 const App = () => {
   const [header, setHeader] = useState(true);
+  const [postId, setPostId] = useState("");
   const cookies = new Cookies();
   useEffect(() => {
     const LocalState = async () => {
@@ -18,7 +19,7 @@ const App = () => {
           const accessToken = localStorage.getItem("UserToken");
           const refreshToken = await cookies.get("refresh_token");
           const {data} = await axios.post(
-            `http://3.39.36.239:8080/api/auth/reissue`,
+            "http://3.39.36.239:8080/api/auth/reissue",
             {
               accessToken,
               refreshToken,
@@ -38,7 +39,7 @@ const App = () => {
           const accessToken = sessionStorage.getItem("UserToken");
           const refreshToken = await cookies.get("refresh_token");
           const {data} = await axios.post(
-            `http://3.39.36.239:8080/api/auth/reissue`,
+            "http://3.39.36.239:8080/api/auth/reissue",
             {
               accessToken,
               refreshToken,
@@ -52,27 +53,27 @@ const App = () => {
       }
     };
     SessionState();
-  }, []);
+  }, [cookies]);
   return (
     <BrowserRouter>
       <GlobalStyle />
       {header ? <Header/> : ""}
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/login" element={<LoginPage setHeader={setHeader} />}></Route>
-        <Route path="/signup" element={<SignUp setHeader={setHeader} />}></Route>
-        <Route path="/my" element={<MyPage />}></Route>
-        <Route path="/board/writeDetail" element={<DetailWritePage />}></Route>
-        <Route path="/board" element={<BulletinBoard />}></Route>
-        <Route path="/board/write" element={<WritePost />}></Route>
-        <Route path="/search" element={<SearchPage />}></Route>
-        <Route path="/changepw" element={<ChangePw />}></Route>
-        <Route path="/edit" element={<EditUser />}></Route>
-        <Route path="/resume" element={<Resume />}></Route>
-        <Route path="/activity" element={<Activity />}></Route>
-        <Route path="/emailAuth" element={<EmailAuth />}></Route>
-        <Route path="/findid" element={<FindId />}></Route>
-        <Route path="/findpw" element={<FindPw />}></Route>
+        <Route path="/login" element={<LoginPage setHeader={setHeader} />}/>
+        <Route path="/signup" element={<SignUp setHeader={setHeader} />}/>
+        <Route path="/my" element={<MyPage />}/>
+        <Route path="/board/writeDetail" element={<DetailWritePage post={postId}/>}/>
+        <Route path="/board" element={<BulletinBoard postId={postId} setPostId={setPostId}/>}/>
+        <Route path="/board/write" element={<WritePost />}/>
+        <Route path="/search" element={<SearchPage />}/>
+        <Route path="/changepw" element={<ChangePw />}/>
+        <Route path="/edit" element={<EditUser />}/>
+        <Route path="/resume" element={<Resume />}/>
+        <Route path="/activity" element={<Activity />}/>
+        <Route path="/emailAuth" element={<EmailAuth />}/>
+        <Route path="/findid" element={<FindId />}/>
+        <Route path="/findpw" element={<FindPw />}/>
       </Routes>
     </BrowserRouter>
   );

@@ -3,9 +3,10 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { faMagnifyingGlass, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import Cookies from "universal-cookie";
 
-const sections = ["FLAG", "BOARD", "ACTIVITY", "NOTICE"];
+const sections = ["BOARD", "ACTIVITY", "NOTICE"];
 
 const Header = () => {
   const [isToggled, setIsToggled] = useState(false);
@@ -18,6 +19,15 @@ const Header = () => {
       navigate("/activity");
     }
   }
+  const cookies = new Cookies();
+
+  const LoginCheck = () => {
+    if (cookies.get("refresh_token")) {
+      navigate("/my");
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <HomeHeader>
@@ -32,6 +42,7 @@ const Header = () => {
       </LogoBox>
       <MenuItemBox>
         <MenuItems>
+          <MenuButton onClick={() => navigate("/resume")}>FLAG</MenuButton>
           {sections.map((item) => (
             <MenuButton key={item} onClick={() => handleMenuClick(item)}>{item}</MenuButton>
           ))}
@@ -52,6 +63,7 @@ const Header = () => {
         </SearchPaper>
         <FontAwesomeIcon
           icon={faUser}
+          onClick={() => LoginCheck()}
           style={{width: "14%", color: "#BABABA", height: "50%"}}
         />
       </SearchBox>

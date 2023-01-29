@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
 import axios from "axios";
+import Cookies from "universal-cookie";
 
 //1. member api가 이상함. 수정되면 작업 진행.
 //2. profile url 받아와서 img 바꾸는거는 나중에 해야 할 듯
@@ -12,28 +13,32 @@ import axios from "axios";
 const MyPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const loginId = location.state.id;
+  const cookies = new Cookies();
+  const loginId = "";
   const [nickname, setNickname] = useState("");
   const [introduceMessage, setIntroduceMessage] = useState("");
   useEffect(() => {
-    if (localStorage.getItem("UserToken")) {
-      console.log("???");
-    } else {
+    if (
+      localStorage.getItem("UserToken") ||
+      sessionStorage.getItem("UserToken")
+    ) {
       console.log("정보 받아오기 시작");
       SetMyData();
+    } else {
+      navigate("/login");
     }
   });
 
   const SetMyData = () => {
     axios
-      .get(`http://3.39.36.239:8080/api/member/${loginId}`)
+      .get(`http://3.39.36.239:8080/api/members/${loginId}`)
       .then((response) => {
         setNickname(response.data.loginId);
         setIntroduceMessage(response.data.bio);
       })
       .catch((error) => {
         if (error.response.status === 404) {
-          alert("로그인 화면으로 보내버릴 예정");
+          navigate("/login");
         }
       });
   };
@@ -41,6 +46,9 @@ const MyPage = () => {
   const LogOut = () => {
     localStorage.clear();
     sessionStorage.clear();
+    cookies.remove("refresh_token");
+    cookies.remove("remember_id");
+    navigate("/");
   };
 
   return (
