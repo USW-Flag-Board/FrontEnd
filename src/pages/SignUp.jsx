@@ -8,6 +8,7 @@ import InfoState from "../components/InfoState";
 import JoinTypeButton from "../components/JoinTypeButton";
 import {useNavigate} from "react-router-dom";
 
+
 const specialized = [
   {
     label: "전공을 선택하세요",
@@ -30,7 +31,7 @@ const numExp = /[0-9]/g;
 const spaceExp = /\s/;
 const engExp = /[a-zA-Z]/g;
 
-const SignUp = () => {
+const SignUp = ({setHeader}) => {
   const [idStateMessage, setIdStateMessage] = useState(" ");
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordVerifyMessage, setPasswordVerifyMessage] = useState("");
@@ -47,6 +48,8 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState("");
   const [studentId, setStudentId] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [nickName, setNickName] = useState("");
   const navigate = useNavigate();
 
   const getValue = (text) => {
@@ -80,7 +83,9 @@ const SignUp = () => {
         major,
         name,
         password,
-        studentId
+        studentId,
+        phoneNumber,
+        nickName,
       );
       alert("가입정보를 정확히 입력해주세요.");
     }
@@ -245,7 +250,7 @@ const SignUp = () => {
       return true;
     }
   };
-
+  setHeader(false);
   const SignInfo = () => {
     const data = {
       email: originEmail + "@suwon.ac.kr",
@@ -255,6 +260,8 @@ const SignUp = () => {
       name,
       password,
       studentId,
+      phoneNumber,
+      nickName,
     };
     if (joinType === "") {
       alert("가입 유형을 선택해주세요.");
@@ -269,7 +276,9 @@ const SignUp = () => {
             major,
             name,
             password,
-            studentId
+            studentId,
+            phoneNumber,
+            nickName,
           );
           alert("재학생 인증 메일 전송 완료");
           navigate("/EmailAuth", {state: {CheckEmail: data}});
@@ -400,6 +409,26 @@ const SignUp = () => {
             placeholder="학번"
             onChange={(e) => {
               setStudentId(e.target.value);
+            }}
+          />
+        </RelativeArea>
+        <RelativeArea>
+          <InfoState message={studentIdStateMessage} />
+          <WriteArea
+            type="text"
+            placeholder="전화번호"
+            onChange={(e) => {
+              setPhoneNumber(e.target.value);
+            }}
+          />
+        </RelativeArea>
+        <RelativeArea>
+          <InfoState message={studentIdStateMessage} />
+          <WriteArea
+            type="text"
+            placeholder="닉네임"
+            onChange={(e) => {
+              setNickName(e.target.value);
             }}
           />
         </RelativeArea>

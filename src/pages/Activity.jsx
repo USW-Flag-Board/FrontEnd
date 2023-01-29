@@ -17,9 +17,9 @@ const git = ['Https://www.naver.com'];
 
 const Activity = () => {
 
-    const [user, setUser] = useState(false)
-    const [manager, setManager] = useState(false)
-    const [write, setWrite] = useState(false)
+    const [user, setUser] = useState(false);
+    const [manager, setManager] = useState(false);
+    const [write, setWrite] = useState(false);
     const outside = useRef();
 
     const Click = () => {

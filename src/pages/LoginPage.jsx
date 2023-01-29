@@ -1,8 +1,8 @@
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUser} from "@fortawesome/free-regular-svg-icons";
-import {faLock} from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import axios from "axios";
 import AutoLoginButton from "../components/AutoLoginButton";
@@ -16,6 +16,20 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [loginType, setLoginType] = useState(1);
   const [idRemember, setIdRemember] = useState(false);
+
+  // useEffect(() => {
+  //   if (sessionStorage.getItem("UserToken")) {
+  //     navigate("/my");
+  //   } else if (localStorage.getItem("UserToken")) {
+  //     navigate("/my");
+  //   }
+  // },[navigate]);
+
+  // useEffect(() => {
+  //   if (cookies.get("remember_id") !== undefined) {
+  //     setLoginId(cookies.get("remember_id"));
+  //   }
+  // }, [cookies, navigate]);
 
   const getValue = (text) => {
     setLoginType(text);
@@ -54,7 +68,7 @@ const LoginPage = () => {
             sessionStorage.setItem("UserToken", accessToken);
             sessionStorage.setItem("id", loginId);
             cookies.set("refresh_token", response.data.refreshToken);
-            navigate("/my");
+            navigate("/");
           })
           .catch((error) => {
             if (error.response.status === 404) {
@@ -70,30 +84,16 @@ const LoginPage = () => {
             localStorage.setItem("UserToken", accessToken);
             localStorage.setItem("id", loginId);
             cookies.set("refresh_token", response.data.refreshToken);
-            navigate("/my");
+            navigate("/");
           })
           .catch((error) => {
             if (error.response.status === 404) {
               alert("존재하지 않는 사용자입니다.");
             }
-          });
+        });
       }
     }
   }
-
-  useEffect(() => {
-    if (sessionStorage.getItem("UserToken")) {
-      navigate("/my");
-    } else if (localStorage.getItem("UserToken")) {
-      navigate("/my");
-    }
-  });
-
-  useEffect(() => {
-    if (cookies.get("remember_id") !== undefined) {
-      setLoginId(cookies.get("remember_id"));
-    }
-  }, [navigate]);
 
   return (
     <PageArea>

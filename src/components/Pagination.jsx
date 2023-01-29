@@ -1,19 +1,33 @@
 import ReactPaginate from "react-paginate";
+import { useEffect, useState } from 'react';
 import styled from "styled-components";
 
-const Pagination = () => {
+const Pagination = ({itemsPerPage, items, setCurrentItems}) => {
+    const [pageCount, setPageCount] = useState(0); // 검색결과에 따라 다름
+    const [itemOffset, setItemOffset] = useState(0); // 데이터를 가져왔는데 어디서부터 어디까지 자를건지
+    
+    useEffect(()=>{
+            const endOffset = itemOffset + itemsPerPage;
+            setCurrentItems(items.slice(itemOffset, endOffset))
+            setPageCount(Math.ceil((items.length ?? 0) / itemsPerPage))
+    },[itemOffset, itemsPerPage, setCurrentItems, items])
+
+    const handlePageClick = (e)=>{
+      setItemOffset((e.selected * itemsPerPage) % items.length)
+    }
+
     return (
         <StyledPaginateContainer>
             <ReactPaginate
-                pageCount={10}
+                pageCount={pageCount}
                 pageRangeDisplayed={8}
                 breakLabel={""}
                 previousLabel={"< PREV"}
                 nextLabel={"NEXT >"}
-                // onPageChange={changePage}
                 containerClassName={"pagination"}
                 previousClassName={"pageLabel-btn"}
                 nextClassName={"pageLabel-btn"}
+                onPageChange={handlePageClick}
             />
         </StyledPaginateContainer>
     )
