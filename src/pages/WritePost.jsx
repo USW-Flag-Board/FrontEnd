@@ -72,38 +72,38 @@ const WritePost = () => {
     return content !== "" && title !== "";
   }, [title, content]);
   
-  // board: `${board}`,
-  // title: `${title}`,
-  // content: `${content}`,
+  // activityType: "PROJECT",
+  // bookName: "원피스",
+  // bookUsage: "미사용",
+  // description: "어준혁",
+  // githubLink: "어준혁",
+  // name: "어준혁",
+  // proceed: "오프라인"    
   const data = {
-    activityType: "PROJECT",
-    bookName: "원피스",
-    bookUsage: "미사용",
-    description: "어준혁",
-    githubLink: "어준혁",
-    name: "어준혁",
-    proceed: "오프라인"    
+    board: `${board}`,
+    title: `${title}`,
+    content: `${content}`,
   }
 
-  // const handleSubmit = () => {
-  //     axios.post("http://3.39.36.239:8080/api/activities", 
-  //         {
-  //           data: data,
-  //           headers: {
-  //             'Authorization': `Bearer ${sessionStorage.getItem("UserToken")}`,
-  //             'Content-Type': 'application/json'
-  //           },
-  //         })
-  //       .then((response) => {
-  //         window.alert("등록이 완료되었습니다.");
-  //         console.log("서버에서 내려온 값:", response);
-  //       })
-  //       // navigate("/board");
-  //       .catch((error)=>{
-  //         // 에러 핸들링
-  //         console.log(error);
-  //       })
-  //     };
+  const handleSubmit = () => {
+      axios.post("http://3.39.36.239:8080/api/posts", 
+          {
+            data: data,
+            headers: {
+              'Authorization': `Bearer ${sessionStorage.getItem("UserToken")}`,
+              'Content-Type': 'application/json'
+            },
+          })
+        .then((response) => {
+          window.alert("등록이 완료되었습니다.");
+          console.log("서버에서 내려온 값:", response);
+        })
+        // navigate("/board");
+        .catch((error)=>{
+          // 에러 핸들링
+          console.log(error);
+        })
+      };
 
   // const onSubmit = (e) => {
   //   dispatch(add())
@@ -137,7 +137,7 @@ const WritePost = () => {
               {canSubmit() ?
                 <button
                   onClick={() => {
-                    // handleSubmit()
+                    handleSubmit()
                     // onSubmit()
                   }}
                   type="button"
