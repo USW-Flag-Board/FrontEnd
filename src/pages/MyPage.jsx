@@ -3,7 +3,6 @@ import {useNavigate, useLocation} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
-import Grass from "../components/Grass";
 import axios from "axios";
 import Cookies from "universal-cookie";
 
@@ -32,7 +31,7 @@ const MyPage = () => {
 
   const SetMyData = () => {
     axios
-      .get(`http://3.39.36.239:8080/api/member/${loginId}`)
+      .get(`http://3.39.36.239:8080/api/members/${loginId}`)
       .then((response) => {
         setNickname(response.data.loginId);
         setIntroduceMessage(response.data.bio);
@@ -90,10 +89,6 @@ const MyPage = () => {
         </HistoryArea>
       </LeftPage>
       <RightPage>
-        <GrassArea>
-          <GrassName>STUDY_WEB-BACKEND</GrassName>
-          <Grass />
-        </GrassArea>
       </RightPage>
     </PageArea>
   );

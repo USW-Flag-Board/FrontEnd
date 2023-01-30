@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import styled from "styled-components";
 import axios from "axios";
 import ListThem from "../components/ListThem";
@@ -6,28 +6,33 @@ import SideBar from "../components/SideBar";
 import LikeButton from "../components/LikeButton";
 import Reply from "../components/Reply";
 
-
-
-const itemContents = [
-  "공지",
-  "자유게시판 공지입니다.",
-  "문희조",
-  "2022.08.03",
-  "1234",
-  "123",
+const boardItems = [
+  { id: 1,
+    krName: "스터디",
+    engName: ""
+  }, 
+  { id: 2,
+    krName: "프로젝트",
+    engName: ""
+  }, 
 ];
-const boardItem = ["스터디", "프로젝트"];
 
-
-
-const DetailWritePage = () => {
-
-  const [input, setInput] = useState('')
-  const [comments, setComments] = useState([])
-
+const DetailWritePage = ({ post }) => {
+  const [input, setInput] = useState('');
+  const [comments, setComments] = useState([]);
+  const [detailData, setDetailData] = useState([]);
   const onChange = (e) => {
     setInput(e.target.value);
   };
+  useEffect(()=>{
+    axios.get(`http://3.39.36.239:8080/api/posts?postId=${post}&viaBoard=true`)
+      .then((response)=>{
+        setDetailData(response.data.payload);
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+  },[post])
 
   const addComment = () => { // 코멘트 추가
     setComments(
@@ -59,19 +64,19 @@ const DetailWritePage = () => {
   const abcde = () =>{
     return(
       <>
-    <RelativeArea>
-              <ReplyButton
-                placeholder="댓글을 입력하세요."
-                value={input}
-                onChange={onChange}
-              ></ReplyButton>
-              <AddIcon><Button
-                onClick={() => {
-                  addReply(input);
-                  setInput("");
-                }}>등록</Button></AddIcon>
-            </RelativeArea>
-            </>
+        <RelativeArea>
+          <ReplyButton
+            placeholder="댓글을 입력하세요."
+            value={input}
+            onChange={onChange}
+          ></ReplyButton>
+          <AddIcon><Button
+            onClick={() => {
+              addReply(input);
+              setInput("");
+            }}>등록</Button></AddIcon>
+          </RelativeArea>
+        </>
       );
   };
 
@@ -88,33 +93,33 @@ const DetailWritePage = () => {
           subColor="#3C3C3C"
           mainWidth="13%"
           subWidth="90%"
-          items={boardItem}
+          items={boardItems}
           paddingTop="0"
           borderRadius="0 15px 15px 0"
         />
         <PostArea>
           <PostBox>
-            <ListThem themList={itemContents} />
+            <ListThem themList={detailData} />
             <PostContentBox>
               <PostContentSort>
                 <PostHeader style={{}}>
                   <PostHeaderLeftArea>
-                    <PostAuthor>글쓴이 {itemContents[2]}</PostAuthor>
-                    <PostTime>{itemContents[3]} 22:07</PostTime>
+                    <PostAuthor>글쓴이 {detailData.memberName}</PostAuthor>
+                    <PostTime>{detailData.createdAt}</PostTime>
                   </PostHeaderLeftArea>
                   <PostHeaderRightArea>
                     <PostModify>수정하기</PostModify>
                     <PostDelete>삭제하기</PostDelete>
                   </PostHeaderRightArea>
                 </PostHeader>
-                <PostContentTitle>{itemContents[1]}</PostContentTitle>
+                <PostContentTitle>{detailData.title}</PostContentTitle>
                 <PostContent>
-                  내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
+                  {detailData.content}
                 </PostContent>
-                <PostViews>view {itemContents[4]}</PostViews>
+                <PostViews>view {detailData.viewCount}</PostViews>
                 <PostLike>
                   <LikeButton />
-                  {itemContents[5]}
+                  {detailData.likeCount}
                 </PostLike>
               </PostContentSort>
             </PostContentBox>
@@ -135,7 +140,6 @@ const DetailWritePage = () => {
               {comments.map((comment, index) => (
                 <Reply key={`${comment}_${index}`} name = '이수빈' delete = {<Deletebutton onClick={() => removeComment(comment.id)}>삭제하기</Deletebutton>}  Comment = {comment.content} />
                 ))}
-
             </ReplyContent>
             </ReplyArea>
           </PostBox>

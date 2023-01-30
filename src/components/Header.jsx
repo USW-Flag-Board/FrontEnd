@@ -1,14 +1,24 @@
+import { useState } from 'react';
 import styled from "styled-components";
-import {useNavigate} from "react-router-dom";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUser} from "@fortawesome/free-regular-svg-icons";
-import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import Cookies from "universal-cookie";
 
-const sections = ["BOARD", "프로그램 모집", "NOTICE"];
+const sections = ["BOARD", "ACTIVITY", "NOTICE"];
 
 const Header = () => {
+  const [isToggled, setIsToggled] = useState(false);
+  const [userToggled, setUserToggled] = useState(false);
   const navigate = useNavigate();
+  const handleMenuClick = (menu) => {
+    if(menu === "BOARD"){
+      navigate("/board");
+    }else if(menu === "ACTIVITY"){
+      navigate("/activity");
+    }
+  }
   const cookies = new Cookies();
 
   const LoginCheck = () => {
@@ -27,14 +37,14 @@ const Header = () => {
           src="../images/logo.JPG"
           alt="blog-logo"
           onClick={() => navigate("/")}
-          style={{height: "80%", cursor: "pointer"}}
+          style={{width: "30%", height: "80%", cursor: "pointer"}}
         />
       </LogoBox>
       <MenuItemBox>
         <MenuItems>
           <MenuButton onClick={() => navigate("/resume")}>FLAG</MenuButton>
           {sections.map((item) => (
-            <MenuButton key={item}>{item}</MenuButton>
+            <MenuButton key={item} onClick={() => handleMenuClick(item)}>{item}</MenuButton>
           ))}
         </MenuItems>
       </MenuItemBox>
@@ -63,11 +73,14 @@ const Header = () => {
 
 const HomeHeader = styled.div`
   box-sizing: border-box;
-  width: 100vw;
+  width: 100%;
   height: 9vh;
   display: flex;
   align-items: flex-end;
   background-color: white;
+  // @media screen and (max-width: 768px){
+  //   width: 768px;
+  // }
 `;
 
 const LogoBox = styled.div`
@@ -83,6 +96,9 @@ const MenuItemBox = styled.div`
   display: flex;
   justify-content: end;
   align-items: center;
+  // @media screen and (max-width: 768px){
+  //   display: none;
+  // }
 `;
 
 const MenuItems = styled.div`
