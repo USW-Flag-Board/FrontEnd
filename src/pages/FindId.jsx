@@ -22,16 +22,27 @@ const FindId = () => {
       email,
     };
     axios
-      .post("http://3.39.36.239:8080/api/member/mail/id", data)
+      .get(`http://3.39.36.239:8080/api/member?email=${email}`)
       .then((response) => {
-        alert("아이디 찾기 결과 메일 발송 성공");
-        navigate("/login");
+        axios
+          .post("http://3.39.36.239:8080/api/member/mail/id", data)
+          .then((response) => {
+            alert("아이디 찾기 결과 메일 발송 성공");
+            navigate("/login");
+          })
+          .catch((error) => {
+            if (error.response.status === 404) {
+              alert("가입된 아이디가 없습니다.");
+            } else if (error.response.status === 500) {
+              alert("서버 에러입니다.");
+            }
+          });
       })
       .catch((error) => {
-        if (error.response.status === 404) {
+        if (error.response.status === 400) {
+          alert("이메일 입력안함");
+        } else if (error.response.status === 404) {
           alert("가입된 아이디가 없습니다.");
-        } else if (error.response.status === 500) {
-          alert("서버 에러입니다.");
         }
       });
   };
@@ -59,8 +70,10 @@ const FindId = () => {
       alert("이메일에는 한글을 포함할 수 없습니다.");
     } else if (spaceExp.test(email)) {
       alert("이메일에는 공백을 포함할 수 없습니다.");
+    } else if (!email.includes("@suwon.ac.kr")) {
+      alert("수원대학교 이메일이 아닙니다.");
     } else {
-      setEmail(email + "@suwon.ac.kr");
+      setEmail(email);
       Find();
     }
   };

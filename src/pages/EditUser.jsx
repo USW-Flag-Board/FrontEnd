@@ -46,7 +46,7 @@ const EditUser = () => {
     axios
       .delete("http://3.39.36.239:8080/api/member", {
         data: {
-          password: "asdasd72!@",
+          password: "ljkljk12!",
         },
       })
       .then((response) => {
@@ -55,6 +55,7 @@ const EditUser = () => {
         cookies.remove("remember_id");
         localStorage.clear();
         sessionStorage.clear();
+        navigate("/");
       })
       .catch((error) => {
         if (error.response.state === 400) {
@@ -97,7 +98,7 @@ const EditUser = () => {
               </SaveButton>
             </ProfileTitle>
             <SideBox>
-              <TitleBox>이름</TitleBox>
+              <TitleBox>닉네임</TitleBox>
               <NameInput placeholder="김철수" />
             </SideBox>
             <SideBox>

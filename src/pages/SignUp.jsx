@@ -51,6 +51,7 @@ const SignUp = ({setHeader}) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [nickName, setNickName] = useState("");
   const navigate = useNavigate();
+  setHeader(false);
 
   const getValue = (text) => {
     setJoinType(text);
@@ -298,14 +299,15 @@ const SignUp = ({setHeader}) => {
 
   return (
     <PageArea>
+      <img
+        alt="Flag 로고"
+        className="Logo"
+        src="flag.JPG"
+        width="300"
+        height="150"
+        style={{marginBottom: 40}}
+      />
       <SignUpArea>
-        <img
-          alt="Flag 로고"
-          className="Logo"
-          src="flag.JPG"
-          width="200"
-          height="100"
-        />
         <RelativeArea>
           <InfoState message={idStateMessage} />
           <WriteArea
@@ -447,6 +449,7 @@ const PageArea = styled.div`
   align-items: center;
   display: flex;
   justify-content: center;
+  flex-direction: column;
 `;
 
 const SignUpArea = styled.div`
@@ -454,7 +457,9 @@ const SignUpArea = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
-  width: 400px;
+  width: 600px;
+  border: 1px solid;
+  border-radius: 28px;
 `;
 
 const WriteArea = styled.input`
