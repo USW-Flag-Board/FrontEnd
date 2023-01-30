@@ -44,9 +44,9 @@ const EditUser = ({setHeader}) => {
       password,
     };
     axios
-      .delete("http://3.39.36.239:8080/api/member", {
+      .delete("http://3.39.36.239:8080/api/members", {
         data: {
-          password: "ljkljk12!",
+          password: "asdasd72!@",
         },
       })
       .then((response) => {
