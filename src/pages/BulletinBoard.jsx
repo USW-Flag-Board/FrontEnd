@@ -1,52 +1,45 @@
-import { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { SideBar, Footer, ListThem, Pagination } from "../components/";
-import axios from 'axios';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPen, faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
+import {SideBar, Footer, ListThem, Pagination} from "../components/";
+import axios from "axios";
 
 const boardItems = [
-  { id: 1,
-    krName: "자유게시판",
-    engName: "free_board"
-  }, 
-  { id: 2,
-    krName: "동아리 이모저모",
-    engName: ""
-  }, 
-  { id: 3,
-    krName: "사전게시판",
-    engName: ""
-  }, 
-  { id: 4,
-    krName: "정보게시판",
-    engName: ""
-  }
+  {id: 1, krName: "자유게시판", engName: "free_board"},
+  {id: 2, krName: "동아리 이모저모", engName: ""},
+  {id: 3, krName: "사전게시판", engName: ""},
+  {id: 4, krName: "정보게시판", engName: ""},
 ];
 const barItem = ["제목", "작성자", "작성일", "조회수", "좋아요"];
 const selectItems = ["전체기간", "게시물 + 작성자"];
 
-const BulletinBoard = ({postId, setPostId}) => {
+const BulletinBoard = ({postId, setPostId, setHeader}) => {
   const [selectBoard, setSelectBoard] = useState("free_board");
   const [boardData, setBoardData] = useState([]);
   const [currentItems, setCurrentItems] = useState([]); // 페이지당 보여줄 데이터 배열
-  
-  useEffect(()=>{
-    axios.get(`http://3.39.36.239:8080/api/boards?name=${selectBoard}`)
-      .then((response)=>{
+
+  useEffect(() => {
+    axios
+      .get(`http://3.39.36.239:8080/api/boards?name=${selectBoard}`)
+      .then((response) => {
         setBoardData(response.data);
       })
-      .catch((error)=>{
+      .catch((error) => {
         console.log(error);
-      })
-    },[selectBoard])
+      });
+  }, [selectBoard]);
+
+  useEffect(() => {
+    setHeader(true);
+  });
 
   return (
     <>
       <BoardArea>
         <ContentArea>
-          <SideBar 
+          <SideBar
             title="BOARD"
             mainColor="#4B4B4B"
             subColor="#3C3C3C"
@@ -59,15 +52,15 @@ const BulletinBoard = ({postId, setPostId}) => {
             setSelectBoard={setSelectBoard}
           />
           <ListArea>
-          <TitleArea>
-            <TitleBox>자유게시판</TitleBox>
-            <WriteButton>
-              <Link to="/board/write" style={{textDecoration: "none"}}>
-                <FontAwesomeIcon icon={faPen}/>
-                글쓰기
-              </Link>
-            </WriteButton>
-          </TitleArea>
+            <TitleArea>
+              <TitleBox>자유게시판</TitleBox>
+              <WriteButton>
+                <Link to="/board/write" style={{textDecoration: "none"}}>
+                  <FontAwesomeIcon icon={faPen} />
+                  글쓰기
+                </Link>
+              </WriteButton>
+            </TitleArea>
             <ListBar>
               <BarItemBox>
                 {barItem.map((item) => (
@@ -76,14 +69,14 @@ const BulletinBoard = ({postId, setPostId}) => {
               </BarItemBox>
             </ListBar>
             <ListBox>
-              <ListThem 
+              <ListThem
                 itemContents={currentItems}
                 postId={postId}
                 setPostId={setPostId}
               />
             </ListBox>
             <PaginationArea>
-              <Pagination 
+              <Pagination
                 itemsPerPage={8}
                 items={boardData}
                 setCurrentItems={setCurrentItems}

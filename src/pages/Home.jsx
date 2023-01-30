@@ -1,37 +1,25 @@
-import { height } from "@mui/system";
+import {useEffect} from "react";
 import styled from "styled-components";
-import { SideBar } from "../components/";
+import {SideBar} from "../components/";
 
 const contents = [
   {title: "STUDY", content: ["ALGORITHM", "WEB-BACKEND"]},
   {title: "PROJECT", content: ["FLAG-게시판"]},
 ];
 
-
 const homeItem = [
-  { id: 1,
-    krName: "USER",
-    engName: ""
-  }, 
-  { id: 2,
-    krName: "마이페이지",
-    engName: ""
-  }, 
-  { id: 3,
-    krName: "내가 쓴 글",
-    engName: ""
-  }, 
-  { id: 4,
-    krName: "댓글 단 글",
-    engName: ""
-  }, 
-  { id: 5,
-    krName: "스트랩",
-    engName: ""
-  }, 
+  {id: 1, krName: "USER", engName: ""},
+  {id: 2, krName: "마이페이지", engName: ""},
+  {id: 3, krName: "내가 쓴 글", engName: ""},
+  {id: 4, krName: "댓글 단 글", engName: ""},
+  {id: 5, krName: "스트랩", engName: ""},
 ];
 
-const Home = () => {
+const Home = ({setHeader}) => {
+  useEffect(() => {
+    setHeader(true);
+  });
+
   return (
     <HomeArea>
       <HomeBox>
@@ -141,13 +129,31 @@ const Home = () => {
               >
                 좋아요순, 최근순
               </h1> */}
-              <FlagContents style={{marginBottom: "0.8rem", justifyContent: "flex-start"}}>
-                <FlagContent style={{width: "50%", margin: "0 0.5rem 0 0"}}>좋아요순</FlagContent>
+              <FlagContents
+                style={{marginBottom: "0.8rem", justifyContent: "flex-start"}}
+              >
+                <FlagContent style={{width: "50%", margin: "0 0.5rem 0 0"}}>
+                  좋아요순
+                </FlagContent>
                 <FlagContent style={{width: "50%"}}>최근순</FlagContent>
               </FlagContents>
               <NoticeArea style={{display: "flex"}}>
-                <FeedContent style={{width: "45%", height: "65%", margin: "0 0.5rem 0 0", borderRadius: "14px"}}/>
-                <FeedContent style={{width: "45%", height: "65%", margin: 0, borderRadius: "14px"}}/>
+                <FeedContent
+                  style={{
+                    width: "45%",
+                    height: "65%",
+                    margin: "0 0.5rem 0 0",
+                    borderRadius: "14px",
+                  }}
+                />
+                <FeedContent
+                  style={{
+                    width: "45%",
+                    height: "65%",
+                    margin: 0,
+                    borderRadius: "14px",
+                  }}
+                />
               </NoticeArea>
             </MyActivityBox>
           </MyActivityArea>

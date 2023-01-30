@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
@@ -12,7 +12,7 @@ const korExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
 const numExp = /[0-9]/g;
 const spaceExp = /\s/;
 
-const FindId = () => {
+const FindId = ({setHeader}) => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -77,6 +77,11 @@ const FindId = () => {
       Find();
     }
   };
+
+  useEffect(() => {
+    setHeader(true);
+  });
+
   return (
     <>
       <Mainbox>

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {useNavigate, useLocation} from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
@@ -11,7 +11,7 @@ const profileUpdateExample = [
   "19017041",
 ];
 
-const EditUser = () => {
+const EditUser = ({setHeader}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const cookies = new Cookies();
@@ -65,6 +65,10 @@ const EditUser = () => {
         }
       });
   };
+
+  useEffect(() => {
+    setHeader(true);
+  });
 
   return (
     <>

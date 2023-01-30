@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { faLock } from "@fortawesome/free-solid-svg-icons";
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faUser} from "@fortawesome/free-regular-svg-icons";
+import {faLock} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import axios from "axios";
 import AutoLoginButton from "../components/AutoLoginButton";
@@ -12,25 +12,28 @@ import Cookies from "universal-cookie";
 const LoginPage = ({setHeader}) => {
   const navigate = useNavigate();
   const cookies = new Cookies();
-  setHeader(false);
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const [loginType, setLoginType] = useState(1);
   const [idRemember, setIdRemember] = useState(false);
 
-  // useEffect(() => {
-  //   if (sessionStorage.getItem("UserToken")) {
-  //     navigate("/my");
-  //   } else if (localStorage.getItem("UserToken")) {
-  //     navigate("/my");
-  //   }
-  // },[navigate]);
+  useEffect(() => {
+    if (sessionStorage.getItem("UserToken")) {
+      navigate("/my");
+    } else if (localStorage.getItem("UserToken")) {
+      navigate("/my");
+    }
+  }, [navigate]);
 
-  // useEffect(() => {
-  //   if (cookies.get("remember_id") !== undefined) {
-  //     setLoginId(cookies.get("remember_id"));
-  //   }
-  // }, [cookies, navigate]);
+  useEffect(() => {
+    if (cookies.get("remember_id") !== undefined) {
+      setLoginId(cookies.get("remember_id"));
+    }
+  }, [cookies, navigate]);
+
+  useEffect(() => {
+    setHeader(false);
+  });
 
   const getValue = (text) => {
     setLoginType(text);
@@ -39,8 +42,6 @@ const LoginPage = ({setHeader}) => {
   const RememberState = (text) => {
     setIdRemember(text);
   };
-
-  //1. 자동로그인, 아이디 자동 기억 기능 추가해야함.
 
   const RememberCookie = () => {
     if (idRemember) {
@@ -68,7 +69,9 @@ const LoginPage = ({setHeader}) => {
             const accessToken = response.data.accessToken;
             sessionStorage.setItem("UserToken", accessToken);
             sessionStorage.setItem("id", loginId);
-            cookies.set("refresh_token", response.data.refreshToken);
+            cookies.set("refresh_token", response.data.refreshToken, {
+              path: "/",
+            });
             navigate("/");
           })
           .catch((error) => {
@@ -84,14 +87,16 @@ const LoginPage = ({setHeader}) => {
             const accessToken = response.data.accessToken;
             localStorage.setItem("UserToken", accessToken);
             localStorage.setItem("id", loginId);
-            cookies.set("refresh_token", response.data.refreshToken);
+            cookies.set("refresh_token", response.data.refreshToken, {
+              path: "/",
+            });
             navigate("/");
           })
           .catch((error) => {
             if (error.response.status === 404) {
               alert("존재하지 않는 사용자입니다.");
             }
-        });
+          });
       }
     }
   }
@@ -102,9 +107,12 @@ const LoginPage = ({setHeader}) => {
         <img
           alt="Flag 로고"
           className="Logo"
-          src="flag.JPG"
+          src="../images/logo-White.PNG"
           width="200"
           height="100"
+          style={{
+            marginBottom: 50,
+          }}
         />
         <RelativeArea>
           <WriteArea

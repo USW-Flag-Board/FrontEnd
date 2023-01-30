@@ -1,25 +1,24 @@
-import styled from 'styled-components';
-import SideBar from '../components/SideBar';
+import {useEffect} from "react";
+import styled from "styled-components";
+import SideBar from "../components/SideBar";
 
 const searchItem = ["자유게시판(2)", "동아리 이모저모(0)"];
 const searchContent = ["'조던'"];
-const allUser = [
-  "조던1",
-  "조던2",
-  "조던 범고래",
-  "조던던",
-];
+const allUser = ["조던1", "조던2", "조던 범고래", "조던던"];
 
-const SearchPage = () => {
+const SearchPage = ({setHeader}) => {
   const count = Object.keys(allUser).length;
-    return (
-      <>
-        <SearchResults>
-          {searchContent} 검색결과
-        </SearchResults>
-        <MainBox>
-            <SideBox>
-            <SideBar
+
+  useEffect(() => {
+    setHeader(true);
+  });
+
+  return (
+    <>
+      <SearchResults>{searchContent} 검색결과</SearchResults>
+      <MainBox>
+        <SideBox>
+          <SideBar
             title={searchContent}
             mainColor="#4B4B4B"
             subColor="#3C3C3C"
@@ -28,53 +27,54 @@ const SearchPage = () => {
             items={searchItem}
             paddingTop="0"
             borderRadius="0 15px 15px 0"
-          /></SideBox>
-          <ResultBox>
-            <Box>
-              <TitleBox>유저 ({count})</TitleBox>
-              <UserBox><User/></UserBox>
-            </Box>
-            <Box>
+          />
+        </SideBox>
+        <ResultBox>
+          <Box>
+            <TitleBox>유저 ({count})</TitleBox>
+            <UserBox>
+              <User />
+            </UserBox>
+          </Box>
+          <Box>
             <TitleBox>{searchContent} 인기 글</TitleBox>
-              <PopularBox>
-                <PopularPosts/>
-                <PopularPosts/>
-              </PopularBox>
-            </Box>
-
-          </ResultBox>
-
-        </MainBox>
-      </>
-    );
-}; 
+            <PopularBox>
+              <PopularPosts />
+              <PopularPosts />
+            </PopularBox>
+          </Box>
+        </ResultBox>
+      </MainBox>
+    </>
+  );
+};
 
 const User = () => {
-    return (
-      <>
-        {allUser.map((i) => (
-          <SearchUser>
-            <img
-              className="logo"
-              src="img/logo.JPG"
-              style={{
-                height: "30px",
-                width: "30%",
-                margin: "10px",
-                borderRadius: "7px",
-              }}
-            />
-            {i}
-          </SearchUser>
-        ))}
-      </>
+  return (
+    <>
+      {allUser.map((i) => (
+        <SearchUser>
+          <img
+            className="logo"
+            src="img/logo.JPG"
+            style={{
+              height: "30px",
+              width: "30%",
+              margin: "10px",
+              borderRadius: "7px",
+            }}
+          />
+          {i}
+        </SearchUser>
+      ))}
+    </>
   );
 };
 
 const PopularPosts = () => {
   return (
     <>
-        <PopularCard/>
+      <PopularCard />
     </>
   );
 };
@@ -88,26 +88,25 @@ const Box = styled.div`
 `;
 
 const SideBox = styled.div`
-    width: auto;
-    height: 100vh;
-    margin-right: 2vw;
-    border: 1px solid gray;
+  width: auto;
+  height: 100vh;
+  margin-right: 2vw;
+  border: 1px solid gray;
 `;
 
 const MainBox = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    border: 1px solid gray;
-    
+  width: 100%;
+  height: 100%;
+  display: flex;
+  border: 1px solid gray;
 `;
 
 const ResultBox = styled.div`
-    width: 100%;
-    height: 20%;
-    display: flex;
-    border: 1px solid gray;
-`
+  width: 100%;
+  height: 20%;
+  display: flex;
+  border: 1px solid gray;
+`;
 
 const SearchResults = styled.div`
   width: 70vw;
@@ -116,16 +115,16 @@ const SearchResults = styled.div`
   color: white;
   font-size: 2rem;
   font-weight: 700;
-`
+`;
 
 const TitleBox = styled.div`
-  marginLeft: 2vw;
+  marginleft: 2vw;
   width: 10vw;
   height: 20px;
-  verticalAlign: middle;
+  verticalalign: middle;
   color: white;
-  fontWeight: bold;
-`
+  fontweight: bold;
+`;
 
 const UserBox = styled.div`
   width: 34vw;
@@ -133,7 +132,7 @@ const UserBox = styled.div`
   flex-wrap: wrap;
   border: 2px solid gray;
   border-radius: 15px;
-`
+`;
 
 const SearchUser = styled.div`
   width: 200px;
@@ -145,7 +144,7 @@ const SearchUser = styled.div`
   display: flex;
   align-items: center;
   border: 1px solid gray;
-`
+`;
 
 const PopularCard = styled.div`
   width: 20vw;
@@ -157,7 +156,7 @@ const PopularCard = styled.div`
   display: flex;
   align-items: center;
   border: 1px solid gray;
-`
+`;
 const PopularBox = styled.div`
   width: 43vw;
   display: flex;
@@ -166,6 +165,6 @@ const PopularBox = styled.div`
   border-radius: 15px;
   align-items: center;
   justify-content: center;
-`
+`;
 
 export default SearchPage;
