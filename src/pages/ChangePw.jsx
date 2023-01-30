@@ -1,9 +1,9 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {useNavigate, useLocation} from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 
-const ChangePw = () => {
+const ChangePw = ({setHeader}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [currentPassword, setCurrentPassword] = useState("");
@@ -52,6 +52,10 @@ const ChangePw = () => {
         });
     }
   };
+
+  useEffect(() => {
+    setHeader(true);
+  });
 
   return (
     <>

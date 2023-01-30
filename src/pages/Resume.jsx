@@ -17,7 +17,7 @@ const resume2 = [
   "2022 1학기 - 알고리즘 - 코테반 [4명] (완료)",
 ];
 
-const Resume = () => {
+const Resume = ({setHeader}) => {
   const [year, setYear] = useState(2022);
   const study = study_2022.map((study, key) => <li key={key}>{study}</li>);
   const [resumeList, setResumeList] = useState("");
@@ -43,6 +43,10 @@ const Resume = () => {
       setResumeList(resume2.map((resume, key) => <li key={key}>{resume}</li>));
     }
   }, [year]);
+
+  useEffect(() => {
+    setHeader(true);
+  });
 
   return (
     <>

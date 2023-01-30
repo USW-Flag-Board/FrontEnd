@@ -1,12 +1,12 @@
-import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { add } from "../features/toDos";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faFile } from "@fortawesome/free-regular-svg-icons";
+import {useCallback, useState, useEffect} from "react";
+import {useNavigate} from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux";
+import {add} from "../features/toDos";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faImage, faFile} from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
-import { Footer, SideBar } from "../components/";
-import axios from 'axios';
+import {Footer, SideBar} from "../components/";
+import axios from "axios";
 
 const boardItems = [
   "자유게시판",
@@ -28,7 +28,7 @@ const buttonItems = [
   },
 ];
 
-const WritePost = () => {
+const WritePost = ({setHeader}) => {
   const navigate = useNavigate();
   // const [image, setImage] = useState({
   //   image_file: "",
@@ -38,11 +38,11 @@ const WritePost = () => {
   const [title, setTitle] = useState(""); // 글 제목
   const [content, setContent] = useState(""); // 글 내용
   const [board, setBoard] = useState(""); // 게시판 종류
-  
+
   const handleBoardChange = (e) => {
     setBoard(e.target.value);
-  }
-  
+  };
+
   const canSubmit = useCallback(() => {
     return content !== "" && title !== "";
   }, [title, content]);
@@ -53,32 +53,37 @@ const WritePost = () => {
     title: `${title}`,
     content: `${content}`,
     status: "NORMAL",
-  }
+  };
 
   const handleSubmit = () => {
-      axios.post("http://3.39.36.239:8080/api/posts", data)
-          // {
-          //   data: data,
-          //   headers: {
-          //     'Authorization': `Bearer ${sessionStorage.getItem("UserToken")}`,
-          //     'Content-Type': 'application/json'
-          //   },
-          // })
-        .then((response) => {
-          window.alert("등록이 완료되었습니다.");
-          console.log("서버에서 내려온 값:", response);
-          navigate("/board");
-        })
-        .catch((error)=>{
-          // 에러 핸들링
-          console.log(error);
-        })
-      };
+    axios
+      .post("http://3.39.36.239:8080/api/posts", data)
+      // {
+      //   data: data,
+      //   headers: {
+      //     'Authorization': `Bearer ${sessionStorage.getItem("UserToken")}`,
+      //     'Content-Type': 'application/json'
+      //   },
+      // })
+      .then((response) => {
+        window.alert("등록이 완료되었습니다.");
+        console.log("서버에서 내려온 값:", response);
+        navigate("/board");
+      })
+      .catch((error) => {
+        // 에러 핸들링
+        console.log(error);
+      });
+  };
 
   // const onSubmit = (e) => {
   //   dispatch(add())
   // }
-  
+
+  useEffect(() => {
+    setHeader(true);
+  });
+
   return (
     <>
       <BoardArea>
@@ -101,13 +106,13 @@ const WritePost = () => {
               <BoardSelect onChange={handleBoardChange}>
                 <option>게시판을 선택해주세요</option>
                 {boardItems.map((item) => (
-                  <option key={item} >{item}</option>
+                  <option key={item}>{item}</option>
                 ))}
               </BoardSelect>
-              {canSubmit() ?
+              {canSubmit() ? (
                 <button
                   onClick={() => {
-                    handleSubmit()
+                    handleSubmit();
                     // onSubmit()
                   }}
                   type="button"
@@ -123,22 +128,25 @@ const WritePost = () => {
                   }}
                 >
                   등록
-                </button> :""}
+                </button>
+              ) : (
+                ""
+              )}
             </SelectArea>
             <TitleInputBox>
-              <TitleInput 
-                type="text" 
-                value={title} 
-                placeholder="제목을 입력해주세요." 
+              <TitleInput
+                type="text"
+                value={title}
+                placeholder="제목을 입력해주세요."
                 onChange={(e) => {
                   setTitle(e.target.value);
                 }}
               />
             </TitleInputBox>
             <ContentInputBox>
-              <ContentInput 
-                value={content} 
-                placeholder="내용을 입력해주세요." 
+              <ContentInput
+                value={content}
+                placeholder="내용을 입력해주세요."
                 onChange={(e) => {
                   setContent(e.target.value);
                 }}
@@ -158,7 +166,7 @@ const WritePost = () => {
           </ListArea>
         </ContentArea>
       </BoardArea>
-      <Footer/>
+      <Footer />
     </>
   );
 };

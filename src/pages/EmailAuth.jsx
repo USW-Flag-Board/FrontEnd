@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {useNavigate, useLocation} from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
@@ -9,7 +9,7 @@ const korExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
 const spaceExp = /\s/;
 const engExp = /[a-zA-Z]/g;
 
-const EmailAuth = () => {
+const EmailAuth = ({setHeader}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state.CheckEmail.email;
@@ -67,6 +67,10 @@ const EmailAuth = () => {
         }
       });
   };
+
+  useEffect(() => {
+    setHeader(false);
+  });
 
   return (
     <>

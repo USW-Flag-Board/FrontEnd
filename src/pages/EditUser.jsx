@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {useNavigate, useLocation} from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
@@ -11,7 +11,7 @@ const profileUpdateExample = [
   "19017041",
 ];
 
-const EditUser = () => {
+const EditUser = ({setHeader}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const cookies = new Cookies();
@@ -44,9 +44,9 @@ const EditUser = () => {
       password,
     };
     axios
-      .delete("http://3.39.36.239:8080/api/member", {
+      .delete("http://3.39.36.239:8080/api/members", {
         data: {
-          password: "ljkljk12!",
+          password: "asdasd72!@",
         },
       })
       .then((response) => {
@@ -65,6 +65,10 @@ const EditUser = () => {
         }
       });
   };
+
+  useEffect(() => {
+    setHeader(true);
+  });
 
   return (
     <>

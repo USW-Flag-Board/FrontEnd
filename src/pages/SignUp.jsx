@@ -8,7 +8,6 @@ import InfoState from "../components/InfoState";
 import JoinTypeButton from "../components/JoinTypeButton";
 import {useNavigate} from "react-router-dom";
 
-
 const specialized = [
   {
     label: "전공을 선택하세요",
@@ -86,7 +85,7 @@ const SignUp = ({setHeader}) => {
         password,
         studentId,
         phoneNumber,
-        nickName,
+        nickName
       );
       alert("가입정보를 정확히 입력해주세요.");
     }
@@ -279,7 +278,7 @@ const SignUp = ({setHeader}) => {
             password,
             studentId,
             phoneNumber,
-            nickName,
+            nickName
           );
           alert("재학생 인증 메일 전송 완료");
           navigate("/EmailAuth", {state: {CheckEmail: data}});
@@ -302,9 +301,9 @@ const SignUp = ({setHeader}) => {
       <img
         alt="Flag 로고"
         className="Logo"
-        src="flag.JPG"
-        width="300"
-        height="150"
+        src="../images/logo-White.PNG"
+        width="200"
+        height="100"
         style={{marginBottom: 40}}
       />
       <SignUpArea>
@@ -316,7 +315,7 @@ const SignUp = ({setHeader}) => {
             onChange={(e) => {
               IdSet(e.target.value);
             }}
-            onBlur={(IdCheck) => {
+            onBlur={() => {
               IdValid();
             }}
           />
@@ -414,18 +413,14 @@ const SignUp = ({setHeader}) => {
             }}
           />
         </RelativeArea>
+        <WriteArea
+          type="text"
+          placeholder="전화번호"
+          onChange={(e) => {
+            setPhoneNumber(e.target.value);
+          }}
+        />
         <RelativeArea>
-          <InfoState message={studentIdStateMessage} />
-          <WriteArea
-            type="text"
-            placeholder="전화번호"
-            onChange={(e) => {
-              setPhoneNumber(e.target.value);
-            }}
-          />
-        </RelativeArea>
-        <RelativeArea>
-          <InfoState message={studentIdStateMessage} />
           <WriteArea
             type="text"
             placeholder="닉네임"
@@ -475,7 +470,7 @@ const WriteArea = styled.input`
   outline: none;
   margin: 20px;
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   transition: 0.2s;
   :hover {
     transition: 0.2s;
