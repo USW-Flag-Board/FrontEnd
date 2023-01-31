@@ -105,6 +105,8 @@ const SignUp = ({setHeader}) => {
       } else if (spaceExp.test(loginId)) {
         setIdStateMessage("아이디에는 공백을 포함할 수 없습니다.");
         resolve(false);
+      } else if (loginId.length <= 2) {
+        setIdStateMessage("아이디는 세글자 이상으로 설정해주세요.");
       } else {
         const data = {
           loginId,
@@ -305,6 +307,7 @@ const SignUp = ({setHeader}) => {
         width="200"
         height="100"
         style={{marginBottom: 40}}
+        onClick={() => navigate("/")}
       />
       <SignUpArea>
         <RelativeArea>
