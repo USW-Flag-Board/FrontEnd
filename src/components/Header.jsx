@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import {useState} from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import {useNavigate} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faUser} from "@fortawesome/free-regular-svg-icons";
+import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 import Cookies from "universal-cookie";
 
 const sections = ["BOARD", "ACTIVITY", "NOTICE"];
@@ -13,12 +13,15 @@ const Header = () => {
   const [userToggled, setUserToggled] = useState(false);
   const navigate = useNavigate();
   const handleMenuClick = (menu) => {
-    if(menu === "BOARD"){
+    if (menu === "BOARD") {
       navigate("/board");
-    }else if(menu === "ACTIVITY"){
-      navigate("/activity");
+    } else if (menu === "ACTIVITY") {
+      alert("구현중입니다.");
+      // navigate("/activity");
+    } else if (menu === "NOTICE") {
+      alert("구현중입니다.");
     }
-  }
+  };
   const cookies = new Cookies();
 
   const LoginCheck = () => {
@@ -44,7 +47,9 @@ const Header = () => {
         <MenuItems>
           <MenuButton onClick={() => navigate("/resume")}>FLAG</MenuButton>
           {sections.map((item) => (
-            <MenuButton key={item} onClick={() => handleMenuClick(item)}>{item}</MenuButton>
+            <MenuButton key={item} onClick={() => handleMenuClick(item)}>
+              {item}
+            </MenuButton>
           ))}
         </MenuItems>
       </MenuItemBox>

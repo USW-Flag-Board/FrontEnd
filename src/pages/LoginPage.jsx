@@ -113,6 +113,7 @@ const LoginPage = ({setHeader}) => {
           style={{
             marginBottom: 50,
           }}
+          onClick={() => navigate("/")}
         />
         <RelativeArea>
           <WriteArea

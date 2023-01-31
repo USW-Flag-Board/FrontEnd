@@ -13,53 +13,112 @@ const numExp = /[0-9]/g;
 const spaceExp = /\s/;
 
 const FindPw = ({setHeader}) => {
-  const navigate = useNavigate();
-  const [name, setName] = useState("");
+  const [successState, setSuccessState] = useState(false);
   const [email, setEmail] = useState("");
-  const [id, setId] = useState("");
 
-  const Find = () => {
-    const data = {
-      email,
-    };
+  useEffect(() => {
+    setHeader(true);
+  });
+
+  return (
+    <>
+      {successState ? (
+        <ShowPw email={email} />
+      ) : (
+        <FindPwPage setEmail={setEmail} setSuccessState={setSuccessState} />
+      )}
+    </>
+  );
+};
+
+const ShowPw = (props) => {
+  const navigate = useNavigate();
+  const [password, setPassword] = useState("");
+  const [verifyPassword, setVerifyPassword] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+
+  const onChangePasswordChk = (e) => {
+    setPasswordError(e.target.value !== password);
+    setVerifyPassword(e.target.value);
+  };
+
+  const ChangePassword = () => {
     axios
-      .get(`http://3.39.36.239:8080/api/member?id=${id}&email=${email}`)
-      .then((response) => {
-        axios
-          .post("http://3.39.36.239:8080/api/member/mail/password", data)
-          .then((response) => {
-            alert("새 비밀번호 메일 발송 성공");
-            navigate("/login");
-          })
-          .catch((error) => {
-            if (error.response.status === 404) {
-              alert("가입된 아이디가 없습니다.");
-            } else if (error.response.status === 500) {
-              alert("서버 에러입니다.");
-            }
-          });
+      .put("http://3.39.36.239:8080/api/members/find/password", {
+        email: props.email,
+        newPassword: password,
+      })
+      .then(() => {
+        alert("비밀번호를 변경했습니다.");
+        navigate("/");
       })
       .catch((error) => {
-        if (error.response.status === 400) {
-          alert("이메일 입력안함");
-        } else if (error.response.status === 404) {
-          alert("가입된 아이디가 없습니다.");
+        if (error.response.status === 404) {
+          alert("존재하지 않는 사용자입니다.");
+        } else if (error.response.status === 422) {
+          alert("사용할 수 없는 비밀번호 입니다.");
         }
       });
   };
 
-  const NameValid = () => {
-    if (name === "") {
-      alert("이름을 정확히 입력해주세요.");
-    } else if (regExp.test(name)) {
-      alert("이름에는 특수문자를 입력할 수 없습니다.");
-    } else if (numExp.test(name)) {
-      alert("이름에는 숫자를 포함할 수 없습니다.");
-    } else if (spaceExp.test(name)) {
-      alert("이름에는 공백을 포함할 수 없습니다.");
-    } else {
-      EmailValid();
-    }
+  return (
+    <>
+      <Mainbox>
+        <EmailTitle>
+          비밀번호 변경하기
+          <FindButton onClick={() => ChangePassword()}>변경하기</FindButton>
+        </EmailTitle>
+        <Emailbox>
+          <Emailfield>
+            <Box>
+              <TextBox>새 비밀번호</TextBox>
+              <InsertBox>
+                <Insert
+                  type="text"
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </InsertBox>
+            </Box>
+            <Box>
+              <TextBox>새 비밀번호 확인</TextBox>
+              <InsertBox>
+                <Insert type="text" onChange={onChangePasswordChk} required />
+              </InsertBox>
+            </Box>
+            <ErrorBox>
+              {passwordError && <div>비밀번호가 일치하지 않습니다.</div>}
+            </ErrorBox>
+          </Emailfield>
+        </Emailbox>
+      </Mainbox>
+    </>
+  );
+};
+
+const FindPwPage = (props) => {
+  const [email, setEmail] = useState("");
+  const [id, setId] = useState("");
+  const [auth, setAuth] = useState(false);
+
+  const Find = () => {
+    axios
+      .post("http://3.39.36.239:8080/api/members/find/password", {
+        email: email,
+        loginId: id,
+      })
+      .then(() => {
+        props.setEmail(email);
+        setAuth(true);
+        alert("이메일로 인증번호가 전송되었습니다.");
+      })
+      .catch((error) => {
+        if (error.response.status === 404) {
+          alert("존재하지 않는 사용자입니다.");
+        } else if (error.response.status === 409) {
+          alert("이메일과 아이디가 일치하지 않습니다.");
+        }
+      });
   };
 
   const EmailValid = () => {
@@ -93,7 +152,7 @@ const FindPw = ({setHeader}) => {
   };
 
   useEffect(() => {
-    setHeader(true);
+    props.setSuccessState(false);
   });
 
   return (
@@ -101,20 +160,10 @@ const FindPw = ({setHeader}) => {
       <Mainbox>
         <EmailTitle>
           비밀번호 찾기
-          <FindButton onClick={() => NameValid()}>찾기</FindButton>
+          <FindButton onClick={() => EmailValid()}>찾기</FindButton>
         </EmailTitle>
         <Emailbox>
           <Emailfield>
-            <Box>
-              <TextBox>이름</TextBox>
-              <InsertBox>
-                <Insert
-                  type="text"
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </InsertBox>
-            </Box>
             <Box>
               <TextBox>이메일</TextBox>
               <InsertBox>
@@ -135,9 +184,67 @@ const FindPw = ({setHeader}) => {
                 />
               </InsertBox>
             </Box>
+            {auth && (
+              <CertificateBox
+                email={email}
+                setSuccessState={props.setSuccessState}
+              />
+            )}
           </Emailfield>
         </Emailbox>
       </Mainbox>
+    </>
+  );
+};
+
+const CertificateBox = (props) => {
+  const [certification, setCertification] = useState("");
+
+  const AuthCheck = () => {
+    axios
+      .post("http://3.39.36.239:8080/api/members/certification", {
+        certification: certification,
+        email: props.email,
+      })
+      .then(() => {
+        props.setSuccessState(true);
+      })
+      .catch((error) => {
+        if (error.response.status === 404) {
+          alert("비밀번호 찾기 요청이 존재하지 않습니다. 다시 시도해주세요.");
+        } else if (error.response.status === 409) {
+          alert("인증번호가 일치하지 않습니다.");
+        }
+      });
+  };
+
+  const CertificationValid = () => {
+    if (certification === "") {
+      alert("인증번호가 입력되지 않았습니다.");
+    } else {
+      AuthCheck();
+    }
+  };
+
+  useEffect(() => {
+    props.setSuccessState(false);
+  });
+
+  return (
+    <>
+      <Box>
+        <TextBox>인증번호</TextBox>
+        <InsertBox>
+          <Insert
+            type="text"
+            onChange={(e) => setCertification(e.target.value)}
+            required
+          />
+        </InsertBox>
+      </Box>
+      <AuthButtonField>
+        <AuthButton onClick={() => CertificationValid()}>인증하기</AuthButton>
+      </AuthButtonField>
     </>
   );
 };
@@ -182,8 +289,9 @@ const FindButton = styled.button`
 const Emailbox = styled.div`
   display: flex;
   width: 60%;
-  height: 26vh;
+  height: auto;
   margin-top: 3vh;
+  padding-bottom: 3vh;
   flex-direction: column;
   align-items: center;
   border: 1px solid gray;
@@ -196,7 +304,7 @@ const Emailfield = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 15vh;
+  height: auto;
   font-size: 1rem;
   margin-top: 5.5vh;
 `;
@@ -242,24 +350,35 @@ const InsertBox = styled.div`
   width: 60%;
 `;
 
-const ResendButton = styled.button`
-  width: 100px;
-  height: 27.5px;
+const AuthButtonField = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+`;
+
+const AuthButton = styled.button`
+  width: 15%;
+  height: 3vh;
   background: #6c6c6c;
   color: white;
   border-radius: 1vh;
   border: 0px;
   outline: none;
-  margin-left: 20px;
-  padding-left: 6px;
-  padding-right: 6px;
-  padding-top: 1px;
-  padding-bottom: 1px;
+  margin-left: 5%;
+  margin-top: 1%;
   transition: 0.2s;
   :hover {
     transition: 0.2s;
     background-color: #575757;
   }
+`;
+
+const ErrorBox = styled.div`
+  width: 200px;
+  margin-left: 2vw;
+  font-size: 0.8rem;
+  align-items: center;
 `;
 
 export default FindPw;

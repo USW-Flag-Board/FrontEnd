@@ -17,24 +17,10 @@ const MyPage = ({setHeader}) => {
   const [loginId, setLoginId] = useState("");
   const [nickname, setNickname] = useState("");
   const [introduceMessage, setIntroduceMessage] = useState("");
-  useEffect(() => {
-    async function DataSet() {
-      if (
-        localStorage.getItem("UserToken") ||
-        sessionStorage.getItem("UserToken")
-      ) {
-        console.log("정보 받아오기 시작");
-        await LoginIdSetting();
-        SetMyData();
-      } else {
-        navigate("/login");
-      }
-    }
-    DataSet();
-  });
 
   async function LoginIdSetting() {
     setLoginId(sessionStorage.getItem("id"));
+    setLoginId(localStorage.getItem("id"));
   }
 
   const SetMyData = () => {
@@ -64,6 +50,22 @@ const MyPage = ({setHeader}) => {
     setHeader(true);
   });
 
+  useEffect(() => {
+    async function DataSet() {
+      if (
+        localStorage.getItem("UserToken") ||
+        sessionStorage.getItem("UserToken")
+      ) {
+        console.log("정보 받아오기 시작");
+        await LoginIdSetting();
+        SetMyData();
+      } else {
+        navigate("/login");
+      }
+    }
+    DataSet();
+  });
+
   return (
     <PageArea>
       <LeftPage>
@@ -74,7 +76,8 @@ const MyPage = ({setHeader}) => {
                 icon={faUser}
                 style={{width: 120, height: 120, marginBottom: 30}}
               />
-              <EditProfile onClick={() => navigate("/edit")}>
+              {/* <EditProfile onClick={() => navigate("/edit")}> */}
+              <EditProfile onClick={() => alert("구현중입니다.")}>
                 Edit Profile
               </EditProfile>
             </RelativeArea>
