@@ -6,6 +6,7 @@ import styled from "styled-components";
 import axios from "axios";
 import InfoState from "../components/InfoState";
 import JoinTypeButton from "../components/JoinTypeButton";
+import {useNavigate} from "react-router-dom";
 
 const specialized = [
   {
@@ -29,7 +30,7 @@ const numExp = /[0-9]/g;
 const spaceExp = /\s/;
 const engExp = /[a-zA-Z]/g;
 
-const SignUp = () => {
+const SignUp = ({setHeader}) => {
   const [idStateMessage, setIdStateMessage] = useState(" ");
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordVerifyMessage, setPasswordVerifyMessage] = useState("");
@@ -38,7 +39,7 @@ const SignUp = () => {
   const [majorStateMessage, setMajorStateMessage] = useState("");
   const [studentIdStateMessage, setStudentIdStateMessage] = useState("");
   const [loginId, setLoginId] = useState("");
-  const [email, setEmail] = useState("");
+  const email = "";
   const [originEmail, setOriginEmail] = useState("");
   const [joinType, setJoinType] = useState("");
   const [major, setMajor] = useState("");
@@ -46,153 +47,229 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState("");
   const [studentId, setStudentId] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [nickName, setNickName] = useState("");
+  const navigate = useNavigate();
+  setHeader(false);
 
   const getValue = (text) => {
     setJoinType(text);
   };
 
-  const Sign = () => {
-    const suwonEmail = originEmail + "@suwon.ac.kr";
-    setEmail(suwonEmail);
-    IdValid();
-    PasswordValid();
-    PasswordVerifyValid();
-    EmailValid();
-    NameValid();
-    MajorValid();
-    StudentIdValid();
-    SignInfo();
-  };
+  async function IdSet(text) {
+    setLoginId(text);
+  }
 
-  const IdValid = () => {
-    if (loginId === "") {
-      setIdStateMessage("아이디를 정확히 입력해주세요.");
-    } else if (regExp.test(loginId)) {
-      setIdStateMessage("아이디에는 특수문자를 입력할 수 없습니다.");
-    } else if (korExp.test(loginId)) {
-      setIdStateMessage("아이디에는 한글을 포함할 수 없습니다.");
-    } else if (spaceExp.test(loginId)) {
-      setIdStateMessage("아이디에는 공백을 포함할 수 없습니다.");
+  async function OriginEmailSet(text) {
+    setOriginEmail(text);
+  }
+
+  async function Sign() {
+    if (
+      (await IdValid()) &
+      (await EmailValid()) &
+      PasswordValid() &
+      PasswordVerifyValid() &
+      NameValid() &
+      MajorValid() &
+      StudentIdValid()
+    ) {
+      SignInfo();
     } else {
-      axios
-        .get(`/api/auth?id=${loginId}`)
-        .then(() => {
-          setIdStateMessage("사용 가능한 아이디입니다.");
-        })
-        .catch((error) => {
-          if (error.response.status === 409) {
-            setIdStateMessage("이미 사용 중인 아이디입니다.");
-          }
-        });
+      console.log(
+        originEmail,
+        joinType,
+        loginId,
+        major,
+        name,
+        password,
+        studentId,
+        phoneNumber,
+        nickName
+      );
+      alert("가입정보를 정확히 입력해주세요.");
     }
-  };
+  }
+
+  function IdValid() {
+    return new Promise((resolve) => {
+      if (loginId === "") {
+        setIdStateMessage("아이디를 정확히 입력해주세요.");
+        resolve(false);
+      } else if (regExp.test(loginId)) {
+        setIdStateMessage("아이디에는 특수문자를 입력할 수 없습니다.");
+        resolve(false);
+      } else if (korExp.test(loginId)) {
+        setIdStateMessage("아이디에는 한글을 포함할 수 없습니다.");
+        resolve(false);
+      } else if (spaceExp.test(loginId)) {
+        setIdStateMessage("아이디에는 공백을 포함할 수 없습니다.");
+        resolve(false);
+      } else if (loginId.length <= 2) {
+        setIdStateMessage("아이디는 세글자 이상으로 설정해주세요.");
+      } else {
+        const data = {
+          loginId,
+        };
+        axios
+          .post("http://3.39.36.239:8080/api/auth/check/id", data)
+          .then(() => {
+            setIdStateMessage("사용 가능한 아이디입니다.");
+            resolve(true);
+          })
+          .catch((error) => {
+            if (error.response.status === 409) {
+              setIdStateMessage("이미 사용 중인 아이디입니다.");
+            }
+            resolve(false);
+          });
+      }
+    });
+  }
 
   const PasswordValid = () => {
     if (password === "") {
       setPasswordMessage("비밀번호를 정확히 입력해주세요.");
+      return false;
     } else if (password.length < 8 || password.length > 20) {
       setPasswordMessage("비밀번호의 길이는 8-20자 이내여야 합니다.");
+      return false;
     } else if (!regExp.test(password)) {
       setPasswordMessage("특수문자가 입력되지 않았습니다.");
+      return false;
     } else if (korExp.test(password)) {
       setPasswordMessage("비밀번호에는 한글을 포함할 수 없습니다.");
+      return false;
     } else if (!numExp.test(password)) {
       setPasswordMessage("비밀번호에는 숫자를 포함해야 합니다.");
+      return false;
     } else if (spaceExp.test(password)) {
       setPasswordMessage("비밀번호에는 공백을 포함할 수 없습니다.");
+      return false;
     } else {
       setPasswordMessage("사용 가능한 비밀번호입니다.");
+      return true;
     }
   };
 
   const PasswordVerifyValid = () => {
     if (passwordVerify === "") {
       setPasswordVerifyMessage("비밀번호 확인을 입력해주세요.");
+      return false;
     } else if (password !== passwordVerify) {
       setPasswordVerifyMessage("비밀번호와 일치하지 않습니다.");
+      return false;
     } else {
       setPasswordVerifyMessage("비밀번호와 일치합니다.");
+      return true;
     }
   };
 
-  const EmailValid = () => {
-    if (originEmail === "") {
-      setEmailStateMessage("이메일을 정확하게 입력하세요.");
-    } else if (regExp.test(originEmail)) {
-      setEmailStateMessage("이메일에는 특수문자를 입력할 수 없습니다.");
-    } else if (korExp.test(originEmail)) {
-      setEmailStateMessage("이메일에는 한글을 포함할 수 없습니다.");
-    } else if (spaceExp.test(originEmail)) {
-      setEmailStateMessage("이메일에는 공백을 포함할 수 없습니다.");
-    } else {
-      axios
-        .get(`/api/auth/${originEmail}@suwon.ac.kr`)
-        .then(() => {
-          setEmailStateMessage("사용 가능한 이메일입니다.");
-        })
-        .catch((error) => {
-          if (error.response.status === 409) {
-            setEmailStateMessage("이미 사용 중인 이메일입니다.");
-          }
-        });
-    }
-  };
+  function EmailValid() {
+    return new Promise((resolve) => {
+      if (originEmail === "") {
+        setEmailStateMessage("이메일을 정확하게 입력하세요.");
+        resolve(false);
+      } else if (regExp.test(originEmail)) {
+        setEmailStateMessage("이메일에는 특수문자를 입력할 수 없습니다.");
+        resolve(false);
+      } else if (korExp.test(originEmail)) {
+        setEmailStateMessage("이메일에는 한글을 포함할 수 없습니다.");
+        resolve(false);
+      } else if (spaceExp.test(originEmail)) {
+        setEmailStateMessage("이메일에는 공백을 포함할 수 없습니다.");
+        resolve(false);
+      } else {
+        const data = {
+          email: originEmail + "@suwon.ac.kr",
+        };
+        axios
+          .post("http://3.39.36.239:8080/api/auth/check/email", data)
+          .then(() => {
+            setEmailStateMessage("사용 가능한 이메일입니다.");
+            resolve(true);
+          })
+          .catch((error) => {
+            if (error.response.status === 409) {
+              setEmailStateMessage("이미 사용 중인 이메일입니다.");
+            }
+            resolve(false);
+          });
+      }
+    });
+  }
 
   const NameValid = () => {
     if (name === "") {
       setNameStateMessage("이름을 정확히 입력해주세요.");
+      return false;
     } else if (regExp.test(name)) {
       setNameStateMessage("이름에는 특수문자를 입력할 수 없습니다.");
+      return false;
     } else if (numExp.test(name)) {
       setNameStateMessage("이름에는 숫자를 포함할 수 없습니다.");
+      return false;
     } else if (spaceExp.test(name)) {
       setNameStateMessage("이름에는 공백을 포함할 수 없습니다.");
+      return false;
     } else {
       setNameStateMessage("사용 가능한 이름입니다.");
+      return true;
     }
   };
 
   const MajorValid = () => {
     if (major === "" || major === "전공을 선택하세요") {
       setMajorStateMessage("전공을 선택해주세요.");
+      return false;
     } else {
       setMajorStateMessage("");
+      return true;
     }
   };
 
   const StudentIdValid = () => {
     if (studentId === "") {
       setStudentIdStateMessage("학번을 입력해주세요.");
+      return false;
     } else if (regExp.test(studentId)) {
       setStudentIdStateMessage("학번에는 특수문자가 포함되지 않습니다.");
+      return false;
     } else if (korExp.test(studentId)) {
       setStudentIdStateMessage("학번에는 한글이 포함되지 않습니다.");
+      return false;
     } else if (spaceExp.test(studentId)) {
       setStudentIdStateMessage("학번에는 공백이 포함되지 않습니다.");
+      return false;
     } else if (engExp.test(studentId)) {
       setStudentIdStateMessage("학번에는 영문이 포함되지 않습니다.");
+      return false;
     } else if (studentId.length !== 8) {
       setStudentIdStateMessage("학번의 길이는 8자입니다.");
+      return false;
     } else {
       setStudentIdStateMessage("");
+      return true;
     }
   };
-
+  setHeader(false);
   const SignInfo = () => {
     const data = {
-      email,
+      email: originEmail + "@suwon.ac.kr",
       joinType,
       loginId,
       major,
       name,
       password,
       studentId,
+      phoneNumber,
+      nickName,
     };
     if (joinType === "") {
       alert("가입 유형을 선택해주세요.");
     } else {
       axios
-        .post("/api/auth/join", data)
+        .post("http://3.39.36.239:8080/api/auth/join", data)
         .then((response) => {
           console.log(
             email,
@@ -201,9 +278,12 @@ const SignUp = () => {
             major,
             name,
             password,
-            studentId
+            studentId,
+            phoneNumber,
+            nickName
           );
-          alert("로그인 성공");
+          alert("재학생 인증 메일 전송 완료");
+          navigate("/EmailAuth", {state: {CheckEmail: data}});
         })
         .catch((error) => {
           if (error.response.status === 400) {
@@ -211,27 +291,35 @@ const SignUp = () => {
           } else if (error.response.status === 422) {
             alert("422번 비번 형식 오류");
           }
+          if (error.response.status === 500) {
+            alert("서버 오류입니다. 관리자에게 문의하세요.");
+          }
         });
     }
   };
 
   return (
     <PageArea>
+      <img
+        alt="Flag 로고"
+        className="Logo"
+        src="../images/logo-White.PNG"
+        width="200"
+        height="100"
+        style={{marginBottom: 40}}
+        onClick={() => navigate("/")}
+      />
       <SignUpArea>
-        <img
-          alt="Flag 로고"
-          className="Logo"
-          src="flag.JPG"
-          width="200"
-          height="100"
-        />
         <RelativeArea>
           <InfoState message={idStateMessage} />
           <WriteArea
             type="text"
             placeholder="아이디"
             onChange={(e) => {
-              setLoginId(e.target.value);
+              IdSet(e.target.value);
+            }}
+            onBlur={() => {
+              IdValid();
             }}
           />
           <FontAwesomeIcon
@@ -288,7 +376,10 @@ const SignUp = () => {
             type="text"
             placeholder="E-Mail"
             onChange={(e) => {
-              setOriginEmail(e.target.value);
+              OriginEmailSet(e.target.value);
+            }}
+            onBlur={() => {
+              EmailValid();
             }}
           />
           <SuwonEmail>@suwon.ac.kr</SuwonEmail>
@@ -325,6 +416,22 @@ const SignUp = () => {
             }}
           />
         </RelativeArea>
+        <WriteArea
+          type="text"
+          placeholder="전화번호"
+          onChange={(e) => {
+            setPhoneNumber(e.target.value);
+          }}
+        />
+        <RelativeArea>
+          <WriteArea
+            type="text"
+            placeholder="닉네임"
+            onChange={(e) => {
+              setNickName(e.target.value);
+            }}
+          />
+        </RelativeArea>
         <JoinTypeButton getValue={getValue} />
         <AccountButton onClick={() => Sign()} fullWidth variant="contained">
           가입하기
@@ -340,6 +447,7 @@ const PageArea = styled.div`
   align-items: center;
   display: flex;
   justify-content: center;
+  flex-direction: column;
 `;
 
 const SignUpArea = styled.div`
@@ -347,7 +455,9 @@ const SignUpArea = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
-  width: 400px;
+  width: 600px;
+  border: 1px solid;
+  border-radius: 28px;
 `;
 
 const WriteArea = styled.input`
@@ -363,7 +473,7 @@ const WriteArea = styled.input`
   outline: none;
   margin: 20px;
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   transition: 0.2s;
   :hover {
     transition: 0.2s;

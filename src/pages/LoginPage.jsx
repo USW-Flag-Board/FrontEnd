@@ -1,14 +1,55 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
 import {faLock} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import axios from "axios";
-import CheckButton from "../components/CheckButton";
+import AutoLoginButton from "../components/AutoLoginButton";
+import IdRememberButton from "../components/IdRememberButton";
+import Cookies from "universal-cookie";
 
-const LoginPage = () => {
-  let [loginId, setLoginId] = useState("");
-  let [password, setPassword] = useState("");
+const LoginPage = ({setHeader}) => {
+  const navigate = useNavigate();
+  const cookies = new Cookies();
+  const [loginId, setLoginId] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginType, setLoginType] = useState(1);
+  const [idRemember, setIdRemember] = useState(false);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("UserToken")) {
+      navigate("/my");
+    } else if (localStorage.getItem("UserToken")) {
+      navigate("/my");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    if (cookies.get("remember_id") !== undefined) {
+      setLoginId(cookies.get("remember_id"));
+    }
+  }, [cookies, navigate]);
+
+  useEffect(() => {
+    setHeader(false);
+  });
+
+  const getValue = (text) => {
+    setLoginType(text);
+  };
+
+  const RememberState = (text) => {
+    setIdRemember(text);
+  };
+
+  const RememberCookie = () => {
+    if (idRemember) {
+      cookies.set("remember_id", loginId);
+    } else {
+      cookies.remove("remember_id");
+    }
+  };
 
   function OnLogin(loginId, password) {
     const data = {
@@ -20,18 +61,43 @@ const LoginPage = () => {
     } else if (password === "") {
       alert("비밀번호를 입력해주세요.");
     } else {
-      axios
-        .post("/api/auth/login", data)
-        .then((response) => {
-          const {accessToken} = response.data;
-          localStorage.setItem("jwtToken", response.accessToken);
-        })
-        .catch((error) => {
-          if (error.response.status === 404) {
-            alert("존재하지 않는 사용자입니다.");
-            // localStorage.setItem("jwtToken", "asd");
-          }
-        });
+      if (loginType === 1) {
+        axios
+          .post("http://3.39.36.239:8080/api/auth/login", data)
+          .then((response) => {
+            RememberCookie();
+            const accessToken = response.data.accessToken;
+            sessionStorage.setItem("UserToken", accessToken);
+            sessionStorage.setItem("id", loginId);
+            cookies.set("refresh_token", response.data.refreshToken, {
+              path: "/",
+            });
+            navigate("/");
+          })
+          .catch((error) => {
+            if (error.response.status === 404) {
+              alert("존재하지 않는 사용자입니다.");
+            }
+          });
+      } else if (loginType === 2) {
+        axios
+          .post("http://3.39.36.239:8080/api/auth/login", data)
+          .then((response) => {
+            RememberCookie();
+            const accessToken = response.data.accessToken;
+            localStorage.setItem("UserToken", accessToken);
+            localStorage.setItem("id", loginId);
+            cookies.set("refresh_token", response.data.refreshToken, {
+              path: "/",
+            });
+            navigate("/");
+          })
+          .catch((error) => {
+            if (error.response.status === 404) {
+              alert("존재하지 않는 사용자입니다.");
+            }
+          });
+      }
     }
   }
 
@@ -41,14 +107,19 @@ const LoginPage = () => {
         <img
           alt="Flag 로고"
           className="Logo"
-          src="flag.JPG"
+          src="../images/logo-White.PNG"
           width="200"
           height="100"
+          style={{
+            marginBottom: 50,
+          }}
+          onClick={() => navigate("/")}
         />
         <RelativeArea>
           <WriteArea
             type="text"
             placeholder="아이디"
+            defaultValue={loginId}
             onChange={(e) => {
               setLoginId(e.target.value);
             }}
@@ -60,7 +131,7 @@ const LoginPage = () => {
         </RelativeArea>
         <RelativeArea>
           <WriteArea
-            type="text"
+            type="password"
             placeholder="비밀번호"
             onChange={(e) => {
               setPassword(e.target.value);
@@ -73,11 +144,11 @@ const LoginPage = () => {
         </RelativeArea>
         <SortArea>
           <CheckArea>
-            <CheckButton />
+            <AutoLoginButton getValue={getValue} />
             <CheckLabel>로그인 상태 유지</CheckLabel>
           </CheckArea>
           <CheckArea>
-            <CheckButton />
+            <IdRememberButton getValue={RememberState} />
             <CheckLabel>아이디 기억하기</CheckLabel>
           </CheckArea>
         </SortArea>
@@ -89,10 +160,10 @@ const LoginPage = () => {
           로그인
         </LoginButton>
         <SortArea>
-          <LinkText href="#" variant="body2">
+          <LinkText href="/findid" variant="body2">
             아이디 찾기
           </LinkText>
-          <LinkText href="#" variant="body2">
+          <LinkText href="/findpw" variant="body2">
             비밀번호 찾기
           </LinkText>
           <LinkText href="/signup" variant="body2">

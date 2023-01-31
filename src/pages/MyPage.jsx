@@ -1,9 +1,71 @@
+import {useState, useEffect} from "react";
+import {useNavigate, useLocation} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
-import Grass from "../components/Grass";
+import axios from "axios";
+import Cookies from "universal-cookie";
 
-const MyPage = () => {
+//1. member api가 이상함. 수정되면 작업 진행.
+//2. profile url 받아와서 img 바꾸는거는 나중에 해야 할 듯
+//3. profile update 함수는 나중에 모달창 만들어지면 그때 수정, 지금은 임의로 값을 보냈다는 가정
+
+const MyPage = ({setHeader}) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const cookies = new Cookies();
+  const [loginId, setLoginId] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [introduceMessage, setIntroduceMessage] = useState("");
+
+  async function LoginIdSetting() {
+    setLoginId(sessionStorage.getItem("id"));
+    setLoginId(localStorage.getItem("id"));
+  }
+
+  const SetMyData = () => {
+    axios
+      .get(`http://3.39.36.239:8080/api/members/${loginId}`)
+      .then((response) => {
+        setNickname(response.data.payload.avatarResponse.nickName);
+        setIntroduceMessage(response.data.payload.avatarResponse.bio);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        if (error.response.status === 404) {
+          navigate("/login");
+        }
+      });
+  };
+
+  const LogOut = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    cookies.remove("refresh_token");
+    cookies.remove("remember_id");
+    navigate("/");
+  };
+
+  useEffect(() => {
+    setHeader(true);
+  });
+
+  useEffect(() => {
+    async function DataSet() {
+      if (
+        localStorage.getItem("UserToken") ||
+        sessionStorage.getItem("UserToken")
+      ) {
+        console.log("정보 받아오기 시작");
+        await LoginIdSetting();
+        SetMyData();
+      } else {
+        navigate("/login");
+      }
+    }
+    DataSet();
+  });
+
   return (
     <PageArea>
       <LeftPage>
@@ -14,24 +76,17 @@ const MyPage = () => {
                 icon={faUser}
                 style={{width: 120, height: 120, marginBottom: 30}}
               />
-              <EditProfile>Edit Profile</EditProfile>
+              {/* <EditProfile onClick={() => navigate("/edit")}> */}
+              <EditProfile onClick={() => alert("구현중입니다.")}>
+                Edit Profile
+              </EditProfile>
             </RelativeArea>
+            <EditProfile onClick={() => LogOut()}>logout</EditProfile>
           </ProfileArea>
           <NickNameArea>
-            <NickName>문희조</NickName>
+            <NickName>{nickname}</NickName>
             <IntroduceArea>
-              <Introduce>
-                Hi
-                <br />
-                Korean Language Is Broken...
-              </Introduce>
-              <IntroduceTag>
-                <Tag>
-                  #Spring #Java #FullStack
-                  <br />
-                  #Be #응애
-                </Tag>
-              </IntroduceTag>
+              <Introduce>{introduceMessage}</Introduce>
             </IntroduceArea>
           </NickNameArea>
         </UserPage>
@@ -49,19 +104,14 @@ const MyPage = () => {
           </HistoryContent>
         </HistoryArea>
       </LeftPage>
-      <RightPage>
-        <GrassArea>
-          <GrassName>STUDY_WEB-BACKEND</GrassName>
-          <Grass />
-        </GrassArea>
-      </RightPage>
+      <RightPage></RightPage>
     </PageArea>
   );
 };
 
 const PageArea = styled.div`
   width: 100%;
-  height: 82.5vh;
+  height: 88vh;
   display: flex;
 `;
 
@@ -75,13 +125,14 @@ const LeftPage = styled.div`
 const RightPage = styled.div`
   width: 60%;
   height: 100%;
-  background-image: url(/home-book.JPG);
+  background-image: url(../images/home-book.JPG);
 `;
 
 const UserPage = styled.div`
   width: 100%;
   height: 40%;
   display: flex;
+  background-color: #2c2c2c;
 `;
 
 const RelativeArea = styled.div`
@@ -89,12 +140,12 @@ const RelativeArea = styled.div`
 `;
 
 const ProfileArea = styled.div`
-  width: 45%;
+  width: 35%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-right: 40px;
+  margin-right: 15%;
 `;
 
 const EditProfile = styled.button`
@@ -107,6 +158,7 @@ const EditProfile = styled.button`
   left: 70px;
   top: 100px;
   outline: none;
+  border: 0px;
   border-radius: 28px;
   :hover {
     background-color: #4d4d4d;
@@ -115,7 +167,7 @@ const EditProfile = styled.button`
 
 const NickNameArea = styled.div`
   display: flex;
-  width: 55%;
+  width: 50%;
   height: 100%;
   flex-direction: column;
 `;
@@ -125,6 +177,7 @@ const NickName = styled.div`
   height: 40%;
   font-size: 40px;
   font-weight: bold;
+  flex-direction: row;
   align-items: flex-end;
 `;
 
@@ -140,19 +193,8 @@ const Introduce = styled.div`
   height: 40%;
 `;
 
-const IntroduceTag = styled.div`
-  display: flex;
-  font-size: 15px;
-  align-items: center;
-  height: 40%;
-`;
-
-const Tag = styled.p`
-  margin: 0px;
-`;
-
 const HistoryArea = styled.div`
-  background-color: rgba(0; 0; 0; 0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   width: 100%;
   height: 60%;
   display: flex;
@@ -176,21 +218,6 @@ const HistoryYearListItem = styled.li`
   margin-bottom: 3px;
   list-style-type: disc;
   margin-left: 20px;
-`;
-
-const GrassArea = styled.div`
-  padding-left: 80px;
-  height: 100%;
-  top: 700px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const GrassName = styled.h3`
-  color: white;
-  padding-top: 600px;
-  margin: 0px;
-  font-weight: bold;
 `;
 
 export default MyPage;

@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
 const SideBar = (props) => {
+  const handleBoardClick = (board) => {
+    props.setSelectBoard(board)
+  }
+  
   return (
     <SideArea
       style={{width: props.mainWidth, paddingTop: props.paddingTopMain}}
@@ -17,13 +21,13 @@ const SideBar = (props) => {
             backgroundColor: props.subColor,
             width: props.subWidth,
             borderRadius: props.borderRadius,
-            // paddingTop: props.paddingTop
+            paddingTop: props.paddingTop
           }}
         >
           <ContentsTitle>{props.title}</ContentsTitle>
           <ItemBox>
             {props.items.map((item) => (
-              <Item key={item}>{item}</Item>
+              <Item key={item.id} onClick={()=> handleBoardClick(item.engName)}>{item.krName}</Item>
             ))}
           </ItemBox>
         </SideBarContent>
@@ -35,17 +39,22 @@ const SideBar = (props) => {
 const SideArea = styled.div`
   box-sizing: border-box;
   height: 100%;
+  @media screen and (max-width: 1200px){
+    display: none;
+  }
 `;
-
+  
 const SideBarBox = styled.div`
   box-sizing: border-box;
 `;
 
 const SideBarContent = styled.div`
+  box-sizing: border-box;
   width: 92%;
 `;
 
 const ContentsTitle = styled.div`
+  box-sizing: border-box;
   font-size: 23px;
   font-weight: 700;
   padding: 3rem 0px 1rem 2.5rem;
@@ -53,15 +62,21 @@ const ContentsTitle = styled.div`
 `;
 
 const ItemBox = styled.ul`
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   padding: 1rem 0px 3rem 2.5rem;
 `;
 
 const Item = styled.li`
+  box-sizing: border-box;
   font-size: 0.8rem;
   font-weight: 700;
   padding: 0px 0px 1rem 0px;
+  cursor: pointer;
+  &:hover{
+    color: black;
+  }
 `;
 
 export default SideBar;

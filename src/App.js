@@ -1,19 +1,127 @@
-import { useState } from 'react';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import SignUp from "./pages/SignUp";
-import Home from "./pages/Home";
-import BulletinBoard from "./pages/BulletinBoard";
-import Header from "./components/Header";
-import WritePost from "./pages/WritePost";
-import MyPage from "./pages/MyPage";
-import WriteDetail from "./pages/DetailWritePage";
-import SearchPage from "./pages/SearchPage";
-import { createGlobalStyle } from "styled-components";
+import {useState, useEffect} from "react";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {
+  LoginPage,
+  SignUp,
+  Home,
+  BulletinBoard,
+  WritePost,
+  MyPage,
+  DetailWritePage,
+  SearchPage,
+  ChangePw,
+  EditUser,
+  Resume,
+  Activity,
+  EmailAuth,
+  FindId,
+  FindPw,
+} from "./pages";
+import {Header} from "./components";
+import {createGlobalStyle} from "styled-components";
 import reset from "styled-reset";
-import ChangePw from "./pages/ChangePw";
-import EditUser from "./pages/EditUser";
-import Resume from "./pages/Resume";
+import Cookies from "universal-cookie";
+import axios from "axios";
+
+const App = () => {
+  const [header, setHeader] = useState(true);
+  const [postId, setPostId] = useState("");
+  const cookies = new Cookies();
+  useEffect(() => {
+    const LocalState = async () => {
+      if (localStorage.getItem("UserToken")) {
+        if (cookies.get("refresh_token")) {
+          const accessToken = localStorage.getItem("UserToken");
+          const refreshToken = await cookies.get("refresh_token", {
+            path: "/",
+          });
+          const {data} = await axios.post(
+            "http://3.39.36.239:8080/api/auth/reissue",
+            {
+              accessToken,
+              refreshToken,
+            }
+          );
+          const {accessToken: newAccessToken, refreshToken: newRefreshToken} =
+            data;
+          localStorage.setItem("UserToken", newAccessToken);
+          cookies.remove("refresh_token", {
+            path: "/",
+          });
+          cookies.set("refresh_token", newRefreshToken, {
+            path: "/",
+          });
+        }
+      }
+    };
+    LocalState();
+    const SessionState = async () => {
+      if (sessionStorage.getItem("UserToken")) {
+        if (cookies.get("refresh_token")) {
+          const accessToken = sessionStorage.getItem("UserToken");
+          const refreshToken = await cookies.get("refresh_token", {
+            path: "/",
+          });
+          const {data} = await axios.post(
+            "http://3.39.36.239:8080/api/auth/reissue",
+            {
+              accessToken,
+              refreshToken,
+            }
+          );
+          const {accessToken: newAccessToken, refreshToken: newRefreshToken} =
+            data;
+          sessionStorage.setItem("UserToken", newAccessToken);
+          cookies.set("refresh_token", newRefreshToken, {
+            path: "/",
+          });
+        }
+      }
+    };
+    SessionState();
+  }, [cookies]);
+  return (
+    <BrowserRouter>
+      <GlobalStyle />
+      {header ? <Header /> : ""}
+      <Routes>
+        <Route path="/" element={<Home setHeader={setHeader} />}></Route>
+        <Route path="/login" element={<LoginPage setHeader={setHeader} />} />
+        <Route path="/signup" element={<SignUp setHeader={setHeader} />} />
+        <Route path="/my" element={<MyPage setHeader={setHeader} />} />
+        <Route
+          path="/board/writeDetail"
+          element={<DetailWritePage post={postId} setHeader={setHeader} />}
+        />
+        <Route
+          path="/board"
+          element={
+            <BulletinBoard
+              postId={postId}
+              setPostId={setPostId}
+              setHeader={setHeader}
+            />
+          }
+        />
+        <Route
+          path="/board/write"
+          element={<WritePost setHeader={setHeader} />}
+        />
+        <Route path="/search" element={<SearchPage setHeader={setHeader} />} />
+        <Route path="/changepw" element={<ChangePw setHeader={setHeader} />} />
+        <Route path="/edit" element={<EditUser setHeader={setHeader} />} />
+        <Route path="/resume" element={<Resume setHeader={setHeader} />} />
+        <Route path="/activity" element={<Activity setHeader={setHeader} />} />
+        <Route
+          path="/emailAuth"
+          element={<EmailAuth setHeader={setHeader} />}
+        />
+        <Route path="/findid" element={<FindId setHeader={setHeader} />} />
+        <Route path="/findpw" element={<FindPw setHeader={setHeader} />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -26,29 +134,5 @@ const GlobalStyle = createGlobalStyle`
     background-color: #2C2C2C;
   }
 `;
-
-const App = () => {
-  const [header, setHeader] = useState(true);
-  console.log(header);
-  return (
-      <BrowserRouter>
-        <GlobalStyle />
-        {header && <Header setHeader={setHeader}/>}
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/login" element={<LoginPage />}></Route>
-          <Route path="/signup" element={<SignUp />}></Route>
-          <Route path="/my" element={<MyPage />}></Route>
-          <Route path="/board/writeDetail" element={<WriteDetail />}></Route>
-          <Route path="/board" element={<BulletinBoard />}></Route>
-          <Route path="/board/write" element={<WritePost />}></Route>
-          <Route path="/search" element={<SearchPage />}></Route>
-          <Route path="/changepw" element={<ChangePw/>}></Route>
-          <Route path="/edit" element={<EditUser/>}></Route>
-          <Route path="/resume" element={<Resume/>}></Route>
-        </Routes>
-      </BrowserRouter>
-  );
-};
 
 export default App;

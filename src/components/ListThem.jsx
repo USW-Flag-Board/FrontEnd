@@ -1,12 +1,44 @@
+import { useEffect } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { increment } from "../features/toDos";
 
-const ListThem = (props) => {
+
+const ListThem = ({itemContents, themList, setPostId}) => {
+    const counter = useSelector(state => state.toDo.value);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const handleTitleClick = (num) => {
+        setPostId(num);
+        navigate("/board/writeDetail");
+    }
+    
     return(
-        <ListThemBox>
-            <ItemBox>
-                {props.themList.map((item) => <ListItem key={item}>{item}</ListItem>)}
-            </ItemBox>
-        </ListThemBox>
+        <>
+            {itemContents ?itemContents.map((item) => (
+                <ListThemBox key={item.id}>
+                    <ItemBox>
+                        <ListItem>{item.id}</ListItem>
+                        <ListItem style={{cursor: "pointer"}} onClick={()=>handleTitleClick(item.id)}>{item.title}</ListItem>
+                        <ListItem>{item.memberName}</ListItem>
+                        <ListItem>{item.createdAt.slice(0, 3).join('.')}</ListItem>
+                        <ListItem>{item.viewCount}</ListItem>
+                        <ListItem>{item.likeCount}</ListItem>
+                    </ItemBox>
+                </ListThemBox>
+            )) :  
+            <ListThemBox>
+                <ItemBox>
+                    <ListItem>{themList.id}</ListItem>
+                    <ListItem style={{cursor: "pointer"}}>{themList.title}</ListItem>
+                    <ListItem>{themList.memberName}</ListItem>
+                    <ListItem>{themList.createdAt}</ListItem>
+                    <ListItem>{themList.viewCount}</ListItem>
+                    <ListItem>{themList.likeCount}</ListItem>
+                </ItemBox>
+            </ListThemBox>}
+        </>
     )
 }
 
@@ -37,7 +69,7 @@ const ListItem = styled.div`
     justify-content: center;
     fontSize: 0.8rem;
     fontWeight: 600;
-    &:nth-of-type(1){width: 5%; height: 50%; background-color: white; border-radius: 15px; color: red; margin-left: 10px};
+    &:nth-of-type(1){width: 5%; height: 50%; background-color: white; border-radius: 15px; color: black; margin-left: 10px};
     &:nth-of-type(2){width: 31%};
     &:nth-of-type(6){padding-right: 24%};
 `;

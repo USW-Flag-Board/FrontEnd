@@ -1,34 +1,43 @@
+import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPen, faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 import {SideBar, Footer, ListThem, Pagination} from "../components/";
+import axios from "axios";
 
-const boardItem = ["자유게시판", "동아리 이모저모", "사전게시판", "정보게시판"];
-const barItem = ["제목", "작성자", "작성일", "조회수", "댓글"];
-const itemContents = [
-  "공지",
-  "자유게시판 공지입니다.",
-  "문희조",
-  "2022.08.03",
-  "1234",
-  "123",
+const boardItems = [
+  {id: 1, krName: "자유게시판", engName: "free_board"},
+  {id: 2, krName: "동아리 이모저모", engName: ""},
+  {id: 3, krName: "사전게시판", engName: ""},
+  {id: 4, krName: "정보게시판", engName: ""},
 ];
+const barItem = ["제목", "작성자", "작성일", "조회수", "좋아요"];
 const selectItems = ["전체기간", "게시물 + 작성자"];
 
-const BulletinBoard = () => {
+const BulletinBoard = ({postId, setPostId, setHeader}) => {
+  const [selectBoard, setSelectBoard] = useState("free_board");
+  const [boardData, setBoardData] = useState([]);
+  const [currentItems, setCurrentItems] = useState([]); // 페이지당 보여줄 데이터 배열
+
+  useEffect(() => {
+    axios
+      .get(`http://3.39.36.239:8080/api/boards?name=${selectBoard}`)
+      .then((response) => {
+        setBoardData(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [selectBoard]);
+
+  useEffect(() => {
+    setHeader(true);
+  });
+
   return (
     <>
       <BoardArea>
-        <TitleArea>
-          <TitleBox>자유게시판</TitleBox>
-          <WriteButton>
-            <Link to="/board/write" style={{textDecoration: "none"}}>
-              <FontAwesomeIcon icon={faPen} />
-              글쓰기
-            </Link>
-          </WriteButton>
-        </TitleArea>
         <ContentArea>
           <SideBar
             title="BOARD"
@@ -36,11 +45,22 @@ const BulletinBoard = () => {
             subColor="#3C3C3C"
             mainWidth="13%"
             subWidth="90%"
-            items={boardItem}
+            items={boardItems}
             paddingTop="0"
+            paddingTopMain="75px"
             borderRadius="0 15px 15px 0"
+            setSelectBoard={setSelectBoard}
           />
           <ListArea>
+            <TitleArea>
+              <TitleBox>자유게시판</TitleBox>
+              <WriteButton>
+                <Link to="/board/write" style={{textDecoration: "none"}}>
+                  <FontAwesomeIcon icon={faPen} />
+                  글쓰기
+                </Link>
+              </WriteButton>
+            </TitleArea>
             <ListBar>
               <BarItemBox>
                 {barItem.map((item) => (
@@ -49,10 +69,18 @@ const BulletinBoard = () => {
               </BarItemBox>
             </ListBar>
             <ListBox>
-              <ListThem themList={itemContents} />
+              <ListThem
+                itemContents={currentItems}
+                postId={postId}
+                setPostId={setPostId}
+              />
             </ListBox>
             <PaginationArea>
-              <Pagination />
+              <Pagination
+                itemsPerPage={8}
+                items={boardData}
+                setCurrentItems={setCurrentItems}
+              />
             </PaginationArea>
             <FilterAndSearchForm>
               {selectItems.map((item) => (
@@ -77,6 +105,7 @@ const BulletinBoard = () => {
 };
 
 const BoardArea = styled.div`
+  width: 100vw;
   height: 88vh;
 `;
 
@@ -85,7 +114,7 @@ const TitleArea = styled.div`
   width: 100%;
   height: 10%;
   display: flex;
-  padding: 0px 2rem 1rem 2rem;
+  padding: 0 0 1rem 0;
   align-items: flex-end;
   justify-content: space-between;
 `;
@@ -96,7 +125,6 @@ const TitleBox = styled.h2`
   font-size: 35px;
   display: flex;
   align-items: flex-end;
-  padding-left: 14%;
 `;
 
 const ContentArea = styled.div`
@@ -181,12 +209,16 @@ const FilterSelect = styled.select`
 
 const WriteButton = styled.button`
   background-color: white;
+  width: 6rem;
   height: 2rem;
   color: black;
-  font-weight: 700px;
+  font-size: 1rem;
+  font-weight: 700;
   &:hover {
     backgroundcolor: white;
   }
+  border: none;
+  border-radius: 5px;
 `;
 
 const SearchArea = styled.div`

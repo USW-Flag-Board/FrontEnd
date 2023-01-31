@@ -1,19 +1,92 @@
+import {useEffect, useState} from "react";
 import styled from "styled-components";
+import axios from "axios";
 import ListThem from "../components/ListThem";
 import SideBar from "../components/SideBar";
 import LikeButton from "../components/LikeButton";
+import Reply from "../components/Reply";
 
-const itemContents = [
-  "공지",
-  "자유게시판 공지입니다.",
-  "문희조",
-  "2022.08.03",
-  "1234",
-  "123",
+const boardItems = [
+  {id: 1, krName: "스터디", engName: ""},
+  {id: 2, krName: "프로젝트", engName: ""},
 ];
-const boardItem = ["스터디", "프로젝트"];
 
-const DetailWritePage = () => {
+const DetailWritePage = ({post, setHeader}) => {
+  const [input, setInput] = useState("");
+  const [comments, setComments] = useState([]);
+  const [detailData, setDetailData] = useState([]);
+  const onChange = (e) => {
+    setInput(e.target.value);
+  };
+  useEffect(() => {
+    axios
+      .get(`http://3.39.36.239:8080/api/posts?postId=${post}&viaBoard=true`)
+      .then((response) => {
+        setDetailData(response.data.payload);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [post]);
+
+  const addComment = () => {
+    // 코멘트 추가
+    setComments(
+      comments.concat({
+        id: comments.length + 1,
+        content: input,
+      })
+    );
+    setInput("");
+  };
+
+  const addReply = () => {
+    setComments(
+      comments.concat({
+        ids: comments.length + 1,
+        content: input,
+      })
+    );
+  };
+
+  const removeComment = (id) => {
+    // 코멘트 삭제
+    return setComments(comments.filter((comment) => comment.id !== id));
+  };
+
+  const removeReply = (ids) => {
+    // 코멘트 삭제
+    return setComments(comments.filter((comment) => comment.ids !== ids));
+  };
+
+  const abcde = () => {
+    return (
+      <>
+        <RelativeArea>
+          <ReplyButton
+            placeholder="댓글을 입력하세요."
+            value={input}
+            onChange={onChange}
+          ></ReplyButton>
+          <AddIcon>
+            <Button
+              onClick={() => {
+                addReply(input);
+                setInput("");
+              }}
+            >
+              등록
+            </Button>
+          </AddIcon>
+        </RelativeArea>
+      </>
+    );
+  };
+
+  useEffect(() => {
+    setHeader(true);
+  });
+
   return (
     <BoardArea>
       <TitleArea>
@@ -26,45 +99,66 @@ const DetailWritePage = () => {
           subColor="#3C3C3C"
           mainWidth="13%"
           subWidth="90%"
-          items={boardItem}
+          items={boardItems}
           paddingTop="0"
           borderRadius="0 15px 15px 0"
         />
         <PostArea>
           <PostBox>
-            <ListThem themList={itemContents} />
+            <ListThem themList={detailData} />
             <PostContentBox>
               <PostContentSort>
                 <PostHeader style={{}}>
                   <PostHeaderLeftArea>
-                    <PostAuthor>글쓴이 {itemContents[2]}</PostAuthor>
-                    <PostTime>{itemContents[3]} 22:07</PostTime>
+                    <PostAuthor>글쓴이 {detailData.memberName}</PostAuthor>
+                    <PostTime>{detailData.createdAt}</PostTime>
                   </PostHeaderLeftArea>
                   <PostHeaderRightArea>
                     <PostModify>수정하기</PostModify>
                     <PostDelete>삭제하기</PostDelete>
                   </PostHeaderRightArea>
                 </PostHeader>
-                <PostContentTitle>{itemContents[1]}</PostContentTitle>
-                <PostContent>
-                  내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
-                </PostContent>
-                <PostViews>view {itemContents[4]}</PostViews>
+                <PostContentTitle>{detailData.title}</PostContentTitle>
+                <PostContent>{detailData.content}</PostContent>
+                <PostViews>view {detailData.viewCount}</PostViews>
                 <PostLike>
                   <LikeButton />
-                  {itemContents[5]}
+                  {detailData.likeCount}
                 </PostLike>
               </PostContentSort>
             </PostContentBox>
             <RelativeArea>
               <ReplyButton
-                type="text"
                 placeholder="댓글을 입력하세요."
+                value={input}
+                onChange={onChange}
               ></ReplyButton>
-              <AddIcon>dd</AddIcon>
+              <AddIcon>
+                <Button
+                  onClick={() => {
+                    addComment(input);
+                    setInput("");
+                  }}
+                >
+                  등록
+                </Button>
+              </AddIcon>
             </RelativeArea>
             <ReplyArea>
-              <ReplyContent>여기에 댓글 컴포넌트 넣을 예정</ReplyContent>
+              <ReplyContent>
+                {comments.map((comment, index) => (
+                  <Reply
+                    key={`${comment}_${index}`}
+                    name="이수빈"
+                    delete={
+                      <Deletebutton onClick={() => removeComment(comment.id)}>
+                        삭제하기
+                      </Deletebutton>
+                    }
+                    Comment={comment.content}
+                  />
+                ))}
+              </ReplyContent>
             </ReplyArea>
           </PostBox>
         </PostArea>
@@ -218,6 +312,21 @@ const ReplyContent = styled.div`
   margin-bottom: 20px;
   margin-left: 60px;
   margin-right: 60px;
+`;
+
+//댓글 답글 입력 버튼
+const Button = styled.button`
+  color: white;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+`;
+const Deletebutton = styled.button`
+  color: white;
+  background-color: transparent;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
 `;
 
 export default DetailWritePage;
