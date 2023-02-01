@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import  postsActions  from '../redux/thunkActions/postsActions';
+import postsActions  from '../redux/thunkActions/postsActions';
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { SideBar, Footer, ListThem, Pagination } from "../components/";
-import axios from 'axios';
 
 const boardItems = [
   { 
@@ -33,7 +32,7 @@ const boardItems = [
 const barItem = ["제목", "작성자", "작성일", "조회수", "좋아요"];
 const selectItems = ["전체기간", "게시물 + 작성자"];
 
-const BulletinBoard = ({postId, setPostId}) => {
+const BulletinBoard = () => {
   // const [selectBoard, setSelectBoard] = useState("free_board");
   const [currentItems, setCurrentItems] = useState([]); // 페이지당 보여줄 데이터 배열
   const posts = useSelector((state) => state.toDo);
@@ -79,8 +78,6 @@ const BulletinBoard = ({postId, setPostId}) => {
             <ListBox>
               <ListThem 
                 itemContents={currentItems}
-                postId={postId}
-                setPostId={setPostId}
               />
             </ListBox>
             <PaginationArea>

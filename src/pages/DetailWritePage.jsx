@@ -1,11 +1,8 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
+import postsActions  from '../redux/thunkActions/postsActions';
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import ListThem from "../components/ListThem";
-import SideBar from "../components/SideBar";
-import LikeButton from "../components/LikeButton";
-import Reply from "../components/Reply";
-import getPostsActions from "../redux/thunkActions/getPostsActions";
+import { ListThem, SideBar, LikeButton, Reply } from "../components";
 
 const boardItems = [
   { 
@@ -20,18 +17,18 @@ const boardItems = [
   }, 
 ];
 
-const DetailWritePage = ({ post }) => {
+const DetailWritePage = () => {
   const [input, setInput] = useState('');
   const [comments, setComments] = useState([]);
-  // const [detailData, setDetailData] = useState([]);
-  const getPost = useSelector((state) => state.toDo);
+  const postId = useSelector((state) => state.toDo.postId)
+  const getPost = useSelector((state) => state.toDo.posts[postId-1]);
   const dispatch = useDispatch();
   const onChange = (e) => {
     setInput(e.target.value);
   };
   
   useEffect(()=>{
-    dispatch(getPostsActions.getListAPI())
+    dispatch(postsActions.getPostAPI());
   },[dispatch])
 
   const addComment = () => { // 코멘트 추가
@@ -99,7 +96,7 @@ const DetailWritePage = ({ post }) => {
         />
         <PostArea>
           <PostBox>
-            <ListThem themList={getPost} />
+            <ListThem themList={getPost}/>
             <PostContentBox>
               <PostContentSort>
                 <PostHeader style={{}}>

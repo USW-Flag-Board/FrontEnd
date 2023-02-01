@@ -55,7 +55,7 @@ const WritePost = () => {
   }
 
   const handleSubmit = () => {
-      axios.post("http://3.39.36.239:8080/api/posts", data)
+      axios.post("http://3.39.36.239:80/api/posts", data)
           // {
           //   data: data,
           //   headers: {

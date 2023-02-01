@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     posts: [],
-    gets: [],
+    postId: 0,
 };
 
 const toDos = createSlice({
@@ -12,8 +12,8 @@ const toDos = createSlice({
         setPost: (state, action) => {
             state.posts = action.payload;
         },
-        getPost: (state, action) => {
-            state.gets = action.payload;
+        setId: (state, action) => {
+            state.postId = action.payload;
         },
     },
 });

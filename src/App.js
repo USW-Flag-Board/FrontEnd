@@ -10,7 +10,6 @@ import axios from "axios";
 
 const App = () => {
   const [header, setHeader] = useState(true);
-  const [postId, setPostId] = useState("");
   const cookies = new Cookies();
   useEffect(() => {
     const LocalState = async () => {
@@ -63,8 +62,8 @@ const App = () => {
         <Route path="/login" element={<LoginPage setHeader={setHeader} />}/>
         <Route path="/signup" element={<SignUp setHeader={setHeader} />}/>
         <Route path="/my" element={<MyPage />}/>
-        <Route path="/board/writeDetail" element={<DetailWritePage post={postId}/>}/>
-        <Route path="/board" element={<BulletinBoard postId={postId} setPostId={setPostId}/>}/>
+        <Route path="/board/writeDetail" element={<DetailWritePage />}/>
+        <Route path="/board" element={<BulletinBoard />}/>
         <Route path="/board/write" element={<WritePost />}/>
         <Route path="/search" element={<SearchPage />}/>
         <Route path="/changepw" element={<ChangePw />}/>

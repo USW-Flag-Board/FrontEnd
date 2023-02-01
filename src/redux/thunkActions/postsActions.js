@@ -8,6 +8,10 @@ const getPostAPI = () => {
     };
 };
 
-const postsActions = {getPostAPI};
+
+
+const postsActions = {
+    getPostAPI,
+};
 
 export default postsActions;

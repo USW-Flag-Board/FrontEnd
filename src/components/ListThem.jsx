@@ -1,15 +1,13 @@
-import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
-import { increment, postActions } from "../redux/slice/toDos";
+import { postActions } from "../redux/slice/toDos";
 
-
-const ListThem = ({itemContents, themList, setPostId}) => {
-    const dispatch = useDispatch();
+const ListThem = ({itemContents, themList}) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const handleTitleClick = (num) => {
-        setPostId(num);
+        dispatch(postActions.setId(num));
         navigate("/board/writeDetail");
     }
     
@@ -32,7 +30,7 @@ const ListThem = ({itemContents, themList, setPostId}) => {
                     <ListItem>{themList.id}</ListItem>
                     <ListItem style={{cursor: "pointer"}}>{themList.title}</ListItem>
                     <ListItem>{themList.memberName}</ListItem>
-                    <ListItem>{themList.createdAt}</ListItem>
+                    <ListItem>{themList.createdAt.slice(0, 3).join('.')}</ListItem>
                     <ListItem>{themList.viewCount}</ListItem>
                     <ListItem>{themList.likeCount}</ListItem>
                 </ItemBox>
