@@ -3,6 +3,7 @@ import {useNavigate, useLocation} from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import Cookies from "universal-cookie";
+import {PropaneSharp} from "@mui/icons-material";
 
 const profileUpdateExample = [
   "백엔드 개발자 문희조입니다.",
@@ -14,31 +15,17 @@ const profileUpdateExample = [
 const menuArray = [{name: "아바타"}, {name: "개인정보"}];
 
 const EditUser = ({setHeader}) => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const cookies = new Cookies();
-  const [password, SetPassword] = useState("");
-  const [bio, setBio] = useState(profileUpdateExample[0]);
-  const [major, setMajor] = useState(profileUpdateExample[1]);
-  const [phoneNumber, setPhoneNumber] = useState(profileUpdateExample[2]);
-  const [studentId, setStudentId] = useState(profileUpdateExample[3]);
+  const navigate = useNavigate();
   const [currentTab, clickTab] = useState(0);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [major, setMajor] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [studentId, setStudentId] = useState("");
 
-  const ProfileUpdate = () => {
-    const data = {
-      bio,
-      major,
-      phoneNumber,
-      studentId,
-    };
-    axios
-      .patch("http://3.39.36.239:8080/api/member/profile", data)
-      .then((response) => {
-        alert("값 변경 완료");
-      })
-      .catch((error) => {
-        alert("변경이 불가능합니다.");
-      });
+  const indexSetting = (index) => {
+    clickTab(index);
   };
 
   const DeleteUser = () => {
@@ -64,10 +51,6 @@ const EditUser = ({setHeader}) => {
           alert("존재하지 않는 사용자입니다?");
         }
       });
-  };
-
-  const indexSetting = (index) => {
-    clickTab(index);
   };
 
   useEffect(() => {
@@ -98,62 +81,163 @@ const EditUser = ({setHeader}) => {
                       index === currentTab ? "submenu focused" : "submenu"
                     }
                     onClick={() => indexSetting(index)}
+                    key={el.name}
                   >
                     {el.name}
                   </li>
                 ))}
               </TabMenu>
             </div>
-            <ProfileTitle>
-              프로필 정보 수정
-              <SaveButton onClick={() => ProfileUpdate()}>저장하기</SaveButton>
-              <SaveButton
-                onClick={() =>
-                  navigate("/ChangePw", {
-                    state: {
-                      pw: password,
-                    },
-                  })
-                }
-              >
-                비밀번호 변경
-              </SaveButton>
-            </ProfileTitle>
-            <SideBox>
-              <TitleBox>닉네임</TitleBox>
-              <NameInput placeholder="김철수" />
-            </SideBox>
-            <SideBox>
-              <TitleBox>한줄 소개</TitleBox>
-              <OnelineInput placeholder={profileUpdateExample[0]} />
-            </SideBox>
-            <InfoTitle>상세 정보 수정</InfoTitle>
-            <SideBox>
-              <TitleBox>아이디 </TitleBox>
-              <InputFiled placeholder="asdasdasd" />
-            </SideBox>
-            <SideBox>
-              <TitleBox>이메일 </TitleBox>
-              <InputFiled placeholder="example@suwon.ac.kr" />
-            </SideBox>
-            <SideBox>
-              <TitleBox>전화번호 </TitleBox>
-              <InputFiled placeholder="010-xxxx-xxxx" />
-            </SideBox>
-            <SideBox>
-              <TitleBox>전공 </TitleBox>
-              <InputFiled placeholder="컴퓨터SW" />
-            </SideBox>
-            <SideBox>
-              <TitleBox>학번 </TitleBox>
-              <InputFiled placeholder="11111111" />
-            </SideBox>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                border: "1px solid",
+                borderColor: "#6c6c6c",
+                borderRadius: "0px 28px 28px 28px",
+                padding: "calc(10% + 20px) 0px 20px 20px",
+                width: "90%",
+              }}
+            >
+              {currentTab === 0 && (
+                <AvatarEdit
+                  setName={setName}
+                  setEmail={setEmail}
+                  setMajor={setMajor}
+                  setPhoneNumber={setPhoneNumber}
+                  setStudentId={setStudentId}
+                />
+              )}
+              {currentTab === 1 && (
+                <PrivateEdit
+                  name={name}
+                  email={email}
+                  major={major}
+                  phoneNumber={phoneNumber}
+                  studentId={studentId}
+                />
+              )}
+            </div>
             <DeleteBox>
               <DeleteButton onClick={() => DeleteUser()}>회원탈퇴</DeleteButton>
             </DeleteBox>
           </MainContent>
         </Editbox>
       </Mainbox>
+    </>
+  );
+};
+
+const AvatarEdit = (props) => {
+  const navigate = useNavigate();
+  const [bio, setBio] = useState("");
+  const [nickName, setNickName] = useState("");
+  const [profileImg, setProfileImg] = useState("");
+  const [editable, setEditable] = useState(false);
+
+  const ProfileUpdate = () => {
+    axios
+      .put("http://3.39.36.239:8080/api/members/avatar", {
+        bio: bio,
+        nickName: nickName,
+        profileImg: profileImg,
+      })
+      .then(() => {
+        alert("값 변경 완료");
+      })
+      .catch(() => {
+        alert("변경이 불가능합니다.");
+      });
+  };
+
+  useEffect(() => {
+    axios
+      .get("http://3.39.36.239:8080/api/members")
+      .then((response) => {
+        setNickName(response.data.payload.nickName);
+        setBio(response.data.payload.bio);
+        props.setName(response.data.payload.name);
+        props.setEmail(response.data.payload.email);
+        props.setMajor(response.data.payload.major);
+        props.setPhoneNumber(response.data.payload.phoneNumber);
+        props.setStudentId(response.data.payload.studentId);
+      })
+      .catch((error) => {
+        alert("데이터를 불러오는데 실패했습니다.");
+      });
+  }, []);
+
+  return (
+    <>
+      <ProfileTitle>
+        프로필 정보 수정
+        {editable ? (
+          <SaveButton
+            onClick={() => {
+              ProfileUpdate();
+              setEditable(false);
+            }}
+          >
+            저장하기
+          </SaveButton>
+        ) : (
+          <SaveButton onClick={() => setEditable(true)}>수정하기</SaveButton>
+        )}
+        <SaveButton onClick={() => navigate("/ChangePw")}>
+          비밀번호 변경
+        </SaveButton>
+      </ProfileTitle>
+      <SideBox>
+        <TitleBox>닉네임</TitleBox>
+        <NameInput
+          onChange={(e) => setNickName(e.target.value)}
+          placeholder={nickName}
+          disabled={!editable}
+        />
+      </SideBox>
+      <SideBox>
+        <TitleBox>한줄 소개</TitleBox>
+        <OnelineInput
+          onChange={(e) => setBio(e.target.value)}
+          placeholder={bio}
+          disabled={!editable}
+        />
+      </SideBox>
+    </>
+  );
+};
+
+const PrivateEdit = (props) => {
+  const navigate = useNavigate();
+
+  return (
+    <>
+      <ProfileTitle>개인정보</ProfileTitle>
+      <SideBox>
+        <TitleBox>이름 </TitleBox>
+        <InputFiled placeholder={props.name} />
+      </SideBox>
+      <SideBox>
+        <TitleBox>이메일 </TitleBox>
+        <InputFiled placeholder={props.email} />
+      </SideBox>
+      <SideBox>
+        <TitleBox>전공 </TitleBox>
+        <InputFiled placeholder={props.major} />
+      </SideBox>
+      <SideBox>
+        <TitleBox>전화번호 </TitleBox>
+        <InputFiled
+          placeholder={props.phoneNumber.replace(
+            /^(\d{2,3})(\d{3,4})(\d{4})$/,
+            `$1-$2-$3`
+          )}
+        />
+      </SideBox>
+      <SideBox>
+        <TitleBox>학번 </TitleBox>
+        <InputFiled placeholder={props.studentId} />
+      </SideBox>
     </>
   );
 };
@@ -166,7 +250,6 @@ const TabMenu = styled.ul`
   flex-direction: row;
   align-items: center;
   list-style: none;
-  margin-bottom: 10px;
   margin-top: 10px;
   border-radius: 10px 10px 0px 0px;
 
@@ -206,7 +289,7 @@ const Editbox = styled.div`
 const MainContent = styled.div`
   display: flex;
   width: 80%;
-  height: 80%;
+  height: auto;
   flex-direction: column;
   margin-left: 2vw;
   margin-bottom: 3vw;
@@ -369,21 +452,12 @@ const ProfileTitle = styled.div`
   margin-bottom: 2vh;
 `;
 
-const InfoTitle = styled.div`
-  display: flex;
-  margin-bottom: 2vh;
-  align-items: center;
-  font-size: 1.5rem;
-  margin-top: 5vh;
-  font-weight: 800px;
-`;
-
 const DeleteBox = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
-  justify-content: center;
+  height: 90%;
+  justify-content: flex-end;
   align-items: flex-end;
   margin-bottom: 2vh;
 `;

@@ -68,7 +68,10 @@ const FindIdPage = ({setId, setSuccessState}) => {
       .catch((error) => {
         if (error.response.status === 400) {
           alert("이메일 형식이 아닙니다.");
-        } else if (error.response.status === 404) {
+        } else if (
+          (error.response.status === 404) |
+          (error.response.status === 409)
+        ) {
           alert("존재하지 않는 사용자입니다.");
         } else if (error.response.status === 422) {
           alert("수원대학교 이메일 주소가 아닙니다.");
