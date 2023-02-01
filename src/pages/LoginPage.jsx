@@ -63,7 +63,7 @@ const LoginPage = ({setHeader}) => {
     } else {
       if (loginType === 1) {
         axios
-          .post("http://3.39.36.239:8080/api/auth/login", data)
+          .post("http://3.39.36.239:80/api/auth/login", data)
           .then((response) => {
             RememberCookie();
             const accessToken = response.data.accessToken;
@@ -81,7 +81,7 @@ const LoginPage = ({setHeader}) => {
           });
       } else if (loginType === 2) {
         axios
-          .post("http://3.39.36.239:8080/api/auth/login", data)
+          .post("http://3.39.36.239:80/api/auth/login", data)
           .then((response) => {
             RememberCookie();
             const accessToken = response.data.accessToken;
