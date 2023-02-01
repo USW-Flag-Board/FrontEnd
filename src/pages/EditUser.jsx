@@ -11,6 +11,8 @@ const profileUpdateExample = [
   "19017041",
 ];
 
+const menuArray = [{name: "아바타"}, {name: "개인정보"}];
+
 const EditUser = ({setHeader}) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,6 +22,7 @@ const EditUser = ({setHeader}) => {
   const [major, setMajor] = useState(profileUpdateExample[1]);
   const [phoneNumber, setPhoneNumber] = useState(profileUpdateExample[2]);
   const [studentId, setStudentId] = useState(profileUpdateExample[3]);
+  const [currentTab, clickTab] = useState(0);
 
   const ProfileUpdate = () => {
     const data = {
@@ -40,9 +43,6 @@ const EditUser = ({setHeader}) => {
 
   const DeleteUser = () => {
     //나중에 여기에 모달창 추가해서 삭제 디자인에 맞게 적용 예정
-    const passwordPost = {
-      password,
-    };
     axios
       .delete("http://3.39.36.239:8080/api/members", {
         data: {
@@ -66,9 +66,13 @@ const EditUser = ({setHeader}) => {
       });
   };
 
+  const indexSetting = (index) => {
+    clickTab(index);
+  };
+
   useEffect(() => {
     setHeader(true);
-  });
+  }, []);
 
   return (
     <>
@@ -86,6 +90,20 @@ const EditUser = ({setHeader}) => {
             </Box>
           </ImgBox>
           <MainContent>
+            <div style={{display: "flex"}}>
+              <TabMenu>
+                {menuArray.map((el, index) => (
+                  <li
+                    className={
+                      index === currentTab ? "submenu focused" : "submenu"
+                    }
+                    onClick={() => indexSetting(index)}
+                  >
+                    {el.name}
+                  </li>
+                ))}
+              </TabMenu>
+            </div>
             <ProfileTitle>
               프로필 정보 수정
               <SaveButton onClick={() => ProfileUpdate()}>저장하기</SaveButton>
@@ -139,6 +157,32 @@ const EditUser = ({setHeader}) => {
     </>
   );
 };
+
+const TabMenu = styled.ul`
+  background: #403e3e;
+  color: #a3a2a2;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  list-style: none;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  border-radius: 10px 10px 0px 0px;
+
+  .submenu {
+    display: flex;
+    padding: 10px;
+    font-size: 15px;
+    transition: 0.5s;
+    border-radius: 10px 10px 0px 0px;
+  }
+
+  .focused {
+    background: #6c6c6c;
+    color: white;
+  }
+`;
 
 const Mainbox = styled.div`
   display: flex;

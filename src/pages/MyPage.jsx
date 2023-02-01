@@ -19,23 +19,28 @@ const MyPage = ({setHeader}) => {
   const [introduceMessage, setIntroduceMessage] = useState("");
 
   async function LoginIdSetting() {
-    setLoginId(sessionStorage.getItem("id"));
-    setLoginId(localStorage.getItem("id"));
+    if (sessionStorage.getItem("id")) {
+      setLoginId(sessionStorage.getItem("id"));
+    } else if (localStorage.getItem("id")) {
+      setLoginId(localStorage.getItem("id"));
+    }
   }
 
-  const SetMyData = () => {
-    axios
-      .get(`http://3.39.36.239:8080/api/members/${loginId}`)
-      .then((response) => {
+  const SetMyData = async () => {
+    if (loginId !== "") {
+      try {
+        const response = await axios.get(
+          `http://3.39.36.239:8080/api/members/${loginId}`
+        );
         setNickname(response.data.payload.avatarResponse.nickName);
         setIntroduceMessage(response.data.payload.avatarResponse.bio);
         console.log(response.data);
-      })
-      .catch((error) => {
+      } catch (error) {
         if (error.response.status === 404) {
           navigate("/login");
         }
-      });
+      }
+    }
   };
 
   const LogOut = () => {
@@ -47,24 +52,20 @@ const MyPage = ({setHeader}) => {
   };
 
   useEffect(() => {
-    setHeader(true);
-  });
-
-  useEffect(() => {
     async function DataSet() {
+      setHeader(true);
       if (
         localStorage.getItem("UserToken") ||
         sessionStorage.getItem("UserToken")
       ) {
-        console.log("정보 받아오기 시작");
         await LoginIdSetting();
-        SetMyData();
+        await SetMyData();
       } else {
         navigate("/login");
       }
     }
     DataSet();
-  });
+  }, [loginId]);
 
   return (
     <PageArea>
@@ -76,8 +77,7 @@ const MyPage = ({setHeader}) => {
                 icon={faUser}
                 style={{width: 120, height: 120, marginBottom: 30}}
               />
-              {/* <EditProfile onClick={() => navigate("/edit")}> */}
-              <EditProfile onClick={() => alert("구현중입니다.")}>
+              <EditProfile onClick={() => navigate("/edit")}>
                 Edit Profile
               </EditProfile>
             </RelativeArea>
