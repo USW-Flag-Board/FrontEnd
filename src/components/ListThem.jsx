@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { increment } from "../features/toDos";
+import { increment, postActions } from "../redux/slice/toDos";
 
 
 const ListThem = ({itemContents, themList, setPostId}) => {
-    const counter = useSelector(state => state.toDo.value);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const handleTitleClick = (num) => {
@@ -16,18 +15,28 @@ const ListThem = ({itemContents, themList, setPostId}) => {
     
     return(
         <>
-            {itemContents.map((item) => (
+            {itemContents ? itemContents.map((item) => (
                 <ListThemBox key={item.id}>
                     <ItemBox>
                         <ListItem>{item.id}</ListItem>
-                        {itemContents ? <ListItem style={{cursor: "pointer"}} onClick={()=>handleTitleClick(item.id)}>{item.title}</ListItem> : <ListItem style={{cursor: "pointer"}}>{item.title}</ListItem>}
+                        <ListItem style={{cursor: "pointer"}} onClick={()=>handleTitleClick(item.id)}>{item.title}</ListItem>
                         <ListItem>{item.memberName}</ListItem>
                         <ListItem>{item.createdAt.slice(0, 3).join('.')}</ListItem>
                         <ListItem>{item.viewCount}</ListItem>
                         <ListItem>{item.likeCount}</ListItem>
                     </ItemBox>
                 </ListThemBox>
-            ))}  
+            )) :  
+            <ListThemBox>
+                <ItemBox>
+                    <ListItem>{themList.id}</ListItem>
+                    <ListItem style={{cursor: "pointer"}}>{themList.title}</ListItem>
+                    <ListItem>{themList.memberName}</ListItem>
+                    <ListItem>{themList.createdAt}</ListItem>
+                    <ListItem>{themList.viewCount}</ListItem>
+                    <ListItem>{themList.likeCount}</ListItem>
+                </ItemBox>
+            </ListThemBox>}
         </>
     )
 }

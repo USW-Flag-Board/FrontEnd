@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { add } from "../features/toDos";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faFile } from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
@@ -34,7 +33,7 @@ const WritePost = () => {
   //   image_file: "",
   //   priview_URL: "",
   // });
-  const dispatch = useDispatch();
+
   const [title, setTitle] = useState(""); // 글 제목
   const [content, setContent] = useState(""); // 글 내용
   const [board, setBoard] = useState(""); // 게시판 종류

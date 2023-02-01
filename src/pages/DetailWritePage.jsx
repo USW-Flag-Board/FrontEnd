@@ -1,17 +1,20 @@
 import {useEffect, useState} from "react";
 import styled from "styled-components";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import ListThem from "../components/ListThem";
 import SideBar from "../components/SideBar";
 import LikeButton from "../components/LikeButton";
 import Reply from "../components/Reply";
+import getPostsActions from "../redux/thunkActions/getPostsActions";
 
 const boardItems = [
-  { id: 1,
+  { 
+    id: 1,
     krName: "스터디",
     engName: ""
   }, 
-  { id: 2,
+  { 
+    id: 2,
     krName: "프로젝트",
     engName: ""
   }, 
@@ -20,19 +23,16 @@ const boardItems = [
 const DetailWritePage = ({ post }) => {
   const [input, setInput] = useState('');
   const [comments, setComments] = useState([]);
-  const [detailData, setDetailData] = useState([]);
+  // const [detailData, setDetailData] = useState([]);
+  const getPost = useSelector((state) => state.toDo);
+  const dispatch = useDispatch();
   const onChange = (e) => {
     setInput(e.target.value);
   };
+  
   useEffect(()=>{
-    axios.get(`http://3.39.36.239:8080/api/posts?postId=${post}&viaBoard=true`)
-      .then((response)=>{
-        setDetailData(response.data.payload);
-      })
-      .catch((error)=>{
-        console.log(error);
-      })
-  },[post])
+    dispatch(getPostsActions.getListAPI())
+  },[dispatch])
 
   const addComment = () => { // 코멘트 추가
     setComments(
@@ -99,27 +99,27 @@ const DetailWritePage = ({ post }) => {
         />
         <PostArea>
           <PostBox>
-            <ListThem themList={detailData} />
+            <ListThem themList={getPost} />
             <PostContentBox>
               <PostContentSort>
                 <PostHeader style={{}}>
                   <PostHeaderLeftArea>
-                    <PostAuthor>글쓴이 {detailData.memberName}</PostAuthor>
-                    <PostTime>{detailData.createdAt}</PostTime>
+                    <PostAuthor>글쓴이 {getPost.memberName}</PostAuthor>
+                    <PostTime>{getPost.createdAt}</PostTime>
                   </PostHeaderLeftArea>
                   <PostHeaderRightArea>
                     <PostModify>수정하기</PostModify>
                     <PostDelete>삭제하기</PostDelete>
                   </PostHeaderRightArea>
                 </PostHeader>
-                <PostContentTitle>{detailData.title}</PostContentTitle>
+                <PostContentTitle>{getPost.title}</PostContentTitle>
                 <PostContent>
-                  {detailData.content}
+                  {getPost.content}
                 </PostContent>
-                <PostViews>view {detailData.viewCount}</PostViews>
+                <PostViews>view {getPost.viewCount}</PostViews>
                 <PostLike>
                   <LikeButton />
-                  {detailData.likeCount}
+                  {getPost.likeCount}
                 </PostLike>
               </PostContentSort>
             </PostContentBox>
