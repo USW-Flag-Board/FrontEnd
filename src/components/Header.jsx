@@ -32,19 +32,22 @@ const Header = () => {
   return (
     <HomeHeader>
       <LogoBox>
-        <img
-          className="logo"
+        <LogoImg
           src="../images/logo.JPG"
           alt="blog-logo"
           onClick={() => navigate("/")}
-          style={{width: "30%", height: "80%", cursor: "pointer"}}
         />
       </LogoBox>
       <MenuItemBox>
         <MenuItems>
           <MenuButton onClick={() => navigate("/resume")}>FLAG</MenuButton>
           {sections.map((item) => (
-            <MenuButton key={item} onClick={() => handleMenuClick(item)}>{item}</MenuButton>
+            <MenuButton 
+              key={item} 
+              onClick={() => handleMenuClick(item)}
+              >
+                {item}
+            </MenuButton>
           ))}
         </MenuItems>
       </MenuItemBox>
@@ -89,6 +92,12 @@ const LogoBox = styled.div`
   display: flex;
   align-items: center;
   padding-left: 15px;
+`;
+
+const LogoImg = styled.img`
+  width: 50%; 
+  height: 80%; 
+  cursor: pointer;
 `;
 
 const MenuItemBox = styled.div`

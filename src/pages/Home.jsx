@@ -76,13 +76,13 @@ const Home = () => {
                   </FeedItem>
                 </FeedBox>
               </FeedArea>
-              <FlagContents style={{marginBottom: "0.8rem", justifyContent: "flex-start"}}>
-                <FlagContent style={{width: "50%", margin: "0 0.5rem 0 0"}}>좋아요순</FlagContent>
-                <FlagContent style={{width: "50%"}}>최근순</FlagContent>
-              </FlagContents>
+              <FilteredPostTitle>
+                <PostTitle>좋아요순</PostTitle>
+                <PostTitle>최근순</PostTitle>
+              </FilteredPostTitle>
               <HeartdAndRecent>
-                <FeedContent/>
-                <FeedContent style={{width: "45%", height: "65%", margin: 0, borderRadius: "14px"}}/>
+                <HeartBox/>
+                <HeartBox/>
               </HeartdAndRecent>
             </MyActivityBox>
           </MyActivityArea>
@@ -235,16 +235,39 @@ const HeartdAndRecent = styled.div`
   display: flex;
   height: 30%;
   width: 100%;
-  &:first-child{
-    width: 45%;
-    height: 65%; 
-    margin: 0 0.5rem 0 0; 
-    border-radius: 14px;
-  }
 `;
 
 const HeartBox = styled.div`
+  width: 45%;
+  height: 65%; 
+  border: 1px solid #9a9a9a;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  padding: 0.1rem 0.7rem;
+  font-size: 12px;
+  margin: 0;
+  
+  &:nth-of-type(1){
+    margin: 0 0.5rem 0 0; 
+  }
+`;
 
-`
+const FilteredPostTitle = styled.ul`
+  box-sizing: border-box;
+  display: flex;
+  list-style: none;
+  width: 100%;
+  margin-bottom: 0.8rem; 
+  justify-content: flex-start;
+`;
+
+const PostTitle = styled.li`
+  box-sizing: border-box;
+  width: 50%;
+  &:nth-of-type(1){
+    margin: 0 0.5rem 0 0; 
+  }
+`;
 
 export default Home;
