@@ -1,5 +1,5 @@
 import { postActions } from '../slice/toDos';
-import postAPI from '../../api/postAPI';
+import postAPI from '../../apis/postAPI';
 
 const getPostAPI = () => {
     return async function(dispatch){

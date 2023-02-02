@@ -1,4 +1,3 @@
-import { height } from "@mui/system";
 import styled from "styled-components";
 import { SideBar } from "../components/";
 
@@ -6,7 +5,6 @@ const contents = [
   {title: "STUDY", content: ["ALGORITHM", "WEB-BACKEND"]},
   {title: "PROJECT", content: ["FLAG-게시판"]},
 ];
-
 
 const homeItem = [
   { id: 1,
@@ -36,119 +34,56 @@ const Home = () => {
     <HomeArea>
       <HomeBox>
         <HomeContents>
-          <h1
-            style={{
-              fontSize: "1.6rem",
-              width: "90%",
-              marginBottom: "3rem",
-              paddingLeft: "3rem",
-            }}
-          >
-            MY ACTIBITY
-          </h1>
+          <MyActivity>MY ACTIBITY</MyActivity>
           <MyActivityArea>
             <MyActivityBox>
               <FlagContents>
-                {contents.map((item) => (
-                  <FlagContent key={item.title}>
-                    <h4 style={{color: "white", paddingBottom: "20px"}}>
-                      {item.title}
-                    </h4>
-                  </FlagContent>
-                ))}
+              {contents.map(({title}) => (
+                <FlagContent key={title}>
+                  <ContentsTitle>{title}</ContentsTitle>
+                </FlagContent>
+              ))}
               </FlagContents>
               <BookImgBox>
-                <img
+                <BookImg
                   src="images/home-book.jpg"
                   alt="home-book"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    border: "1.6px solid #9A9A9A",
-                    borderRadius: "1.8rem",
-                  }}
                 />
               </BookImgBox>
               <NoticeArea>
-                <h1
-                  style={{
-                    fontSize: "1.1rem",
-                    marginBottom: "0.8rem",
-                    paddingLeft: "1.4rem",
-                  }}
-                >
-                  NOTICE
-                </h1>
+                <NoticeTitle>NOTICE</NoticeTitle>
                 <FeedItem style={{height: "70%"}}>
-                  <FeedContent>
-                    공지 안녕하세요 현회장 정충일입니다.
-                  </FeedContent>
-                  <FeedContent>
-                    공지 안녕하세요 차기회장 이수빈입니다.
-                  </FeedContent>
+                  <FeedContent>공지 안녕하세요 현회장 정충일입니다.</FeedContent>
+                  <FeedContent>공지 안녕하세요 차기회장 이수빈입니다.</FeedContent>
                 </FeedItem>
               </NoticeArea>
             </MyActivityBox>
             <MyActivityBox>
-              <h1
-                style={{
-                  fontSize: "1.1rem",
-                  paddingBottom: "20px",
-                  paddingLeft: "1.2rem",
-                }}
-              >
-                FEED
-              </h1>
+              <FeedTitle>FEED</FeedTitle>
               <FeedArea>
                 <FeedBox>
                   <FeedItem>
-                    <h3 style={{width: "87%", marginBottom: "0.4rem"}}>
-                      #STUDY_ALGOLITHM
-                    </h3>
-                    <FeedContent>
-                      공지 이번주 주제는 DP, 브르투포스입니다!
-                    </FeedContent>
-                    <FeedContent>
-                      백준 12345번 푸는 중에 사고회로가 멈췄습니다..
-                    </FeedContent>
-                    <FeedContent>
-                      다음주에 개인사정으로 빠져야 할것 같습니다. 스터디 준비
-                      자료는 함께 첨부할게요!
-                    </FeedContent>
+                    <FeedItemTitle>#STUDY_ALGOLITHM</FeedItemTitle>
+                    <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
+                    <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
+                    <FeedContent>다음주에 개인사정으로 빠져야 할것 같습니다. 스터디 준비자료는 함께 첨부할게요!</FeedContent>
                   </FeedItem>
                   <FeedItem>
-                    <h3 style={{width: "87%", marginBottom: "0.4rem"}}>
-                      #PROJECT_FLAG
-                    </h3>
-                    <FeedContent>
-                      공지 12.20(화) 전체 회의 내용입니다.
-                    </FeedContent>
-                    <FeedContent>
-                      우리 쪽지 기능 넣으면 여러분 많이 쓰실 것 같나요?
-                    </FeedContent>
-                    <FeedContent>
-                      관리자 페이지 기능은 다음과 같습니다!
-                    </FeedContent>
+                    <FeedItemTitle>#PROJECT_FLAG</FeedItemTitle>
+                    <FeedContent>공지 12.20(화) 전체 회의 내용입니다.</FeedContent>
+                    <FeedContent>우리 쪽지 기능 넣으면 여러분 많이 쓰실 것 같나요?</FeedContent>
+                    <FeedContent>관리자 페이지 기능은 다음과 같습니다!</FeedContent>
                   </FeedItem>
                 </FeedBox>
               </FeedArea>
-              {/* <h1
-                style={{
-                  fontSize: "1.1rem",
-                  marginBottom: "0.8rem",
-                  paddingLeft: "1.4rem",
-                }}
-              >
-                좋아요순, 최근순
-              </h1> */}
               <FlagContents style={{marginBottom: "0.8rem", justifyContent: "flex-start"}}>
                 <FlagContent style={{width: "50%", margin: "0 0.5rem 0 0"}}>좋아요순</FlagContent>
                 <FlagContent style={{width: "50%"}}>최근순</FlagContent>
               </FlagContents>
-              <NoticeArea style={{display: "flex"}}>
-                <FeedContent style={{width: "45%", height: "65%", margin: "0 0.5rem 0 0", borderRadius: "14px"}}/>
+              <HeartdAndRecent>
+                <FeedContent/>
                 <FeedContent style={{width: "45%", height: "65%", margin: 0, borderRadius: "14px"}}/>
-              </NoticeArea>
+              </HeartdAndRecent>
             </MyActivityBox>
           </MyActivityArea>
         </HomeContents>
@@ -220,6 +155,12 @@ const BookImgBox = styled.div`
   margin-bottom: 3rem;
 `;
 
+const BookImg = styled.img`
+  width: 100%;
+  height: 100%;
+  border: 1.6px solid #9A9A9A;
+  border-radius: 1.8rem;
+`;
 const FeedArea = styled.div`
   height: 60%;
   margin-bottom: 3rem;
@@ -261,5 +202,49 @@ const NoticeArea = styled.div`
   height: 30%;
   width: 100%;
 `;
+
+const MyActivity = styled.h1`
+  font-size: 1.6rem;
+  width: 90%;
+  margin-bottom: 3rem;
+  padding-left: 3rem;
+`;
+
+const ContentsTitle = styled.h4`
+  color: white;
+  padding-bottom: 20px;
+`;
+
+const NoticeTitle = styled.h4`
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  padding-left: 1.4rem;
+`;
+
+const FeedTitle = styled.h3`
+  font-size: 1.1rem;
+  padding-bottom: 20px;
+  padding-left: 1.2rem;
+`
+const FeedItemTitle = styled.h3`
+  width: 87%;
+  margin-bottom: 0.4rem;
+`
+
+const HeartdAndRecent = styled.div`
+  display: flex;
+  height: 30%;
+  width: 100%;
+  &:first-child{
+    width: 45%;
+    height: 65%; 
+    margin: 0 0.5rem 0 0; 
+    border-radius: 14px;
+  }
+`;
+
+const HeartBox = styled.div`
+
+`
 
 export default Home;

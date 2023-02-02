@@ -6,22 +6,18 @@ import { postActions } from "../redux/slice/toDos";
 const ListThem = ({itemContents, themList}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const handleTitleClick = (num) => {
-        dispatch(postActions.setId(num));
-        navigate("/board/writeDetail");
-    }
     
     return(
         <>
-            {itemContents ? itemContents.map((item) => (
-                <ListThemBox key={item.id}>
+            {itemContents ? itemContents.map(({id, memberName, createdAt, viewCount, likeCount, title}) => (
+                <ListThemBox key={id}>
                     <ItemBox>
-                        <ListItem>{item.id}</ListItem>
-                        <ListItem style={{cursor: "pointer"}} onClick={()=>handleTitleClick(item.id)}>{item.title}</ListItem>
-                        <ListItem>{item.memberName}</ListItem>
-                        <ListItem>{item.createdAt.slice(0, 3).join('.')}</ListItem>
-                        <ListItem>{item.viewCount}</ListItem>
-                        <ListItem>{item.likeCount}</ListItem>
+                        <ListItem>{id}</ListItem>
+                        <ListItem style={{cursor: "pointer"}} onClick={()=>{dispatch(postActions.setId(id)); navigate("/board/writeDetail");}}>{title}</ListItem>
+                        <ListItem>{memberName}</ListItem>
+                        <ListItem>{createdAt.slice(0, 3).join('.')}</ListItem>
+                        <ListItem>{viewCount}</ListItem>
+                        <ListItem>{likeCount}</ListItem>
                     </ItemBox>
                 </ListThemBox>
             )) :  

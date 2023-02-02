@@ -22,6 +22,7 @@ const DetailWritePage = () => {
   const [comments, setComments] = useState([]);
   const postId = useSelector((state) => state.toDo.postId)
   const getPost = useSelector((state) => state.toDo.posts[postId-1]);
+  console.log(getPost)
   const dispatch = useDispatch();
   const onChange = (e) => {
     setInput(e.target.value);
@@ -102,7 +103,7 @@ const DetailWritePage = () => {
                 <PostHeader style={{}}>
                   <PostHeaderLeftArea>
                     <PostAuthor>글쓴이 {getPost.memberName}</PostAuthor>
-                    <PostTime>{getPost.createdAt}</PostTime>
+                    <PostTime>{getPost.createdAt.slice(0, 3).join('.')}</PostTime>
                   </PostHeaderLeftArea>
                   <PostHeaderRightArea>
                     <PostModify>수정하기</PostModify>
@@ -147,7 +148,7 @@ const DetailWritePage = () => {
 };
 
 const BoardArea = styled.div`
-  height: 82.5vh;
+  height: 91vh;
 `;
 
 const TitleArea = styled.div`

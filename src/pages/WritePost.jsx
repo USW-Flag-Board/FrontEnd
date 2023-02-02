@@ -8,10 +8,26 @@ import { Footer, SideBar } from "../components/";
 import axios from 'axios';
 
 const boardItems = [
-  "자유게시판",
-  "동아리 이모저모",
-  "사전게시판",
-  "정보게시판",
+  {
+    id: 1,
+    krName: "자유게시판",
+    engName: "",
+  },
+  {
+    id: 2,
+    krName: "동아리 이모저모",
+    engName: "",
+  },
+  {
+    id: 3,
+    krName: "사전게시판",
+    engName: "",
+  },
+  {
+    id: 4,
+    krName: "정보게시판",
+    engName: "",
+  },
 ];
 
 const buttonItems = [
@@ -55,7 +71,7 @@ const WritePost = () => {
   }
 
   const handleSubmit = () => {
-      axios.post("http://3.39.36.239:80/api/posts", data)
+      axios.post("http://3.39.36.239:8080/api/posts", data)
           // {
           //   data: data,
           //   headers: {
@@ -99,30 +115,20 @@ const WritePost = () => {
             <SelectArea>
               <BoardSelect onChange={handleBoardChange}>
                 <option>게시판을 선택해주세요</option>
-                {boardItems.map((item) => (
-                  <option key={item} >{item}</option>
+                {boardItems.map(({id, krName}) => (
+                  <option key={id} >{krName}</option>
                 ))}
               </BoardSelect>
               {canSubmit() ?
-                <button
+                <PostButton
                   onClick={() => {
                     handleSubmit()
                     // onSubmit()
                   }}
                   type="button"
-                  style={{
-                    backgroundColor: "white",
-                    height: "2rem",
-                    color: "black",
-                    fontWeight: "700",
-                    borderRadius: "5px",
-                    width: "6rem",
-                    cursor: "pointer",
-                    border: "none",
-                  }}
                 >
                   등록
-                </button> :""}
+                </PostButton> :""}
             </SelectArea>
             <TitleInputBox>
               <TitleInput 
@@ -143,13 +149,13 @@ const WritePost = () => {
                 }}
               />
               <ContentButtonBox>
-                {buttonItems.map((item) => (
-                  <ContentButton key={item.id}>
+                {buttonItems.map(({id, faIcon, text}) => (
+                  <ContentButton key={id}>
                     <FontAwesomeIcon
-                      icon={item.faIcon}
+                      icon={faIcon}
                       style={{width: "100%", height: "50%"}}
                     />
-                    <p>{item.text}</p>
+                    <p>{text}</p>
                   </ContentButton>
                 ))}
               </ContentButtonBox>
@@ -186,9 +192,20 @@ const TitleBox = styled.h2`
 `;
 
 const ContentArea = styled.div`
+  display: flex;
   width: 100%;
   height: 90%;
-  display: flex;
+`;
+
+const PostButton = styled.button`
+  background-color: white;
+  height: 2rem;
+  color: black;
+  font-weight: 700;
+  border-radius: 5px;
+  width: 6rem;
+  cursor: pointer;
+  border: none;
 `;
 
 const ListArea = styled.form`
