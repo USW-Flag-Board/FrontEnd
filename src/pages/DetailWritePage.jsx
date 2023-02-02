@@ -17,7 +17,7 @@ const boardItems = [
   }, 
 ];
 
-const DetailWritePage = () => {
+const DetailWritePage = ({setHeader}) => {
   const [input, setInput] = useState('');
   const [comments, setComments] = useState([]);
   const postId = useSelector((state) => state.toDo.postId)
@@ -32,7 +32,8 @@ const DetailWritePage = () => {
     dispatch(postsActions.getPostAPI());
   },[dispatch])
 
-  const addComment = () => { // 코멘트 추가
+  const addComment = () => {
+    // 코멘트 추가
     setComments(
       comments.concat({
         id: comments.length + 1,
@@ -49,18 +50,20 @@ const DetailWritePage = () => {
         content: input,
       })
     );
-  }
+  };
 
-  const removeComment = (id) => { // 코멘트 삭제
+  const removeComment = (id) => {
+    // 코멘트 삭제
     return setComments(comments.filter((comment) => comment.id !== id));
   };
 
-  const removeReply = (ids) => { // 코멘트 삭제
+  const removeReply = (ids) => {
+    // 코멘트 삭제
     return setComments(comments.filter((comment) => comment.ids !== ids));
   };
 
-  const abcde = () =>{
-    return(
+  const abcde = () => {
+    return (
       <>
         <RelativeArea>
           <ReplyButton
@@ -68,16 +71,24 @@ const DetailWritePage = () => {
             value={input}
             onChange={onChange}
           ></ReplyButton>
-          <AddIcon><Button
-            onClick={() => {
-              addReply(input);
-              setInput("");
-            }}>등록</Button></AddIcon>
-          </RelativeArea>
-        </>
-      );
+          <AddIcon>
+            <Button
+              onClick={() => {
+                addReply(input);
+                setInput("");
+              }}
+            >
+              등록
+            </Button>
+          </AddIcon>
+        </RelativeArea>
+      </>
+    );
   };
 
+  useEffect(() => {
+    setHeader(true);
+  },[setHeader]);
 
   return (
     <BoardArea>
@@ -127,18 +138,32 @@ const DetailWritePage = () => {
                 value={input}
                 onChange={onChange}
               ></ReplyButton>
-              <AddIcon><Button
-                onClick={() => {
-                  addComment(input);
-                  setInput("");
-                }}>등록</Button></AddIcon>
+              <AddIcon>
+                <Button
+                  onClick={() => {
+                    addComment(input);
+                    setInput("");
+                  }}
+                >
+                  등록
+                </Button>
+              </AddIcon>
             </RelativeArea>
             <ReplyArea>
               <ReplyContent>
-              {comments.map((comment, index) => (
-                <Reply key={`${comment}_${index}`} name = '이수빈' delete = {<Deletebutton onClick={() => removeComment(comment.id)}>삭제하기</Deletebutton>}  Comment = {comment.content} />
+                {comments.map((comment, index) => (
+                  <Reply
+                    key={`${comment}_${index}`}
+                    name="이수빈"
+                    delete={
+                      <Deletebutton onClick={() => removeComment(comment.id)}>
+                        삭제하기
+                      </Deletebutton>
+                    }
+                    Comment={comment.content}
+                  />
                 ))}
-            </ReplyContent>
+              </ReplyContent>
             </ReplyArea>
           </PostBox>
         </PostArea>
@@ -297,16 +322,16 @@ const ReplyContent = styled.div`
 //댓글 답글 입력 버튼
 const Button = styled.button`
   color: white;
-  background-color:transparent;
-  border:none;
+  background-color: transparent;
+  border: none;
   cursor: pointer;
-`
+`;
 const Deletebutton = styled.button`
-    color: white;
-    background-color:transparent;
-    border:none;
-    font-size: 12px;
-    cursor: pointer;
+  color: white;
+  background-color: transparent;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
 `;
 
 export default DetailWritePage;

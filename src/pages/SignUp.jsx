@@ -8,7 +8,6 @@ import InfoState from "../components/InfoState";
 import JoinTypeButton from "../components/JoinTypeButton";
 import {useNavigate} from "react-router-dom";
 
-
 const specialized = [
   {
     label: "전공을 선택하세요",
@@ -51,6 +50,7 @@ const SignUp = ({setHeader}) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [nickName, setNickName] = useState("");
   const navigate = useNavigate();
+  setHeader(false);
 
   const getValue = (text) => {
     setJoinType(text);
@@ -85,7 +85,7 @@ const SignUp = ({setHeader}) => {
         password,
         studentId,
         phoneNumber,
-        nickName,
+        nickName
       );
       alert("가입정보를 정확히 입력해주세요.");
     }
@@ -105,6 +105,8 @@ const SignUp = ({setHeader}) => {
       } else if (spaceExp.test(loginId)) {
         setIdStateMessage("아이디에는 공백을 포함할 수 없습니다.");
         resolve(false);
+      } else if (loginId.length <= 2) {
+        setIdStateMessage("아이디는 세글자 이상으로 설정해주세요.");
       } else {
         const data = {
           loginId,
@@ -278,7 +280,7 @@ const SignUp = ({setHeader}) => {
             password,
             studentId,
             phoneNumber,
-            nickName,
+            nickName
           );
           alert("재학생 인증 메일 전송 완료");
           navigate("/EmailAuth", {state: {CheckEmail: data}});
@@ -298,14 +300,16 @@ const SignUp = ({setHeader}) => {
 
   return (
     <PageArea>
+      <img
+        alt="Flag 로고"
+        className="Logo"
+        src="../images/logo-White.PNG"
+        width="200"
+        height="100"
+        style={{marginBottom: 40}}
+        onClick={() => navigate("/")}
+      />
       <SignUpArea>
-        <img
-          alt="Flag 로고"
-          className="Logo"
-          src="flag.JPG"
-          width="200"
-          height="100"
-        />
         <RelativeArea>
           <InfoState message={idStateMessage} />
           <WriteArea
@@ -314,7 +318,7 @@ const SignUp = ({setHeader}) => {
             onChange={(e) => {
               IdSet(e.target.value);
             }}
-            onBlur={(IdCheck) => {
+            onBlur={() => {
               IdValid();
             }}
           />
@@ -412,18 +416,14 @@ const SignUp = ({setHeader}) => {
             }}
           />
         </RelativeArea>
+        <WriteArea
+          type="text"
+          placeholder="전화번호"
+          onChange={(e) => {
+            setPhoneNumber(e.target.value);
+          }}
+        />
         <RelativeArea>
-          <InfoState message={studentIdStateMessage} />
-          <WriteArea
-            type="text"
-            placeholder="전화번호"
-            onChange={(e) => {
-              setPhoneNumber(e.target.value);
-            }}
-          />
-        </RelativeArea>
-        <RelativeArea>
-          <InfoState message={studentIdStateMessage} />
           <WriteArea
             type="text"
             placeholder="닉네임"
@@ -447,6 +447,7 @@ const PageArea = styled.div`
   align-items: center;
   display: flex;
   justify-content: center;
+  flex-direction: column;
 `;
 
 const SignUpArea = styled.div`
@@ -454,7 +455,9 @@ const SignUpArea = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
-  width: 400px;
+  width: 600px;
+  border: 1px solid;
+  border-radius: 28px;
 `;
 
 const WriteArea = styled.input`
@@ -470,7 +473,7 @@ const WriteArea = styled.input`
   outline: none;
   margin: 20px;
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   transition: 0.2s;
   :hover {
     transition: 0.2s;

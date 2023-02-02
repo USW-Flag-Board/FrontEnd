@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {useNavigate, useLocation} from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
@@ -11,7 +11,7 @@ const profileUpdateExample = [
   "19017041",
 ];
 
-const EditUser = () => {
+const EditUser = ({setHeader}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const cookies = new Cookies();
@@ -44,7 +44,7 @@ const EditUser = () => {
       password,
     };
     axios
-      .delete("http://3.39.36.239:8080/api/member", {
+      .delete("http://3.39.36.239:8080/api/members", {
         data: {
           password: "asdasd72!@",
         },
@@ -55,6 +55,7 @@ const EditUser = () => {
         cookies.remove("remember_id");
         localStorage.clear();
         sessionStorage.clear();
+        navigate("/");
       })
       .catch((error) => {
         if (error.response.state === 400) {
@@ -64,6 +65,10 @@ const EditUser = () => {
         }
       });
   };
+
+  useEffect(() => {
+    setHeader(true);
+  });
 
   return (
     <>
@@ -97,7 +102,7 @@ const EditUser = () => {
               </SaveButton>
             </ProfileTitle>
             <SideBox>
-              <TitleBox>이름</TitleBox>
+              <TitleBox>닉네임</TitleBox>
               <NameInput placeholder="김철수" />
             </SideBox>
             <SideBox>

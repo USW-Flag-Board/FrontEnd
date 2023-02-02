@@ -10,31 +10,26 @@ import Cookies from "universal-cookie";
 //2. profile url 받아와서 img 바꾸는거는 나중에 해야 할 듯
 //3. profile update 함수는 나중에 모달창 만들어지면 그때 수정, 지금은 임의로 값을 보냈다는 가정
 
-const MyPage = () => {
+const MyPage = ({setHeader}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const cookies = new Cookies();
-  const loginId = "";
+  const [loginId, setLoginId] = useState("");
   const [nickname, setNickname] = useState("");
   const [introduceMessage, setIntroduceMessage] = useState("");
-  useEffect(() => {
-    if (
-      localStorage.getItem("UserToken") ||
-      sessionStorage.getItem("UserToken")
-    ) {
-      console.log("정보 받아오기 시작");
-      SetMyData();
-    } else {
-      navigate("/login");
-    }
-  });
+
+  async function LoginIdSetting() {
+    setLoginId(sessionStorage.getItem("id"));
+    setLoginId(localStorage.getItem("id"));
+  }
 
   const SetMyData = () => {
     axios
       .get(`http://3.39.36.239:8080/api/members/${loginId}`)
       .then((response) => {
-        setNickname(response.data.loginId);
-        setIntroduceMessage(response.data.bio);
+        setNickname(response.data.payload.avatarResponse.nickName);
+        setIntroduceMessage(response.data.payload.avatarResponse.bio);
+        console.log(response.data);
       })
       .catch((error) => {
         if (error.response.status === 404) {
@@ -51,6 +46,26 @@ const MyPage = () => {
     navigate("/");
   };
 
+  useEffect(() => {
+    setHeader(true);
+  });
+
+  useEffect(() => {
+    async function DataSet() {
+      if (
+        localStorage.getItem("UserToken") ||
+        sessionStorage.getItem("UserToken")
+      ) {
+        console.log("정보 받아오기 시작");
+        await LoginIdSetting();
+        SetMyData();
+      } else {
+        navigate("/login");
+      }
+    }
+    DataSet();
+  });
+
   return (
     <PageArea>
       <LeftPage>
@@ -61,7 +76,8 @@ const MyPage = () => {
                 icon={faUser}
                 style={{width: 120, height: 120, marginBottom: 30}}
               />
-              <EditProfile onClick={() => navigate("/edit")}>
+              {/* <EditProfile onClick={() => navigate("/edit")}> */}
+              <EditProfile onClick={() => alert("구현중입니다.")}>
                 Edit Profile
               </EditProfile>
             </RelativeArea>
@@ -88,15 +104,14 @@ const MyPage = () => {
           </HistoryContent>
         </HistoryArea>
       </LeftPage>
-      <RightPage>
-      </RightPage>
+      <RightPage></RightPage>
     </PageArea>
   );
 };
 
 const PageArea = styled.div`
   width: 100%;
-  height: 82.5vh;
+  height: 88vh;
   display: flex;
 `;
 
@@ -110,7 +125,7 @@ const LeftPage = styled.div`
 const RightPage = styled.div`
   width: 60%;
   height: 100%;
-  background-image: url(/home-book.JPG);
+  background-image: url(../images/home-book.JPG);
 `;
 
 const UserPage = styled.div`
@@ -203,21 +218,6 @@ const HistoryYearListItem = styled.li`
   margin-bottom: 3px;
   list-style-type: disc;
   margin-left: 20px;
-`;
-
-const GrassArea = styled.div`
-  padding-left: 80px;
-  height: 100%;
-  top: 700px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const GrassName = styled.h3`
-  color: white;
-  padding-top: 600px;
-  margin: 0px;
-  font-weight: bold;
 `;
 
 export default MyPage;

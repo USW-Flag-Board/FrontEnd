@@ -46,7 +46,7 @@ const BulletinBoard = () => {
     <>
       <BoardArea>
         <ContentArea>
-          <SideBar 
+          <SideBar
             title="BOARD"
             mainColor="#4B4B4B"
             subColor="#3C3C3C"
@@ -59,15 +59,15 @@ const BulletinBoard = () => {
             // setSelectBoard={setSelectBoard}
           />
           <ListArea>
-          <TitleArea>
-            <TitleBox>자유게시판</TitleBox>
-            <WriteButton>
-              <Link to="/board/write" style={{textDecoration: "none"}}>
-                <FontAwesomeIcon icon={faPen}/>
-                글쓰기
-              </Link>
-            </WriteButton>
-          </TitleArea>
+            <TitleArea>
+              <TitleBox>자유게시판</TitleBox>
+              <WriteButton>
+                <Link to="/board/write" style={{textDecoration: "none"}}>
+                  <FontAwesomeIcon icon={faPen} />
+                  글쓰기
+                </Link>
+              </WriteButton>
+            </TitleArea>
             <ListBar>
               <BarItemBox>
                 {barItem.map((item) => (
@@ -76,12 +76,12 @@ const BulletinBoard = () => {
               </BarItemBox>
             </ListBar>
             <ListBox>
-              <ListThem 
+              <ListThem
                 itemContents={currentItems}
               />
             </ListBox>
             <PaginationArea>
-              <Pagination 
+              <Pagination
                 itemsPerPage={8}
                 items={posts.posts}
                 setCurrentItems={setCurrentItems}

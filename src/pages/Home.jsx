@@ -1,5 +1,6 @@
+import {useEffect} from "react";
 import styled from "styled-components";
-import { SideBar } from "../components/";
+import {SideBar} from "../components/";
 
 const contents = [
   {title: "STUDY", content: ["ALGORITHM", "WEB-BACKEND"]},
@@ -7,29 +8,18 @@ const contents = [
 ];
 
 const homeItem = [
-  { id: 1,
-    krName: "USER",
-    engName: ""
-  }, 
-  { id: 2,
-    krName: "마이페이지",
-    engName: ""
-  }, 
-  { id: 3,
-    krName: "내가 쓴 글",
-    engName: ""
-  }, 
-  { id: 4,
-    krName: "댓글 단 글",
-    engName: ""
-  }, 
-  { id: 5,
-    krName: "스트랩",
-    engName: ""
-  }, 
+  {id: 1, krName: "USER", engName: ""},
+  {id: 2, krName: "마이페이지", engName: ""},
+  {id: 3, krName: "내가 쓴 글", engName: ""},
+  {id: 4, krName: "댓글 단 글", engName: ""},
+  {id: 5, krName: "스트랩", engName: ""},
 ];
 
-const Home = () => {
+const Home = ({setHeader}) => {
+  useEffect(() => {
+    setHeader(true);
+  });
+
   return (
     <HomeArea>
       <HomeBox>
