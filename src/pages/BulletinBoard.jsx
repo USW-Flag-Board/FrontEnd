@@ -1,41 +1,48 @@
-import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import postsActions  from '../redux/thunkActions/postsActions';
 import styled from "styled-components";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPen, faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
-import {SideBar, Footer, ListThem, Pagination} from "../components/";
-import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { SideBar, Footer, ListThem, Pagination } from "../components/";
 
 const boardItems = [
-  {id: 1, krName: "자유게시판", engName: "free_board"},
-  {id: 2, krName: "동아리 이모저모", engName: ""},
-  {id: 3, krName: "사전게시판", engName: ""},
-  {id: 4, krName: "정보게시판", engName: ""},
+  { 
+    id: 1,
+    krName: "자유게시판",
+    engName: "free_board"
+  }, 
+  { 
+    id: 2,
+    krName: "동아리 이모저모",
+    engName: ""
+  }, 
+  { 
+    id: 3,
+    krName: "사전게시판",
+    engName: ""
+  }, 
+  { 
+    id: 4,
+    krName: "정보게시판",
+    engName: ""
+  }
 ];
 const barItem = ["제목", "작성자", "작성일", "조회수", "좋아요"];
 const selectItems = ["전체기간", "게시물 + 작성자"];
 
-const BulletinBoard = ({postId, setPostId, setHeader}) => {
-  const [selectBoard, setSelectBoard] = useState("free_board");
-  const [boardData, setBoardData] = useState([]);
+const BulletinBoard = () => {
+  // const [selectBoard, setSelectBoard] = useState("free_board");
   const [currentItems, setCurrentItems] = useState([]); // 페이지당 보여줄 데이터 배열
+  const posts = useSelector((state) => state.toDo);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    axios
-      .get(`http://3.39.36.239:8080/api/boards?name=${selectBoard}`)
-      .then((response) => {
-        setBoardData(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [selectBoard]);
-
-  useEffect(() => {
-    setHeader(true);
-  });
-
-  return (
+  useEffect(()=>{
+      dispatch(postsActions.getPostAPI())
+    },[dispatch])
+  
+    return (
     <>
       <BoardArea>
         <ContentArea>
@@ -49,7 +56,7 @@ const BulletinBoard = ({postId, setPostId, setHeader}) => {
             paddingTop="0"
             paddingTopMain="75px"
             borderRadius="0 15px 15px 0"
-            setSelectBoard={setSelectBoard}
+            // setSelectBoard={setSelectBoard}
           />
           <ListArea>
             <TitleArea>
@@ -71,14 +78,12 @@ const BulletinBoard = ({postId, setPostId, setHeader}) => {
             <ListBox>
               <ListThem
                 itemContents={currentItems}
-                postId={postId}
-                setPostId={setPostId}
               />
             </ListBox>
             <PaginationArea>
               <Pagination
                 itemsPerPage={8}
-                items={boardData}
+                items={posts.posts}
                 setCurrentItems={setCurrentItems}
               />
             </PaginationArea>

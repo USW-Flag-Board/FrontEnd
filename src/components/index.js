@@ -12,3 +12,4 @@ export {default as ActivityCard} from "./ActivityCard";
 export {default as ActivityManagerModal} from "./ActivityManagerModal";
 export {default as ActivityUserModal} from "./ActivityUserModal";
 export {default as ActivityWrite} from "./ActivityWrite";
+export {default as LikeButton} from "./LikeButton";

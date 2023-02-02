@@ -26,6 +26,7 @@
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
     "redux": "^4.2.0",
+    "redux-persist": "^6.0.0",
     "styled-components": "^5.3.6",
     "styled-reset": "^4.4.2",
     "universal-cookie": "^4.0.4",

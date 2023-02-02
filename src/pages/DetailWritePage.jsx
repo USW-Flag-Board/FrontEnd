@@ -1,33 +1,36 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
+import postsActions  from '../redux/thunkActions/postsActions';
 import styled from "styled-components";
-import axios from "axios";
-import ListThem from "../components/ListThem";
-import SideBar from "../components/SideBar";
-import LikeButton from "../components/LikeButton";
-import Reply from "../components/Reply";
+import { useDispatch, useSelector } from "react-redux";
+import { ListThem, SideBar, LikeButton, Reply } from "../components";
 
 const boardItems = [
-  {id: 1, krName: "스터디", engName: ""},
-  {id: 2, krName: "프로젝트", engName: ""},
+  { 
+    id: 1,
+    krName: "스터디",
+    engName: ""
+  }, 
+  { 
+    id: 2,
+    krName: "프로젝트",
+    engName: ""
+  }, 
 ];
 
-const DetailWritePage = ({post, setHeader}) => {
-  const [input, setInput] = useState("");
+const DetailWritePage = ({setHeader}) => {
+  const [input, setInput] = useState('');
   const [comments, setComments] = useState([]);
-  const [detailData, setDetailData] = useState([]);
+  const postId = useSelector((state) => state.toDo.postId)
+  const getPost = useSelector((state) => state.toDo.posts[postId-1]);
+  console.log(getPost)
+  const dispatch = useDispatch();
   const onChange = (e) => {
     setInput(e.target.value);
   };
-  useEffect(() => {
-    axios
-      .get(`http://3.39.36.239:8080/api/posts?postId=${post}&viaBoard=true`)
-      .then((response) => {
-        setDetailData(response.data.payload);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [post]);
+  
+  useEffect(()=>{
+    dispatch(postsActions.getPostAPI());
+  },[dispatch])
 
   const addComment = () => {
     // 코멘트 추가
@@ -85,7 +88,7 @@ const DetailWritePage = ({post, setHeader}) => {
 
   useEffect(() => {
     setHeader(true);
-  });
+  },[setHeader]);
 
   return (
     <BoardArea>
@@ -105,25 +108,27 @@ const DetailWritePage = ({post, setHeader}) => {
         />
         <PostArea>
           <PostBox>
-            <ListThem themList={detailData} />
+            <ListThem themList={getPost}/>
             <PostContentBox>
               <PostContentSort>
                 <PostHeader style={{}}>
                   <PostHeaderLeftArea>
-                    <PostAuthor>글쓴이 {detailData.memberName}</PostAuthor>
-                    <PostTime>{detailData.createdAt}</PostTime>
+                    <PostAuthor>글쓴이 {getPost.memberName}</PostAuthor>
+                    <PostTime>{getPost.createdAt.slice(0, 3).join('.')}</PostTime>
                   </PostHeaderLeftArea>
                   <PostHeaderRightArea>
                     <PostModify>수정하기</PostModify>
                     <PostDelete>삭제하기</PostDelete>
                   </PostHeaderRightArea>
                 </PostHeader>
-                <PostContentTitle>{detailData.title}</PostContentTitle>
-                <PostContent>{detailData.content}</PostContent>
-                <PostViews>view {detailData.viewCount}</PostViews>
+                <PostContentTitle>{getPost.title}</PostContentTitle>
+                <PostContent>
+                  {getPost.content}
+                </PostContent>
+                <PostViews>view {getPost.viewCount}</PostViews>
                 <PostLike>
                   <LikeButton />
-                  {detailData.likeCount}
+                  {getPost.likeCount}
                 </PostLike>
               </PostContentSort>
             </PostContentBox>
@@ -168,7 +173,7 @@ const DetailWritePage = ({post, setHeader}) => {
 };
 
 const BoardArea = styled.div`
-  height: 82.5vh;
+  height: 91vh;
 `;
 
 const TitleArea = styled.div`
