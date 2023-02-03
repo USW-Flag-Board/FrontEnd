@@ -32,6 +32,10 @@ const DetailWritePage = ({setHeader}) => {
     dispatch(postsActions.getPostAPI());
   },[dispatch])
 
+  useEffect(() => {
+    setHeader(true);
+  },[setHeader]);
+
   const addComment = () => {
     // 코멘트 추가
     setComments(
@@ -86,16 +90,8 @@ const DetailWritePage = ({setHeader}) => {
     );
   };
 
-  useEffect(() => {
-    setHeader(true);
-  },[setHeader]);
-
   return (
     <BoardArea>
-      <TitleArea>
-        <TitleBox>알고리즘(코테반)</TitleBox>
-      </TitleArea>
-      <ContentArea>
         <SideBar
           title="ACTIVITY"
           mainColor="#4B4B4B"
@@ -104,14 +100,21 @@ const DetailWritePage = ({setHeader}) => {
           subWidth="90%"
           items={boardItems}
           paddingTop="0"
+          paddingTopMain="75px"
           borderRadius="0 15px 15px 0"
-        />
-        <PostArea>
+          />
+      <ContentArea>
+        <TitleBox>알고리즘(코테반)</TitleBox>
+        <ListThemBox>
+          <ListThem themList={getPost}/>
+        </ListThemBox>
+        <PostDatailBox>
+          
+        </PostDatailBox>
           <PostBox>
-            <ListThem themList={getPost}/>
             <PostContentBox>
               <PostContentSort>
-                <PostHeader style={{}}>
+                <PostHeader>
                   <PostHeaderLeftArea>
                     <PostAuthor>글쓴이 {getPost.memberName}</PostAuthor>
                     <PostTime>{getPost.createdAt.slice(0, 3).join('.')}</PostTime>
@@ -166,52 +169,49 @@ const DetailWritePage = ({setHeader}) => {
               </ReplyContent>
             </ReplyArea>
           </PostBox>
-        </PostArea>
       </ContentArea>
     </BoardArea>
   );
 };
 
 const BoardArea = styled.div`
+  display: flex;
+  width: 100vw;
   height: 91vh;
 `;
 
-const TitleArea = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  height: 10%;
-  display: flex;
-  padding: 0 2rem 1rem 2rem;
-  align-items: flex-end;
-  justify-content: space-between;
-`;
-
 const TitleBox = styled.h2`
-  font-weight: 700px;
-  height: 100%;
-  font-size: 35px;
+  box-sizing: border-box;
   display: flex;
-  align-items: flex-end;
-  padding-left: 14%;
+  align-items: center;
+  font-weight: 700;
+  height: 10%;
+  font-size: 35px;
+  padding-left: 1.5rem;
 `;
 
 const ContentArea = styled.div`
-  width: 100%;
-  height: 90%;
   display: flex;
-`;
-
-const PostArea = styled.div`
+  flex-direction: column;
   width: 87%;
   height: 100%;
-  padding: 0 2rem 0 2rem;
+`;
+
+const ListThemBox = styled.div`
+  width: 90%;
+  height: 12.5%;
+`;
+
+const PostDatailBox = styled.div`
   box-sizing: border-box;
+  width: 87%;
+  padding: 0 2rem 0 2rem;
 `;
 
 const PostBox = styled.div`
-  height: 70%;
   display: flex;
   flex-direction: column;
+  height: 70%;
 `;
 
 const PostContentBox = styled.div`
@@ -222,10 +222,8 @@ const PostContentBox = styled.div`
 `;
 
 const PostContentSort = styled.div`
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 60px;
-  margin-right: 60px;
+  box-sizing: border-box;
+  padding: 20px 40px 40px 20px;
 `;
 
 const PostHeader = styled.div`
@@ -239,11 +237,13 @@ const PostHeaderRightArea = styled.div``;
 
 const PostModify = styled.div`
   display: inline;
+  cursor: pointer;
 `;
 
 const PostDelete = styled.div`
   margin-left: 10px;
   display: inline;
+  cursor: pointer;
 `;
 
 const PostAuthor = styled.div`
@@ -265,8 +265,8 @@ const PostContentTitle = styled.h2`
 const PostContent = styled.div``;
 
 const PostViews = styled.div`
-  margintop: 20px;
-  fontsize: 10px;
+  margin-top: 20px;
+  font-size: 10px;
   display: inline-block;
 `;
 
@@ -313,10 +313,7 @@ const ReplyArea = styled.div`
 `;
 
 const ReplyContent = styled.div`
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 60px;
-  margin-right: 60px;
+  margin: 20px 60px 20px 60px
 `;
 
 //댓글 답글 입력 버튼
