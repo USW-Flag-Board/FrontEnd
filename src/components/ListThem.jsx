@@ -39,7 +39,7 @@ const ListThemBox = styled.div`
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    height: 12.5%;
+    height: 55px;
     &:nth-of-type(1){color: red};
     &:nth-of-type(odd){background-color: #313131};
 `;

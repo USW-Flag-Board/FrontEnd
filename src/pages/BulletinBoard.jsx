@@ -62,17 +62,16 @@ const BulletinBoard = () => {
             <TitleArea>
               <TitleBox>자유게시판</TitleBox>
               <WriteButton>
-                <Link to="/board/write" style={{textDecoration: "none"}}>
-                  <FontAwesomeIcon icon={faPen} />
+                <Link to="/board/write"><FaPen icon={faPen} />
                   글쓰기
                 </Link>
               </WriteButton>
             </TitleArea>
             <ListBar>
               <BarItemBox>
-                {barItem.map((item) => (
-                  <BarItem key={item}>{item}</BarItem>
-                ))}
+              {barItem.map((item) => (
+                <BarItem key={item}>{item}</BarItem>
+              ))}
               </BarItemBox>
             </ListBar>
             <ListBox>
@@ -88,16 +87,13 @@ const BulletinBoard = () => {
               />
             </PaginationArea>
             <FilterAndSearchForm>
-              {selectItems.map((item) => (
-                <FilterSelect key={item}>
-                  <option>{item}</option>
-                </FilterSelect>
+            {selectItems.map((item) => (
+              <FilterSelect key={item}>
+                <option>{item}</option>
+              </FilterSelect>
               ))}
               <SearchArea>
-                <FontAwesomeIcon
-                  icon={faMagnifyingGlass}
-                  style={{paddingRight: "0.5rem"}}
-                />
+                <FaMagnifyingGlass icon={faMagnifyingGlass}/>
                 <InputBase type="text" placeholder="게시글 + 작성자" />
               </SearchArea>
             </FilterAndSearchForm>
@@ -242,6 +238,15 @@ const InputBase = styled.input`
     outline: none;
   }
   color: #9b9b9b;
+`;
+
+//fontAwesome
+const FaPen = styled(FontAwesomeIcon)`
+  text-decoration: none;
+`;
+
+const FaMagnifyingGlass = styled(FontAwesomeIcon)`
+  padding-right: 0.5rem;
 `;
 
 export default BulletinBoard;

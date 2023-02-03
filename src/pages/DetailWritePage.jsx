@@ -92,83 +92,59 @@ const DetailWritePage = ({setHeader}) => {
 
   return (
     <BoardArea>
-        <SideBar
-          title="ACTIVITY"
-          mainColor="#4B4B4B"
-          subColor="#3C3C3C"
-          mainWidth="13%"
-          subWidth="90%"
-          items={boardItems}
-          paddingTop="0"
-          paddingTopMain="75px"
-          borderRadius="0 15px 15px 0"
-          />
+      <SideBar
+        title="ACTIVITY"
+        mainColor="#4B4B4B"
+        subColor="#3C3C3C"
+        mainWidth="13%"
+        subWidth="90%"
+        items={boardItems}
+        paddingTop="0"
+        paddingTopMain="75px"
+        borderRadius="0 15px 15px 0"
+      />
       <ContentArea>
         <TitleBox>알고리즘(코테반)</TitleBox>
-        <ListThemBox>
-          <ListThem themList={getPost}/>
-        </ListThemBox>
+        <ListThem themList={getPost}/>
         <PostDatailBox>
-          
+          <PostHeader>
+            <PostHeaderLeft>
+              <PostAuthor>글쓴이</PostAuthor>
+              <AuthorName>{getPost.memberName}</AuthorName>
+              <PostTime>{getPost.createdAt.slice(0, 3).join('.')}</PostTime>
+            </PostHeaderLeft>
+            <PostHeaderRight>
+              <PostModify>수정하기</PostModify>
+              <PostDelete>삭제하기</PostDelete>
+            </PostHeaderRight>
+          </PostHeader>
+          <PostContentTitle>{getPost.title}</PostContentTitle>
+          <PostContent>{getPost.content}</PostContent>
+          <PostFooter>
+            <PostViewCount><PostView>View</PostView>{getPost.viewCount}</PostViewCount>
+            <PostLike><LikeButton/>{getPost.likeCount}</PostLike>
+          </PostFooter>
         </PostDatailBox>
-          <PostBox>
-            <PostContentBox>
-              <PostContentSort>
-                <PostHeader>
-                  <PostHeaderLeftArea>
-                    <PostAuthor>글쓴이 {getPost.memberName}</PostAuthor>
-                    <PostTime>{getPost.createdAt.slice(0, 3).join('.')}</PostTime>
-                  </PostHeaderLeftArea>
-                  <PostHeaderRightArea>
-                    <PostModify>수정하기</PostModify>
-                    <PostDelete>삭제하기</PostDelete>
-                  </PostHeaderRightArea>
-                </PostHeader>
-                <PostContentTitle>{getPost.title}</PostContentTitle>
-                <PostContent>
-                  {getPost.content}
-                </PostContent>
-                <PostViews>view {getPost.viewCount}</PostViews>
-                <PostLike>
-                  <LikeButton />
-                  {getPost.likeCount}
-                </PostLike>
-              </PostContentSort>
-            </PostContentBox>
-            <RelativeArea>
-              <ReplyButton
-                placeholder="댓글을 입력하세요."
-                value={input}
-                onChange={onChange}
-              ></ReplyButton>
-              <AddIcon>
-                <Button
-                  onClick={() => {
-                    addComment(input);
-                    setInput("");
-                  }}
-                >
-                  등록
-                </Button>
-              </AddIcon>
-            </RelativeArea>
-            <ReplyArea>
-              <ReplyContent>
-                {comments.map((comment, index) => (
-                  <Reply
-                    key={`${comment}_${index}`}
-                    name="이수빈"
-                    delete={
-                      <Deletebutton onClick={() => removeComment(comment.id)}>
-                        삭제하기
-                      </Deletebutton>
-                    }
-                    Comment={comment.content}
-                  />
-                ))}
-              </ReplyContent>
-            </ReplyArea>
-          </PostBox>
+        <CommentInputBox>
+          <CommentInput placeholder="댓글을 입력하세요." value={input} onChange={onChange} onClick={() => {addComment(input); setInput("");}}></CommentInput>
+          <CommentAddButton type="button">등록</CommentAddButton>
+        </CommentInputBox>
+        {/* <ReplyArea>
+          <ReplyContent>
+            {comments.map((comment, index) => (
+              <Reply
+                key={`${comment}_${index}`}
+                name="이수빈"
+                delete={
+                  <Deletebutton onClick={() => removeComment(comment.id)}>
+                    삭제하기
+                  </Deletebutton>
+                }
+                Comment={comment.content}
+              />
+            ))}
+          </ReplyContent>
+        </ReplyArea> */}
       </ContentArea>
     </BoardArea>
   );
@@ -187,94 +163,129 @@ const TitleBox = styled.h2`
   font-weight: 700;
   height: 10%;
   font-size: 35px;
-  padding-left: 1.5rem;
 `;
 
 const ContentArea = styled.div`
   display: flex;
+  box-sizing: border-box;
   flex-direction: column;
   width: 87%;
   height: 100%;
-`;
-
-const ListThemBox = styled.div`
-  width: 90%;
-  height: 12.5%;
+  padding: 1.2rem;
 `;
 
 const PostDatailBox = styled.div`
   box-sizing: border-box;
-  width: 87%;
-  padding: 0 2rem 0 2rem;
-`;
-
-const PostBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 70%;
-`;
-
-const PostContentBox = styled.div`
-  margin-top: 25px;
   width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 28px;
-`;
-
-const PostContentSort = styled.div`
-  box-sizing: border-box;
-  padding: 20px 40px 40px 20px;
+  height: 30%;
+  border: 1px solid #9A9A9A;
+  border-radius: 20px;
+  padding: 1rem;
+  margin: 1rem 0 1rem 0;
 `;
 
 const PostHeader = styled.div`
   display: flex;
   justify-content: space-between;
+  height: 10%;
 `;
 
-const PostHeaderLeftArea = styled.div``;
+const PostHeaderLeft = styled.div`
 
-const PostHeaderRightArea = styled.div``;
-
-const PostModify = styled.div`
-  display: inline;
-  cursor: pointer;
 `;
 
-const PostDelete = styled.div`
-  margin-left: 10px;
-  display: inline;
-  cursor: pointer;
+const PostAuthor = styled.span`
+  margin-right: 8px;
 `;
 
-const PostAuthor = styled.div`
-  display: inline-block;
-  margin-right: 20px;
+const AuthorName = styled.span`
+  margin-right: 30px;
 `;
 
-const PostTime = styled.div`
-  display: inline-block;
+const PostTime = styled.span`
   color: rgba(255, 255, 255, 0.5);
 `;
 
+const PostHeaderRight = styled.div`
+
+`;
+
+const PostModify = styled.button`
+  cursor: pointer;
+  background-color: #2C2C2C;
+  border: none;
+  color: white;
+`;
+
+const PostDelete = styled.button`
+  margin-left: 10px;
+  cursor: pointer;
+  background-color: #2C2C2C;
+  border: none;
+  color: white;
+`;
+
 const PostContentTitle = styled.h2`
-  fontsize: 20px;
-  margin-top: 30px;
-  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 20px;
+  padding-top: 1rem;
+  height: 20%;
 `;
 
-const PostContent = styled.div``;
-
-const PostViews = styled.div`
-  margin-top: 20px;
-  font-size: 10px;
-  display: inline-block;
+const PostContent = styled.div`
+  height: 45%;
 `;
 
-const PostLike = styled.div`
-  margin-top: 20px;
-  margin-left: 15px;
-  font-size: 10px;
-  display: inline-block;
+const PostFooter = styled.div`
+  padding-top: 0.6rem;
+  height: 10%;
+`;
+
+const PostView = styled.span`
+  margin-right: 10px;
+`
+
+const PostViewCount = styled.span`
+  font-size: 15px;
+  margin-right: 20px;
+`;
+
+const PostLike = styled.span`
+  margin-right: 20px;
+`;
+
+const CommentInputBox = styled.div`
+  box-sizing: border-box;
+  border: 1px solid #9A9A9A;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  height: 8%;
+`;
+
+const CommentInput = styled.input`
+  width: 95%;
+  height: 35%;
+  border: none;
+  background-color: #2C2C2C;
+  caret-color: white;
+  color: white;
+  &:focus {
+    outline: none;
+  }
+  ::placeholder {
+    color: #ffffffcc;
+  }
+`;
+
+const CommentAddButton = styled.button`
+  height: 35%;
+  color: white;
+  background-color: #2C2C2C;
+  border: none;
+  cursor: pointer;
 `;
 
 const RelativeArea = styled.div`
@@ -296,6 +307,7 @@ const ReplyButton = styled.input`
   ::placeholder {
     color: #ffffffcc;
   }
+  
 `;
 
 const AddIcon = styled.label`
