@@ -22,7 +22,6 @@ const DetailWritePage = ({setHeader}) => {
   const [comments, setComments] = useState([]);
   const postId = useSelector((state) => state.toDo.postId)
   const getPost = useSelector((state) => state.toDo.posts[postId-1]);
-  console.log(getPost)
   const dispatch = useDispatch();
   const onChange = (e) => {
     setInput(e.target.value);
@@ -44,50 +43,11 @@ const DetailWritePage = ({setHeader}) => {
         content: input,
       })
     );
-    setInput("");
-  };
-
-  const addReply = () => {
-    setComments(
-      comments.concat({
-        ids: comments.length + 1,
-        content: input,
-      })
-    );
   };
 
   const removeComment = (id) => {
     // 코멘트 삭제
     return setComments(comments.filter((comment) => comment.id !== id));
-  };
-
-  const removeReply = (ids) => {
-    // 코멘트 삭제
-    return setComments(comments.filter((comment) => comment.ids !== ids));
-  };
-
-  const abcde = () => {
-    return (
-      <>
-        <RelativeArea>
-          <ReplyButton
-            placeholder="댓글을 입력하세요."
-            value={input}
-            onChange={onChange}
-          ></ReplyButton>
-          <AddIcon>
-            <Button
-              onClick={() => {
-                addReply(input);
-                setInput("");
-              }}
-            >
-              등록
-            </Button>
-          </AddIcon>
-        </RelativeArea>
-      </>
-    );
   };
 
   return (
@@ -126,25 +86,13 @@ const DetailWritePage = ({setHeader}) => {
           </PostFooter>
         </PostDatailBox>
         <CommentInputBox>
-          <CommentInput placeholder="댓글을 입력하세요." value={input} onChange={onChange} onClick={() => {addComment(input); setInput("");}}></CommentInput>
-          <CommentAddButton type="button">등록</CommentAddButton>
+          <CommentInput placeholder="댓글을 입력하세요." value={input} onChange={onChange} onClick={() => {addComment(input); setInput(input);}}></CommentInput>
+          <CommentAddButton type="submit">등록</CommentAddButton>
         </CommentInputBox>
-        {/* <ReplyArea>
-          <ReplyContent>
-            {comments.map((comment, index) => (
-              <Reply
-                key={`${comment}_${index}`}
-                name="이수빈"
-                delete={
-                  <Deletebutton onClick={() => removeComment(comment.id)}>
-                    삭제하기
-                  </Deletebutton>
-                }
-                Comment={comment.content}
-              />
-            ))}
-          </ReplyContent>
-        </ReplyArea> */}
+        <CommentsArea>
+          <Reply />
+          <Reply />
+        </CommentsArea>
       </ContentArea>
     </BoardArea>
   );
@@ -166,9 +114,7 @@ const TitleBox = styled.h2`
 `;
 
 const ContentArea = styled.div`
-  display: flex;
   box-sizing: border-box;
-  flex-direction: column;
   width: 87%;
   height: 100%;
   padding: 1.2rem;
@@ -254,7 +200,7 @@ const PostLike = styled.span`
   margin-right: 20px;
 `;
 
-const CommentInputBox = styled.div`
+const CommentInputBox = styled.form`
   box-sizing: border-box;
   border: 1px solid #9A9A9A;
   border-radius: 20px;
@@ -288,59 +234,14 @@ const CommentAddButton = styled.button`
   cursor: pointer;
 `;
 
-const RelativeArea = styled.div`
-  position: relative;
-`;
-
-const ReplyButton = styled.input`
-  width: calc(100% - 122px);
-  margin-top: 25px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  outline: none;
-  border-radius: 28px;
-  background-color: rgba(0, 0, 0, 0);
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 60px;
-  padding-right: 60px;
+const CommentsArea = styled.div`
+  box-sizing: border-box;
   color: white;
-  ::placeholder {
-    color: #ffffffcc;
-  }
-  
+  border: 1px solid #9A9A9A;
+  border-radius: 20px;
+  margin-top: 1rem;
+  padding: 1.5rem  1.5rem 0 1.5rem;
 `;
 
-const AddIcon = styled.label`
-  color: white;
-  position: absolute;
-  left: calc(100% - 60px);
-  top: 44px;
-`;
-
-const ReplyArea = styled.div`
-  margin-top: 25px;
-  width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 28px;
-`;
-
-const ReplyContent = styled.div`
-  margin: 20px 60px 20px 60px
-`;
-
-//댓글 답글 입력 버튼
-const Button = styled.button`
-  color: white;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-`;
-const Deletebutton = styled.button`
-  color: white;
-  background-color: transparent;
-  border: none;
-  font-size: 12px;
-  cursor: pointer;
-`;
 
 export default DetailWritePage;
