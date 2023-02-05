@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
-const Reply = (props) => {
+const Reply = () => {
     return (
         <CommentBox>
             <CommentUserImg icon={faUser}/>

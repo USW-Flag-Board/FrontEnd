@@ -74,7 +74,7 @@ const DetailWritePage = ({setHeader}) => {
               <PostTime>{getPost.createdAt.slice(0, 3).join('.')}</PostTime>
             </PostHeaderLeft>
             <PostHeaderRight>
-              <PostModify>수정하기</PostModify>
+              <PostModify onClick={()=>}>수정하기</PostModify>
               <PostDelete>삭제하기</PostDelete>
             </PostHeaderRight>
           </PostHeader>
