@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import postsActions  from '../redux/thunkActions/postsActions';
+import postsActions  from '../../redux/thunkActions/postsActions';
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { ListThem, SideBar, LikeButton, Reply } from "../components";
+import { ListThem, SideBar, LikeButton, Reply } from "../../components";
+import { useNavigate } from "react-router-dom";
 
 const boardItems = [
   { 
@@ -23,12 +24,13 @@ const DetailWritePage = ({setHeader}) => {
   const postId = useSelector((state) => state.toDo.postId)
   const getPost = useSelector((state) => state.toDo.posts[postId-1]);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const onChange = (e) => {
     setInput(e.target.value);
   };
   
   useEffect(()=>{
-    dispatch(postsActions.getPostAPI());
+    dispatch(postsActions.getBoardAPI());
   },[dispatch])
 
   useEffect(() => {
@@ -45,6 +47,9 @@ const DetailWritePage = ({setHeader}) => {
     );
   };
 
+  const editClick = () => {
+    navigate("/board/edit");
+  }
   const removeComment = (id) => {
     // 코멘트 삭제
     return setComments(comments.filter((comment) => comment.id !== id));
@@ -74,7 +79,7 @@ const DetailWritePage = ({setHeader}) => {
               <PostTime>{getPost.createdAt.slice(0, 3).join('.')}</PostTime>
             </PostHeaderLeft>
             <PostHeaderRight>
-              <PostModify onClick={()=>}>수정하기</PostModify>
+              <PostModify onClick={editClick}>수정하기</PostModify>
               <PostDelete>삭제하기</PostDelete>
             </PostHeaderRight>
           </PostHeader>

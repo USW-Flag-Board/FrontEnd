@@ -4,10 +4,7 @@ import {
   LoginPage,
   SignUp,
   Home,
-  BulletinBoard,
-  WritePost,
   MyPage,
-  DetailWritePage,
   SearchPage,
   ChangePw,
   EditUser,
@@ -17,6 +14,7 @@ import {
   FindId,
   FindPw,
 } from "./pages";
+import { DetailWritePage, BulletinBoard, WritePost, EditPost} from "./pages/board";
 import { Header } from "./components";
 import Cookies from "universal-cookie";
 import axios from "axios";
@@ -86,7 +84,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage setHeader={setHeader} />} />
         <Route path="/signup" element={<SignUp setHeader={setHeader} />} />
         <Route path="/my" element={<MyPage setHeader={setHeader} />} />
-        <Route path="/board/writeDetail" element={<DetailWritePage setHeader={setHeader} />}/>
+        <Route path="/board/detail" element={<DetailWritePage setHeader={setHeader} />}/>
         <Route path="/board" element={<BulletinBoard setHeader={setHeader}/>}/>
         <Route path="/board/write" element={<WritePost setHeader={setHeader} />}/>
         <Route path="/search" element={<SearchPage setHeader={setHeader} />}/>
@@ -97,6 +95,7 @@ const App = () => {
         <Route path="/emailAuth" element={<EmailAuth setHeader={setHeader} />}/>
         <Route path="/findid" element={<FindId setHeader={setHeader} />}/>
         <Route path="/findpw" element={<FindPw setHeader={setHeader} />}/>
+        <Route path="/board/edit" element={<EditPost setHeader={setHeader} />}/>
       </Routes>
     </BrowserRouter>
   );

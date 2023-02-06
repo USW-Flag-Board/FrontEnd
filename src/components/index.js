@@ -13,3 +13,4 @@ export {default as ActivityManagerModal} from "./ActivityManagerModal";
 export {default as ActivityUserModal} from "./ActivityUserModal";
 export {default as ActivityWrite} from "./ActivityWrite";
 export {default as LikeButton} from "./LikeButton";
+export {default as PostInput} from "./PostInput";

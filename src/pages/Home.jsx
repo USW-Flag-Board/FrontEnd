@@ -45,6 +45,7 @@ const Home = ({setHeader}) => {
                 <FeedItem style={{height: "70%"}}>
                   <FeedContent>공지 안녕하세요 현회장 정충일입니다.</FeedContent>
                   <FeedContent>공지 안녕하세요 차기회장 이수빈입니다.</FeedContent>
+                  <FeedContent>공지 안녕하세요 차기회장 이수빈입니다.</FeedContent>
                 </FeedItem>
               </NoticeArea>
             </MyActivityBox>

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import postsActions  from '../redux/thunkActions/postsActions';
+import postsActions  from '../../redux/thunkActions/postsActions';
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { SideBar, Footer, ListThem, Pagination } from "../components/";
+import { SideBar, Footer, ListThem, Pagination } from "../../components";
 
 const boardItems = [
   { 
@@ -29,7 +29,8 @@ const boardItems = [
     engName: ""
   }
 ];
-const barItem = ["제목", "작성자", "작성일", "조회수", "좋아요"];
+
+const barItem = ["제목", "작성자", "작성일", "조회수", "좋아요수"];
 const selectItems = ["전체기간", "게시물 + 작성자"];
 
 const BulletinBoard = () => {
@@ -37,9 +38,13 @@ const BulletinBoard = () => {
   const [currentItems, setCurrentItems] = useState([]); // 페이지당 보여줄 데이터 배열
   const posts = useSelector((state) => state.toDo);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const writeClick = () => {
+    navigate("/board/write");
+  }
 
   useEffect(()=>{
-      dispatch(postsActions.getPostAPI())
+      dispatch(postsActions.getBoardAPI())
     },[dispatch])
   
     return (
@@ -61,10 +66,9 @@ const BulletinBoard = () => {
           <ListArea>
             <TitleArea>
               <TitleBox>자유게시판</TitleBox>
-              <WriteButton>
-                <Link to="/board/write"><FaPen icon={faPen} />
+              <WriteButton onClick={writeClick}>
+                <FaPen icon={faPen} />
                   글쓰기
-                </Link>
               </WriteButton>
             </TitleArea>
             <ListBar>
@@ -225,19 +229,24 @@ const WriteButton = styled.button`
 const SearchArea = styled.div`
   border: 2px solid #535353;
   border-radius: 15px;
-  padding: 0.6rem 0.4rem 0.6rem 0.4rem;
+  padding-left: 0.6rem;
   background-color: #535353cc;
+  height: 50%;
+  display: flex;
+  align-items: center;
 `;
 
 const InputBase = styled.input`
   box-sizing: border-box;
+  font-size: 15px;
+  color: white;
+  height: 70%;
   width: 85%;
   border: none;
   background-color: #535353cc;
   &:focus {
     outline: none;
   }
-  color: #9b9b9b;
 `;
 
 //fontAwesome

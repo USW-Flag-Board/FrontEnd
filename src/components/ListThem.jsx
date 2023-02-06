@@ -13,7 +13,7 @@ const ListThem = ({itemContents, themList}) => {
                 <ListThemBox key={id}>
                     <ItemBox>
                         <ListItem>{id}</ListItem>
-                        <ListItem style={{cursor: "pointer"}} onClick={()=>{dispatch(postActions.setId(id)); navigate("/board/writeDetail");}}>{title}</ListItem>
+                        <ListItem style={{cursor: "pointer"}} onClick={()=>{dispatch(postActions.setId(id)); navigate("/board/detail");}}>{title}</ListItem>
                         <ListItem>{memberName}</ListItem>
                         <ListItem>{createdAt.slice(0, 3).join('.')}</ListItem>
                         <ListItem>{viewCount}</ListItem>
@@ -24,7 +24,7 @@ const ListThem = ({itemContents, themList}) => {
             <ListThemBox>
                 <ItemBox>
                     <ListItem>{themList.id}</ListItem>
-                    <ListItem style={{cursor: "pointer"}}>{themList.title}</ListItem>
+                    <ListItem>{themList.title}</ListItem>
                     <ListItem>{themList.memberName}</ListItem>
                     <ListItem>{themList.createdAt.slice(0, 3).join('.')}</ListItem>
                     <ListItem>{themList.viewCount}</ListItem>
