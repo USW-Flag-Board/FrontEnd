@@ -3,13 +3,10 @@ import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 
-//1. 메일 관련 유효성 검사 추가 예정 ( suwon.ac.kr 이 아닐 경우 등등 )
-
 // eslint-disable-next-line
 const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
 const emailExp = /[\{\}\[\]\/?,;:|\)*~`!^\-_+<>\#$%&\\\=\(\'\"]/g;
 const korExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
-const numExp = /[0-9]/g;
 const spaceExp = /\s/;
 
 const FindPw = ({setHeader}) => {
@@ -18,7 +15,7 @@ const FindPw = ({setHeader}) => {
 
   useEffect(() => {
     setHeader(true);
-  });
+  }, []);
 
   return (
     <>
@@ -31,7 +28,7 @@ const FindPw = ({setHeader}) => {
   );
 };
 
-const ShowPw = (props) => {
+const ShowPw = ({email}) => {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
@@ -44,8 +41,8 @@ const ShowPw = (props) => {
 
   const ChangePassword = () => {
     axios
-      .put("http://3.39.36.239:8080/api/members/find/password", {
-        email: props.email,
+      .put("http://3.39.36.239:80/api/members/find/password", {
+        email,
         newPassword: password,
       })
       .then(() => {
@@ -103,7 +100,7 @@ const FindPwPage = (props) => {
 
   const Find = () => {
     axios
-      .post("http://3.39.36.239:8080/api/members/find/password", {
+      .post("http://3.39.36.239:80/api/members/find/password", {
         email: email,
         loginId: id,
       })
@@ -153,7 +150,7 @@ const FindPwPage = (props) => {
 
   useEffect(() => {
     props.setSuccessState(false);
-  });
+  }, []);
 
   return (
     <>
@@ -197,17 +194,17 @@ const FindPwPage = (props) => {
   );
 };
 
-const CertificateBox = (props) => {
+const CertificateBox = ({email, setSuccessState}) => {
   const [certification, setCertification] = useState("");
 
   const AuthCheck = () => {
     axios
-      .post("http://3.39.36.239:8080/api/members/certification", {
+      .post("http://3.39.36.239:80/api/members/certification", {
         certification: certification,
-        email: props.email,
+        email,
       })
       .then(() => {
-        props.setSuccessState(true);
+        setSuccessState(true);
       })
       .catch((error) => {
         if (error.response.status === 404) {
@@ -227,8 +224,8 @@ const CertificateBox = (props) => {
   };
 
   useEffect(() => {
-    props.setSuccessState(false);
-  });
+    setSuccessState(false);
+  }, []);
 
   return (
     <>

@@ -6,13 +6,8 @@ import styled from "styled-components";
 import axios from "axios";
 import Cookies from "universal-cookie";
 
-//1. member api가 이상함. 수정되면 작업 진행.
-//2. profile url 받아와서 img 바꾸는거는 나중에 해야 할 듯
-//3. profile update 함수는 나중에 모달창 만들어지면 그때 수정, 지금은 임의로 값을 보냈다는 가정
-
 const MyPage = ({setHeader}) => {
   const navigate = useNavigate();
-  const location = useLocation();
   const cookies = new Cookies();
   const [loginId, setLoginId] = useState("");
   const [nickname, setNickname] = useState("");
@@ -30,11 +25,10 @@ const MyPage = ({setHeader}) => {
     if (loginId !== "") {
       try {
         const response = await axios.get(
-          `http://3.39.36.239:8080/api/members/${loginId}`
+          `http://3.39.36.239:80/api/members/${loginId}`
         );
         setNickname(response.data.payload.avatarResponse.nickName);
         setIntroduceMessage(response.data.payload.avatarResponse.bio);
-        console.log(response.data);
       } catch (error) {
         if (error.response.status === 404) {
           navigate("/login");
@@ -53,7 +47,6 @@ const MyPage = ({setHeader}) => {
 
   useEffect(() => {
     async function DataSet() {
-      setHeader(true);
       if (
         localStorage.getItem("UserToken") ||
         sessionStorage.getItem("UserToken")
@@ -64,6 +57,7 @@ const MyPage = ({setHeader}) => {
         navigate("/login");
       }
     }
+    setHeader(true);
     DataSet();
   }, [loginId]);
 
@@ -73,10 +67,7 @@ const MyPage = ({setHeader}) => {
         <UserPage>
           <ProfileArea>
             <RelativeArea>
-              <FontAwesomeIcon
-                icon={faUser}
-                style={{width: 120, height: 120, marginBottom: 30}}
-              />
+              <ProfileIcon icon={faUser} />
               <EditProfile onClick={() => navigate("/edit")}>
                 Edit Profile
               </EditProfile>
@@ -108,6 +99,12 @@ const MyPage = ({setHeader}) => {
     </PageArea>
   );
 };
+
+const ProfileIcon = styled(FontAwesomeIcon)`
+  width: 120px;
+  height: 120px;
+  marginbottom: 30px;
+`;
 
 const PageArea = styled.div`
   width: 100%;

@@ -11,13 +11,12 @@ const numExp = /[0-9]/g;
 const spaceExp = /\s/;
 
 const FindId = ({setHeader}) => {
-  const navigate = useNavigate();
   const [successState, setSuccessState] = useState(false);
   const [id, setId] = useState("");
 
   useEffect(() => {
     setHeader(true);
-  });
+  }, []);
 
   return (
     <>
@@ -30,7 +29,7 @@ const FindId = ({setHeader}) => {
   );
 };
 
-const ShowId = (props) => {
+const ShowId = ({id}) => {
   return (
     <>
       <Pagebox>
@@ -41,7 +40,7 @@ const ShowId = (props) => {
             <Emailfield
               style={{margin: 0, padding: 0, justifyContent: "center"}}
             >
-              <Box>당신의 아이디는 "{props.id}" 입니다.</Box>
+              <Box>당신의 아이디는 "{id}" 입니다.</Box>
             </Emailfield>
           </Emailbox>
         </Mainbox>
@@ -112,7 +111,7 @@ const FindIdPage = ({setId, setSuccessState}) => {
 
   useEffect(() => {
     setSuccessState(false);
-  });
+  }, []);
 
   return (
     <>
@@ -157,18 +156,18 @@ const FindIdPage = ({setId, setSuccessState}) => {
   );
 };
 
-const CertificateBox = (props) => {
+const CertificateBox = ({email, setSuccessState, setId}) => {
   const [certification, setCertification] = useState("");
 
   const AuthCheck = () => {
     axios
-      .post("http://3.39.36.239:8080/api/members/certification", {
+      .post("http://3.39.36.239:80/api/members/certification", {
         certification: certification,
-        email: props.email,
+        email,
       })
       .then((response) => {
-        props.setSuccessState(true);
-        props.setId(response.data.payload);
+        setSuccessState(true);
+        setId(response.data.payload);
       })
       .catch((error) => {
         if (error.response.status === 404) {
@@ -188,8 +187,8 @@ const CertificateBox = (props) => {
   };
 
   useEffect(() => {
-    props.setSuccessState(false);
-  });
+    setSuccessState(false);
+  }, []);
 
   return (
     <>

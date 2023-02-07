@@ -1,56 +1,26 @@
 import {useState, useEffect} from "react";
-import {useNavigate, useLocation} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import Cookies from "universal-cookie";
-import {PropaneSharp} from "@mui/icons-material";
 
-const profileUpdateExample = [
-  "백엔드 개발자 문희조입니다.",
-  "컴퓨터SW",
-  "010-1234-5678",
-  "19017041",
-];
-
-const menuArray = [{name: "아바타"}, {name: "개인정보"}];
+const MENU_ARRAY = [{name: "아바타"}, {name: "개인정보"}];
 
 const EditUser = ({setHeader}) => {
-  const cookies = new Cookies();
-  const navigate = useNavigate();
   const [currentTab, clickTab] = useState(0);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [major, setMajor] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [studentId, setStudentId] = useState("");
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const indexSetting = (index) => {
     clickTab(index);
   };
 
   const DeleteUser = () => {
-    //나중에 여기에 모달창 추가해서 삭제 디자인에 맞게 적용 예정
-    axios
-      .delete("http://3.39.36.239:8080/api/members", {
-        data: {
-          password: "asdasd72!@",
-        },
-      })
-      .then((response) => {
-        alert("계정 삭제 완료");
-        cookies.remove("refresh_token");
-        cookies.remove("remember_id");
-        localStorage.clear();
-        sessionStorage.clear();
-        navigate("/");
-      })
-      .catch((error) => {
-        if (error.response.state === 400) {
-          alert("비밀번호가 일치하지 않습니다.");
-        } else if (error.response.state === 404) {
-          alert("존재하지 않는 사용자입니다?");
-        }
-      });
+    setDeleteModalOpen(true);
   };
 
   useEffect(() => {
@@ -60,6 +30,12 @@ const EditUser = ({setHeader}) => {
   return (
     <>
       <Mainbox>
+        {deleteModalOpen && (
+          <DeleteModal
+            className={deleteModalOpen ? "opaque" : ""}
+            setDeleteModalOpen={setDeleteModalOpen}
+          />
+        )}
         <EditTitle>회원 정보 수정</EditTitle>
         <Editbox>
           <ImgBox>
@@ -75,30 +51,20 @@ const EditUser = ({setHeader}) => {
           <MainContent>
             <div style={{display: "flex"}}>
               <TabMenu>
-                {menuArray.map((el, index) => (
+                {MENU_ARRAY.map((el, index) => (
                   <li
                     className={
                       index === currentTab ? "submenu focused" : "submenu"
                     }
                     onClick={() => indexSetting(index)}
-                    key={el.name}
+                    key={index}
                   >
                     {el.name}
                   </li>
                 ))}
               </TabMenu>
             </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                border: "1px solid",
-                borderColor: "#6c6c6c",
-                borderRadius: "0px 28px 28px 28px",
-                padding: "calc(10% + 20px) 0px 20px 20px",
-                width: "90%",
-              }}
-            >
+            <TabContent>
               {currentTab === 0 && (
                 <AvatarEdit
                   setName={setName}
@@ -117,9 +83,15 @@ const EditUser = ({setHeader}) => {
                   studentId={studentId}
                 />
               )}
-            </div>
+            </TabContent>
             <DeleteBox>
-              <DeleteButton onClick={() => DeleteUser()}>회원탈퇴</DeleteButton>
+              <DeleteModalButton
+                onClick={() => {
+                  DeleteUser();
+                }}
+              >
+                회원탈퇴
+              </DeleteModalButton>
             </DeleteBox>
           </MainContent>
         </Editbox>
@@ -128,7 +100,13 @@ const EditUser = ({setHeader}) => {
   );
 };
 
-const AvatarEdit = (props) => {
+const AvatarEdit = ({
+  setName,
+  setEmail,
+  setMajor,
+  setPhoneNumber,
+  setStudentId,
+}) => {
   const navigate = useNavigate();
   const [bio, setBio] = useState("");
   const [nickName, setNickName] = useState("");
@@ -137,7 +115,7 @@ const AvatarEdit = (props) => {
 
   const ProfileUpdate = () => {
     axios
-      .put("http://3.39.36.239:8080/api/members/avatar", {
+      .put("http://3.39.36.239:80/api/members/avatar", {
         bio: bio,
         nickName: nickName,
         profileImg: profileImg,
@@ -152,17 +130,17 @@ const AvatarEdit = (props) => {
 
   useEffect(() => {
     axios
-      .get("http://3.39.36.239:8080/api/members")
+      .get("http://3.39.36.239:80/api/members")
       .then((response) => {
         setNickName(response.data.payload.nickName);
         setBio(response.data.payload.bio);
-        props.setName(response.data.payload.name);
-        props.setEmail(response.data.payload.email);
-        props.setMajor(response.data.payload.major);
-        props.setPhoneNumber(response.data.payload.phoneNumber);
-        props.setStudentId(response.data.payload.studentId);
+        setName(response.data.payload.name);
+        setEmail(response.data.payload.email);
+        setMajor(response.data.payload.major);
+        setPhoneNumber(response.data.payload.phoneNumber);
+        setStudentId(response.data.payload.studentId);
       })
-      .catch((error) => {
+      .catch(() => {
         alert("데이터를 불러오는데 실패했습니다.");
       });
   }, []);
@@ -207,40 +185,167 @@ const AvatarEdit = (props) => {
   );
 };
 
-const PrivateEdit = (props) => {
-  const navigate = useNavigate();
-
+const PrivateEdit = ({name, email, major, phoneNumber, studentId}) => {
   return (
     <>
       <ProfileTitle>개인정보</ProfileTitle>
       <SideBox>
         <TitleBox>이름 </TitleBox>
-        <InputFiled placeholder={props.name} />
+        <InputFiled placeholder={name} disabled />
       </SideBox>
       <SideBox>
         <TitleBox>이메일 </TitleBox>
-        <InputFiled placeholder={props.email} />
+        <InputFiled placeholder={email} disabled />
       </SideBox>
       <SideBox>
         <TitleBox>전공 </TitleBox>
-        <InputFiled placeholder={props.major} />
+        <InputFiled placeholder={major} disabled />
       </SideBox>
       <SideBox>
         <TitleBox>전화번호 </TitleBox>
         <InputFiled
-          placeholder={props.phoneNumber.replace(
+          placeholder={phoneNumber.replace(
             /^(\d{2,3})(\d{3,4})(\d{4})$/,
             `$1-$2-$3`
           )}
+          disabled
         />
       </SideBox>
       <SideBox>
         <TitleBox>학번 </TitleBox>
-        <InputFiled placeholder={props.studentId} />
+        <InputFiled placeholder={studentId} disabled />
       </SideBox>
     </>
   );
 };
+
+const DeleteModal = ({setDeleteModalOpen}) => {
+  const navigate = useNavigate();
+  const cookies = new Cookies();
+  const [password, setPassword] = useState("");
+
+  const closeModal = () => {
+    setDeleteModalOpen(false);
+  };
+
+  const DeleteUserId = () => {
+    axios
+      .delete("http://3.39.36.239:80/api/members", {
+        data: {
+          password: password,
+        },
+      })
+      .then(() => {
+        alert("계정 삭제 완료");
+        cookies.remove("refresh_token");
+        cookies.remove("remember_id");
+        localStorage.clear();
+        sessionStorage.clear();
+        navigate("/");
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          alert("비밀번호가 일치하지 않습니다.");
+        } else if (error.response.status === 404) {
+          alert("존재하지 않는 사용자입니다.");
+        }
+      });
+  };
+
+  return (
+    <>
+      <DeleteModalBox>
+        <ExitModal onClick={() => closeModal()}>X</ExitModal>
+        <DeleteModalTitle>회원탈퇴</DeleteModalTitle>
+        <DeleteModalContent>
+          회원탈퇴를 원하신다면 비밀번호를 입력해주세요.
+        </DeleteModalContent>
+        <InputPassword
+          onChange={(e) => setPassword(e.target.value)}
+        ></InputPassword>
+        <DeleteButton onClick={() => DeleteUserId()}>탈퇴하기</DeleteButton>
+      </DeleteModalBox>
+    </>
+  );
+};
+
+const TabContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid;
+  border-color: #6c6c6c;
+  borderradius: 0px 28px 28px 28px;
+  padding: calc(10% + 20px) 0px 20px 20px;
+  width: 90%;
+`;
+
+const DeleteModalBox = styled.div`
+  width: 30%;
+  height: 25%;
+  z-index: 999;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #6c6c6c;
+  transition: 0.2s;
+  border-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+`;
+
+const DeleteModalTitle = styled.div`
+  font-weight: 500;
+  font-size: 40px;
+`;
+
+const DeleteModalContent = styled.div`
+  margin-top: 10%;
+`;
+
+const DeleteButton = styled.div`
+  width: 15%;
+  height: 8%;
+  background: white;
+  color: red;
+  border-radius: 1vh;
+  border: 1px solid red;
+  margin-top: 5%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  font-size: 0.5rem;
+  font-weight: 500;
+  outline: none;
+  transition: 0.2s;
+  :hover {
+    transition: 0.2s;
+    background-color: #575757;
+  }
+`;
+
+const ExitModal = styled.button`
+  position: absolute;
+  background: transparent;
+  outline: none;
+  border: none;
+  left: 93%;
+  top: 5%;
+`;
+
+const InputPassword = styled.input`
+  width: 50%;
+  height: 3vh;
+  background: white;
+  border-radius: 1.5vh;
+  border: none;
+  outline: none;
+  color: black;
+  padding-left: 10px;
+  margin-top: 5vh;
+`;
 
 const TabMenu = styled.ul`
   background: #403e3e;
@@ -383,6 +488,8 @@ const OnelineInput = styled.textarea`
   flex-wrap: wrap;
   resize: none;
   font-family: Arial;
+  justify-content: center;
+  align-items: center;
   ::placeholder {
     color: white;
   }
@@ -462,7 +569,7 @@ const DeleteBox = styled.div`
   margin-bottom: 2vh;
 `;
 
-const DeleteButton = styled.button`
+const DeleteModalButton = styled.button`
   width: 150px;
   height: 23px;
   background: #6c6c6c;

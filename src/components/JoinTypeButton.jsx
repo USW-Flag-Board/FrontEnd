@@ -4,7 +4,7 @@ import {faCircleCheck} from "@fortawesome/free-solid-svg-icons";
 import {faCircle} from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
 
-const JoinTypeButton = (props) => {
+const JoinTypeButton = ({getValue}) => {
   const [firstState, setFirstState] = useState(false);
   const [secondState, setSecondState] = useState(false);
 
@@ -13,23 +13,23 @@ const JoinTypeButton = (props) => {
       if (firstState) {
         setFirstState(false);
         if (!secondState) {
-          props.getValue("");
+          getValue("");
         }
       } else {
         setSecondState(false);
         setFirstState(true);
-        props.getValue("동아리");
+        getValue("동아리");
       }
     } else if (type === 2) {
       if (secondState) {
         setSecondState(false);
         if (!firstState) {
-          props.getValue("");
+          getValue("");
         }
       } else {
         setFirstState(false);
         setSecondState(true);
-        props.getValue("일반");
+        getValue("일반");
       }
     }
   };
@@ -37,55 +37,23 @@ const JoinTypeButton = (props) => {
   return (
     <SortArea>
       <CheckArea>
-        <div style={{display: "inline-block"}}>
+        <JoinTypeButtonArea>
           {firstState ? (
-            <FontAwesomeIcon
-              icon={faCircleCheck}
-              style={{
-                filter:
-                  "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
-                transition: "opacity 0.2s",
-              }}
-              onClick={() => Checked(1)}
-            />
+            <ToggleButton icon={faCircleCheck} onClick={() => Checked(1)} />
           ) : (
-            <FontAwesomeIcon
-              icon={faCircle}
-              style={{
-                filter:
-                  "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
-                transition: "opacity 0.2s",
-              }}
-              onClick={() => Checked(1)}
-            />
+            <ToggleButton icon={faCircle} onClick={() => Checked(1)} />
           )}
-        </div>
+        </JoinTypeButtonArea>
         <CheckLabel>FLAG 동아리원</CheckLabel>
       </CheckArea>
       <CheckArea>
-        <div style={{display: "inline-block"}}>
+        <JoinTypeButtonArea>
           {secondState ? (
-            <FontAwesomeIcon
-              icon={faCircleCheck}
-              style={{
-                filter:
-                  "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
-                transition: "opacity 0.2s",
-              }}
-              onClick={() => Checked(2)}
-            />
+            <ToggleButton icon={faCircleCheck} onClick={() => Checked(2)} />
           ) : (
-            <FontAwesomeIcon
-              icon={faCircle}
-              style={{
-                filter:
-                  "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
-                transition: "opacity 0.2s",
-              }}
-              onClick={() => Checked(2)}
-            />
+            <ToggleButton icon={faCircle} onClick={() => Checked(2)} />
           )}
-        </div>
+        </JoinTypeButtonArea>
         <CheckLabel>일반유저</CheckLabel>
       </CheckArea>
     </SortArea>
@@ -106,6 +74,16 @@ const CheckArea = styled.label`
 
 const CheckLabel = styled.p`
   margin-left: 10px;
+`;
+
+const ToggleButton = styled(FontAwesomeIcon)`
+  filter: invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg)
+    brightness(97%) contrast(83%);
+  transition: opacity 0.2s;
+`;
+
+const JoinTypeButtonArea = styled.div`
+  display: inline-block;
 `;
 
 export default JoinTypeButton;

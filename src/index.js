@@ -17,20 +17,31 @@ axios.interceptors.response.use(
       config,
       response: {status},
     } = error;
+    // if (status === 401) {
+    //   const originalRequest = config;
+    //   const accessToken = sessionStorage.getItem("UserToken");
+    //   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    //   originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+    //   return axios(originalRequest);
+    // }
     if (status === 401) {
       const originalRequest = config;
       const accessToken = sessionStorage.getItem("UserToken");
       const refreshToken = await cookies.get("refresh_token");
+
       const {data} = await axios.post(
-        `http://3.39.36.239:8080/api/auth/reissue`,
+        `http://3.39.36.239:80/api/auth/reissue`,
         {
-          accessToken,
-          refreshToken,
+          accessToken: accessToken,
+          refreshToken: refreshToken,
         }
       );
-      const {accessToken: newAccessToken, refreshToken: newRefreshToken} = data;
+      const {accessToken: newAccessToken, refreshToken: newRefreshToken} =
+        data.payload;
       sessionStorage.setItem("UserToken", newAccessToken);
-      await cookies.set("refresh_token", newRefreshToken);
+      await cookies.set("refresh_token", newRefreshToken, {
+        path: "/",
+      });
       axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
       originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
       return axios(originalRequest);

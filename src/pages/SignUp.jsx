@@ -1,4 +1,5 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
 import {faLock} from "@fortawesome/free-solid-svg-icons";
@@ -6,9 +7,8 @@ import styled from "styled-components";
 import axios from "axios";
 import InfoState from "../components/InfoState";
 import JoinTypeButton from "../components/JoinTypeButton";
-import {useNavigate} from "react-router-dom";
 
-const specialized = [
+const SPECIALIZED = [
   {
     label: "전공을 선택하세요",
     value: "전공을 선택하세요",
@@ -39,7 +39,6 @@ const SignUp = ({setHeader}) => {
   const [majorStateMessage, setMajorStateMessage] = useState("");
   const [studentIdStateMessage, setStudentIdStateMessage] = useState("");
   const [loginId, setLoginId] = useState("");
-  const email = "";
   const [originEmail, setOriginEmail] = useState("");
   const [joinType, setJoinType] = useState("");
   const [major, setMajor] = useState("");
@@ -50,7 +49,6 @@ const SignUp = ({setHeader}) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [nickName, setNickName] = useState("");
   const navigate = useNavigate();
-  setHeader(false);
 
   const getValue = (text) => {
     setJoinType(text);
@@ -76,17 +74,6 @@ const SignUp = ({setHeader}) => {
     ) {
       SignInfo();
     } else {
-      console.log(
-        originEmail,
-        joinType,
-        loginId,
-        major,
-        name,
-        password,
-        studentId,
-        phoneNumber,
-        nickName
-      );
       alert("가입정보를 정확히 입력해주세요.");
     }
   }
@@ -112,7 +99,7 @@ const SignUp = ({setHeader}) => {
           loginId,
         };
         axios
-          .post("http://3.39.36.239:8080/api/auth/check/id", data)
+          .post("http://3.39.36.239:80/api/auth/check/id", data)
           .then(() => {
             setIdStateMessage("사용 가능한 아이디입니다.");
             resolve(true);
@@ -184,7 +171,7 @@ const SignUp = ({setHeader}) => {
           email: originEmail + "@suwon.ac.kr",
         };
         axios
-          .post("http://3.39.36.239:8080/api/auth/check/email", data)
+          .post("http://3.39.36.239:80/api/auth/check/email", data)
           .then(() => {
             setEmailStateMessage("사용 가능한 이메일입니다.");
             resolve(true);
@@ -252,7 +239,7 @@ const SignUp = ({setHeader}) => {
       return true;
     }
   };
-  setHeader(false);
+
   const SignInfo = () => {
     const data = {
       email: originEmail + "@suwon.ac.kr",
@@ -269,21 +256,10 @@ const SignUp = ({setHeader}) => {
       alert("가입 유형을 선택해주세요.");
     } else {
       axios
-        .post("http://3.39.36.239:8080/api/auth/join", data)
-        .then((response) => {
-          console.log(
-            email,
-            joinType,
-            loginId,
-            major,
-            name,
-            password,
-            studentId,
-            phoneNumber,
-            nickName
-          );
+        .post("http://3.39.36.239:80/api/auth/join", data)
+        .then(() => {
           alert("재학생 인증 메일 전송 완료");
-          navigate("/EmailAuth", {state: {CheckEmail: data}});
+          navigate("/EmailAuth", {state: {JoinData: data}});
         })
         .catch((error) => {
           if (error.response.status === 400) {
@@ -298,18 +274,25 @@ const SignUp = ({setHeader}) => {
     }
   };
 
+  useEffect(() => {
+    setHeader(false);
+  }, []);
+
   return (
     <PageArea>
-      <img
-        alt="Flag 로고"
-        className="Logo"
-        src="../images/logo-White.PNG"
-        width="200"
-        height="100"
-        style={{marginBottom: 40}}
-        onClick={() => navigate("/")}
-      />
-      <SignUpArea>
+      <SignUp>
+        <img
+          alt="Flag 로고"
+          className="Logo"
+          src="../images/logo-White.PNG"
+          width="200"
+          height="100"
+          style={{marginBottom: 40}}
+          onClick={() => navigate("/")}
+        />
+        <ServiceAgree></ServiceAgree>
+      </SignUp>
+      {/* <SignUpArea>
         <RelativeArea>
           <InfoState message={idStateMessage} />
           <WriteArea
@@ -322,15 +305,7 @@ const SignUp = ({setHeader}) => {
               IdValid();
             }}
           />
-          <FontAwesomeIcon
-            icon={faUser}
-            style={{
-              color: "white",
-              position: "absolute",
-              left: "390px",
-              top: "42px",
-            }}
-          />
+          <Icon icon={faUser} />
         </RelativeArea>
         <RelativeArea>
           <InfoState message={passwordMessage} />
@@ -341,15 +316,7 @@ const SignUp = ({setHeader}) => {
               setPassword(e.target.value);
             }}
           />
-          <FontAwesomeIcon
-            icon={faLock}
-            style={{
-              color: "white",
-              position: "absolute",
-              left: "390px",
-              top: "42px",
-            }}
-          />
+          <Icon icon={faLock} />
         </RelativeArea>
         <RelativeArea>
           <InfoState message={passwordVerifyMessage} />
@@ -360,15 +327,7 @@ const SignUp = ({setHeader}) => {
               setPasswordVerify(e.target.value);
             }}
           />
-          <FontAwesomeIcon
-            icon={faLock}
-            style={{
-              color: "white",
-              position: "absolute",
-              left: "390px",
-              top: "42px",
-            }}
-          />
+          <Icon icon={faLock} />
         </RelativeArea>
         <RelativeArea>
           <InfoState message={emailStateMessage} />
@@ -401,8 +360,10 @@ const SignUp = ({setHeader}) => {
               setMajor(e.target.value);
             }}
           >
-            {specialized.map((special) => (
-              <option value={special.value}>{special.label}</option>
+            {SPECIALIZED.map((special, index) => (
+              <option value={special.value} key={index}>
+                {special.label}
+              </option>
             ))}
           </SelectSpecialize>
         </RelativeArea>
@@ -436,8 +397,18 @@ const SignUp = ({setHeader}) => {
         <AccountButton onClick={() => Sign()} fullWidth variant="contained">
           가입하기
         </AccountButton>
-      </SignUpArea>
+      </SignUpArea> */}
     </PageArea>
+  );
+};
+
+const ServiceAgree = () => {
+  return (
+    <>
+      Flaground
+      <br />
+      서비스 약관에 동의해 주세요.
+    </>
   );
 };
 
@@ -529,6 +500,13 @@ const SelectSpecialize = styled.select`
     transition: 0.2s;
     background-color: #575757;
   }
+`;
+
+const Icon = styled(FontAwesomeIcon)`
+  color: white;
+  position: absolute;
+  left: 390px;
+  top: 42px;
 `;
 
 export default SignUp;

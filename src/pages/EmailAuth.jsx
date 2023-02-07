@@ -12,17 +12,8 @@ const engExp = /[a-zA-Z]/g;
 const EmailAuth = ({setHeader}) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const email = location.state.CheckEmail.email;
-  const joinInfo = {
-    email,
-    joinType: location.state.CheckEmail.joinType,
-    loginId: location.state.CheckEmail.loginId,
-    major: location.state.CheckEmail.major,
-    name: location.state.CheckEmail.name,
-    password: location.state.CheckEmail.password,
-    studentId: location.state.CheckEmail.studentId,
-  };
   const [certification, setCertification] = useState("");
+  const email = location.state.JoinData.email;
 
   const EmailAuthCheck = () => {
     const data = {
@@ -43,8 +34,9 @@ const EmailAuth = ({setHeader}) => {
       alert("영어는 입력할 수 없습니다. 인증번호는 6자리 숫자입니다.");
     } else {
       axios
-        .post("http://3.39.36.239:8080/api/auth/sign-up", data)
-        .then((response) => {
+        .post("http://3.39.36.239:80/api/auth/sign-up", data)
+        .then(() => {
+          alert("가입이 완료되었습니다.");
           navigate("/login");
         })
         .catch((error) => {
@@ -57,8 +49,18 @@ const EmailAuth = ({setHeader}) => {
 
   const RefreshEmailAuth = () => {
     axios
-      .post("http://3.39.36.239:8080/api/auth/join", joinInfo)
-      .then((response) => {
+      .post("http://3.39.36.239:80/api/auth/join", {
+        email: email,
+        joinType: location.state.JoinData.joinType,
+        loginId: location.state.JoinData.loginId,
+        major: location.state.JoinData.major,
+        name: location.state.JoinData.name,
+        password: location.state.JoinData.password,
+        studentId: location.state.JoinData.studentId,
+        phoneNumber: location.state.JoinData.phoneNumber,
+        nickName: location.state.JoinData.nickName,
+      })
+      .then(() => {
         alert("재학생 인증 메일이 재전송 되었습니다.");
       })
       .catch((error) => {
@@ -70,7 +72,7 @@ const EmailAuth = ({setHeader}) => {
 
   useEffect(() => {
     setHeader(false);
-  });
+  }, []);
 
   return (
     <>

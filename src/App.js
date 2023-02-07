@@ -36,14 +36,14 @@ const App = () => {
             path: "/",
           });
           const {data} = await axios.post(
-            "http://3.39.36.239:8080/api/auth/reissue",
+            "http://3.39.36.239:80/api/auth/reissue",
             {
-              accessToken,
-              refreshToken,
+              accessToken: accessToken,
+              refreshToken: refreshToken,
             }
           );
           const {accessToken: newAccessToken, refreshToken: newRefreshToken} =
-            data;
+            data.payload;
           localStorage.setItem("UserToken", newAccessToken);
           cookies.remove("refresh_token", {
             path: "/",
@@ -63,14 +63,14 @@ const App = () => {
             path: "/",
           });
           const {data} = await axios.post(
-            "http://3.39.36.239:8080/api/auth/reissue",
+            "http://3.39.36.239:80/api/auth/reissue",
             {
-              accessToken,
-              refreshToken,
+              accessToken: accessToken,
+              refreshToken: refreshToken,
             }
           );
           const {accessToken: newAccessToken, refreshToken: newRefreshToken} =
-            data;
+            data.payload;
           sessionStorage.setItem("UserToken", newAccessToken);
           cookies.set("refresh_token", newRefreshToken, {
             path: "/",
@@ -79,13 +79,13 @@ const App = () => {
       }
     };
     SessionState();
-  }, [cookies]);
+  }, []);
   return (
     <BrowserRouter>
       <GlobalStyle />
       {header ? <Header /> : ""}
       <Routes>
-        <Route path="/" element={<Home setHeader={setHeader} />}></Route>
+        <Route path="/" element={<Home setHeader={setHeader} />} />
         <Route path="/login" element={<LoginPage setHeader={setHeader} />} />
         <Route path="/signup" element={<SignUp setHeader={setHeader} />} />
         <Route path="/my" element={<MyPage setHeader={setHeader} />} />

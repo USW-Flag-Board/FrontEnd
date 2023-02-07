@@ -17,24 +17,6 @@ const LoginPage = ({setHeader}) => {
   const [loginType, setLoginType] = useState(1);
   const [idRemember, setIdRemember] = useState(false);
 
-  useEffect(() => {
-    if (sessionStorage.getItem("UserToken")) {
-      navigate("/my");
-    } else if (localStorage.getItem("UserToken")) {
-      navigate("/my");
-    }
-  }, [navigate]);
-
-  useEffect(() => {
-    if (cookies.get("remember_id") !== undefined) {
-      setLoginId(cookies.get("remember_id"));
-    }
-  }, [cookies, navigate]);
-
-  useEffect(() => {
-    setHeader(false);
-  });
-
   const getValue = (text) => {
     setLoginType(text);
   };
@@ -51,10 +33,16 @@ const LoginPage = ({setHeader}) => {
     }
   };
 
-  function OnLogin(loginId, password) {
+  const handleOnKeyPress = (e) => {
+    if (e.key === "Enter") {
+      OnLogin();
+    }
+  };
+
+  function OnLogin() {
     const data = {
-      loginId,
-      password,
+      loginId: loginId,
+      password: password,
     };
     if (loginId === "") {
       alert("아이디를 입력해주세요.");
@@ -63,13 +51,13 @@ const LoginPage = ({setHeader}) => {
     } else {
       if (loginType === 1) {
         axios
-          .post("http://3.39.36.239:8080/api/auth/login", data)
+          .post("http://3.39.36.239:80/api/auth/login", data)
           .then((response) => {
             RememberCookie();
-            const accessToken = response.data.accessToken;
+            const accessToken = response.data.payload.accessToken;
             sessionStorage.setItem("UserToken", accessToken);
             sessionStorage.setItem("id", loginId);
-            cookies.set("refresh_token", response.data.refreshToken, {
+            cookies.set("refresh_token", response.data.payload.refreshToken, {
               path: "/",
             });
             navigate("/");
@@ -81,13 +69,13 @@ const LoginPage = ({setHeader}) => {
           });
       } else if (loginType === 2) {
         axios
-          .post("http://3.39.36.239:8080/api/auth/login", data)
+          .post("http://3.39.36.239:80/api/auth/login", data)
           .then((response) => {
             RememberCookie();
-            const accessToken = response.data.accessToken;
+            const accessToken = response.data.payload.accessToken;
             localStorage.setItem("UserToken", accessToken);
             localStorage.setItem("id", loginId);
-            cookies.set("refresh_token", response.data.refreshToken, {
+            cookies.set("refresh_token", response.data.payload.refreshToken, {
               path: "/",
             });
             navigate("/");
@@ -100,6 +88,18 @@ const LoginPage = ({setHeader}) => {
       }
     }
   }
+
+  useEffect(() => {
+    if (sessionStorage.getItem("UserToken")) {
+      navigate("/my");
+    } else if (localStorage.getItem("UserToken")) {
+      navigate("/my");
+    }
+    setHeader(false);
+    if (cookies.get("remember_id") !== undefined) {
+      setLoginId(cookies.get("remember_id"));
+    }
+  }, []);
 
   return (
     <PageArea>
@@ -124,10 +124,7 @@ const LoginPage = ({setHeader}) => {
               setLoginId(e.target.value);
             }}
           />
-          <FontAwesomeIcon
-            icon={faUser}
-            style={{color: "white", position: "absolute", left: 40, top: 42}}
-          />
+          <Icon icon={faUser} />
         </RelativeArea>
         <RelativeArea>
           <WriteArea
@@ -136,11 +133,11 @@ const LoginPage = ({setHeader}) => {
             onChange={(e) => {
               setPassword(e.target.value);
             }}
+            onKeyPress={(e) => {
+              handleOnKeyPress(e);
+            }}
           />
-          <FontAwesomeIcon
-            icon={faLock}
-            style={{color: "white", position: "absolute", left: 40, top: 42}}
-          />
+          <Icon icon={faLock} />
         </RelativeArea>
         <SortArea>
           <CheckArea>
@@ -152,11 +149,7 @@ const LoginPage = ({setHeader}) => {
             <CheckLabel>아이디 기억하기</CheckLabel>
           </CheckArea>
         </SortArea>
-        <LoginButton
-          onClick={() => OnLogin(loginId, password)}
-          fullWidth
-          variant="contained"
-        >
+        <LoginButton onClick={() => OnLogin()} fullWidth variant="contained">
           로그인
         </LoginButton>
         <SortArea>
@@ -174,6 +167,13 @@ const LoginPage = ({setHeader}) => {
     </PageArea>
   );
 };
+
+const Icon = styled(FontAwesomeIcon)`
+  color: white;
+  position: absolute;
+  left: 40px;
+  top: 42px;
+`;
 
 const PageArea = styled.div`
   width: 100%;
