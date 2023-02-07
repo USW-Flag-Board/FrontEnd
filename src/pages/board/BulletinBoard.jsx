@@ -44,10 +44,10 @@ const BulletinBoard = () => {
   }
 
   useEffect(()=>{
-      dispatch(postsActions.getBoardAPI())
-    },[dispatch])
+      dispatch(postsActions.getBoardAPI());
+  },[dispatch])
   
-    return (
+  return (
     <>
       <BoardArea>
         <ContentArea>

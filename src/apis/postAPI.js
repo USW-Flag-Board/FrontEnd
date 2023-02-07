@@ -13,25 +13,37 @@ const getBoardAxios = async () => {
 
 
 // 게시글 가져오기
-
-
-// 게시글 등록하기
-const writePostAxios = async (data) => {
+const getPostAxios = async ()=>{
   try{
-    const res = await axios
-      .post("http://3.39.36.239:8080/api/posts", data)
-      .then((response)=>{
-        window.alert("등록이 완료되었습니다.");
-        console.log("서버에서 내려온 값: ", response);
-      })
-    }catch(error){
-        console.log(error);
+    
+  } catch(error){
+    console.log(error);
   }
 }
 
+// 게시글 등록하기
+const writePostAxios = (data) => {
+  axios
+    .post("http://3.39.36.239:8080/api/posts", data)
+  // {
+  //   data: data,
+  //   headers: {
+  //     'Authorization': `Bearer ${sessionStorage.getItem("UserToken")}`,
+  //     'Content-Type': 'application/json'
+  //   },
+  // })
+    .then((response) => {
+        console.log("서버에서 내려온 값:", response);
+  })
+    .catch((error) => {
+        // 에러 핸들링
+        console.log(error);
+  });
+};
+
 
 // 게시글 수정하기
-const eiditPostAxios = async () => {
+const editPostAxios = async () => {
   try{
     const res = await axios.get();
       return res;
@@ -43,8 +55,9 @@ const eiditPostAxios = async () => {
 
 const postAPI = {
   getBoardAxios,
+  getPostAxios,
   writePostAxios,
-  eiditPostAxios,
+  editPostAxios,
 };
   
 export default postAPI;

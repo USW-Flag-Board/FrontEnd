@@ -4,7 +4,8 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { ListThem, SideBar, LikeButton, Reply } from "../../components";
 import { useNavigate } from "react-router-dom";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from "@fortawesome/free-solid-svg-icons";
 const boardItems = [
   { 
     id: 1,
@@ -88,6 +89,7 @@ const DetailWritePage = ({setHeader}) => {
           <PostFooter>
             <PostViewCount><PostView>View</PostView>{getPost.viewCount}</PostViewCount>
             <PostLike><LikeButton/>{getPost.likeCount}</PostLike>
+            <CommentCount><FaComment icon={faComment}/>10</CommentCount>
           </PostFooter>
         </PostDatailBox>
         <CommentInputBox>
@@ -121,7 +123,6 @@ const TitleBox = styled.h2`
 const ContentArea = styled.div`
   box-sizing: border-box;
   width: 87%;
-  height: 100%;
   padding: 1.2rem;
 `;
 
@@ -202,7 +203,16 @@ const PostViewCount = styled.span`
 `;
 
 const PostLike = styled.span`
-  margin-right: 20px;
+  margin-right: 10px;
+`;
+
+const CommentCount = styled.span`
+  margin-left: 10px;
+`
+
+const FaComment = styled(FontAwesomeIcon)`
+  font-size: 15px;
+  margin-right: 10px;
 `;
 
 const CommentInputBox = styled.form`
