@@ -29,14 +29,13 @@ const SPECIALIZED = [
   },
 ];
 
-//1. 가입 정보 props로 전달해야함
-//2. 아래 동그라미
-//3. 그 외 기타 레이아웃 작업
+//1. 잘못된 값 입력시, 빨간색으로 ㄱㄱ
+//2. 동그라미 누르면 뒤로 가기? 고민중
 
 const SignUpPage = ({setHeader}) => {
   const navigate = useNavigate();
   const [buttonState, setButtonState] = useState(false);
-  const [signUpIndex, setSignUpIndex] = useState(4);
+  const [signUpIndex, setSignUpIndex] = useState(0);
   const [email, setEmail] = useState("");
   const [joinType, setJoinType] = useState("");
   const [loginId, setLoginId] = useState("");
@@ -53,17 +52,6 @@ const SignUpPage = ({setHeader}) => {
 
   useEffect(() => {
     setHeader(false);
-    console.log(
-      email +
-        joinType +
-        loginId +
-        major +
-        name +
-        nickName +
-        password +
-        phoneNumber +
-        studentId
-    );
     if (signUpIndex === 5) {
       alert("회원가입이 완료되었습니다.");
       navigate("/login");
@@ -192,9 +180,8 @@ const AllCheckButton = ({setAllAgree}) => {
     <>
       {toggle ? (
         <RelativeArea>
-          <FontAwesomeIcon
+          <AgreeButton
             icon={faCircleCheck}
-            style={{width: 20, height: 20, margin: 0, display: "inline-flex"}}
             onClick={() => setToggle(!toggle)}
           />
           <AgreeMessage onClick={() => setToggle(!toggle)}>
@@ -203,11 +190,7 @@ const AllCheckButton = ({setAllAgree}) => {
         </RelativeArea>
       ) : (
         <RelativeArea>
-          <FontAwesomeIcon
-            icon={faCircle}
-            style={{width: 20, height: 20, margin: 0, display: "inline-flex"}}
-            onClick={() => setToggle(!toggle)}
-          />
+          <AgreeButton icon={faCircle} onClick={() => setToggle(!toggle)} />
           <AgreeMessage onClick={() => setToggle(!toggle)}>
             모두 동의합니다.
           </AgreeMessage>
@@ -232,9 +215,8 @@ const CheckButton = ({setAccountAgree, message, allAgree}) => {
     <>
       {toggle ? (
         <RelativeArea>
-          <FontAwesomeIcon
+          <AgreeButton
             icon={faCircleCheck}
-            style={{width: 20, height: 20, margin: 0, display: "inline-flex"}}
             onClick={() => setToggle(!toggle)}
           />
           <AgreeMessage onClick={() => setToggle(!toggle)}>
@@ -243,11 +225,7 @@ const CheckButton = ({setAccountAgree, message, allAgree}) => {
         </RelativeArea>
       ) : (
         <RelativeArea>
-          <FontAwesomeIcon
-            icon={faCircle}
-            style={{width: 20, height: 20, margin: 0, display: "inline-flex"}}
-            onClick={() => setToggle(!toggle)}
-          />
+          <AgreeButton icon={faCircle} onClick={() => setToggle(!toggle)} />
           <AgreeMessage onClick={() => setToggle(!toggle)}>
             {message}
           </AgreeMessage>
@@ -460,11 +438,9 @@ const Privacy = ({
     setCheckInfo((prevState) =>
       prevState.map((item, idx) => (idx === index ? state : item))
     );
-    console.log(checkInfo);
   };
 
   const NameValid = () => {
-    console.log(nameData);
     if (nameData === "") {
       setNameMessage("이름이 입력되지 않았습니다.");
       BooleanCheck(0, false);
@@ -658,7 +634,7 @@ const EmailAuth = ({
   const [originEmailData, setOriginEmailData] = useState("");
   const [emailStateMessage, setEmailStateMessage] = useState("");
   const [rePost, setRePost] = useState(false);
-  const [authData, setAuthData] = useState("");
+  const [certification, setCertification] = useState("");
 
   const EmailValid = () => {
     if (originEmailData === "") {
@@ -673,6 +649,7 @@ const EmailAuth = ({
             setEmailStateMessage("이미 사용중인 이메일입니다.");
           } else {
             setEmailStateMessage("");
+            setButtonState(true);
           }
         })
         .catch((error) => {
@@ -710,19 +687,13 @@ const EmailAuth = ({
   return (
     <>
       <IntroduceArea>수원대학교 이메일 인증</IntroduceArea>
-      <RelativeArea
-        style={{
-          display: "flex",
-          width: "100%",
-          justifyContent: "flex-start",
-        }}
-      >
+      <EmailInputArea>
         <StaticText>이메일</StaticText>
         <WriteArea
           style={{
             marginLeft: 73,
             paddingLeft: 80,
-            width: 230,
+            width: 210,
             marginRight: 10,
           }}
           onChange={(e) => {
@@ -730,15 +701,15 @@ const EmailAuth = ({
           }}
           onBlur={() => EmailValid()}
         ></WriteArea>
-        <StaticText style={{left: 290}}>@suwon.ac.kr</StaticText>
+        <StaticText style={{left: 270}}>@suwon.ac.kr</StaticText>
         <AuthButton onClick={() => AuthEmailPost()}>
-          {rePost ? "재전송" : "인증번호"}
+          {rePost ? "재전송" : "인증번호\n발송"}
         </AuthButton>
-      </RelativeArea>
+      </EmailInputArea>
       <InfoState style={{width: "40%"}}>{emailStateMessage}</InfoState>
       <WriteArea
         onChange={(e) => {
-          setAuthData(e.target.value);
+          setCertification(e.target.value);
         }}
       ></WriteArea>
       <RowLine style={{marginTop: 50, width: 450}} />
@@ -749,8 +720,16 @@ const EmailAuth = ({
   );
 };
 
+const EmailInputArea = styled.div`
+  position: relative;
+  display: flex;
+  width: 100%;
+  justifycontent: flex-start;
+`;
+
 const AuthButton = styled.div`
   display: flex;
+  text-align: center;
   align-items: center;
   justify-content: center;
   color: rgba(255, 255, 255, 0.8);
@@ -758,12 +737,12 @@ const AuthButton = styled.div`
   border: 2px solid rgba(255, 255, 255, 0.6);
   border-radius: 30px;
   background: #181818;
-  width: 70px;
+  width: 90px;
   height: 50px;
   margin: 10px 0px 10px 0px;
   padding: 0px 13px 0px 13px;
   transition: 0.2s;
-
+  white-space: pre-line;
   &:hover {
     transition: 0.2s;
     border-color: gainsboro;
@@ -793,10 +772,11 @@ const AgreeMessage = styled.div`
 
 const AllAgreeMessage = styled.div`
   color: rgba(150, 150, 150, 0.8);
-  font-size: 15px;
+  font-size: 16px;
   width: 450px;
   padding-left: 25px;
-  line-height: 18px;
+  line-height: 25px;
+  font-weight: 600;
 `;
 
 const RowLine = styled.hr`
@@ -929,7 +909,6 @@ const AccountButton = styled.button`
   width: 450px;
   border: 0;
   transition: 0.2s;
-  position: absolute;
   bottom: 230px;
 
   &.close {
@@ -971,6 +950,13 @@ const SelectSpecialize = styled.select`
   option {
     background: #2c2c2c;
   }
+`;
+
+const AgreeButton = styled(FontAwesomeIcon)`
+  width: 20px;
+  height: 20px;
+  margin: 0px;
+  display: inline-flex;
 `;
 
 export default SignUpPage;
