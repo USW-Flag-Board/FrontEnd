@@ -36,7 +36,6 @@ const SignUpPage = ({setHeader}) => {
   const navigate = useNavigate();
   const [buttonState, setButtonState] = useState(false);
   const [signUpIndex, setSignUpIndex] = useState(0);
-  const [email, setEmail] = useState("");
   const [joinType, setJoinType] = useState("");
   const [loginId, setLoginId] = useState("");
   const [major, setMajor] = useState("");
@@ -236,7 +235,7 @@ const CheckButton = ({setAccountAgree, message, allAgree}) => {
 };
 
 const JoinTypeSelect = ({setButtonState, joinType, setJoinType}) => {
-  const getValue = (text) => {
+  const getJoinTypeValue = (text) => {
     setJoinType(text);
   };
 
@@ -251,7 +250,7 @@ const JoinTypeSelect = ({setButtonState, joinType, setJoinType}) => {
   return (
     <>
       <IntroduceArea>회원구분</IntroduceArea>
-      <JoinTypeButton getValue={getValue} />
+      <JoinTypeButton getJoinTypeValue={getJoinTypeValue} />
     </>
   );
 };

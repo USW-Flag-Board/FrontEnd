@@ -4,10 +4,12 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
 import {faLock} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import axios from "axios";
 import AutoLoginButton from "../components/AutoLoginButton";
 import IdRememberButton from "../components/IdRememberButton";
 import Cookies from "universal-cookie";
+import {AutoLogin} from "../apis/auth";
+import {LocalStorage} from "../utils/browserStorage";
+import {SessionStorage} from "../utils/browserStorage";
 
 const LoginPage = ({setHeader}) => {
   const navigate = useNavigate();
@@ -17,11 +19,11 @@ const LoginPage = ({setHeader}) => {
   const [loginType, setLoginType] = useState(1);
   const [idRemember, setIdRemember] = useState(false);
 
-  const getValue = (text) => {
+  const getButtonValue = (text) => {
     setLoginType(text);
   };
 
-  const RememberState = (text) => {
+  const getRememberState = (text) => {
     setIdRemember(text);
   };
 
@@ -40,23 +42,19 @@ const LoginPage = ({setHeader}) => {
   };
 
   function OnLogin() {
-    const data = {
-      loginId: loginId,
-      password: password,
-    };
     if (loginId === "") {
       alert("아이디를 입력해주세요.");
     } else if (password === "") {
       alert("비밀번호를 입력해주세요.");
     } else {
       if (loginType === 1) {
-        axios
-          .post("http://3.39.36.239:80/api/auth/login", data)
+        const loginState = AutoLogin(loginId, password);
+
+        loginState
           .then((response) => {
-            RememberCookie();
             const accessToken = response.data.payload.accessToken;
-            sessionStorage.setItem("UserToken", accessToken);
-            sessionStorage.setItem("id", loginId);
+            SessionStorage.set("UserToken", accessToken);
+            SessionStorage.set("id", loginId);
             cookies.set("refresh_token", response.data.payload.refreshToken, {
               path: "/",
             });
@@ -67,14 +65,15 @@ const LoginPage = ({setHeader}) => {
               alert("존재하지 않는 사용자입니다.");
             }
           });
+        RememberCookie();
       } else if (loginType === 2) {
-        axios
-          .post("http://3.39.36.239:80/api/auth/login", data)
+        const loginState = AutoLogin(loginId, password);
+
+        loginState
           .then((response) => {
-            RememberCookie();
             const accessToken = response.data.payload.accessToken;
-            localStorage.setItem("UserToken", accessToken);
-            localStorage.setItem("id", loginId);
+            LocalStorage.set("UserToken", accessToken);
+            LocalStorage.set("id", loginId);
             cookies.set("refresh_token", response.data.payload.refreshToken, {
               path: "/",
             });
@@ -85,19 +84,22 @@ const LoginPage = ({setHeader}) => {
               alert("존재하지 않는 사용자입니다.");
             }
           });
+        RememberCookie();
       }
     }
   }
 
   useEffect(() => {
-    if (sessionStorage.getItem("UserToken")) {
-      navigate("/my");
-    } else if (localStorage.getItem("UserToken")) {
+    if (SessionStorage.get("UserToken") | LocalStorage.get("UserToken")) {
       navigate("/my");
     }
+
     setHeader(false);
-    if (cookies.get("remember_id") !== undefined) {
-      setLoginId(cookies.get("remember_id"));
+
+    const remember_Id = cookies.get("remember_id");
+
+    if (remember_Id !== undefined) {
+      setLoginId(remember_Id);
     }
   }, []);
 
@@ -141,11 +143,11 @@ const LoginPage = ({setHeader}) => {
         </RelativeArea>
         <SortArea>
           <CheckArea>
-            <AutoLoginButton getValue={getValue} />
+            <AutoLoginButton getButtonValue={getButtonValue} />
             <CheckLabel>로그인 상태 유지</CheckLabel>
           </CheckArea>
           <CheckArea>
-            <IdRememberButton getValue={RememberState} />
+            <IdRememberButton RememberState={getRememberState} />
             <CheckLabel>아이디 기억하기</CheckLabel>
           </CheckArea>
         </SortArea>

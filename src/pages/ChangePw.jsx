@@ -46,14 +46,20 @@ const ChangePw = ({setHeader}) => {
           navigate("/edit");
         })
         .catch((error) => {
-          if (error.response.state === 404) {
-            alert("존재하지 않는 사용자입니다.");
-          } else if (error.response.state === 409) {
-            alert("기존과 같은 비밀번호는 사용할 수 없습니다.");
-          } else if (error.response.state === 422) {
-            alert(
-              "사용할 수 없는 비밀번호 입니다. (8~20자 이내 영문, 숫자, 특수문자를 모두 포함)"
-            );
+          switch (error.response.status) {
+            case 404:
+              alert("존재하지 않는 사용자입니다.");
+              break;
+            case 409:
+              alert("기존과 같은 비밀번호는 사용할 수 없습니다.");
+              break;
+            case 422:
+              alert(
+                "사용할 수 없는 비밀번호 입니다. (8~20자 이내 영문, 숫자, 특수문자를 모두 포함)"
+              );
+              break;
+            default:
+              alert("서버 통신 오류.");
           }
         });
     }

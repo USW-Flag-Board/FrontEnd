@@ -6,18 +6,18 @@ import {faCircle} from "@fortawesome/free-regular-svg-icons";
 import Cookies from "universal-cookie";
 import styled from "styled-components";
 
-const IdRememberButton = ({getValue}) => {
+const IdRememberButton = ({getRememberState}) => {
   const cookies = new Cookies();
   const navigate = useNavigate();
   const [toggle, setToggle] = useState(false);
 
-  const Checked = () => {
+  const toggleAndgetRememberState = () => {
     if (toggle) {
       setToggle(false);
-      getValue(false);
+      getRememberState(false);
     } else {
       setToggle(true);
-      getValue(true);
+      getRememberState(true);
     }
   };
 
@@ -30,9 +30,12 @@ const IdRememberButton = ({getValue}) => {
   return (
     <IdRememberButtonArea>
       {toggle ? (
-        <ToggleButton icon={faCircleCheck} onClick={Checked} />
+        <ToggleButton
+          icon={faCircleCheck}
+          onClick={toggleAndgetRememberState}
+        />
       ) : (
-        <ToggleButton icon={faCircle} onClick={Checked} />
+        <ToggleButton icon={faCircle} onClick={toggleAndgetRememberState} />
       )}
     </IdRememberButtonArea>
   );

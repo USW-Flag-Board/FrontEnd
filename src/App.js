@@ -37,8 +37,8 @@ const App = () => {
           const {data} = await axios.post(
             "http://3.39.36.239:80/api/auth/reissue",
             {
-              accessToken: accessToken,
-              refreshToken: refreshToken,
+              accessToken,
+              refreshToken,
             }
           );
           const {accessToken: newAccessToken, refreshToken: newRefreshToken} =
@@ -64,8 +64,8 @@ const App = () => {
           const {data} = await axios.post(
             "http://3.39.36.239:80/api/auth/reissue",
             {
-              accessToken: accessToken,
-              refreshToken: refreshToken,
+              accessToken,
+              refreshToken,
             }
           );
           const {accessToken: newAccessToken, refreshToken: newRefreshToken} =

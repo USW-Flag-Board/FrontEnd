@@ -4,32 +4,32 @@ import {faCircleCheck} from "@fortawesome/free-solid-svg-icons";
 import {faCircle} from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
 
-const JoinTypeButton = ({getValue}) => {
+const JoinTypeButton = ({getJoinTypeValue}) => {
   const [firstState, setFirstState] = useState(false);
   const [secondState, setSecondState] = useState(false);
 
-  const Checked = (type) => {
+  const CheckType = (type) => {
     if (type === 1) {
       if (firstState) {
         setFirstState(false);
         if (!secondState) {
-          getValue("");
+          getJoinTypeValue("");
         }
       } else {
         setSecondState(false);
         setFirstState(true);
-        getValue("동아리");
+        getJoinTypeValue("동아리");
       }
     } else if (type === 2) {
       if (secondState) {
         setSecondState(false);
         if (!firstState) {
-          getValue("");
+          getJoinTypeValue("");
         }
       } else {
         setFirstState(false);
         setSecondState(true);
-        getValue("일반");
+        getJoinTypeValue("일반");
       }
     }
   };
@@ -39,12 +39,12 @@ const JoinTypeButton = ({getValue}) => {
       <CheckArea>
         <JoinTypeButtonArea>
           {secondState ? (
-            <ToggleButton icon={faCircleCheck} onClick={() => Checked(2)} />
+            <ToggleButton icon={faCircleCheck} onClick={() => CheckType(2)} />
           ) : (
-            <ToggleButton icon={faCircle} onClick={() => Checked(2)} />
+            <ToggleButton icon={faCircle} onClick={() => CheckType(2)} />
           )}
         </JoinTypeButtonArea>
-        <CheckLabel onClick={() => Checked(2)}>일반 회원</CheckLabel>
+        <CheckLabel onClick={() => CheckType(2)}>일반 회원</CheckLabel>
       </CheckArea>
       <IntroduceJoinTypeArea>
         FLAGROUND의 일반 회원입니다.
@@ -54,12 +54,12 @@ const JoinTypeButton = ({getValue}) => {
       <CheckArea>
         <JoinTypeButtonArea>
           {firstState ? (
-            <ToggleButton icon={faCircleCheck} onClick={() => Checked(1)} />
+            <ToggleButton icon={faCircleCheck} onClick={() => CheckType(1)} />
           ) : (
-            <ToggleButton icon={faCircle} onClick={() => Checked(1)} />
+            <ToggleButton icon={faCircle} onClick={() => CheckType(1)} />
           )}
         </JoinTypeButtonArea>
-        <CheckLabel onClick={() => Checked(1)}>FLAG 동아리원</CheckLabel>
+        <CheckLabel onClick={() => CheckType(1)}>FLAG 동아리원</CheckLabel>
       </CheckArea>
       <IntroduceJoinTypeArea>
         FLAGROUND의 동아리 회원입니다.

@@ -116,9 +116,9 @@ const AvatarEdit = ({
   const ProfileUpdate = () => {
     axios
       .put("http://3.39.36.239:80/api/members/avatar", {
-        bio: bio,
-        nickName: nickName,
-        profileImg: profileImg,
+        bio,
+        nickName,
+        profileImg,
       })
       .then(() => {
         alert("값 변경 완료");
@@ -232,7 +232,7 @@ const DeleteModal = ({setDeleteModalOpen}) => {
     axios
       .delete("http://3.39.36.239:80/api/members", {
         data: {
-          password: password,
+          password,
         },
       })
       .then(() => {
@@ -244,10 +244,15 @@ const DeleteModal = ({setDeleteModalOpen}) => {
         navigate("/");
       })
       .catch((error) => {
-        if (error.response.status === 400) {
-          alert("비밀번호가 일치하지 않습니다.");
-        } else if (error.response.status === 404) {
-          alert("존재하지 않는 사용자입니다.");
+        switch (error.response.status) {
+          case 400:
+            alert("비밀번호가 일치하지 않습니다.");
+            break;
+          case 404:
+            alert("존재하지 않는 사용자입니다.");
+            break;
+          default:
+            alert("서버 통신 오류.");
         }
       });
   };

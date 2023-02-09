@@ -50,10 +50,15 @@ const ShowPw = ({email}) => {
         navigate("/");
       })
       .catch((error) => {
-        if (error.response.status === 404) {
-          alert("존재하지 않는 사용자입니다.");
-        } else if (error.response.status === 422) {
-          alert("사용할 수 없는 비밀번호 입니다.");
+        switch (error.response.status) {
+          case 404:
+            alert("존재하지 않는 사용자입니다.");
+            break;
+          case 422:
+            alert("사용할 수 없는 비밀번호 입니다.");
+            break;
+          default:
+            alert("서버 통신 오류.");
         }
       });
   };
@@ -95,14 +100,14 @@ const ShowPw = ({email}) => {
 
 const FindPwPage = (props) => {
   const [email, setEmail] = useState("");
-  const [id, setId] = useState("");
+  const [userId, setUserId] = useState("");
   const [auth, setAuth] = useState(false);
 
   const Find = () => {
     axios
       .post("http://3.39.36.239:80/api/members/find/password", {
-        email: email,
-        loginId: id,
+        email,
+        loginId: userId,
       })
       .then(() => {
         props.setEmail(email);
@@ -110,10 +115,15 @@ const FindPwPage = (props) => {
         alert("이메일로 인증번호가 전송되었습니다.");
       })
       .catch((error) => {
-        if (error.response.status === 404) {
-          alert("존재하지 않는 사용자입니다.");
-        } else if (error.response.status === 409) {
-          alert("이메일과 아이디가 일치하지 않습니다.");
+        switch (error.response.status) {
+          case 404:
+            alert("존재하지 않는 사용자입니다.");
+            break;
+          case 409:
+            alert("이메일과 아이디가 일치하지 않습니다.");
+            break;
+          default:
+            alert("서버 통신 오류.");
         }
       });
   };
@@ -135,13 +145,13 @@ const FindPwPage = (props) => {
   };
 
   const IdValid = () => {
-    if (id === "") {
+    if (userId === "") {
       alert("아이디를 정확히 입력해주세요.");
-    } else if (regExp.test(id)) {
+    } else if (regExp.test(userId)) {
       alert("아이디에는 특수문자를 입력할 수 없습니다.");
-    } else if (korExp.test(id)) {
+    } else if (korExp.test(userId)) {
       alert("아이디에는 한글을 포함할 수 없습니다.");
-    } else if (spaceExp.test(id)) {
+    } else if (spaceExp.test(userId)) {
       alert("아이디에는 공백을 포함할 수 없습니다.");
     } else {
       Find();
@@ -176,7 +186,7 @@ const FindPwPage = (props) => {
               <InsertBox>
                 <Insert
                   type="text"
-                  onChange={(e) => setId(e.target.value)}
+                  onChange={(e) => setUserId(e.target.value)}
                   required
                 />
               </InsertBox>
@@ -200,17 +210,22 @@ const CertificateBox = ({email, setSuccessState}) => {
   const AuthCheck = () => {
     axios
       .post("http://3.39.36.239:80/api/members/certification", {
-        certification: certification,
+        certification,
         email,
       })
       .then(() => {
         setSuccessState(true);
       })
       .catch((error) => {
-        if (error.response.status === 404) {
-          alert("비밀번호 찾기 요청이 존재하지 않습니다. 다시 시도해주세요.");
-        } else if (error.response.status === 409) {
-          alert("인증번호가 일치하지 않습니다.");
+        switch (error.response.status) {
+          case 404:
+            alert("비밀번호 찾기 요청이 존재하지 않습니다. 다시 시도해주세요.");
+            break;
+          case 409:
+            alert("인증번호가 일치하지 않습니다.");
+            break;
+          default:
+            alert("서버 통신 오류.");
         }
       });
   };
