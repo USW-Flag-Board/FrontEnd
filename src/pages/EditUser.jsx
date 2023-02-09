@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import Cookies from "universal-cookie";
+import {baseInstance} from "../apis/instance";
 
 const MENU_ARRAY = [{name: "아바타"}, {name: "개인정보"}];
 
@@ -129,8 +130,8 @@ const AvatarEdit = ({
   };
 
   useEffect(() => {
-    axios
-      .get("http://3.39.36.239:80/api/members")
+    baseInstance
+      .get("/api/members")
       .then((response) => {
         setNickName(response.data.payload.nickName);
         setBio(response.data.payload.bio);
