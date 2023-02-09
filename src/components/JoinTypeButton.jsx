@@ -38,33 +38,54 @@ const JoinTypeButton = ({getValue}) => {
     <SortArea>
       <CheckArea>
         <JoinTypeButtonArea>
-          {firstState ? (
-            <ToggleButton icon={faCircleCheck} onClick={() => Checked(1)} />
-          ) : (
-            <ToggleButton icon={faCircle} onClick={() => Checked(1)} />
-          )}
-        </JoinTypeButtonArea>
-        <CheckLabel>FLAG 동아리원</CheckLabel>
-      </CheckArea>
-      <CheckArea>
-        <JoinTypeButtonArea>
           {secondState ? (
             <ToggleButton icon={faCircleCheck} onClick={() => Checked(2)} />
           ) : (
             <ToggleButton icon={faCircle} onClick={() => Checked(2)} />
           )}
         </JoinTypeButtonArea>
-        <CheckLabel>일반유저</CheckLabel>
+        <CheckLabel onClick={() => Checked(2)}>일반 회원</CheckLabel>
       </CheckArea>
+      <IntroduceJoinTypeArea>
+        FLAGROUND의 일반 회원입니다.
+        <br />
+        동아리 활동을 제외하고 모든 활동이 가능합니다.
+      </IntroduceJoinTypeArea>
+      <CheckArea>
+        <JoinTypeButtonArea>
+          {firstState ? (
+            <ToggleButton icon={faCircleCheck} onClick={() => Checked(1)} />
+          ) : (
+            <ToggleButton icon={faCircle} onClick={() => Checked(1)} />
+          )}
+        </JoinTypeButtonArea>
+        <CheckLabel onClick={() => Checked(1)}>FLAG 동아리원</CheckLabel>
+      </CheckArea>
+      <IntroduceJoinTypeArea>
+        FLAGROUND의 동아리 회원입니다.
+        <br />
+        프로젝트, 스터디, 멘토링 참여 및 등록 등 모든 활동이 가능합니다.
+        <br />+ FLAG 동아리원은 관리자의 승인절차 이후 가입이 완료됩니다.
+      </IntroduceJoinTypeArea>
     </SortArea>
   );
 };
 
-const SortArea = styled.div`
-  width: 100%;
+const IntroduceJoinTypeArea = styled.div`
   display: flex;
-  justify-content: space-evenly;
-  margin-top: 20px;
+  border: 2px solid #9a9a9a;
+  border-radius: 20px;
+  font-size: 14px;
+  margin: 10px 0px 40px 0px;
+  padding: 20px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 28px;
+`;
+
+const SortArea = styled.div`
+  width: 450px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const CheckArea = styled.label`
@@ -74,12 +95,16 @@ const CheckArea = styled.label`
 
 const CheckLabel = styled.p`
   margin-left: 10px;
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.8);
 `;
 
 const ToggleButton = styled(FontAwesomeIcon)`
   filter: invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg)
     brightness(97%) contrast(83%);
   transition: opacity 0.2s;
+  width: 24px;
+  height: 24px;
 `;
 
 const JoinTypeButtonArea = styled.div`

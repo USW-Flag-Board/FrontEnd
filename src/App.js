@@ -13,7 +13,6 @@ import {
   EditUser,
   Resume,
   Activity,
-  EmailAuth,
   FindId,
   FindPw,
 } from "./pages";
@@ -112,10 +111,6 @@ const App = () => {
         <Route path="/edit" element={<EditUser setHeader={setHeader} />} />
         <Route path="/resume" element={<Resume setHeader={setHeader} />} />
         <Route path="/activity" element={<Activity setHeader={setHeader} />} />
-        <Route
-          path="/emailAuth"
-          element={<EmailAuth setHeader={setHeader} />}
-        />
         <Route path="/findid" element={<FindId setHeader={setHeader} />} />
         <Route path="/findpw" element={<FindPw setHeader={setHeader} />} />
       </Routes>
