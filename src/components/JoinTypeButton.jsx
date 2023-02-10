@@ -13,24 +13,24 @@ const JoinTypeButton = ({getJoinTypeValue}) => {
       if (firstState) {
         setFirstState(false);
         if (!secondState) {
-          getJoinTypeValue("");
+          return getJoinTypeValue("");
         }
-      } else {
-        setSecondState(false);
-        setFirstState(true);
-        getJoinTypeValue("동아리");
+        return;
       }
+      setSecondState(false);
+      setFirstState(true);
+      return getJoinTypeValue("동아리");
     } else if (type === 2) {
       if (secondState) {
         setSecondState(false);
         if (!firstState) {
-          getJoinTypeValue("");
+          return getJoinTypeValue("");
         }
-      } else {
-        setFirstState(false);
-        setSecondState(true);
-        getJoinTypeValue("일반");
+        return;
       }
+      setFirstState(false);
+      setSecondState(true);
+      return getJoinTypeValue("일반");
     }
   };
 

@@ -10,11 +10,10 @@ const AutoLoginButton = ({getButtonValue}) => {
   const toggleAndGetButtonValue = () => {
     if (toggle) {
       setToggle(false);
-      getButtonValue(1);
-    } else {
-      setToggle(true);
-      getButtonValue(2);
+      return getButtonValue(1);
     }
+    setToggle(true);
+    return getButtonValue(2);
   };
 
   return (

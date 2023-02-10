@@ -133,10 +133,9 @@ const ServiceAgree = ({setButtonState}) => {
 
   useEffect(() => {
     if (AccountAgree & personalAgree) {
-      setButtonState(true);
-    } else {
-      setButtonState(false);
+      return setButtonState(true);
     }
+    return setButtonState(false);
   }, [AccountAgree, personalAgree]);
 
   return (
@@ -241,10 +240,9 @@ const JoinTypeSelect = ({setButtonState, joinType, setJoinType}) => {
 
   useEffect(() => {
     if (joinType !== "") {
-      setButtonState(true);
-    } else {
-      setButtonState(false);
+      return setButtonState(true);
     }
+    return setButtonState(false);
   }, [joinType]);
 
   return (
@@ -270,11 +268,11 @@ const Id_Password = ({setButtonState, setLoginId, setPassword}) => {
     );
   };
 
-  async function IdSet(text) {
+  const IdSet = async (text) => {
     setLoginIdData(text);
-  }
+  };
 
-  function IdValid() {
+  const IdValid = () => {
     if (loginIdData === "") {
       setIdStateMessage("아이디를 정확히 입력해주세요.");
       BooleanCheck(0, false);
@@ -309,7 +307,7 @@ const Id_Password = ({setButtonState, setLoginId, setPassword}) => {
           BooleanCheck(0, false);
         });
     }
-  }
+  };
 
   const PasswordValid = () => {
     if (passwordData === "") {
@@ -637,26 +635,24 @@ const EmailAuth = ({
 
   const EmailValid = () => {
     if (originEmailData === "") {
-      setEmailStateMessage("이메일을 정확히 입력해주세요.");
-    } else {
-      axios
-        .post("http://3.39.36.239:80/api/auth/check/email", {
-          email: originEmailData + "@suwon.ac.kr",
-        })
-        .then((response) => {
-          if (response.data.payload) {
-            setEmailStateMessage("이미 사용중인 이메일입니다.");
-          } else {
-            setEmailStateMessage("");
-            setButtonState(true);
-          }
-        })
-        .catch((error) => {
-          if (error.response.status === 400) {
-            setEmailStateMessage("이메일 앞부분만 정확하게 입력해주세요.");
-          }
-        });
+      return setEmailStateMessage("이메일을 정확히 입력해주세요.");
     }
+    axios
+      .post("http://3.39.36.239:80/api/auth/check/email", {
+        email: originEmailData + "@suwon.ac.kr",
+      })
+      .then((response) => {
+        if (response.data.payload) {
+          return setEmailStateMessage("이미 사용중인 이메일입니다.");
+        }
+        setEmailStateMessage("");
+        return setButtonState(true);
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          setEmailStateMessage("이메일 앞부분만 정확하게 입력해주세요.");
+        }
+      });
   };
 
   const AuthEmailPost = () => {

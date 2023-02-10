@@ -5,6 +5,7 @@ import {faUser} from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
 import axios from "axios";
 import Cookies from "universal-cookie";
+import {LocalStorage, SessionStorage} from "../utils/browserStorage";
 
 const MyPage = ({setHeader}) => {
   const navigate = useNavigate();
@@ -13,13 +14,13 @@ const MyPage = ({setHeader}) => {
   const [nickname, setNickname] = useState("");
   const [introduceMessage, setIntroduceMessage] = useState("");
 
-  async function LoginIdSetting() {
-    if (sessionStorage.getItem("id")) {
-      setLoginId(sessionStorage.getItem("id"));
-    } else if (localStorage.getItem("id")) {
-      setLoginId(localStorage.getItem("id"));
+  const LoginIdSetting = async () => {
+    if (SessionStorage.get("id")) {
+      setLoginId(SessionStorage.get("id"));
+    } else if (LocalStorage.get("id")) {
+      setLoginId(LocalStorage.get("id"));
     }
-  }
+  };
 
   const SetMyData = async () => {
     if (loginId !== "") {
@@ -38,25 +39,22 @@ const MyPage = ({setHeader}) => {
   };
 
   const LogOut = () => {
-    localStorage.clear();
-    sessionStorage.clear();
+    LocalStorage.clear();
+    SessionStorage.clear();
     cookies.remove("refresh_token");
     cookies.remove("remember_id");
     navigate("/");
   };
 
   useEffect(() => {
-    async function DataSet() {
-      if (
-        localStorage.getItem("UserToken") ||
-        sessionStorage.getItem("UserToken")
-      ) {
+    const DataSet = async () => {
+      if (LocalStorage.get("UserToken") || SessionStorage.get("UserToken")) {
         await LoginIdSetting();
         await SetMyData();
       } else {
         navigate("/login");
       }
-    }
+    };
     setHeader(true);
     DataSet();
   }, [loginId]);

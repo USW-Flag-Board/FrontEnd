@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import {useNavigate, useLocation} from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
+import {PatchChangePw} from "../apis/user";
 
 const ChangePw = ({setHeader}) => {
   const navigate = useNavigate();
@@ -35,13 +35,8 @@ const ChangePw = ({setHeader}) => {
 
   const ReplacePassword = () => {
     if (!passwordError & (newPassword !== "") & (passwordCheck !== "")) {
-      const data = {
-        currentPassword,
-        newPassword,
-      };
-      axios
-        .patch("http://3.39.36.239:80/api/member/password", data)
-        .then((response) => {
+      PatchChangePw(currentPassword, newPassword)
+        .then(() => {
           alert("비밀번호 변경 완료");
           navigate("/edit");
         })

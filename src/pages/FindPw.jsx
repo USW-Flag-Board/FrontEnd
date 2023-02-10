@@ -1,7 +1,11 @@
 import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
+import {
+  PostFindPwEmail,
+  PutChangePw,
+  PostCertificationCheck,
+} from "../apis/user";
 
 // eslint-disable-next-line
 const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
@@ -40,11 +44,7 @@ const ShowPw = ({email}) => {
   };
 
   const ChangePassword = () => {
-    axios
-      .put("http://3.39.36.239:80/api/members/find/password", {
-        email,
-        newPassword: password,
-      })
+    PutChangePw(email, password)
       .then(() => {
         alert("비밀번호를 변경했습니다.");
         navigate("/");
@@ -104,11 +104,7 @@ const FindPwPage = (props) => {
   const [auth, setAuth] = useState(false);
 
   const Find = () => {
-    axios
-      .post("http://3.39.36.239:80/api/members/find/password", {
-        email,
-        loginId: userId,
-      })
+    PostFindPwEmail(email, userId)
       .then(() => {
         props.setEmail(email);
         setAuth(true);
@@ -208,11 +204,7 @@ const CertificateBox = ({email, setSuccessState}) => {
   const [certification, setCertification] = useState("");
 
   const AuthCheck = () => {
-    axios
-      .post("http://3.39.36.239:80/api/members/certification", {
-        certification,
-        email,
-      })
+    PostCertificationCheck(certification, email)
       .then(() => {
         setSuccessState(true);
       })

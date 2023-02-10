@@ -1,9 +1,9 @@
 import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 import Cookies from "universal-cookie";
-import {baseInstance} from "../apis/instance";
+import {LocalStorage, SessionStorage} from "../utils/browserStorage";
+import {PutAvatarInfo, GetUserInfo, DeleteUser} from "../apis/user";
 
 const MENU_ARRAY = [{name: "아바타"}, {name: "개인정보"}];
 
@@ -113,14 +113,10 @@ const AvatarEdit = ({
   const [nickName, setNickName] = useState("");
   const [profileImg, setProfileImg] = useState("");
   const [editable, setEditable] = useState(false);
+  const cookies = new Cookies();
 
   const ProfileUpdate = () => {
-    axios
-      .put("http://3.39.36.239:80/api/members/avatar", {
-        bio,
-        nickName,
-        profileImg,
-      })
+    PutAvatarInfo(bio, nickName, profileImg)
       .then(() => {
         alert("값 변경 완료");
       })
@@ -130,8 +126,7 @@ const AvatarEdit = ({
   };
 
   useEffect(() => {
-    baseInstance
-      .get("/api/members")
+    GetUserInfo()
       .then((response) => {
         setNickName(response.data.payload.nickName);
         setBio(response.data.payload.bio);
@@ -141,8 +136,14 @@ const AvatarEdit = ({
         setPhoneNumber(response.data.payload.phoneNumber);
         setStudentId(response.data.payload.studentId);
       })
-      .catch(() => {
-        alert("데이터를 불러오는데 실패했습니다.");
+      .catch((error) => {
+        console.log(error);
+        SessionStorage.remove("UserToken");
+        LocalStorage.remove("UserToken");
+        cookies.remove("refresh_token", {
+          path: "/",
+        });
+        navigate("/");
       });
   }, []);
 
@@ -230,18 +231,13 @@ const DeleteModal = ({setDeleteModalOpen}) => {
   };
 
   const DeleteUserId = () => {
-    axios
-      .delete("http://3.39.36.239:80/api/members", {
-        data: {
-          password,
-        },
-      })
+    DeleteUser(password)
       .then(() => {
         alert("계정 삭제 완료");
         cookies.remove("refresh_token");
         cookies.remove("remember_id");
-        localStorage.clear();
-        sessionStorage.clear();
+        LocalStorage.clear();
+        SessionStorage.clear();
         navigate("/");
       })
       .catch((error) => {

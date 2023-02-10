@@ -20,15 +20,19 @@ const LikeButton = () => {
 
 const LikeOnButton = styled(FontAwesomeIcon)`
   color: red;
+  transition: 0.3s;
   :hover {
     transform: scale(1.1);
+    transition: 0.3s;
   }
   fontsize: 10px;
 `;
 
 const LikeOffButton = styled(FontAwesomeIcon)`
+  transition: 0.3s;
   :hover {
     transform: scale(1.1);
+    transition: 0.3s;
   }
   fontsize: 10px;
 `;

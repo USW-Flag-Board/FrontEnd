@@ -14,11 +14,10 @@ const IdRememberButton = ({getRememberState}) => {
   const toggleAndgetRememberState = () => {
     if (toggle) {
       setToggle(false);
-      getRememberState(false);
-    } else {
-      setToggle(true);
-      getRememberState(true);
+      return getRememberState(false);
     }
+    setToggle(true);
+    return getRememberState(true);
   };
 
   useEffect(() => {

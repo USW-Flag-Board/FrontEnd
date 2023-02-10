@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
+import {PostFindIdEmail, PostCertificationCheck} from "../apis/user";
 
 // eslint-disable-next-line
 const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
@@ -55,11 +54,7 @@ const FindIdPage = ({setUserId, setSuccessState}) => {
   const [auth, setAuth] = useState(false);
 
   const Find = () => {
-    axios
-      .post("http://3.39.36.239:8080/api/members/find/id", {
-        email,
-        name,
-      })
+    PostFindIdEmail(email, name)
       .then(() => {
         setAuth(true);
         alert("이메일로 인증번호가 전송되었습니다.");
@@ -164,11 +159,7 @@ const CertificateBox = ({email, setSuccessState, setUserId}) => {
   const [certification, setCertification] = useState("");
 
   const AuthCheck = () => {
-    axios
-      .post("http://3.39.36.239:80/api/members/certification", {
-        certification,
-        email,
-      })
+    PostCertificationCheck(certification, email)
       .then((response) => {
         setSuccessState(true);
         setUserId(response.data.payload);

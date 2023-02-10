@@ -7,9 +7,8 @@ import styled from "styled-components";
 import AutoLoginButton from "../components/AutoLoginButton";
 import IdRememberButton from "../components/IdRememberButton";
 import Cookies from "universal-cookie";
-import {AutoLogin} from "../apis/auth";
-import {LocalStorage} from "../utils/browserStorage";
-import {SessionStorage} from "../utils/browserStorage";
+import {PostLogin} from "../apis/auth";
+import {LocalStorage, SessionStorage} from "../utils/browserStorage";
 
 const LoginPage = ({setHeader}) => {
   const navigate = useNavigate();
@@ -29,10 +28,9 @@ const LoginPage = ({setHeader}) => {
 
   const RememberCookie = () => {
     if (idRemember) {
-      cookies.set("remember_id", loginId);
-    } else {
-      cookies.remove("remember_id");
+      return cookies.set("remember_id", loginId);
     }
+    return cookies.remove("remember_id");
   };
 
   const handleOnKeyPress = (e) => {
@@ -41,56 +39,52 @@ const LoginPage = ({setHeader}) => {
     }
   };
 
-  function OnLogin() {
+  const OnLogin = () => {
     if (loginId === "") {
-      alert("아이디를 입력해주세요.");
+      return alert("아이디를 입력해주세요.");
     } else if (password === "") {
-      alert("비밀번호를 입력해주세요.");
-    } else {
-      if (loginType === 1) {
-        const loginState = AutoLogin(loginId, password);
-
-        loginState
-          .then((response) => {
-            const accessToken = response.data.payload.accessToken;
-            SessionStorage.set("UserToken", accessToken);
-            SessionStorage.set("id", loginId);
-            cookies.set("refresh_token", response.data.payload.refreshToken, {
-              path: "/",
-            });
-            navigate("/");
-          })
-          .catch((error) => {
-            if (error.response.status === 404) {
-              alert("존재하지 않는 사용자입니다.");
-            }
-          });
-        RememberCookie();
-      } else if (loginType === 2) {
-        const loginState = AutoLogin(loginId, password);
-
-        loginState
-          .then((response) => {
-            const accessToken = response.data.payload.accessToken;
-            LocalStorage.set("UserToken", accessToken);
-            LocalStorage.set("id", loginId);
-            cookies.set("refresh_token", response.data.payload.refreshToken, {
-              path: "/",
-            });
-            navigate("/");
-          })
-          .catch((error) => {
-            if (error.response.status === 404) {
-              alert("존재하지 않는 사용자입니다.");
-            }
-          });
-        RememberCookie();
-      }
+      return alert("비밀번호를 입력해주세요.");
     }
-  }
+
+    if (loginType === 1) {
+      PostLogin(loginId, password)
+        .then((response) => {
+          const accessToken = response.data.payload.accessToken;
+          SessionStorage.set("UserToken", accessToken);
+          SessionStorage.set("id", loginId);
+          cookies.set("refresh_token", response.data.payload.refreshToken, {
+            path: "/",
+          });
+          navigate("/");
+        })
+        .catch((error) => {
+          if (error.response.status === 404) {
+            alert("존재하지 않는 사용자입니다.");
+          }
+        });
+      RememberCookie();
+    } else if (loginType === 2) {
+      PostLogin(loginId, password)
+        .then((response) => {
+          const accessToken = response.data.payload.accessToken;
+          LocalStorage.set("UserToken", accessToken);
+          LocalStorage.set("id", loginId);
+          cookies.set("refresh_token", response.data.payload.refreshToken, {
+            path: "/",
+          });
+          navigate("/");
+        })
+        .catch((error) => {
+          if (error.response.status === 404) {
+            alert("존재하지 않는 사용자입니다.");
+          }
+        });
+      RememberCookie();
+    }
+  };
 
   useEffect(() => {
-    if (SessionStorage.get("UserToken") | LocalStorage.get("UserToken")) {
+    if (SessionStorage.get("UserToken") || LocalStorage.get("UserToken")) {
       navigate("/my");
     }
 
@@ -147,7 +141,7 @@ const LoginPage = ({setHeader}) => {
             <CheckLabel>로그인 상태 유지</CheckLabel>
           </CheckArea>
           <CheckArea>
-            <IdRememberButton RememberState={getRememberState} />
+            <IdRememberButton getRememberState={getRememberState} />
             <CheckLabel>아이디 기억하기</CheckLabel>
           </CheckArea>
         </SortArea>
