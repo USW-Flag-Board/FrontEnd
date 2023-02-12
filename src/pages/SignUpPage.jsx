@@ -6,6 +6,7 @@ import {faUser, faCircle} from "@fortawesome/free-regular-svg-icons";
 import {faLock, faCircleCheck} from "@fortawesome/free-solid-svg-icons";
 import {JoinTypeButton} from "../components";
 import axios from "axios";
+import {PostLoginId} from "../apis/auth";
 
 // eslint-disable-next-line
 const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
@@ -289,10 +290,7 @@ const Id_Password = ({setButtonState, setLoginId, setPassword}) => {
       setIdStateMessage("아이디는 세글자 이상으로 설정해주세요.");
       BooleanCheck(0, false);
     } else {
-      axios
-        .post("http://3.39.36.239:80/api/auth/check/id", {
-          loginId: loginIdData,
-        })
+      PostLoginId(loginIdData)
         .then((response) => {
           if (!response.data.payload) {
             setIdStateMessage("사용 가능한 아이디입니다.");
@@ -637,10 +635,8 @@ const EmailAuth = ({
     if (originEmailData === "") {
       return setEmailStateMessage("이메일을 정확히 입력해주세요.");
     }
-    axios
-      .post("http://3.39.36.239:80/api/auth/check/email", {
-        email: originEmailData + "@suwon.ac.kr",
-      })
+
+    PostEmail(originalEmailData)
       .then((response) => {
         if (response.data.payload) {
           return setEmailStateMessage("이미 사용중인 이메일입니다.");
@@ -656,18 +652,7 @@ const EmailAuth = ({
   };
 
   const AuthEmailPost = () => {
-    axios
-      .post("http://3.39.36.239:80/api/auth/join", {
-        email: originEmailData + "@suwon.ac.kr",
-        joinType: joinType,
-        loginId: loginId,
-        major: major,
-        name: name,
-        nickName: nickName,
-        password: password,
-        phoneNumber: phoneNumber,
-        studentId: studentId,
-      })
+    PostCurrentEmail()
       .then(() => {
         alert("메일이 전송되었습니다.");
         setRePost(true);

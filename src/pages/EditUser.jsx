@@ -113,7 +113,6 @@ const AvatarEdit = ({
   const [nickName, setNickName] = useState("");
   const [profileImg, setProfileImg] = useState("");
   const [editable, setEditable] = useState(false);
-  const cookies = new Cookies();
 
   const ProfileUpdate = () => {
     PutAvatarInfo(bio, nickName, profileImg)
@@ -136,15 +135,7 @@ const AvatarEdit = ({
         setPhoneNumber(response.data.payload.phoneNumber);
         setStudentId(response.data.payload.studentId);
       })
-      .catch((error) => {
-        console.log(error);
-        SessionStorage.remove("UserToken");
-        LocalStorage.remove("UserToken");
-        cookies.remove("refresh_token", {
-          path: "/",
-        });
-        navigate("/");
-      });
+      .catch(() => {});
   }, []);
 
   return (

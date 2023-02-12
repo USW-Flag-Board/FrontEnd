@@ -1,10 +1,10 @@
 import {useState, useEffect} from "react";
-import {useNavigate, useLocation} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
-import axios from "axios";
 import Cookies from "universal-cookie";
+import {GetProfileData} from "../apis/user";
 import {LocalStorage, SessionStorage} from "../utils/browserStorage";
 
 const MyPage = ({setHeader}) => {
@@ -25,9 +25,7 @@ const MyPage = ({setHeader}) => {
   const SetMyData = async () => {
     if (loginId !== "") {
       try {
-        const response = await axios.get(
-          `http://3.39.36.239:80/api/members/${loginId}`
-        );
+        const response = await GetProfileData(loginId);
         setNickname(response.data.payload.avatarResponse.nickName);
         setIntroduceMessage(response.data.payload.avatarResponse.bio);
       } catch (error) {

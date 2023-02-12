@@ -50,6 +50,12 @@ const LoginPage = ({setHeader}) => {
       PostLogin(loginId, password)
         .then((response) => {
           const accessToken = response.data.payload.accessToken;
+          const accessTokenExpiresIn =
+            response.data.payload.accessTokenExpiresIn;
+          SessionStorage.set(
+            "expire",
+            new Date(accessTokenExpiresIn).getTime()
+          );
           SessionStorage.set("UserToken", accessToken);
           SessionStorage.set("id", loginId);
           cookies.set("refresh_token", response.data.payload.refreshToken, {
@@ -67,6 +73,10 @@ const LoginPage = ({setHeader}) => {
       PostLogin(loginId, password)
         .then((response) => {
           const accessToken = response.data.payload.accessToken;
+          const accessTokenExpiresIn =
+            response.data.payload.accessTokenExpiresIn;
+          LocalStorage.set("expire", new Date(accessTokenExpiresIn).getTime());
+          LocalStorage.set("expire", accessTokenExpiresIn);
           LocalStorage.set("UserToken", accessToken);
           LocalStorage.set("id", loginId);
           cookies.set("refresh_token", response.data.payload.refreshToken, {

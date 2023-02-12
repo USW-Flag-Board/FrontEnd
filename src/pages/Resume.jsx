@@ -1,6 +1,7 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
 import styled from "styled-components";
+import {GetAllFlagHistory} from "../apis/activity";
 
 const STUDY2022 = [
   "2022 2학기 - 코딩테스트 [6명] (진행중)",
@@ -35,7 +36,7 @@ const Resume = ({setHeader}) => {
   };
 
   useEffect(() => {
-    axios.get("http://3.39.36.239:80/api/activities").then((response) => {
+    GetAllFlagHistory.then((response) => {
       console.log(response);
     });
 
