@@ -19,10 +19,10 @@ import {
 import {Header} from "./components";
 import {createGlobalStyle} from "styled-components";
 import reset from "styled-reset";
-import Cookies from "universal-cookie";
-import axios from "axios";
+import {cookiesOption} from "./utils/cookiesOption";
 import {LocalStorage, SessionStorage} from "./utils/browserStorage";
 import AxiosInterceptorsSetup from "./apis/AxiosInterceptorSetup";
+import {PostRefreshToken} from "./apis/auth";
 
 function AxiosInterceptoNavigate() {
   let navigate = useNavigate();
@@ -37,66 +37,45 @@ function AxiosInterceptoNavigate() {
 const App = () => {
   const [header, setHeader] = useState(true);
   const [postId, setPostId] = useState("");
-  const cookies = new Cookies();
   useEffect(() => {
     const LocalState = async () => {
       if (LocalStorage.get("UserToken")) {
-        if (cookies.get("refresh_token")) {
+        if (cookiesOption.get("refresh_token")) {
           const accessToken = LocalStorage.get("UserToken");
-          const refreshToken = await cookies.get("refresh_token", {
+          const refreshToken = await cookiesOption.get("refresh_token", {
             path: "/",
           });
-          const {data} = await axios.post(
-            "http://3.39.36.239:80/auth/reissue",
-            {
-              accessToken,
-              refreshToken,
-            }
-          );
+          const {data} = await PostRefreshToken(accessToken, refreshToken);
           const {
             accessToken: newAccessToken,
             refreshToken: newRefreshToken,
             accessTokenExpiresIn: newAccessTokenExpiresIn,
           } = data.payload;
-          LocalStorage.set(
-            "expire",
-            new Date(newAccessTokenExpiresIn).getTime()
-          );
+          const expireTime = new Date(newAccessTokenExpiresIn).getTime();
+          LocalStorage.set("expire", expireTime);
           LocalStorage.set("UserToken", newAccessToken);
-          cookies.set("refresh_token", newRefreshToken, {
-            path: "/",
-          });
+          cookiesOption.setRefresh("refresh_token", newRefreshToken);
         }
       }
     };
     LocalState();
     const SessionState = async () => {
       if (SessionStorage.get("UserToken")) {
-        if (cookies.get("refresh_token")) {
+        if (cookiesOption.get("refresh_token")) {
           const accessToken = SessionStorage.get("UserToken");
-          const refreshToken = await cookies.get("refresh_token", {
+          const refreshToken = await cookiesOption.get("refresh_token", {
             path: "/",
           });
-          const {data} = await axios.post(
-            "http://3.39.36.239:80/auth/reissue",
-            {
-              accessToken,
-              refreshToken,
-            }
-          );
+          const {data} = await PostRefreshToken(accessToken, refreshToken);
           const {
             accessToken: newAccessToken,
             refreshToken: newRefreshToken,
             accessTokenExpiresIn: newAccessTokenExpiresIn,
           } = data.payload;
-          SessionStorage.set(
-            "expire",
-            new Date(newAccessTokenExpiresIn).getTime()
-          );
+          const expireTime = new Date(newAccessTokenExpiresIn).getTime();
+          SessionStorage.set("expire", expireTime);
           SessionStorage.set("UserToken", newAccessToken);
-          cookies.set("refresh_token", newRefreshToken, {
-            path: "/",
-          });
+          cookiesOption.setRefresh("refresh_token", newRefreshToken);
         }
       }
     };

@@ -3,13 +3,12 @@ import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
-import Cookies from "universal-cookie";
+import {cookiesOption} from "../utils/cookiesOption";
 import {GetProfileData} from "../apis/user";
 import {LocalStorage, SessionStorage} from "../utils/browserStorage";
 
 const MyPage = ({setHeader}) => {
   const navigate = useNavigate();
-  const cookies = new Cookies();
   const [loginId, setLoginId] = useState("");
   const [nickname, setNickname] = useState("");
   const [introduceMessage, setIntroduceMessage] = useState("");
@@ -39,8 +38,8 @@ const MyPage = ({setHeader}) => {
   const LogOut = () => {
     LocalStorage.clear();
     SessionStorage.clear();
-    cookies.remove("refresh_token");
-    cookies.remove("remember_id");
+    cookiesOption.remove("refresh_token");
+    cookiesOption.remove("remember_id");
     navigate("/");
   };
 

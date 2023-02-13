@@ -5,8 +5,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser, faCircle} from "@fortawesome/free-regular-svg-icons";
 import {faLock, faCircleCheck} from "@fortawesome/free-solid-svg-icons";
 import {JoinTypeButton} from "../components";
-import axios from "axios";
-import {PostLoginId} from "../apis/auth";
+import {PostLoginId, PostEmail, PostCurrentEmail} from "../apis/auth";
 
 // eslint-disable-next-line
 const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
@@ -636,7 +635,7 @@ const EmailAuth = ({
       return setEmailStateMessage("이메일을 정확히 입력해주세요.");
     }
 
-    PostEmail(originalEmailData)
+    PostEmail(originEmailData)
       .then((response) => {
         if (response.data.payload) {
           return setEmailStateMessage("이미 사용중인 이메일입니다.");
@@ -652,7 +651,17 @@ const EmailAuth = ({
   };
 
   const AuthEmailPost = () => {
-    PostCurrentEmail()
+    PostCurrentEmail(
+      originEmailData,
+      joinType,
+      loginId,
+      major,
+      name,
+      nickName,
+      password,
+      phoneNumber,
+      studentId
+    )
       .then(() => {
         alert("메일이 전송되었습니다.");
         setRePost(true);

@@ -3,11 +3,10 @@ import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleCheck} from "@fortawesome/free-solid-svg-icons";
 import {faCircle} from "@fortawesome/free-regular-svg-icons";
-import Cookies from "universal-cookie";
+import {cookiesOption} from "../utils/cookiesOption";
 import styled from "styled-components";
 
 const IdRememberButton = ({getRememberState}) => {
-  const cookies = new Cookies();
   const navigate = useNavigate();
   const [toggle, setToggle] = useState(false);
 
@@ -21,7 +20,7 @@ const IdRememberButton = ({getRememberState}) => {
   };
 
   useEffect(() => {
-    if (cookies.get("remember_id")) {
+    if (cookiesOption.get("remember_id")) {
       setToggle(true);
     }
   }, [navigate]);

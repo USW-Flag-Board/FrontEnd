@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
-import Cookies from "universal-cookie";
+import {cookiesOption} from "../utils/cookiesOption";
 import {LocalStorage, SessionStorage} from "../utils/browserStorage";
 import {PutAvatarInfo, GetUserInfo, DeleteUser} from "../apis/user";
 
@@ -214,7 +214,6 @@ const PrivateEdit = ({name, email, major, phoneNumber, studentId}) => {
 
 const DeleteModal = ({setDeleteModalOpen}) => {
   const navigate = useNavigate();
-  const cookies = new Cookies();
   const [password, setPassword] = useState("");
 
   const closeModal = () => {
@@ -225,8 +224,8 @@ const DeleteModal = ({setDeleteModalOpen}) => {
     DeleteUser(password)
       .then(() => {
         alert("계정 삭제 완료");
-        cookies.remove("refresh_token");
-        cookies.remove("remember_id");
+        cookiesOption.remove("refresh_token");
+        cookiesOption.remove("remember_id");
         LocalStorage.clear();
         SessionStorage.clear();
         navigate("/");

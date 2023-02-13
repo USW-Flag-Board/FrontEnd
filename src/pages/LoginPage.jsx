@@ -6,13 +6,12 @@ import {faLock} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import AutoLoginButton from "../components/AutoLoginButton";
 import IdRememberButton from "../components/IdRememberButton";
-import Cookies from "universal-cookie";
 import {PostLogin} from "../apis/auth";
 import {LocalStorage, SessionStorage} from "../utils/browserStorage";
+import {cookiesOption} from "../utils/cookiesOption";
 
 const LoginPage = ({setHeader}) => {
   const navigate = useNavigate();
-  const cookies = new Cookies();
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const [loginType, setLoginType] = useState(1);
@@ -28,9 +27,9 @@ const LoginPage = ({setHeader}) => {
 
   const RememberCookie = () => {
     if (idRemember) {
-      return cookies.set("remember_id", loginId);
+      return cookiesOption.set("remember_id", loginId);
     }
-    return cookies.remove("remember_id");
+    return cookiesOption.remove("remember_id");
   };
 
   const handleOnKeyPress = (e) => {
@@ -52,15 +51,14 @@ const LoginPage = ({setHeader}) => {
           const accessToken = response.data.payload.accessToken;
           const accessTokenExpiresIn =
             response.data.payload.accessTokenExpiresIn;
-          SessionStorage.set(
-            "expire",
-            new Date(accessTokenExpiresIn).getTime()
-          );
+          const expireTime = new Date(accessTokenExpiresIn).getTime();
+          SessionStorage.set("expire", expireTime);
           SessionStorage.set("UserToken", accessToken);
           SessionStorage.set("id", loginId);
-          cookies.set("refresh_token", response.data.payload.refreshToken, {
-            path: "/",
-          });
+          cookiesOption.setRefresh(
+            "refresh_token",
+            response.data.payload.refreshToken
+          );
           navigate("/");
         })
         .catch((error) => {
@@ -75,13 +73,14 @@ const LoginPage = ({setHeader}) => {
           const accessToken = response.data.payload.accessToken;
           const accessTokenExpiresIn =
             response.data.payload.accessTokenExpiresIn;
-          LocalStorage.set("expire", new Date(accessTokenExpiresIn).getTime());
-          LocalStorage.set("expire", accessTokenExpiresIn);
+          const expireTime = new Date(accessTokenExpiresIn).getTime();
+          LocalStorage.set("expire", expireTime);
           LocalStorage.set("UserToken", accessToken);
           LocalStorage.set("id", loginId);
-          cookies.set("refresh_token", response.data.payload.refreshToken, {
-            path: "/",
-          });
+          cookiesOption.setRefresh(
+            "refresh_token",
+            response.data.payload.refreshToken
+          );
           navigate("/");
         })
         .catch((error) => {
@@ -100,7 +99,7 @@ const LoginPage = ({setHeader}) => {
 
     setHeader(false);
 
-    const remember_Id = cookies.get("remember_id");
+    const remember_Id = cookiesOption.get("remember_id");
 
     if (remember_Id !== undefined) {
       setLoginId(remember_Id);
