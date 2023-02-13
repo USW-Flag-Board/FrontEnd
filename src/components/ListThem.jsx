@@ -9,7 +9,7 @@ const ListThem = ({itemContents, themList}) => {
     
     return(
         <>
-            {itemContents ? itemContents.map(({id, memberName, createdAt, viewCount, likeCount, title}) => (
+            {itemContents ? itemContents.map(({id, memberName, createdAt, viewCount, likeList, title}) => (
                 <ListThemBox key={id}>
                     <ItemBox>
                         <ListItem>{id}</ListItem>
@@ -17,7 +17,7 @@ const ListThem = ({itemContents, themList}) => {
                         <ListItem>{memberName}</ListItem>
                         <ListItem>{createdAt.slice(0, 3).join('.')}</ListItem>
                         <ListItem>{viewCount}</ListItem>
-                        <ListItem>{likeCount}</ListItem>
+                        <ListItem>{likeList}</ListItem>
                     </ItemBox>
                 </ListThemBox>
             )) :  
@@ -28,7 +28,7 @@ const ListThem = ({itemContents, themList}) => {
                     <ListItem>{themList.memberName}</ListItem>
                     <ListItem>{themList.createdAt.slice(0, 3).join('.')}</ListItem>
                     <ListItem>{themList.viewCount}</ListItem>
-                    <ListItem>{themList.likeCount}</ListItem>
+                    <ListItem>{themList.likeList}</ListItem>
                 </ItemBox>
             </ListThemBox>}
         </>
@@ -59,8 +59,8 @@ const ListItem = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    fontSize: 0.8rem;
-    fontWeight: 600;
+    font-size: 0.8rem;
+    font-weight: 600;
     &:nth-of-type(1){width: 5%; height: 50%; background-color: white; border-radius: 15px; color: black; margin-left: 10px};
     &:nth-of-type(2){width: 31%};
     &:nth-of-type(6){padding-right: 24%};

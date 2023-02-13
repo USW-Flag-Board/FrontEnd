@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import postsActions  from '../../redux/thunkActions/postsActions';
+import postsActions  from '../../redux/thunkActions/boardsActions';
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -36,7 +36,8 @@ const selectItems = ["전체기간", "게시물 + 작성자"];
 const BulletinBoard = () => {
   // const [selectBoard, setSelectBoard] = useState("free_board");
   const [currentItems, setCurrentItems] = useState([]); // 페이지당 보여줄 데이터 배열
-  const posts = useSelector((state) => state.toDo);
+  const posts = useSelector((state) => state.toDo.getPostsData);
+  console.log(posts)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const writeClick = () => {
@@ -44,7 +45,7 @@ const BulletinBoard = () => {
   }
 
   useEffect(()=>{
-      dispatch(postsActions.getBoardAPI())
+      dispatch(postsActions.getBoardAPI());
     },[dispatch])
   
     return (
@@ -86,7 +87,7 @@ const BulletinBoard = () => {
             <PaginationArea>
               <Pagination
                 itemsPerPage={8}
-                items={posts.posts}
+                items={posts}
                 setCurrentItems={setCurrentItems}
               />
             </PaginationArea>
@@ -220,7 +221,7 @@ const WriteButton = styled.button`
   font-size: 1rem;
   font-weight: 700;
   &:hover {
-    backgroundcolor: white;
+    background-color: white;
   }
   border: none;
   border-radius: 5px;

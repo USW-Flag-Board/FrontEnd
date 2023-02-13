@@ -8,12 +8,8 @@ const WritePost = ({setHeader}) => {
     setHeader(true);
   },[setHeader]);
   
-  const handlePostSubmit = () => {
-    
-  };
-
   return (
-    <PostInput handlePostSubmit={handlePostSubmit}
+    <PostInput
       handleButton={"등록하기"}
       pageTitle={"글쓰기"}/>
   );

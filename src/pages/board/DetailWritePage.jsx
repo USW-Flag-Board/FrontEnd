@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import postsActions  from '../../redux/thunkActions/postsActions';
+import boardsActions  from '../../redux/thunkActions/boardsActions';
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { ListThem, SideBar, LikeButton, Reply } from "../../components";
@@ -30,7 +30,7 @@ const DetailWritePage = ({setHeader}) => {
   };
   
   useEffect(()=>{
-    dispatch(postsActions.getBoardAPI());
+    dispatch(boardsActions.getBoardAPI());
   },[dispatch])
 
   useEffect(() => {
@@ -50,10 +50,6 @@ const DetailWritePage = ({setHeader}) => {
   const editClick = () => {
     navigate("/board/edit");
   }
-  const removeComment = (id) => {
-    // 코멘트 삭제
-    return setComments(comments.filter((comment) => comment.id !== id));
-  };
 
   return (
     <BoardArea>
