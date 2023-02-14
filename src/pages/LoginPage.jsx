@@ -4,102 +4,107 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
 import {faLock} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import axios from "axios";
 import AutoLoginButton from "../components/AutoLoginButton";
 import IdRememberButton from "../components/IdRememberButton";
-import Cookies from "universal-cookie";
+import {PostLogin} from "../apis/auth";
+import {LocalStorage, SessionStorage} from "../utils/browserStorage";
+import {cookiesOption} from "../utils/cookiesOption";
 
 const LoginPage = ({setHeader}) => {
   const navigate = useNavigate();
-  const cookies = new Cookies();
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const [loginType, setLoginType] = useState(1);
   const [idRemember, setIdRemember] = useState(false);
 
-  useEffect(() => {
-    if (sessionStorage.getItem("UserToken")) {
-      navigate("/my");
-    } else if (localStorage.getItem("UserToken")) {
-      navigate("/my");
-    }
-  }, [navigate]);
-
-  useEffect(() => {
-    if (cookies.get("remember_id") !== undefined) {
-      setLoginId(cookies.get("remember_id"));
-    }
-  }, [cookies, navigate]);
-
-  useEffect(() => {
-    setHeader(false);
-  });
-
-  const getValue = (text) => {
+  const getButtonValue = (text) => {
     setLoginType(text);
   };
 
-  const RememberState = (text) => {
+  const getRememberState = (text) => {
     setIdRemember(text);
   };
 
   const RememberCookie = () => {
     if (idRemember) {
-      cookies.set("remember_id", loginId);
-    } else {
-      cookies.remove("remember_id");
+      return cookiesOption.set("remember_id", loginId);
+    }
+    return cookiesOption.remove("remember_id");
+  };
+
+  const handleOnKeyPress = (e) => {
+    if (e.key === "Enter") {
+      OnLogin();
     }
   };
 
-  function OnLogin(loginId, password) {
-    const data = {
-      loginId,
-      password,
-    };
+  const OnLogin = () => {
     if (loginId === "") {
-      alert("아이디를 입력해주세요.");
+      return alert("아이디를 입력해주세요.");
     } else if (password === "") {
-      alert("비밀번호를 입력해주세요.");
-    } else {
-      if (loginType === 1) {
-        axios
-          .post("http://3.39.36.239:80/api/auth/login", data)
-          .then((response) => {
-            RememberCookie();
-            const accessToken = response.data.accessToken;
-            sessionStorage.setItem("UserToken", accessToken);
-            sessionStorage.setItem("id", loginId);
-            cookies.set("refresh_token", response.data.refreshToken, {
-              path: "/",
-            });
-            navigate("/");
-          })
-          .catch((error) => {
-            if (error.response.status === 404) {
-              alert("존재하지 않는 사용자입니다.");
-            }
-          });
-      } else if (loginType === 2) {
-        axios
-          .post("http://3.39.36.239:80/api/auth/login", data)
-          .then((response) => {
-            RememberCookie();
-            const accessToken = response.data.accessToken;
-            localStorage.setItem("UserToken", accessToken);
-            localStorage.setItem("id", loginId);
-            cookies.set("refresh_token", response.data.refreshToken, {
-              path: "/",
-            });
-            navigate("/");
-          })
-          .catch((error) => {
-            if (error.response.status === 404) {
-              alert("존재하지 않는 사용자입니다.");
-            }
-          });
-      }
+      return alert("비밀번호를 입력해주세요.");
     }
-  }
+
+    if (loginType === 1) {
+      PostLogin(loginId, password)
+        .then((response) => {
+          const accessToken = response.data.payload.accessToken;
+          const accessTokenExpiresIn =
+            response.data.payload.accessTokenExpiresIn;
+          const expireTime = new Date(accessTokenExpiresIn).getTime();
+          SessionStorage.set("expire", expireTime);
+          SessionStorage.set("UserToken", accessToken);
+          SessionStorage.set("id", loginId);
+          cookiesOption.setRefresh(
+            "refresh_token",
+            response.data.payload.refreshToken
+          );
+          navigate("/");
+        })
+        .catch((error) => {
+          if (error.response.status === 404) {
+            alert("존재하지 않는 사용자입니다.");
+          }
+        });
+      RememberCookie();
+    } else if (loginType === 2) {
+      PostLogin(loginId, password)
+        .then((response) => {
+          const accessToken = response.data.payload.accessToken;
+          const accessTokenExpiresIn =
+            response.data.payload.accessTokenExpiresIn;
+          const expireTime = new Date(accessTokenExpiresIn).getTime();
+          LocalStorage.set("expire", expireTime);
+          LocalStorage.set("UserToken", accessToken);
+          LocalStorage.set("id", loginId);
+          cookiesOption.setRefresh(
+            "refresh_token",
+            response.data.payload.refreshToken
+          );
+          navigate("/");
+        })
+        .catch((error) => {
+          if (error.response.status === 404) {
+            alert("존재하지 않는 사용자입니다.");
+          }
+        });
+      RememberCookie();
+    }
+  };
+
+  useEffect(() => {
+    if (SessionStorage.get("UserToken") || LocalStorage.get("UserToken")) {
+      navigate("/my");
+    }
+
+    setHeader(false);
+
+    const remember_Id = cookiesOption.get("remember_id");
+
+    if (remember_Id !== undefined) {
+      setLoginId(remember_Id);
+    }
+  }, []);
 
   return (
     <PageArea>
@@ -124,10 +129,7 @@ const LoginPage = ({setHeader}) => {
               setLoginId(e.target.value);
             }}
           />
-          <FontAwesomeIcon
-            icon={faUser}
-            style={{color: "white", position: "absolute", left: 40, top: 42}}
-          />
+          <Icon icon={faUser} />
         </RelativeArea>
         <RelativeArea>
           <WriteArea
@@ -136,27 +138,23 @@ const LoginPage = ({setHeader}) => {
             onChange={(e) => {
               setPassword(e.target.value);
             }}
+            onKeyPress={(e) => {
+              handleOnKeyPress(e);
+            }}
           />
-          <FontAwesomeIcon
-            icon={faLock}
-            style={{color: "white", position: "absolute", left: 40, top: 42}}
-          />
+          <Icon icon={faLock} />
         </RelativeArea>
         <SortArea>
           <CheckArea>
-            <AutoLoginButton getValue={getValue} />
+            <AutoLoginButton getButtonValue={getButtonValue} />
             <CheckLabel>로그인 상태 유지</CheckLabel>
           </CheckArea>
           <CheckArea>
-            <IdRememberButton getValue={RememberState} />
+            <IdRememberButton getRememberState={getRememberState} />
             <CheckLabel>아이디 기억하기</CheckLabel>
           </CheckArea>
         </SortArea>
-        <LoginButton
-          onClick={() => OnLogin(loginId, password)}
-          fullWidth
-          variant="contained"
-        >
+        <LoginButton onClick={() => OnLogin()} fullWidth variant="contained">
           로그인
         </LoginButton>
         <SortArea>
@@ -174,6 +172,13 @@ const LoginPage = ({setHeader}) => {
     </PageArea>
   );
 };
+
+const Icon = styled(FontAwesomeIcon)`
+  color: white;
+  position: absolute;
+  left: 40px;
+  top: 42px;
+`;
 
 const PageArea = styled.div`
   width: 100%;

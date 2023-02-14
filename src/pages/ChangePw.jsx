@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import {useNavigate, useLocation} from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
+import {PatchChangePw} from "../apis/user";
 
 const ChangePw = ({setHeader}) => {
   const navigate = useNavigate();
@@ -35,19 +35,26 @@ const ChangePw = ({setHeader}) => {
 
   const ReplacePassword = () => {
     if (!passwordError & (newPassword !== "") & (passwordCheck !== "")) {
-      const data = {
-        currentPassword,
-        newPassword,
-      };
-      axios
-        .patch("http://3.39.36.239:8080/api/member/password", data)
-        .then((response) => {
+      PatchChangePw(currentPassword, newPassword)
+        .then(() => {
           alert("비밀번호 변경 완료");
           navigate("/edit");
         })
         .catch((error) => {
-          if (error.response.state === 409) {
-            alert("기존과 같은 비밀번호는 사용할 수 없습니다.");
+          switch (error.response.status) {
+            case 404:
+              alert("존재하지 않는 사용자입니다.");
+              break;
+            case 409:
+              alert("기존과 같은 비밀번호는 사용할 수 없습니다.");
+              break;
+            case 422:
+              alert(
+                "사용할 수 없는 비밀번호 입니다. (8~20자 이내 영문, 숫자, 특수문자를 모두 포함)"
+              );
+              break;
+            default:
+              alert("서버 통신 오류.");
           }
         });
     }
@@ -55,7 +62,7 @@ const ChangePw = ({setHeader}) => {
 
   useEffect(() => {
     setHeader(true);
-  });
+  }, []);
 
   return (
     <>

@@ -1,78 +1,42 @@
 import {useState, useEffect} from "react";
-import {useNavigate, useLocation} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
-import Cookies from "universal-cookie";
+import {cookiesOption} from "../utils/cookiesOption";
+import {LocalStorage, SessionStorage} from "../utils/browserStorage";
+import {PutAvatarInfo, GetUserInfo, DeleteUser} from "../apis/user";
 
-const profileUpdateExample = [
-  "백엔드 개발자 문희조입니다.",
-  "컴퓨터SW",
-  "010-1234-5678",
-  "19017041",
-];
+const MENU_ARRAY = [{name: "아바타"}, {name: "개인정보"}];
 
 const EditUser = ({setHeader}) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const cookies = new Cookies();
-  const [password, SetPassword] = useState("");
-  const [bio, setBio] = useState(profileUpdateExample[0]);
-  const [major, setMajor] = useState(profileUpdateExample[1]);
-  const [phoneNumber, setPhoneNumber] = useState(profileUpdateExample[2]);
-  const [studentId, setStudentId] = useState(profileUpdateExample[3]);
+  const [currentTab, clickTab] = useState(0);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [major, setMajor] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [studentId, setStudentId] = useState("");
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
-  const ProfileUpdate = () => {
-    const data = {
-      bio,
-      major,
-      phoneNumber,
-      studentId,
-    };
-    axios
-      .patch("http://3.39.36.239:8080/api/member/profile", data)
-      .then((response) => {
-        alert("값 변경 완료");
-      })
-      .catch((error) => {
-        alert("변경이 불가능합니다.");
-      });
+  const indexSetting = (index) => {
+    clickTab(index);
   };
 
   const DeleteUser = () => {
-    //나중에 여기에 모달창 추가해서 삭제 디자인에 맞게 적용 예정
-    const passwordPost = {
-      password,
-    };
-    axios
-      .delete("http://3.39.36.239:8080/api/members", {
-        data: {
-          password: "asdasd72!@",
-        },
-      })
-      .then((response) => {
-        alert("계정 삭제 완료");
-        cookies.remove("refresh_token");
-        cookies.remove("remember_id");
-        localStorage.clear();
-        sessionStorage.clear();
-        navigate("/");
-      })
-      .catch((error) => {
-        if (error.response.state === 400) {
-          alert("비밀번호가 일치하지 않습니다.");
-        } else if (error.response.state === 404) {
-          alert("존재하지 않는 사용자입니다?");
-        }
-      });
+    setDeleteModalOpen(true);
   };
 
   useEffect(() => {
     setHeader(true);
-  });
+  }, []);
 
   return (
     <>
       <Mainbox>
+        {deleteModalOpen && (
+          <DeleteModal
+            className={deleteModalOpen ? "opaque" : ""}
+            setDeleteModalOpen={setDeleteModalOpen}
+          />
+        )}
         <EditTitle>회원 정보 수정</EditTitle>
         <Editbox>
           <ImgBox>
@@ -86,52 +50,49 @@ const EditUser = ({setHeader}) => {
             </Box>
           </ImgBox>
           <MainContent>
-            <ProfileTitle>
-              프로필 정보 수정
-              <SaveButton onClick={() => ProfileUpdate()}>저장하기</SaveButton>
-              <SaveButton
-                onClick={() =>
-                  navigate("/ChangePw", {
-                    state: {
-                      pw: password,
-                    },
-                  })
-                }
-              >
-                비밀번호 변경
-              </SaveButton>
-            </ProfileTitle>
-            <SideBox>
-              <TitleBox>닉네임</TitleBox>
-              <NameInput placeholder="김철수" />
-            </SideBox>
-            <SideBox>
-              <TitleBox>한줄 소개</TitleBox>
-              <OnelineInput placeholder={profileUpdateExample[0]} />
-            </SideBox>
-            <InfoTitle>상세 정보 수정</InfoTitle>
-            <SideBox>
-              <TitleBox>아이디 </TitleBox>
-              <InputFiled placeholder="asdasdasd" />
-            </SideBox>
-            <SideBox>
-              <TitleBox>이메일 </TitleBox>
-              <InputFiled placeholder="example@suwon.ac.kr" />
-            </SideBox>
-            <SideBox>
-              <TitleBox>전화번호 </TitleBox>
-              <InputFiled placeholder="010-xxxx-xxxx" />
-            </SideBox>
-            <SideBox>
-              <TitleBox>전공 </TitleBox>
-              <InputFiled placeholder="컴퓨터SW" />
-            </SideBox>
-            <SideBox>
-              <TitleBox>학번 </TitleBox>
-              <InputFiled placeholder="11111111" />
-            </SideBox>
+            <div style={{display: "flex"}}>
+              <TabMenu>
+                {MENU_ARRAY.map((el, index) => (
+                  <li
+                    className={
+                      index === currentTab ? "submenu focused" : "submenu"
+                    }
+                    onClick={() => indexSetting(index)}
+                    key={index}
+                  >
+                    {el.name}
+                  </li>
+                ))}
+              </TabMenu>
+            </div>
+            <TabContent>
+              {currentTab === 0 && (
+                <AvatarEdit
+                  setName={setName}
+                  setEmail={setEmail}
+                  setMajor={setMajor}
+                  setPhoneNumber={setPhoneNumber}
+                  setStudentId={setStudentId}
+                />
+              )}
+              {currentTab === 1 && (
+                <PrivateEdit
+                  name={name}
+                  email={email}
+                  major={major}
+                  phoneNumber={phoneNumber}
+                  studentId={studentId}
+                />
+              )}
+            </TabContent>
             <DeleteBox>
-              <DeleteButton onClick={() => DeleteUser()}>회원탈퇴</DeleteButton>
+              <DeleteModalButton
+                onClick={() => {
+                  DeleteUser();
+                }}
+              >
+                회원탈퇴
+              </DeleteModalButton>
             </DeleteBox>
           </MainContent>
         </Editbox>
@@ -139,6 +100,269 @@ const EditUser = ({setHeader}) => {
     </>
   );
 };
+
+const AvatarEdit = ({
+  setName,
+  setEmail,
+  setMajor,
+  setPhoneNumber,
+  setStudentId,
+}) => {
+  const navigate = useNavigate();
+  const [bio, setBio] = useState("");
+  const [nickName, setNickName] = useState("");
+  const [profileImg, setProfileImg] = useState("");
+  const [editable, setEditable] = useState(false);
+
+  const ProfileUpdate = () => {
+    PutAvatarInfo(bio, nickName, profileImg)
+      .then(() => {
+        alert("값 변경 완료");
+      })
+      .catch(() => {
+        alert("변경이 불가능합니다.");
+      });
+  };
+
+  useEffect(() => {
+    GetUserInfo()
+      .then((response) => {
+        setNickName(response.data.payload.nickName);
+        setBio(response.data.payload.bio);
+        setName(response.data.payload.name);
+        setEmail(response.data.payload.email);
+        setMajor(response.data.payload.major);
+        setPhoneNumber(response.data.payload.phoneNumber);
+        setStudentId(response.data.payload.studentId);
+      })
+      .catch(() => {});
+  }, []);
+
+  return (
+    <>
+      <ProfileTitle>
+        프로필 정보 수정
+        {editable ? (
+          <SaveButton
+            onClick={() => {
+              ProfileUpdate();
+              setEditable(false);
+            }}
+          >
+            저장하기
+          </SaveButton>
+        ) : (
+          <SaveButton onClick={() => setEditable(true)}>수정하기</SaveButton>
+        )}
+        <SaveButton onClick={() => navigate("/ChangePw")}>
+          비밀번호 변경
+        </SaveButton>
+      </ProfileTitle>
+      <SideBox>
+        <TitleBox>닉네임</TitleBox>
+        <NameInput
+          onChange={(e) => setNickName(e.target.value)}
+          placeholder={nickName}
+          disabled={!editable}
+        />
+      </SideBox>
+      <SideBox>
+        <TitleBox>한줄 소개</TitleBox>
+        <OnelineInput
+          onChange={(e) => setBio(e.target.value)}
+          placeholder={bio}
+          disabled={!editable}
+        />
+      </SideBox>
+    </>
+  );
+};
+
+const PrivateEdit = ({name, email, major, phoneNumber, studentId}) => {
+  return (
+    <>
+      <ProfileTitle>개인정보</ProfileTitle>
+      <SideBox>
+        <TitleBox>이름 </TitleBox>
+        <InputFiled placeholder={name} disabled />
+      </SideBox>
+      <SideBox>
+        <TitleBox>이메일 </TitleBox>
+        <InputFiled placeholder={email} disabled />
+      </SideBox>
+      <SideBox>
+        <TitleBox>전공 </TitleBox>
+        <InputFiled placeholder={major} disabled />
+      </SideBox>
+      <SideBox>
+        <TitleBox>전화번호 </TitleBox>
+        <InputFiled
+          placeholder={phoneNumber.replace(
+            /^(\d{2,3})(\d{3,4})(\d{4})$/,
+            `$1-$2-$3`
+          )}
+          disabled
+        />
+      </SideBox>
+      <SideBox>
+        <TitleBox>학번 </TitleBox>
+        <InputFiled placeholder={studentId} disabled />
+      </SideBox>
+    </>
+  );
+};
+
+const DeleteModal = ({setDeleteModalOpen}) => {
+  const navigate = useNavigate();
+  const [password, setPassword] = useState("");
+
+  const closeModal = () => {
+    setDeleteModalOpen(false);
+  };
+
+  const DeleteUserId = () => {
+    DeleteUser(password)
+      .then(() => {
+        alert("계정 삭제 완료");
+        cookiesOption.remove("refresh_token");
+        cookiesOption.remove("remember_id");
+        LocalStorage.clear();
+        SessionStorage.clear();
+        navigate("/");
+      })
+      .catch((error) => {
+        switch (error.response.status) {
+          case 400:
+            alert("비밀번호가 일치하지 않습니다.");
+            break;
+          case 404:
+            alert("존재하지 않는 사용자입니다.");
+            break;
+          default:
+            alert("서버 통신 오류.");
+        }
+      });
+  };
+
+  return (
+    <>
+      <DeleteModalBox>
+        <ExitModal onClick={() => closeModal()}>X</ExitModal>
+        <DeleteModalTitle>회원탈퇴</DeleteModalTitle>
+        <DeleteModalContent>
+          회원탈퇴를 원하신다면 비밀번호를 입력해주세요.
+        </DeleteModalContent>
+        <InputPassword
+          onChange={(e) => setPassword(e.target.value)}
+        ></InputPassword>
+        <DeleteButton onClick={() => DeleteUserId()}>탈퇴하기</DeleteButton>
+      </DeleteModalBox>
+    </>
+  );
+};
+
+const TabContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid;
+  border-color: #6c6c6c;
+  borderradius: 0px 28px 28px 28px;
+  padding: calc(10% + 20px) 0px 20px 20px;
+  width: 90%;
+`;
+
+const DeleteModalBox = styled.div`
+  width: 30%;
+  height: 25%;
+  z-index: 999;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #6c6c6c;
+  transition: 0.2s;
+  border-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+`;
+
+const DeleteModalTitle = styled.div`
+  font-weight: 500;
+  font-size: 40px;
+`;
+
+const DeleteModalContent = styled.div`
+  margin-top: 10%;
+`;
+
+const DeleteButton = styled.div`
+  width: 15%;
+  height: 8%;
+  background: white;
+  color: red;
+  border-radius: 1vh;
+  border: 1px solid red;
+  margin-top: 5%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  font-size: 0.5rem;
+  font-weight: 500;
+  outline: none;
+  transition: 0.2s;
+  :hover {
+    transition: 0.2s;
+    background-color: #575757;
+  }
+`;
+
+const ExitModal = styled.button`
+  position: absolute;
+  background: transparent;
+  outline: none;
+  border: none;
+  left: 93%;
+  top: 5%;
+`;
+
+const InputPassword = styled.input`
+  width: 50%;
+  height: 3vh;
+  background: white;
+  border-radius: 1.5vh;
+  border: none;
+  outline: none;
+  color: black;
+  padding-left: 10px;
+  margin-top: 5vh;
+`;
+
+const TabMenu = styled.ul`
+  background: #403e3e;
+  color: #a3a2a2;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  list-style: none;
+  margin-top: 10px;
+  border-radius: 10px 10px 0px 0px;
+
+  .submenu {
+    display: flex;
+    padding: 10px;
+    font-size: 15px;
+    transition: 0.5s;
+    border-radius: 10px 10px 0px 0px;
+  }
+
+  .focused {
+    background: #6c6c6c;
+    color: white;
+  }
+`;
 
 const Mainbox = styled.div`
   display: flex;
@@ -162,7 +386,7 @@ const Editbox = styled.div`
 const MainContent = styled.div`
   display: flex;
   width: 80%;
-  height: 80%;
+  height: auto;
   flex-direction: column;
   margin-left: 2vw;
   margin-bottom: 3vw;
@@ -256,6 +480,8 @@ const OnelineInput = styled.textarea`
   flex-wrap: wrap;
   resize: none;
   font-family: Arial;
+  justify-content: center;
+  align-items: center;
   ::placeholder {
     color: white;
   }
@@ -325,26 +551,17 @@ const ProfileTitle = styled.div`
   margin-bottom: 2vh;
 `;
 
-const InfoTitle = styled.div`
-  display: flex;
-  margin-bottom: 2vh;
-  align-items: center;
-  font-size: 1.5rem;
-  margin-top: 5vh;
-  font-weight: 800px;
-`;
-
 const DeleteBox = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
-  justify-content: center;
+  height: 90%;
+  justify-content: flex-end;
   align-items: flex-end;
   margin-bottom: 2vh;
 `;
 
-const DeleteButton = styled.button`
+const DeleteModalButton = styled.button`
   width: 150px;
   height: 23px;
   background: #6c6c6c;
