@@ -37,12 +37,7 @@ const onChangeGithubLink = (e) => {
 const Completed = () => {  
 
   axios.post('http://api.flaground.kr/api/activities', {
-
-    /*headers: {
-      Authorization: "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1IiwiYXV0aCI6IlJPTEVfQ1JFVyIsImV4cCI6MTY3NTc3NzcxM30.UliaD3O9c3sf-BcxewKH_CV7Cwpz7KwnrJ1kym2oxmbbm2tmzt8AaFAlT1t-NbAIJi6eAY0-gI5lztzC1ovGXw",
-      },
-      */
-
+    
     data: {
       activityType: activityType,
       description: description,
