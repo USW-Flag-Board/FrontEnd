@@ -1,56 +1,52 @@
 import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleCheck} from "@fortawesome/free-solid-svg-icons";
 import {faCircle} from "@fortawesome/free-regular-svg-icons";
-import Cookies from "universal-cookie";
-import {useNavigate} from "react-router-dom";
+import {cookiesOption} from "../utils/cookiesOption";
+import styled from "styled-components";
 
-const IdRememberButton = (props) => {
-  const cookies = new Cookies();
+const IdRememberButton = ({getRememberState}) => {
   const navigate = useNavigate();
-  const [state, setState] = useState(false);
+  const [toggle, setToggle] = useState(false);
 
-  const Checked = () => {
-    if (state) {
-      setState(false);
-      props.getValue(false);
-    } else {
-      setState(true);
-      props.getValue(true);
+  const toggleAndgetRememberState = () => {
+    if (toggle) {
+      setToggle(false);
+      return getRememberState(false);
     }
+    setToggle(true);
+    return getRememberState(true);
   };
 
   useEffect(() => {
-    if (cookies.get("remember_id")) {
-      setState(true);
+    if (cookiesOption.get("remember_id")) {
+      setToggle(true);
     }
   }, [navigate]);
 
   return (
-    <div style={{display: "inline-block"}}>
-      {state ? (
-        <FontAwesomeIcon
+    <IdRememberButtonArea>
+      {toggle ? (
+        <ToggleButton
           icon={faCircleCheck}
-          style={{
-            filter:
-              "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
-            transition: "opacity 0.2s",
-          }}
-          onClick={Checked}
+          onClick={toggleAndgetRememberState}
         />
       ) : (
-        <FontAwesomeIcon
-          icon={faCircle}
-          style={{
-            filter:
-              "invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg) brightness(97%) contrast(83%)",
-            transition: "opacity 0.2s",
-          }}
-          onClick={Checked}
-        />
+        <ToggleButton icon={faCircle} onClick={toggleAndgetRememberState} />
       )}
-    </div>
+    </IdRememberButtonArea>
   );
 };
+
+const IdRememberButtonArea = styled.div`
+  display: inline-block;
+`;
+
+const ToggleButton = styled(FontAwesomeIcon)`
+  filter: invert(40%) sepia(0%) saturate(1219%) hue-rotate(152deg)
+    brightness(97%) contrast(83%);
+  transition: opacity 0.2s;
+`;
 
 export default IdRememberButton;

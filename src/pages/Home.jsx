@@ -24,9 +24,17 @@ const Home = ({setHeader}) => {
     <HomeArea>
       <HomeBox>
         <HomeContents>
-          <MyActivity>MY ACTIBITY</MyActivity>
           <MyActivityArea>
             <MyActivityBox>
+              <NoticeArea>
+                <NoticeTitle>NOTICE</NoticeTitle>
+                <FeedItem style={{height: "70%"}}>
+                  <FeedContent>공지 안녕하세요 현회장 정충일입니다.</FeedContent>
+                  <FeedContent>공지 안녕하세요 차기회장 이수빈입니다.</FeedContent>
+                  <FeedContent>공지 안녕하세요 차기회장 이수빈입니다.</FeedContent>
+                </FeedItem>
+              </NoticeArea>
+              <MyActivity>MY ACTIBITY</MyActivity>
               <FlagContents>
               {contents.map(({title}) => (
                 <FlagContent key={title}>
@@ -40,15 +48,16 @@ const Home = ({setHeader}) => {
                   alt="home-book"
                 />
               </BookImgBox>
-              <NoticeArea>
-                <NoticeTitle>NOTICE</NoticeTitle>
-                <FeedItem style={{height: "70%"}}>
-                  <FeedContent>공지 안녕하세요 현회장 정충일입니다.</FeedContent>
-                  <FeedContent>공지 안녕하세요 차기회장 이수빈입니다.</FeedContent>
-                </FeedItem>
-              </NoticeArea>
             </MyActivityBox>
             <MyActivityBox>
+              <FilteredPostTitle>
+                <PostTitle>좋아요순</PostTitle>
+                <PostTitle>최근순</PostTitle>
+              </FilteredPostTitle>
+              <HeartdAndRecent>
+                <HeartBox/>
+                <HeartBox/>
+              </HeartdAndRecent>
               <FeedTitle>FEED</FeedTitle>
               <FeedArea>
                 <FeedBox>
@@ -66,14 +75,6 @@ const Home = ({setHeader}) => {
                   </FeedItem>
                 </FeedBox>
               </FeedArea>
-              <FilteredPostTitle>
-                <PostTitle>좋아요순</PostTitle>
-                <PostTitle>최근순</PostTitle>
-              </FilteredPostTitle>
-              <HeartdAndRecent>
-                <HeartBox/>
-                <HeartBox/>
-              </HeartdAndRecent>
             </MyActivityBox>
           </MyActivityArea>
         </HomeContents>
