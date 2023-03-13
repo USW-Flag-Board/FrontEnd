@@ -1,7 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    board: [],
+    getPostsData: [],
+    setPostData: {
+        boardId: 0,
+        title: "",
+        content: "",
+        imgUrl: "",
+        fileUrl: "",
+        status: "NORMAL",
+        userId: 3
+    },
     postId: 0,
 };
 
@@ -9,9 +18,11 @@ const toDos = createSlice({
     name: 'toDos',
     initialState,
     reducers: {
-        // 게시판 
-        setBoard: (state, action) => {
-            state.board = action.payload;
+        getPosts: (state, action) => {
+            state.getPostsData = action.payload;
+        },
+        setPost: (state, action) => {
+            state.setPostData = action.payload;
         },
         // 해당 게시글을 불러오기
         setId: (state, action) => {

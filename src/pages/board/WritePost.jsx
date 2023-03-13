@@ -23,22 +23,8 @@ const WritePost = ({setHeader}) => {
     setHeader(true);
   },[setHeader]);
   
-  const data = {
-    userId: 3,
-    boardId: 1,
-    title: `${title}`,
-    content: `${content}`,
-    status: "NORMAL",
-  };
-
-  const handlePostSubmit = () => {
-    dispatch(postAPI.writePostAxios(data));
-    window.alert("등록이 완료되었습니다.");
-    navigate("/board");
-  };
-
   return (
-    <PostInput handlePostSubmit={handlePostSubmit}
+    <PostInput
       handleButton={"등록하기"}
       pageTitle={"글쓰기"}
       title={title}

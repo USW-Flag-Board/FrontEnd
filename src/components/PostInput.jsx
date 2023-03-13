@@ -2,6 +2,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faFile } from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
 import { Footer, SideBar } from "../components";
+<<<<<<< HEAD
+=======
+import axios from "axios";
+import { boardAPI } from '../apis/boardAPI'; 
+>>>>>>> d210eb112eedf68259918e3ab966b0226e028550
 
 const boardItems = [
     {
@@ -39,6 +44,7 @@ const buttonItems = [
     },
 ];
 
+<<<<<<< HEAD
 const PostInput = ({
     handlePostSubmit, 
     handleEditSubmit, 
@@ -51,24 +57,52 @@ const PostInput = ({
     board,
     canSubmit,
     handleBoardChange}) => {
+=======
+const PostInput = ({handlePostSubmit, handleEditSubmit, handleButton, pageTitle}) => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    // const [image, setImage] = useState({
+    //   image_file: "",
+    //   priview_URL: "",
+    // });
+
+    const [title, setTitle] = useState(""); // 글 제목
+    const [content, setContent] = useState(""); // 글 내용
+    const [board, setBoard] = useState(""); // 게시판 종류
+    const data = {
+        userId: 3,
+        boardId: 1,
+        title: `${title}`,
+        content: `${content}`,
+        status: "NORMAL",
+    };
+    const handleBoardChange = (e) => {
+        setBoard(e.target.value);
+    };
+
+    const canSubmit = useCallback(() => {
+        return content !== "" && title !== "" && (board !== "게시판을 선택해주세요" && board !== "");
+    }, [content, title, board]);
+    
+>>>>>>> d210eb112eedf68259918e3ab966b0226e028550
     return(
         <>
             <BoardArea>
-                <TitleArea>
-                    <TitleBox>{pageTitle}</TitleBox>
-                </TitleArea>
+                <SideBar
+                title="BOARD"
+                mainColor="#4B4B4B"
+                subColor="#3C3C3C"
+                mainWidth="13%"
+                subWidth="90%"
+                items={boardItems}
+                paddingTop="0"
+                paddingTopMain="6%"
+                borderRadius="0 15px 15px 0"
+                />
                 <ContentArea>
-                    <SideBar
-                    title="BOARD"
-                    mainColor="#4B4B4B"
-                    subColor="#3C3C3C"
-                    mainWidth="13%"
-                    subWidth="90%"
-                    items={boardItems}
-                    paddingTop="0"
-                    borderRadius="0 15px 15px 0"
-                    />
-                    <ListArea>
+                    <TitleArea>
+                        <TitleBox>{pageTitle}</TitleBox>
+                    </TitleArea>
                     <SelectArea>
                         <BoardSelect onChange={handleBoardChange}>
                         <option>게시판을 선택해주세요</option>
@@ -76,9 +110,13 @@ const PostInput = ({
                             <option key={id} >{krName}</option>
                         ))}
                         </BoardSelect>
-                        {canSubmit() ? handleButton === "등록하기" ?
+                        {canSubmit() ? pageTitle === "글쓰기" ?
                             (<PostButton 
+<<<<<<< HEAD
                                 onClick={() => {handlePostSubmit()}}
+=======
+                                onClick={() => dispatch(boardAPI.setWritePostAxios(data))}
+>>>>>>> d210eb112eedf68259918e3ab966b0226e028550
                                 type="button"
                             >
                                 {handleButton}
@@ -118,7 +156,6 @@ const PostInput = ({
                         ))}
                         </ContentButtonBox>
                     </ContentInputBox>
-                    </ListArea>
                 </ContentArea>
             </BoardArea>
             <Footer />
@@ -128,6 +165,13 @@ const PostInput = ({
 
 const BoardArea = styled.div`
     height: 88vh;
+    display: flex;
+`;
+
+
+const ContentArea = styled.div`
+    width: 87%;
+    padding: 0 2rem 0 2rem;
 `;
 
 const TitleArea = styled.div`
@@ -135,7 +179,6 @@ const TitleArea = styled.div`
     width: 100%;
     height: 10%;
     display: flex;
-    padding: 0 2rem 1rem 2rem;
     align-items: flex-end;
     justify-content: space-between;
 `;
@@ -146,13 +189,6 @@ const TitleBox = styled.h2`
     font-size: 35px;
     display: flex;
     align-items: flex-end;
-    padding-left: 14%;
-`;
-
-const ContentArea = styled.div`
-    display: flex;
-    width: 100%;
-    height: 90%;
 `;
 
 const PostButton = styled.button`
@@ -164,13 +200,6 @@ const PostButton = styled.button`
     width: 6rem;
     cursor: pointer;
     border: none;
-`;
-
-const ListArea = styled.form`
-    width: 87%;
-    height: 100%;
-    padding: 0 2rem 0 2rem;
-    box-sizing: border-box;
 `;
 
 const BoardSelect = styled.select`
