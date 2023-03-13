@@ -4,7 +4,7 @@ import axios from "axios";
 // BulletinBoard 게시판 가져오기
 const getBoardAxios = async () => {
     try {
-      const res = await axios.get("http://3.39.36.239:8080/api/boards?name=free_board");
+      const res = await axios.get("http://3.39.36.239:8080/boards?name=free_board");
         return res;      
     }catch (error) {
       console.error(error);
