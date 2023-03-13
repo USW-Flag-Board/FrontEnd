@@ -1,8 +1,9 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
 import styled from "styled-components";
+import {GetAllFlagHistory} from "../apis/activity";
 
-const study_2022 = [
+const STUDY2022 = [
   "2022 2학기 - 코딩테스트 [6명] (진행중)",
   "2022 2학기 - 알고리즘 [6명] (진행중)",
   "2022 2학기 - 모의 해킹 (웹) [4명] (진행중)",
@@ -10,8 +11,8 @@ const study_2022 = [
   "2022 2학기 - 네트워크 [6명] (진행중)]",
 ];
 
-const resume = ["2021 겨울방학", "2021 1학기", "2021 1학기"];
-const resume2 = [
+const RESUME = ["2021 겨울방학", "2021 1학기", "2021 1학기"];
+const RESUME2 = [
   "2022 겨울방학 - 정보처리기사 스터디 [3명] (완료)",
   "2022 1학기 - JAVA 스터디 [6명] (완료)",
   "2022 1학기 - 알고리즘 - 코테반 [4명] (완료)",
@@ -19,7 +20,7 @@ const resume2 = [
 
 const Resume = ({setHeader}) => {
   const [year, setYear] = useState(2022);
-  const study = study_2022.map((study, key) => <li key={key}>{study}</li>);
+  const study = STUDY2022.map((study, key) => <li key={key}>{study}</li>);
   const [resumeList, setResumeList] = useState("");
 
   const PrevYear = (currentYear) => {
@@ -35,18 +36,20 @@ const Resume = ({setHeader}) => {
   };
 
   useEffect(() => {
-    axios.get("http://3.39.36.239:8080/api/activities").then((response) => {});
+    GetAllFlagHistory.then((response) => {
+      console.log(response);
+    });
 
     if (year === 2021) {
-      setResumeList(resume.map((resume, key) => <li key={key}>{resume}</li>));
+      setResumeList(RESUME.map((resume, key) => <li key={key}>{resume}</li>));
     } else if (year === 2022) {
-      setResumeList(resume2.map((resume, key) => <li key={key}>{resume}</li>));
+      setResumeList(RESUME2.map((resume, key) => <li key={key}>{resume}</li>));
     }
   }, [year]);
 
   useEffect(() => {
     setHeader(true);
-  });
+  }, []);
 
   return (
     <>

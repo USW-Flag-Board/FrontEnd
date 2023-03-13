@@ -137,7 +137,7 @@ const OffapplyButton = styled.button`
     border-radius: 20px; 
     margin-left: 10px;
     cursor:pointer;
-    background-color: ${({ modal }) => (!modal ? '#008d62' : '#ff5b7c')}};
+    background-color: ${({ modal }) => (!modal ? '#008d62' : '#ff5b7c')};
     border: none;
 `;
 

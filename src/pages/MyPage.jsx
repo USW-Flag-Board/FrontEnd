@@ -1,70 +1,60 @@
 import {useState, useEffect} from "react";
-import {useNavigate, useLocation} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
-import axios from "axios";
-import Cookies from "universal-cookie";
-
-//1. member api가 이상함. 수정되면 작업 진행.
-//2. profile url 받아와서 img 바꾸는거는 나중에 해야 할 듯
-//3. profile update 함수는 나중에 모달창 만들어지면 그때 수정, 지금은 임의로 값을 보냈다는 가정
+import {cookiesOption} from "../utils/cookiesOption";
+import {GetProfileData} from "../apis/user";
+import {LocalStorage, SessionStorage} from "../utils/browserStorage";
 
 const MyPage = ({setHeader}) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const cookies = new Cookies();
   const [loginId, setLoginId] = useState("");
   const [nickname, setNickname] = useState("");
   const [introduceMessage, setIntroduceMessage] = useState("");
 
-  async function LoginIdSetting() {
-    setLoginId(sessionStorage.getItem("id"));
-    setLoginId(localStorage.getItem("id"));
-  }
+  const LoginIdSetting = async () => {
+    if (SessionStorage.get("id")) {
+      setLoginId(SessionStorage.get("id"));
+    } else if (LocalStorage.get("id")) {
+      setLoginId(LocalStorage.get("id"));
+    }
+  };
 
-  const SetMyData = () => {
-    axios
-      .get(`http://3.39.36.239:8080/api/members/${loginId}`)
-      .then((response) => {
+  const SetMyData = async () => {
+    if (loginId !== "") {
+      try {
+        const response = await GetProfileData(loginId);
         setNickname(response.data.payload.avatarResponse.nickName);
         setIntroduceMessage(response.data.payload.avatarResponse.bio);
-        console.log(response.data);
-      })
-      .catch((error) => {
+      } catch (error) {
         if (error.response.status === 404) {
           navigate("/login");
         }
-      });
+      }
+    }
   };
 
   const LogOut = () => {
-    localStorage.clear();
-    sessionStorage.clear();
-    cookies.remove("refresh_token");
-    cookies.remove("remember_id");
+    LocalStorage.clear();
+    SessionStorage.clear();
+    cookiesOption.remove("refresh_token");
+    cookiesOption.remove("remember_id");
     navigate("/");
   };
 
   useEffect(() => {
-    setHeader(true);
-  });
-
-  useEffect(() => {
-    async function DataSet() {
-      if (
-        localStorage.getItem("UserToken") ||
-        sessionStorage.getItem("UserToken")
-      ) {
-        console.log("정보 받아오기 시작");
+    const DataSet = async () => {
+      if (LocalStorage.get("UserToken") || SessionStorage.get("UserToken")) {
         await LoginIdSetting();
-        SetMyData();
+        await SetMyData();
       } else {
         navigate("/login");
       }
-    }
+    };
+    setHeader(true);
     DataSet();
-  });
+  }, [loginId]);
 
   return (
     <PageArea>
@@ -72,12 +62,8 @@ const MyPage = ({setHeader}) => {
         <UserPage>
           <ProfileArea>
             <RelativeArea>
-              <FontAwesomeIcon
-                icon={faUser}
-                style={{width: 120, height: 120, marginBottom: 30}}
-              />
-              {/* <EditProfile onClick={() => navigate("/edit")}> */}
-              <EditProfile onClick={() => alert("구현중입니다.")}>
+              <ProfileIcon icon={faUser} />
+              <EditProfile onClick={() => navigate("/edit")}>
                 Edit Profile
               </EditProfile>
             </RelativeArea>
@@ -108,6 +94,12 @@ const MyPage = ({setHeader}) => {
     </PageArea>
   );
 };
+
+const ProfileIcon = styled(FontAwesomeIcon)`
+  width: 120px;
+  height: 120px;
+  marginbottom: 30px;
+`;
 
 const PageArea = styled.div`
   width: 100%;

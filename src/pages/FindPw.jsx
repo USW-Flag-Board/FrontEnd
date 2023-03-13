@@ -1,15 +1,16 @@
 import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
-
-//1. 메일 관련 유효성 검사 추가 예정 ( suwon.ac.kr 이 아닐 경우 등등 )
+import {
+  PostFindPwEmail,
+  PutChangePw,
+  PostCertificationCheck,
+} from "../apis/user";
 
 // eslint-disable-next-line
 const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
 const emailExp = /[\{\}\[\]\/?,;:|\)*~`!^\-_+<>\#$%&\\\=\(\'\"]/g;
 const korExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
-const numExp = /[0-9]/g;
 const spaceExp = /\s/;
 
 const FindPw = ({setHeader}) => {
@@ -18,7 +19,7 @@ const FindPw = ({setHeader}) => {
 
   useEffect(() => {
     setHeader(true);
-  });
+  }, []);
 
   return (
     <>
@@ -31,7 +32,7 @@ const FindPw = ({setHeader}) => {
   );
 };
 
-const ShowPw = (props) => {
+const ShowPw = ({email}) => {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
@@ -43,20 +44,21 @@ const ShowPw = (props) => {
   };
 
   const ChangePassword = () => {
-    axios
-      .put("http://3.39.36.239:8080/api/members/find/password", {
-        email: props.email,
-        newPassword: password,
-      })
+    PutChangePw(email, password)
       .then(() => {
         alert("비밀번호를 변경했습니다.");
         navigate("/");
       })
       .catch((error) => {
-        if (error.response.status === 404) {
-          alert("존재하지 않는 사용자입니다.");
-        } else if (error.response.status === 422) {
-          alert("사용할 수 없는 비밀번호 입니다.");
+        switch (error.response.status) {
+          case 404:
+            alert("존재하지 않는 사용자입니다.");
+            break;
+          case 422:
+            alert("사용할 수 없는 비밀번호 입니다.");
+            break;
+          default:
+            alert("서버 통신 오류.");
         }
       });
   };
@@ -98,25 +100,26 @@ const ShowPw = (props) => {
 
 const FindPwPage = (props) => {
   const [email, setEmail] = useState("");
-  const [id, setId] = useState("");
+  const [userId, setUserId] = useState("");
   const [auth, setAuth] = useState(false);
 
   const Find = () => {
-    axios
-      .post("http://3.39.36.239:8080/api/members/find/password", {
-        email: email,
-        loginId: id,
-      })
+    PostFindPwEmail(email, userId)
       .then(() => {
         props.setEmail(email);
         setAuth(true);
         alert("이메일로 인증번호가 전송되었습니다.");
       })
       .catch((error) => {
-        if (error.response.status === 404) {
-          alert("존재하지 않는 사용자입니다.");
-        } else if (error.response.status === 409) {
-          alert("이메일과 아이디가 일치하지 않습니다.");
+        switch (error.response.status) {
+          case 404:
+            alert("존재하지 않는 사용자입니다.");
+            break;
+          case 409:
+            alert("이메일과 아이디가 일치하지 않습니다.");
+            break;
+          default:
+            alert("서버 통신 오류.");
         }
       });
   };
@@ -138,13 +141,13 @@ const FindPwPage = (props) => {
   };
 
   const IdValid = () => {
-    if (id === "") {
+    if (userId === "") {
       alert("아이디를 정확히 입력해주세요.");
-    } else if (regExp.test(id)) {
+    } else if (regExp.test(userId)) {
       alert("아이디에는 특수문자를 입력할 수 없습니다.");
-    } else if (korExp.test(id)) {
+    } else if (korExp.test(userId)) {
       alert("아이디에는 한글을 포함할 수 없습니다.");
-    } else if (spaceExp.test(id)) {
+    } else if (spaceExp.test(userId)) {
       alert("아이디에는 공백을 포함할 수 없습니다.");
     } else {
       Find();
@@ -153,7 +156,7 @@ const FindPwPage = (props) => {
 
   useEffect(() => {
     props.setSuccessState(false);
-  });
+  }, []);
 
   return (
     <>
@@ -179,7 +182,7 @@ const FindPwPage = (props) => {
               <InsertBox>
                 <Insert
                   type="text"
-                  onChange={(e) => setId(e.target.value)}
+                  onChange={(e) => setUserId(e.target.value)}
                   required
                 />
               </InsertBox>
@@ -197,23 +200,24 @@ const FindPwPage = (props) => {
   );
 };
 
-const CertificateBox = (props) => {
+const CertificateBox = ({email, setSuccessState}) => {
   const [certification, setCertification] = useState("");
 
   const AuthCheck = () => {
-    axios
-      .post("http://3.39.36.239:8080/api/members/certification", {
-        certification: certification,
-        email: props.email,
-      })
+    PostCertificationCheck(certification, email)
       .then(() => {
-        props.setSuccessState(true);
+        setSuccessState(true);
       })
       .catch((error) => {
-        if (error.response.status === 404) {
-          alert("비밀번호 찾기 요청이 존재하지 않습니다. 다시 시도해주세요.");
-        } else if (error.response.status === 409) {
-          alert("인증번호가 일치하지 않습니다.");
+        switch (error.response.status) {
+          case 404:
+            alert("비밀번호 찾기 요청이 존재하지 않습니다. 다시 시도해주세요.");
+            break;
+          case 409:
+            alert("인증번호가 일치하지 않습니다.");
+            break;
+          default:
+            alert("서버 통신 오류.");
         }
       });
   };
@@ -227,8 +231,8 @@ const CertificateBox = (props) => {
   };
 
   useEffect(() => {
-    props.setSuccessState(false);
-  });
+    setSuccessState(false);
+  }, []);
 
   return (
     <>
