@@ -10,4 +10,5 @@ export {default as Reply} from "./Reply";
 export {default as ActivityCard} from "./ActivityCard";
 export {default as ActivityManagerModal} from "./ActivityManagerModal";
 export {default as ActivityUserModal} from "./ActivityUserModal";
-
+export {default as LikeButton} from "./LikeButton";
+export {default as PostInput} from "./PostInput";

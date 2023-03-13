@@ -35,12 +35,10 @@ const Header = () => {
   return (
     <HomeHeader>
       <LogoBox>
-        <img
-          className="logo"
+        <LogoImg
           src="../images/logo.JPG"
           alt="blog-logo"
           onClick={() => navigate("/")}
-          style={{width: "30%", height: "80%", cursor: "pointer"}}
         />
       </LogoBox>
       <MenuItemBox>
@@ -55,22 +53,10 @@ const Header = () => {
       </MenuItemBox>
       <SearchBox>
         <SearchPaper>
-          <FontAwesomeIcon
-            icon={faMagnifyingGlass}
-            style={{
-              width: "14%",
-              color: "#BABABA",
-              display: "flex",
-              alignItems: "center",
-            }}
-          />
+          <FaMagnifyingGlass icon={faMagnifyingGlass}/>
           <InputBase type="text" />
         </SearchPaper>
-        <FontAwesomeIcon
-          icon={faUser}
-          onClick={() => LoginCheck()}
-          style={{width: "14%", color: "#BABABA", height: "50%"}}
-        />
+        <FaUser icon={faUser} onClick={() => LoginCheck()}/>
       </SearchBox>
     </HomeHeader>
   );
@@ -94,6 +80,12 @@ const LogoBox = styled.div`
   display: flex;
   align-items: center;
   padding-left: 15px;
+`;
+
+const LogoImg = styled.img`
+  width: 50%; 
+  height: 80%; 
+  cursor: pointer;
 `;
 
 const MenuItemBox = styled.div`
@@ -153,6 +145,20 @@ const InputBase = styled.input`
   &:focus {
     outline: none;
   }
+`;
+
+//fontAwesomeIcon
+const FaMagnifyingGlass = styled(FontAwesomeIcon)`
+  width: 14%;
+  color: #BABABA;
+  display: flex;
+  align-items: center;
+`;
+
+const FaUser = styled(FontAwesomeIcon)`
+  width: 14%; 
+  color: #BABABA; 
+  height: 50%;
 `;
 
 export default Header;

@@ -1,33 +1,45 @@
 import styled from "styled-components";
 
-const SideBar = (props) => {
-  const handleBoardClick = (board) => {
-    props.setSelectBoard(board)
+const SideBar = ({
+    setSelectBoard, 
+    mainWidth, 
+    paddingTop, 
+    paddingTopMain, 
+    mainColor, 
+    height, 
+    borderRadius, 
+    subColor, 
+    subWidth, 
+    title, 
+    items}) => {
+  
+    const handleBoardClick = (board) => {
+    setSelectBoard(board);
   }
   
   return (
     <SideArea
-      style={{width: props.mainWidth, paddingTop: props.paddingTopMain}}
+      style={{width: mainWidth, paddingTop: paddingTopMain}}
     >
       <SideBarBox
         style={{
-          backgroundColor: props.mainColor,
-          height: props.height,
-          borderRadius: props.borderRadius,
+          backgroundColor: mainColor,
+          height: height,
+          borderRadius: borderRadius,
         }}
       >
         <SideBarContent
           style={{
-            backgroundColor: props.subColor,
-            width: props.subWidth,
-            borderRadius: props.borderRadius,
-            paddingTop: props.paddingTop
+            backgroundColor: subColor,
+            width: subWidth,
+            borderRadius: borderRadius,
+            paddingTop: paddingTop
           }}
         >
-          <ContentsTitle>{props.title}</ContentsTitle>
+          <ContentsTitle>{title}</ContentsTitle>
           <ItemBox>
-            {props.items.map((item) => (
-              <Item key={item.id} onClick={()=> handleBoardClick(item.engName)}>{item.krName}</Item>
+            {items.map(({id, engName, krName}) => (
+              <Item key={id} onClick={()=> handleBoardClick(engName)}>{krName}</Item>
             ))}
           </ItemBox>
         </SideBarContent>

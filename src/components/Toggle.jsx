@@ -42,8 +42,7 @@ const ToggleBox = styled.div`
 
 //${}는 styled component내에서 js를 사용 할 수 있게 해준다.
 const ToggleState = styled.p`
-  color: ${({ isOn }) => (isOn ? 'gray' : '#9a9a9a')}};
-  color: white;
+  color: ${({ isOn }) => (isOn ? 'gray' : '#9a9a9a')};
   left: 50vw;
   width: 90px;
   top: -3px;

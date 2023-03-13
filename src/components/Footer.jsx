@@ -1,8 +1,15 @@
+import styled from "styled-components";
 
 const Footer = () => {
     return (
-        <div style={{width: "100vw", backgroundColor: "black", height: "3vh"}}/>    
+        <FooterBox />
     )
 }
+
+const FooterBox = styled.div`
+    width: 100vw;
+    background-color: black;
+    height: 3vh;
+`;
 
 export default Footer;

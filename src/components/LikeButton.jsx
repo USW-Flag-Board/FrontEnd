@@ -1,44 +1,38 @@
-import {useState} from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faHeart as regularHeart} from "@fortawesome/free-regular-svg-icons";
-import {faHeart as solidHeart} from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as solidHeart }  from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
 const LikeButton = () => {
-  const [toggle, setToggle] = useState(false);
+  const [state, setState] = useState(false);
+
+  const Like = () => {
+    state ? setState(false) : setState(true);
+  };
 
   return (
-    <LikeButtonArea>
-      {toggle ? (
-        <LikeOnButton icon={solidHeart} onClick={() => setToggle(!toggle)} />
-      ) : (
-        <LikeOffButton icon={regularHeart} onClick={() => setToggle(!toggle)} />
-      )}
-    </LikeButtonArea>
+    <>
+      {state ? 
+        <SolidHeart icon={solidHeart} onClick={Like}/> : 
+        <RegularHeart icon={regularHeart} onClick={Like}/>
+      }
+    </>
   );
 };
 
-const LikeOnButton = styled(FontAwesomeIcon)`
+const RegularHeart = styled(FontAwesomeIcon)`
+  &:hover{
+    transform: scale(1.1);
+  };
+  font-size: 15px;
+  margin-right: 8px;
+`;
+
+const SolidHeart = styled(FontAwesomeIcon)`
   color: red;
-  transition: 0.3s;
-  :hover {
-    transform: scale(1.1);
-    transition: 0.3s;
-  }
-  fontsize: 10px;
-`;
-
-const LikeOffButton = styled(FontAwesomeIcon)`
-  transition: 0.3s;
-  :hover {
-    transform: scale(1.1);
-    transition: 0.3s;
-  }
-  fontsize: 10px;
-`;
-
-const LikeButtonArea = styled.div`
-  display: inline-block;
+  font-size: 15px;
+  margin-right: 8px;
 `;
 
 export default LikeButton;
