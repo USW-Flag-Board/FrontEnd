@@ -12,7 +12,9 @@ const homeItem = [
   {id: 2, krName: "마이페이지", engName: ""},
   {id: 3, krName: "내가 쓴 글", engName: ""},
   {id: 4, krName: "댓글 단 글", engName: ""},
-  {id: 5, krName: "스트랩", engName: ""},
+  {id: 6, krName: "관리자페이지", engName: ""},
+  {id: 7, krName: "유저관리", engName: ""},
+  {id: 8, krName: "게시판관리", engName: ""},
 ];
 
 const Home = ({setHeader}) => {
@@ -25,115 +27,150 @@ const Home = ({setHeader}) => {
       <HomeBox>
         <HomeContents>
           <MyActivityArea>
-            <MyActivityBox>
-              <NoticeArea>
-                <NoticeTitle>NOTICE</NoticeTitle>
-                <FeedItem style={{height: "70%"}}>
-                  <FeedContent>공지 안녕하세요 현회장 정충일입니다.</FeedContent>
-                  <FeedContent>공지 안녕하세요 차기회장 이수빈입니다.</FeedContent>
-                  <FeedContent>공지 안녕하세요 차기회장 이수빈입니다.</FeedContent>
-                </FeedItem>
-              </NoticeArea>
-              <MyActivity>MY ACTIBITY</MyActivity>
-              <FlagContents>
-              {contents.map(({title}) => (
-                <FlagContent key={title}>
-                  <ContentsTitle>{title}</ContentsTitle>
-                </FlagContent>
-              ))}
-              </FlagContents>
-              <BookImgBox>
-                <BookImg
-                  src="images/home-book.jpg"
-                  alt="home-book"
-                />
-              </BookImgBox>
-            </MyActivityBox>
-            <MyActivityBox>
-              <FilteredPostTitle>
-                <PostTitle>좋아요순</PostTitle>
-                <PostTitle>최근순</PostTitle>
-              </FilteredPostTitle>
-              <HeartdAndRecent>
-                <HeartBox/>
-                <HeartBox/>
-              </HeartdAndRecent>
-              <FeedTitle>FEED</FeedTitle>
-              <FeedArea>
-                <FeedBox>
-                  <FeedItem>
-                    <FeedItemTitle>#STUDY_ALGOLITHM</FeedItemTitle>
-                    <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
-                    <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
-                    <FeedContent>다음주에 개인사정으로 빠져야 할것 같습니다. 스터디 준비자료는 함께 첨부할게요!</FeedContent>
-                  </FeedItem>
-                  <FeedItem>
-                    <FeedItemTitle>#PROJECT_FLAG</FeedItemTitle>
-                    <FeedContent>공지 12.20(화) 전체 회의 내용입니다.</FeedContent>
-                    <FeedContent>우리 쪽지 기능 넣으면 여러분 많이 쓰실 것 같나요?</FeedContent>
-                    <FeedContent>관리자 페이지 기능은 다음과 같습니다!</FeedContent>
-                  </FeedItem>
-                </FeedBox>
-              </FeedArea>
-            </MyActivityBox>
-          </MyActivityArea>
+            <MyActivityTitle>MY ACTIBITY</MyActivityTitle>
+            <MyActivityContents>
+              <MyActivityBox>
+                <FlagContents>
+                {contents.map(({title}) => (
+                  <FlagContent key={title}>
+                    <ContentsTitle>{title}</ContentsTitle>
+                  </FlagContent>
+                ))}
+                </FlagContents>
+                <BookImgBox>
+                  <BookImg
+                    src="images/home-book.jpg"
+                    alt="home-book"
+                  />
+                </BookImgBox>
+              </MyActivityBox>
+              <MyActivityBox>
+                <FeedTitle>FEED</FeedTitle>
+                <FeedArea>
+                  <FeedBox>
+                    <FeedItem>
+                      <FeedItemTitle>#STUDY_ALGOLITHM</FeedItemTitle>
+                      <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
+                      <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
+                      <FeedContent>다음주에 개인사정으로 빠져야 할것 같습니다. 스터디 준비자료는 함께 첨부할게요!</FeedContent>
+                    </FeedItem>
+                    <FeedItem>
+                      <FeedItemTitle>#PROJECT_FLAG</FeedItemTitle>
+                      <FeedContent>공지 12.20(화) 전체 회의 내용입니다.</FeedContent>
+                      <FeedContent>우리 쪽지 기능 넣으면 여러분 많이 쓰실 것 같나요?</FeedContent>
+                      <FeedContent>관리자 페이지 기능은 다음과 같습니다!</FeedContent>
+                    </FeedItem>
+                  </FeedBox>
+                </FeedArea>
+              </MyActivityBox>
+            </MyActivityContents>
+            </MyActivityArea>
+            <HomeSideBar>
+              <SideBar
+                subColor="#3E3E3E"
+                mainWidth="100%"
+                subWidth="100%"
+                items={homeItem}
+                title="FLAG"
+                height="100%"
+                borderRadius="50px 0 0 50px"
+              />
+            </HomeSideBar>
+        </HomeContents>
+        <HomeContents>
+          <FilteredPostArea>
+            <FilteredPostBox>
+              <PostTitle>NOTICE</PostTitle>
+              <HeartBox>
+                <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
+                <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
+                <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
+              </HeartBox>
+            </FilteredPostBox>
+            <FilteredPostBox>
+              <PostTitle>인기글</PostTitle>
+              <HeartBox>
+                <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
+                <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
+                <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
+              </HeartBox>
+            </FilteredPostBox>
+            <FilteredPostBox>
+              <PostTitle>최신글</PostTitle>
+              <HeartBox>
+                <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
+                <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
+                <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
+              </HeartBox>
+            </FilteredPostBox>
+          </FilteredPostArea>
         </HomeContents>
       </HomeBox>
-      <SideBar
-        subColor="#3E3E3E"
-        mainWidth="20%"
-        subWidth="100%"
-        items={homeItem}
-        title="FLAG"
-        height="100%"
-        borderRadius="50px 0 0 50px"
-        paddingTopMain="7rem"
-      />
     </HomeArea>
   );
 };
 
 const HomeArea = styled.div`
-  width: 100vw;
-  height: 87vh;
-  display: flex;
+  width: calc(100vw - 4rem);
+  height: calc(91vh - 5rem);
 `;
 
 const HomeBox = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  margin: 3rem 0 0 4rem;
+`;
+
+const HomeContents = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  &:nth-of-type(1) {
+    display: flex;
+    height: 70%;
+    margin-bottom: 2rem;
+  }
+  &:nth-of-type(2){
+    padding-right: 4rem;
+    height: 30%;
+  }
+`;
+
+const MyActivityArea = styled.div`
   box-sizing: border-box;
   width: 80%;
   height: 100%;
 `;
 
-const HomeContents = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 95%;
-  height: 100%;
+const MyActivityTitle = styled.h1`
+  font-size: 1.6rem;
+  width: 100%;
+  height: 5%;
+  margin-bottom: 2rem;
 `;
 
-const MyActivityArea = styled.div`
+const MyActivityContents = styled.div`
   box-sizing: border-box;
-  width: 100%;
-  height: 80%;
   display: flex;
-  justify-content: center;
+  width: 100%;
+  height: 95%;
 `;
 
 const MyActivityBox = styled.div`
-  width: 45%;
-  height: 100%;
-  margin-left: 2rem;
+  height: 80%;
+  &:nth-of-type(1) {
+    width: 37.5%;
+  }
+  &:nth-of-type(2){
+    margin-left: 2.1rem;
+    width: 50%;
+  }
 `;
 
 const FlagContents = styled.ul`
   box-sizing: border-box;
   display: flex;
   justify-content: space-evenly;
-  list-style: none;
-  width: 100%;
 `;
 
 const FlagContent = styled.li`
@@ -142,8 +179,7 @@ const FlagContent = styled.li`
 
 const BookImgBox = styled.div`
   width: 100%;
-  height: 60%;
-  margin-bottom: 3rem;
+  height: 100%;
 `;
 
 const BookImg = styled.img`
@@ -152,9 +188,10 @@ const BookImg = styled.img`
   border: 1.6px solid #9A9A9A;
   border-radius: 1.8rem;
 `;
+
 const FeedArea = styled.div`
-  height: 60%;
-  margin-bottom: 3rem;
+  width: 100%;
+  height: 100%;
 `;
 
 const FeedBox = styled.div`
@@ -164,12 +201,12 @@ const FeedBox = styled.div`
 
 const FeedItem = styled.div`
   width: 100%;
-  height: 48%;
+  height: 50%;
   border: 1px solid #9a9a9a;
   border-radius: 30px;
   box-sizing: border-box;
-  &:first-of-type {
-    margin-bottom: 1rem;
+  &:nth-of-type(1) {
+    margin-bottom: 0.7rem;
   }
   display: flex;
   flex-direction: column;
@@ -186,35 +223,17 @@ const FeedContent = styled.div`
   align-items: center;
   padding: 0.1rem 0.7rem;
   margin: 0.2rem 0;
-  font-size: 12px;
-`;
-
-const NoticeArea = styled.div`
-  height: 30%;
-  width: 100%;
-`;
-
-const MyActivity = styled.h1`
-  font-size: 1.6rem;
-  width: 90%;
-  margin-bottom: 3rem;
-  padding-left: 3rem;
+  font-size: 0.8rem;
 `;
 
 const ContentsTitle = styled.h4`
   color: white;
-  padding-bottom: 20px;
-`;
-
-const NoticeTitle = styled.h4`
-  font-size: 1.1rem;
-  margin-bottom: 0.8rem;
-  padding-left: 1.4rem;
+  padding-bottom: 1.3rem;
 `;
 
 const FeedTitle = styled.h3`
   font-size: 1.1rem;
-  padding-bottom: 20px;
+  padding-bottom: 1rem;
   padding-left: 1.2rem;
 `
 const FeedItemTitle = styled.h3`
@@ -222,43 +241,45 @@ const FeedItemTitle = styled.h3`
   margin-bottom: 0.4rem;
 `
 
-const HeartdAndRecent = styled.div`
-  display: flex;
-  height: 30%;
-  width: 100%;
-`;
-
 const HeartBox = styled.div`
-  width: 45%;
-  height: 65%; 
+  width: 100%;
+  height: 75%; 
   border: 1px solid #9a9a9a;
-  border-radius: 14px;
+  border-radius: 1.5rem;
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-direction: column;
   padding: 0.1rem 0.7rem;
-  font-size: 12px;
-  margin: 0;
-  
-  &:nth-of-type(1){
-    margin: 0 0.5rem 0 0; 
-  }
+  font-size: 0.8rem;
 `;
 
-const FilteredPostTitle = styled.ul`
+const FilteredPostArea = styled.div`
   box-sizing: border-box;
   display: flex;
-  list-style: none;
   width: 100%;
-  margin-bottom: 0.8rem; 
-  justify-content: flex-start;
+  height: 80%;
+  margin-bottom: 0.8rem;
 `;
 
-const PostTitle = styled.li`
-  box-sizing: border-box;
-  width: 50%;
-  &:nth-of-type(1){
-    margin: 0 0.5rem 0 0; 
+const FilteredPostBox = styled.div`
+  width: 30%;
+  height: 100%;
+  &:nth-of-type(2){
+    margin: 0 3.4rem; 
   }
 `;
+
+const PostTitle = styled.h3`
+  width: 50%;
+  margin: 0  0 0.8rem 1rem;
+`;
+
+const HomeSideBar = styled.div`
+  width: 20%;
+  height: 100%;
+`
+
+
 
 export default Home;

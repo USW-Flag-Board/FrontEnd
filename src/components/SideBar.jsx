@@ -51,9 +51,6 @@ const SideBar = ({
 const SideArea = styled.div`
   box-sizing: border-box;
   height: 100%;
-  @media screen and (max-width: 1200px){
-    display: none;
-  }
 `;
   
 const SideBarBox = styled.div`
@@ -67,9 +64,9 @@ const SideBarContent = styled.div`
 
 const ContentsTitle = styled.div`
   box-sizing: border-box;
-  font-size: 23px;
+  font-size: 1.4rem;
   font-weight: 700;
-  padding: 3rem 0px 1rem 2.5rem;
+  padding: 3rem 0 1rem 2.5rem;
   border-bottom: 1px solid #cccccc;
 `;
 
@@ -77,14 +74,14 @@ const ItemBox = styled.ul`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: 1rem 0px 3rem 2.5rem;
+  padding: 1rem 0 3rem 2.5rem;
 `;
 
 const Item = styled.li`
   box-sizing: border-box;
   font-size: 0.8rem;
   font-weight: 700;
-  padding: 0px 0px 1rem 0px;
+  padding: 0 0 1rem 0;
   cursor: pointer;
   &:hover{
     color: black;

@@ -9,7 +9,9 @@ const GlobalStyle = createGlobalStyle`
         font-family:NanumSquareNeo-Variable;
     }
     body{
+        list-style: none;
         color: white;
+        padding: 0;
         margin: 0;
         background-color: #2C2C2C;
         font-family:NanumSquareNeo-Variable;

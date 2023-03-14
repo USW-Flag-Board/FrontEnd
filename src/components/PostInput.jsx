@@ -2,11 +2,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faFile } from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
 import { Footer, SideBar } from "../components";
-<<<<<<< HEAD
-=======
 import axios from "axios";
-import { boardAPI } from '../apis/boardAPI'; 
->>>>>>> d210eb112eedf68259918e3ab966b0226e028550
+// import { boardAPI } from '../apis/boardAPI'; 
+import { useNavigate } from "react-router-dom";
+import { useState, useCallback } from "react";
+import { useDispatch } from "react-redux";
 
 const boardItems = [
     {
@@ -44,20 +44,6 @@ const buttonItems = [
     },
 ];
 
-<<<<<<< HEAD
-const PostInput = ({
-    handlePostSubmit, 
-    handleEditSubmit, 
-    handleButton, 
-    pageTitle,
-    title,
-    content,
-    setTitle,
-    setContent,
-    board,
-    canSubmit,
-    handleBoardChange}) => {
-=======
 const PostInput = ({handlePostSubmit, handleEditSubmit, handleButton, pageTitle}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -84,7 +70,6 @@ const PostInput = ({handlePostSubmit, handleEditSubmit, handleButton, pageTitle}
         return content !== "" && title !== "" && (board !== "게시판을 선택해주세요" && board !== "");
     }, [content, title, board]);
     
->>>>>>> d210eb112eedf68259918e3ab966b0226e028550
     return(
         <>
             <BoardArea>
@@ -112,11 +97,7 @@ const PostInput = ({handlePostSubmit, handleEditSubmit, handleButton, pageTitle}
                         </BoardSelect>
                         {canSubmit() ? pageTitle === "글쓰기" ?
                             (<PostButton 
-<<<<<<< HEAD
-                                onClick={() => {handlePostSubmit()}}
-=======
-                                onClick={() => dispatch(boardAPI.setWritePostAxios(data))}
->>>>>>> d210eb112eedf68259918e3ab966b0226e028550
+                                // onClick={() => dispatch(boardAPI.setWritePostAxios(data))}
                                 type="button"
                             >
                                 {handleButton}
