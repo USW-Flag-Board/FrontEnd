@@ -79,7 +79,7 @@ const LogoBox = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
-  padding-left: 15px;
+  padding-left: 2rem ;
 `;
 
 const LogoImg = styled.img`
@@ -106,17 +106,16 @@ const MenuItems = styled.div`
 `;
 
 const MenuButton = styled.div`
-  width: 200px;
-  height: 50px;
+  width: 12.5rem;
+  height: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 1.1rem;
   color: black;
   &:hover {
     background-color: #adb5bd;
-    border-radius: 10px;
+    border-radius: 0.6rem;
   }
   cursor: pointer;
 `;
@@ -126,14 +125,14 @@ const SearchBox = styled.div`
   height: 60%;
   display: flex;
   align-items: center;
-  padding-left: 20px;
+  padding-left: 1.3rem;
 `;
 
 const SearchPaper = styled.form`
   display: flex;
   width: 80%;
   height: 60%;
-  margin-left: 2px;
+  margin-left: 0.1rem;
   border: 2px solid #5c5c5c;
   border-radius: 2rem;
   align-items: center;

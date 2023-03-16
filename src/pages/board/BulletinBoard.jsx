@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import postsActions  from '../../redux/thunkActions/boardsActions';
+import boardsActions  from '../../redux/thunkActions/boardsActions';
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -45,7 +45,7 @@ const BulletinBoard = () => {
   }
 
   useEffect(()=>{
-      dispatch(postsActions.getBoardAPI());
+      dispatch(boardsActions.getBoardAPI());
     },[dispatch])
   
   return (

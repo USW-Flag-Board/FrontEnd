@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import PostInput from '../../components/PostInput';
-import postAPI from '../../apis/postAPI';
+import boardAPI from '../../apis/boardAPI';
 
 const WritePost = ({setHeader}) => {
   const navigate = useNavigate();

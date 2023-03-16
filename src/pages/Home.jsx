@@ -147,6 +147,7 @@ const MyActivityTitle = styled.h1`
   width: 100%;
   height: 5%;
   margin-bottom: 2rem;
+  font-weight: bold;
 `;
 
 const MyActivityContents = styled.div`
@@ -158,12 +159,12 @@ const MyActivityContents = styled.div`
 
 const MyActivityBox = styled.div`
   height: 80%;
+  width: 50%;
+  margin-left: 2.1rem;
   &:nth-of-type(1) {
     width: 37.5%;
-  }
-  &:nth-of-type(2){
-    margin-left: 2.1rem;
-    width: 50%;
+    height: 81%;
+    margin: 0;
   }
 `;
 
@@ -222,7 +223,7 @@ const FeedContent = styled.div`
   display: flex;
   align-items: center;
   padding: 0.1rem 0.7rem;
-  margin: 0.2rem 0;
+  margin: 0.3rem 0;
   font-size: 0.8rem;
 `;
 
@@ -237,6 +238,7 @@ const FeedTitle = styled.h3`
   padding-left: 1.2rem;
 `
 const FeedItemTitle = styled.h3`
+  font-size: 0.8rem;
   width: 87%;
   margin-bottom: 0.4rem;
 `
@@ -279,7 +281,5 @@ const HomeSideBar = styled.div`
   width: 20%;
   height: 100%;
 `
-
-
 
 export default Home;

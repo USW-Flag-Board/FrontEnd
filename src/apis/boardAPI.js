@@ -16,14 +16,14 @@ const getBoardAxios = async () => {
 
 
 // 게시글 등록하기
-const setWritePostAxios = async (data) => {
-  try{
-    const res = await axios.post("http://3.39.36.239:8080/api/posts", data);
-      return res;
-    }catch(error){
-      console.log(error);
-  }
-}
+// const setWritePostAxios = async (data) => {
+//   try{
+//     const res = await axios.post("http://3.39.36.239:8080/api/posts", data);
+//       return res;
+//     }catch(error){
+//       console.log(error);
+//   }
+// }
 
 
 // 게시글 내용 불러오기(수정시)
@@ -36,12 +36,9 @@ const getEiditPostAxios = async () => {
   }
 };
 
-
-
-
 const boardAPI = {
   getBoardAxios,
-  setWritePostAxios,
+  // setWritePostAxios,
   getEiditPostAxios,
 };
   
