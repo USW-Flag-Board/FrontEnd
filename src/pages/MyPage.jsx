@@ -7,6 +7,82 @@ import {cookiesOption} from "../utils/cookiesOption";
 import {GetProfileData} from "../apis/user";
 import {LocalStorage, SessionStorage} from "../utils/browserStorage";
 
+// activity 이름 연도 모집 상태
+
+const ACTIVITY_LIST = [
+  {
+    id: "player1552",
+    year: "2022",
+    history_name: "알고리즘 스터디 (기초반)",
+    status: "모집중",
+  },
+  {
+    id: "player1552",
+    year: "2022",
+    history_name: "알고리즘 스터디 (기초반)",
+    status: "모집중",
+  },
+  {
+    id: "player1552",
+    year: "2022",
+    history_name: "알고리즘 스터디 (기초반)",
+    status: "모집중",
+  },
+  {
+    id: "player1552",
+    year: "2022",
+    history_name: "알고리즘 스터디 (기초반)",
+    status: "모집중",
+  },
+  {
+    id: "player1552",
+    year: "2023",
+    history_name: "알고리즘 스터디 (기초반)",
+    status: "모집중",
+  },
+  {
+    id: "player1552",
+    year: "2023",
+    history_name: "알고리즘 스터디 (기초반)",
+    status: "모집중",
+  },
+  {
+    id: "player1552",
+    year: "2023",
+    history_name: "알고리즘 스터디 (기초반)",
+    status: "모집중",
+  },
+  {
+    id: "player1552",
+    year: "2023",
+    history_name: "알고리즘 스터디 (기초반)",
+    status: "모집중",
+  },
+  {
+    id: "player1552",
+    year: "2022",
+    history_name: "알고리즘 스터디 (기초반)",
+    status: "모집중",
+  },
+];
+
+const POSTDATA = [
+  {
+    id: 1,
+    title: "제목이다",
+    createdAt: "",
+    viewCount: 150,
+    likeCount: 30,
+  },
+  {
+    id: 2,
+    title: "제목이다2",
+    createdAt: "",
+    viewCount: 156,
+    likeCount: 38,
+  },
+];
+
 const MyPage = ({setHeader}) => {
   const navigate = useNavigate();
   const [loginId, setLoginId] = useState("");
@@ -43,6 +119,24 @@ const MyPage = ({setHeader}) => {
     navigate("/");
   };
 
+  const years = ACTIVITY_LIST.map((activity) => activity.year);
+  const uniqueYear = [...new Set(years)];
+
+  const activityLists = uniqueYear.map((uniqueYear) => {
+    const activityNames = ACTIVITY_LIST.filter(
+      (activity) => activity.year === uniqueYear
+    ).map((activity) => (
+      <HistoryYearListItem>{activity.history_name}</HistoryYearListItem>
+    ));
+
+    return (
+      <HistoryYearList>
+        <HistoryYear>{uniqueYear}</HistoryYear>
+        {activityNames}
+      </HistoryYearList>
+    );
+  });
+
   useEffect(() => {
     const DataSet = async () => {
       if (LocalStorage.get("UserToken") || SessionStorage.get("UserToken")) {
@@ -58,73 +152,98 @@ const MyPage = ({setHeader}) => {
 
   return (
     <PageArea>
-      <LeftPage>
-        <UserPage>
-          <ProfileArea>
-            <RelativeArea>
-              <ProfileIcon icon={faUser} />
-              <EditProfile onClick={() => navigate("/edit")}>
-                Edit Profile
-              </EditProfile>
-            </RelativeArea>
-            <EditProfile onClick={() => LogOut()}>logout</EditProfile>
-          </ProfileArea>
-          <NickNameArea>
-            <NickName>{nickname}</NickName>
-            <IntroduceArea>
-              <Introduce>{introduceMessage}</Introduce>
-            </IntroduceArea>
-          </NickNameArea>
-        </UserPage>
-        <HistoryArea>
-          <HistoryContent>
-            <HistoryYear>2021</HistoryYear>
-            <HistoryYearList>
-              <HistoryYearListItem>알고리즘 스터디(기초반)</HistoryYearListItem>
-            </HistoryYearList>
-            <HistoryYear>2022</HistoryYear>
-            <HistoryYearList>
-              <HistoryYearListItem>알고리즘 스터디(코테반)</HistoryYearListItem>
-              <HistoryYearListItem>FLAG-게시판 (BE)</HistoryYearListItem>
-            </HistoryYearList>
-          </HistoryContent>
-        </HistoryArea>
-      </LeftPage>
-      <RightPage></RightPage>
+      <UpPage>
+        <LeftPage>
+          <UserPage>
+            <ProfileArea>
+              <RelativeArea>
+                <ProfileIcon icon={faUser} />
+                <EditProfile onClick={() => navigate("/edit")}>
+                  Edit Profile
+                </EditProfile>
+              </RelativeArea>
+              <EditProfile onClick={() => LogOut()}>logout</EditProfile>
+            </ProfileArea>
+            <NickNameArea>
+              <NickName>{nickname}</NickName>
+              <IntroduceArea>
+                <Introduce>{introduceMessage}</Introduce>
+              </IntroduceArea>
+            </NickNameArea>
+          </UserPage>
+        </LeftPage>
+        <RightPage>
+          <HistoryArea>
+            <HistoryContent>{activityLists}</HistoryContent>
+            <HistoryPaginationArea>
+              <HistoryPagination>
+                <HistoryPaginationButton key="prev">
+                  &lt;
+                </HistoryPaginationButton>
+                {ACTIVITY_LIST.map((e, idx) => {
+                  if ((idx + 1) % 5 === 1)
+                    return <HistoryPaginationButton>O</HistoryPaginationButton>;
+                })}
+                <HistoryPaginationButton key="next">
+                  &gt;
+                </HistoryPaginationButton>
+              </HistoryPagination>
+            </HistoryPaginationArea>
+          </HistoryArea>
+        </RightPage>
+      </UpPage>
     </PageArea>
   );
 };
 
+const HistoryPaginationArea = styled.div`
+  display: flex;
+`;
+
+const HistoryPagination = styled.ul`
+  display: flex;
+`;
+
+const HistoryPaginationButton = styled.li`
+  margin: 5px;
+`;
+
 const ProfileIcon = styled(FontAwesomeIcon)`
   width: 120px;
   height: 120px;
-  marginbottom: 30px;
+  margin-bottom: 1.5rem;
 `;
 
 const PageArea = styled.div`
   width: 100%;
-  height: 88vh;
+  height: 91vh;
   display: flex;
+`;
+const UpPage = styled.div`
+  display: flex;
+  width: 100%;
+  height: 45%;
 `;
 
 const LeftPage = styled.div`
-  width: 40%;
+  width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  flex: 4 0 0;
 `;
 
 const RightPage = styled.div`
-  width: 60%;
+  width: 100%;
   height: 100%;
   background-image: url(../images/home-book.JPG);
+  background-size: cover;
+  flex: 6 0 0;
 `;
 
 const UserPage = styled.div`
   width: 100%;
-  height: 40%;
+  height: 100%;
   display: flex;
-  background-color: #2c2c2c;
+  background-color: rgba(0, 0, 0, 0.2);
 `;
 
 const RelativeArea = styled.div`
@@ -186,30 +305,37 @@ const Introduce = styled.div`
 `;
 
 const HistoryArea = styled.div`
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
-  height: 60%;
+  height: 100%;
   display: flex;
+  align-items: center;
+  flex-direction: column;
 `;
 
 const HistoryContent = styled.div`
-  margin-left: 20%;
-  padding-top: 10%;
+  margin: auto 0;
+  height: 50%;
+  display: flex;
+  width: 80%;
+  justify-content: space-around;
 `;
 
 const HistoryYear = styled.h1`
-  font-size: 25px;
-  padding-top: 20px;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
 `;
 
 const HistoryYearList = styled.ul`
-  margin-bottom: 10px;
+  margin: 2rem;
 `;
 
 const HistoryYearListItem = styled.li`
-  margin-bottom: 3px;
+  margin-bottom: 0.5rem;
   list-style-type: disc;
-  margin-left: 20px;
+  margin-left: 2rem;
+  font-size: 1rem;
 `;
 
 export default MyPage;

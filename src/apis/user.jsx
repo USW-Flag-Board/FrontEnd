@@ -21,7 +21,7 @@ export const GetUserInfo = () => {
 
 export const DeleteUser = (password) => {
   return baseInstance.delete("/members", {
-    password,
+    currentPassword: password,
   });
 };
 
