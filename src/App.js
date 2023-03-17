@@ -13,7 +13,7 @@ import {
   FindId,
   FindPw,
 } from "./pages";
-import { DetailWritePage, BulletinBoard, EditPost, WritePost } from "../src/pages/board"
+import { PostContentPage, BulletinBoard, EditPost, WritePost } from "../src/pages/board"
 import {Header} from "./components";
 import {cookiesOption} from "./utils/cookiesOption";
 import {LocalStorage, SessionStorage} from "./utils/browserStorage";
@@ -86,7 +86,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage setHeader={setHeader} />} />
         <Route path="/signup" element={<SignUp setHeader={setHeader} />} />
         <Route path="/my" element={<MyPage setHeader={setHeader} />} />
-        <Route path="/board/detail" element={<DetailWritePage setHeader={setHeader} />}/>
+        <Route path="/board/detail" element={<PostContentPage setHeader={setHeader} />}/>
         <Route path="/board" element={<BulletinBoard setHeader={setHeader}/>}/>
         <Route path="/board/write" element={<WritePost setHeader={setHeader} />}/>
         <Route path="/search" element={<SearchPage setHeader={setHeader} />}/>

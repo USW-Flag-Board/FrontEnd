@@ -1,33 +1,32 @@
+import { useNavigate } from "react-router-dom";
+import { useState, useCallback, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faFile } from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
 import { Footer, SideBar } from "../components";
-import axios from "axios";
-// import { boardAPI } from '../apis/boardAPI'; 
-import { useNavigate } from "react-router-dom";
-import { useState, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import boardAPI from '../apis/boardAPI'; 
 
 const boardItems = [
     {
         id: 1,
         krName: "자유게시판",
-        engName: "",
+        engName: "free_board",
     },
     {
         id: 2,
-        krName: "동아리 이모저모",
-        engName: "",
+        krName: "정보게시판",
+        engName: "information_board",
     },
     {
         id: 3,
-        krName: "사전게시판",
-        engName: "",
+        krName: "사진게시판",
+        engName: "photo_board",
     },
     {
         id: 4,
-        krName: "정보게시판",
-        engName: "",
+        krName: "동아리 이모저모",
+        engName: "etc_board",
     },
 ];
 
@@ -44,24 +43,42 @@ const buttonItems = [
     },
 ];
 
-const PostInput = ({handlePostSubmit, handleEditSubmit, handleButton, pageTitle}) => {
+const PostInput = ({ handleButton, pageTitle }) => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-    // const [image, setImage] = useState({
-    //   image_file: "",
-    //   priview_URL: "",
-    // });
-
-    const [title, setTitle] = useState(""); // 글 제목
-    const [content, setContent] = useState(""); // 글 내용
-    const [board, setBoard] = useState(""); // 게시판 종류
+    const [postId, setPostId] = useState();
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+    const [board, setBoard] = useState("");
+    const postData = useSelector((state) => state.toDo.getPostData);
+    // console.log(postData)
     const data = {
-        userId: 3,
-        boardId: 1,
-        title: `${title}`,
+        boardId: parseInt(board),
         content: `${content}`,
+        fileUrl: "",
+        imgUrl: "",
         status: "NORMAL",
+        title: `${title}`,
+        userId: 3,
     };
+
+    const editData = {
+        id: postId,
+        boardId: parseInt(board),
+        content: `${content}`,
+        fileUrl: "",
+        imgUrl: "",
+        status: "NORMAL",
+        title: `${title}`,
+        userId: 3,
+    };
+
+    useEffect(()=>{
+        setBoard(postData.boardId);
+        setTitle(postData.title);
+        setContent(postData.content);
+        setPostId(postData.id);
+    },[postData.boardId, postData.content, postData.id, postData.title])
+
     const handleBoardChange = (e) => {
         setBoard(e.target.value);
     };
@@ -73,37 +90,37 @@ const PostInput = ({handlePostSubmit, handleEditSubmit, handleButton, pageTitle}
     return(
         <>
             <BoardArea>
-                <SideBar
-                title="BOARD"
-                mainColor="#4B4B4B"
-                subColor="#3C3C3C"
-                mainWidth="13%"
-                subWidth="90%"
-                items={boardItems}
-                paddingTop="0"
-                paddingTopMain="6%"
-                borderRadius="0 15px 15px 0"
-                />
+                <TitleArea>
+                    <TitleBox>{pageTitle}</TitleBox>
+                </TitleArea>
                 <ContentArea>
-                    <TitleArea>
-                        <TitleBox>{pageTitle}</TitleBox>
-                    </TitleArea>
+                    <SideBar
+                    title="BOARD"
+                    mainColor="#4B4B4B"
+                    subColor="#3C3C3C"
+                    mainWidth="13%"
+                    subWidth="90%"
+                    items={boardItems}
+                    paddingTop="0"
+                    borderRadius="0 15px 15px 0"
+                    />
+                    <ListArea>
                     <SelectArea>
                         <BoardSelect onChange={handleBoardChange}>
-                        <option>게시판을 선택해주세요</option>
-                        {boardItems.map(({id, krName}) => (
-                            <option key={id} >{krName}</option>
-                        ))}
+                            <option>게시판을 선택해주세요</option>
+                            {boardItems.map(({id, krName}) => (
+                            <option key={id} value={id}>{krName}</option>
+                            ))}
                         </BoardSelect>
-                        {canSubmit() ? pageTitle === "글쓰기" ?
+                        {canSubmit() ? handleButton === "등록하기" ?
                             (<PostButton 
-                                // onClick={() => dispatch(boardAPI.setWritePostAxios(data))}
+                                onClick={() => {boardAPI.setWritePostAxios(data); navigate("/board");}}
                                 type="button"
                             >
                                 {handleButton}
                             </PostButton>) : 
                             (<PostButton
-                                onClick={() => {handleEditSubmit()}}
+                                onClick={() => {boardAPI.setEditedPostAxios(editData); navigate("/board");}}
                                 type="button"
                             >
                                 {handleButton}
@@ -137,6 +154,7 @@ const PostInput = ({handlePostSubmit, handleEditSubmit, handleButton, pageTitle}
                         ))}
                         </ContentButtonBox>
                     </ContentInputBox>
+                    </ListArea>
                 </ContentArea>
             </BoardArea>
             <Footer />
@@ -146,13 +164,6 @@ const PostInput = ({handlePostSubmit, handleEditSubmit, handleButton, pageTitle}
 
 const BoardArea = styled.div`
     height: 88vh;
-    display: flex;
-`;
-
-
-const ContentArea = styled.div`
-    width: 87%;
-    padding: 0 2rem 0 2rem;
 `;
 
 const TitleArea = styled.div`
@@ -160,6 +171,7 @@ const TitleArea = styled.div`
     width: 100%;
     height: 10%;
     display: flex;
+    padding: 0 2rem 1rem 2rem;
     align-items: flex-end;
     justify-content: space-between;
 `;
@@ -170,6 +182,13 @@ const TitleBox = styled.h2`
     font-size: 35px;
     display: flex;
     align-items: flex-end;
+    padding-left: 14%;
+`;
+
+const ContentArea = styled.div`
+    display: flex;
+    width: 100%;
+    height: 90%;
 `;
 
 const PostButton = styled.button`
@@ -181,6 +200,13 @@ const PostButton = styled.button`
     width: 6rem;
     cursor: pointer;
     border: none;
+`;
+
+const ListArea = styled.form`
+    width: 87%;
+    height: 100%;
+    padding: 0 2rem 0 2rem;
+    box-sizing: border-box;
 `;
 
 const BoardSelect = styled.select`

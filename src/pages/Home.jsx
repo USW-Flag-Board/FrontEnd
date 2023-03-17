@@ -1,21 +1,11 @@
-import {useEffect} from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
-import {SideBar} from "../components/";
 
 const contents = [
   {title: "STUDY", content: ["ALGORITHM", "WEB-BACKEND"]},
   {title: "PROJECT", content: ["FLAG-게시판"]},
 ];
 
-const homeItem = [
-  {id: 1, krName: "USER", engName: ""},
-  {id: 2, krName: "마이페이지", engName: ""},
-  {id: 3, krName: "내가 쓴 글", engName: ""},
-  {id: 4, krName: "댓글 단 글", engName: ""},
-  {id: 6, krName: "관리자페이지", engName: ""},
-  {id: 7, krName: "유저관리", engName: ""},
-  {id: 8, krName: "게시판관리", engName: ""},
-];
 
 const Home = ({setHeader}) => {
   useEffect(() => {
@@ -27,16 +17,11 @@ const Home = ({setHeader}) => {
       <HomeBox>
         <HomeContents>
           <MyActivityArea>
-            <MyActivityTitle>MY ACTIBITY</MyActivityTitle>
             <MyActivityContents>
               <MyActivityBox>
-                <FlagContents>
-                {contents.map(({title}) => (
-                  <FlagContent key={title}>
-                    <ContentsTitle>{title}</ContentsTitle>
-                  </FlagContent>
-                ))}
-                </FlagContents>
+                <FlagImgTitle>
+                  <ContentsTitle>FLAG</ContentsTitle>
+                </FlagImgTitle>
                 <BookImgBox>
                   <BookImg
                     src="images/home-book.jpg"
@@ -64,18 +49,7 @@ const Home = ({setHeader}) => {
                 </FeedArea>
               </MyActivityBox>
             </MyActivityContents>
-            </MyActivityArea>
-            <HomeSideBar>
-              <SideBar
-                subColor="#3E3E3E"
-                mainWidth="100%"
-                subWidth="100%"
-                items={homeItem}
-                title="FLAG"
-                height="100%"
-                borderRadius="50px 0 0 50px"
-              />
-            </HomeSideBar>
+          </MyActivityArea>
         </HomeContents>
         <HomeContents>
           <FilteredPostArea>
@@ -111,7 +85,7 @@ const Home = ({setHeader}) => {
 };
 
 const HomeArea = styled.div`
-  width: calc(100vw - 4rem);
+  width: calc(100vw - 8rem);
   height: calc(91vh - 5rem);
 `;
 
@@ -119,7 +93,7 @@ const HomeBox = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  margin: 3rem 0 0 4rem;
+  margin: 3rem 4rem 0 4rem;
 `;
 
 const HomeContents = styled.div`
@@ -131,30 +105,21 @@ const HomeContents = styled.div`
     margin-bottom: 2rem;
   }
   &:nth-of-type(2){
-    padding-right: 4rem;
     height: 30%;
   }
 `;
 
 const MyActivityArea = styled.div`
   box-sizing: border-box;
-  width: 80%;
-  height: 100%;
-`;
-
-const MyActivityTitle = styled.h1`
-  font-size: 1.6rem;
   width: 100%;
-  height: 5%;
-  margin-bottom: 2rem;
-  font-weight: bold;
+  height: 100%;
 `;
 
 const MyActivityContents = styled.div`
   box-sizing: border-box;
   display: flex;
   width: 100%;
-  height: 95%;
+  height: 100%;
 `;
 
 const MyActivityBox = styled.div`
@@ -162,20 +127,15 @@ const MyActivityBox = styled.div`
   width: 50%;
   margin-left: 2.1rem;
   &:nth-of-type(1) {
-    width: 37.5%;
+    width: 50%;
     height: 81%;
     margin: 0;
   }
 `;
 
-const FlagContents = styled.ul`
+const FlagImgTitle = styled.div`
   box-sizing: border-box;
-  display: flex;
-  justify-content: space-evenly;
-`;
-
-const FlagContent = styled.li`
-  box-sizing: border-box;
+  padding-left: 1.2rem;
 `;
 
 const BookImgBox = styled.div`
@@ -230,6 +190,7 @@ const FeedContent = styled.div`
 const ContentsTitle = styled.h4`
   color: white;
   padding-bottom: 1.3rem;
+  font-weight: bold;
 `;
 
 const FeedTitle = styled.h3`
@@ -276,10 +237,5 @@ const PostTitle = styled.h3`
   width: 50%;
   margin: 0  0 0.8rem 1rem;
 `;
-
-const HomeSideBar = styled.div`
-  width: 20%;
-  height: 100%;
-`
 
 export default Home;

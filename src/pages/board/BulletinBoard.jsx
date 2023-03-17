@@ -8,36 +8,36 @@ import { faPen, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { SideBar, Footer, ListThem, Pagination } from "../../components";
 
 const boardItems = [
-  { 
-    id: 1,
-    krName: "자유게시판",
-    engName: "free_board"
-  }, 
-  { 
-    id: 2,
-    krName: "동아리 이모저모",
-    engName: ""
-  }, 
-  { 
-    id: 3,
-    krName: "사전게시판",
-    engName: ""
-  }, 
-  { 
-    id: 4,
-    krName: "정보게시판",
-    engName: ""
-  }
+  {
+      id: 1,
+      krName: "자유게시판",
+      engName: "free_board",
+  },
+  {
+      id: 2,
+      krName: "정보게시판",
+      engName: "information_board",
+  },
+  {
+      id: 3,
+      krName: "사진게시판",
+      engName: "photo_board",
+  },
+  {
+      id: 4,
+      krName: "동아리 이모저모",
+      engName: "etc_board",
+  },
 ];
 
 const barItem = ["제목", "작성자", "작성일", "조회수", "좋아요수"];
 const selectItems = ["전체기간", "게시물 + 작성자"];
 
 const BulletinBoard = () => {
-  // const [selectBoard, setSelectBoard] = useState("free_board");
+  const [boardName, setBoarName] = useState("자유게시판");
   const [currentItems, setCurrentItems] = useState([]); // 페이지당 보여줄 데이터 배열
   const posts = useSelector((state) => state.toDo.getPostsData);
-  console.log(posts)
+  const board = useSelector((state) => state.toDo.boardName);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const writeClick = () => {
@@ -45,9 +45,9 @@ const BulletinBoard = () => {
   }
 
   useEffect(()=>{
-      dispatch(boardsActions.getBoardAPI());
-    },[dispatch])
-  
+      dispatch(boardsActions.getBoardAPI(board));
+    },[board, dispatch])
+
   return (
     <>
       <BoardArea>
@@ -59,14 +59,14 @@ const BulletinBoard = () => {
             mainWidth="13%"
             subWidth="90%"
             items={boardItems}
+            boardTitle={setBoarName}
             paddingTop="0"
             paddingTopMain="75px"
             borderRadius="0 15px 15px 0"
-            // setSelectBoard={setSelectBoard}
           />
           <ListArea>
             <TitleArea>
-              <TitleBox>자유게시판</TitleBox>
+              <TitleBox>{boardName}</TitleBox>
               <WriteButton onClick={writeClick}>
                 <FaPen icon={faPen} />
                   글쓰기

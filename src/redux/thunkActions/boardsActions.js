@@ -1,36 +1,34 @@
 import { postActions } from '../slice/toDos';
 import boardAPI from '../../apis/boardAPI';
 
-
 // Board 클릭시 게시판 가져오기
-const getBoardAPI = () => {
+const getBoardAPI = (selectBoard) => {
     return async function(dispatch){
-        const response = await boardAPI.getBoardAxios();
+        const response = await boardAPI.getBoardAxios(selectBoard);
         dispatch(postActions.getPosts(response.data));
     };
 };
 
-// 게시글 등록하기
-const setPostAPI = () => {
-    return async function(){
-        const response = await boardAPI.setWritePostAxios();
-        return response;
-    };
-};
-
-// 수정하기 버튼 클릭시 입력된 데이터 가져오기
-const getEditAPI = () => {
+// 게시글 가져오기
+const getPostAPI = (selectPost) => {
     return async function(dispatch){
-        const response = await boardAPI.eiditAxios();
-        dispatch();
+        const response = await boardAPI.getPostAxios(selectPost);
+        dispatch(postActions.getPost(response))
     };
 };
 
+// 게시글 삭제
+const deletePostAPI = (PostId) => {
+    return async function(){
+        const response = await boardAPI.deletePostAxios(PostId);
+            return response;
+    }
+}
 
 const boardsActions = {
     getBoardAPI,
-    setPostAPI,
-    getEditAPI,
+    getPostAPI,
+    deletePostAPI,
 };
 
 export default boardsActions;

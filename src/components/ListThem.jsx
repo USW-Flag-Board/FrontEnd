@@ -1,19 +1,26 @@
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from 'styled-components';
-import { postActions } from "../redux/slice/toDos";
+import boardsActions from "../redux/thunkActions/boardsActions";
 
 const ListThem = ({itemContents, themList}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    
+    const boardPosts = useSelector((state) => state.toDo.getPostsData);
     return(
         <>
             {itemContents ? itemContents.map(({id, memberName, createdAt, viewCount, likeList, title}) => (
                 <ListThemBox key={id}>
                     <ItemBox>
-                        <ListItem>{id}</ListItem>
-                        <ListItem style={{cursor: "pointer"}} onClick={()=>{dispatch(postActions.setId(id)); navigate("/board/detail");}}>{title}</ListItem>
+                        <ListItem>{boardPosts.findIndex(v => v.id === id) + 1}</ListItem>
+                        <ListItem 
+                            style={{cursor: "pointer"}} 
+                            onClick={()=>{
+                                dispatch(boardsActions.getPostAPI(id)); 
+                                navigate("/board/detail");
+                                }}>
+                                {title}
+                        </ListItem>
                         <ListItem>{memberName}</ListItem>
                         <ListItem>{createdAt.slice(0, 3).join('.')}</ListItem>
                         <ListItem>{viewCount}</ListItem>

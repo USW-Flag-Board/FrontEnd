@@ -14,6 +14,7 @@ const Pagination = ({itemsPerPage, items, setCurrentItems}) => {
     const handlePageClick = (e)=>{
       setItemOffset((e.selected * itemsPerPage) % items.length)
     }
+
     return (
         <StyledPaginateContainer>
             <ReactPaginate

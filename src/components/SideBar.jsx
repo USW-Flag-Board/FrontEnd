@@ -1,7 +1,8 @@
 import styled from "styled-components";
-
+import { useDispatch } from 'react-redux';
+import { postActions } from '../redux/slice/toDos';
+import { useCallback } from "react";
 const SideBar = ({
-    setSelectBoard, 
     mainWidth, 
     paddingTop, 
     paddingTopMain, 
@@ -11,11 +12,13 @@ const SideBar = ({
     subColor, 
     subWidth, 
     title, 
-    items}) => {
-  
-    const handleBoardClick = (board) => {
-    setSelectBoard(board);
-  }
+    items,
+    boardTitle}) => {
+    
+  const dispatch = useDispatch();
+  const handleBoardClick = useCallback((board) => {
+    dispatch(postActions.getBoard(board));
+  },[dispatch])
   
   return (
     <SideArea
@@ -39,7 +42,7 @@ const SideBar = ({
           <ContentsTitle>{title}</ContentsTitle>
           <ItemBox>
             {items.map(({id, engName, krName}) => (
-              <Item key={id} onClick={()=> handleBoardClick(engName)}>{krName}</Item>
+              <Item key={id} onClick={()=> {handleBoardClick(engName); boardTitle(krName)}}>{krName}</Item>
             ))}
           </ItemBox>
         </SideBarContent>
