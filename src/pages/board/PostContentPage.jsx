@@ -7,25 +7,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import boardsActions from "../../redux/thunkActions/boardsActions";
 
-// const boardItems = [
-//   { 
-//     id: 1,
-//     krName: "스터디",
-//     engName: ""
-//   }, 
-//   { 
-//     id: 2,
-//     krName: "프로젝트",
-//     engName: ""
-//   }, 
-// ];
-
 const PostContentPage = ({setHeader}) => {
   const [input, setInput] = useState('');
   const [comments, setComments] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const getPost = useSelector((state) => state.toDo.getPostData);
+  
   const onChange = (e) => {
     setInput(e.target.value);
   };
@@ -90,7 +78,7 @@ const PostContentPage = ({setHeader}) => {
           <PostFooter>
             <PostViewCount><PostView>View</PostView>{getPost.viewCount}</PostViewCount>
             <PostLike><LikeButton/>{getPost.likeCount}</PostLike>
-            <CommentCount><FaComment icon={faComment}/>10</CommentCount>
+            <CommentCount><FaComment icon={faComment}/>{getPost.replyList.length}</CommentCount>
           </PostFooter>
         </PostDatailBox>
         <CommentInputBox>
@@ -98,7 +86,6 @@ const PostContentPage = ({setHeader}) => {
           <CommentAddButton type="submit">등록</CommentAddButton>
         </CommentInputBox>
         <CommentsArea>
-          <Reply />
           <Reply />
         </CommentsArea>
       </ContentArea>
@@ -109,7 +96,7 @@ const PostContentPage = ({setHeader}) => {
 const BoardArea = styled.div`
   display: flex;
   width: 100vw;
-  height: 91vh;
+  height: 89vh;
 `;
 
 const TitleBox = styled.h2`

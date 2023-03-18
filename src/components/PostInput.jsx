@@ -2,46 +2,12 @@ import { useNavigate } from "react-router-dom";
 import { useState, useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faFile } from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
 import { Footer, SideBar } from "../components";
 import boardAPI from '../apis/boardAPI'; 
+import { BOARD_NAMES } from "../constants/board";
+import { BUTTON_ITEMS } from "../constants/button";
 
-const boardItems = [
-    {
-        id: 1,
-        krName: "자유게시판",
-        engName: "free_board",
-    },
-    {
-        id: 2,
-        krName: "정보게시판",
-        engName: "information_board",
-    },
-    {
-        id: 3,
-        krName: "사진게시판",
-        engName: "photo_board",
-    },
-    {
-        id: 4,
-        krName: "동아리 이모저모",
-        engName: "etc_board",
-    },
-];
-
-const buttonItems = [
-    {
-        id: 1,
-        faIcon: faImage,
-        text: "사진",
-    },
-    {
-        id: 2,
-        faIcon: faFile,
-        text: "파일",
-    },
-];
 
 const PostInput = ({ handleButton, pageTitle }) => {
     const navigate = useNavigate();
@@ -50,7 +16,6 @@ const PostInput = ({ handleButton, pageTitle }) => {
     const [content, setContent] = useState("");
     const [board, setBoard] = useState("");
     const postData = useSelector((state) => state.toDo.getPostData);
-    // console.log(postData)
     const data = {
         boardId: parseInt(board),
         content: `${content}`,
@@ -62,14 +27,8 @@ const PostInput = ({ handleButton, pageTitle }) => {
     };
 
     const editData = {
+        ...data,
         id: postId,
-        boardId: parseInt(board),
-        content: `${content}`,
-        fileUrl: "",
-        imgUrl: "",
-        status: "NORMAL",
-        title: `${title}`,
-        userId: 3,
     };
 
     useEffect(()=>{
@@ -100,7 +59,7 @@ const PostInput = ({ handleButton, pageTitle }) => {
                     subColor="#3C3C3C"
                     mainWidth="13%"
                     subWidth="90%"
-                    items={boardItems}
+                    items={BOARD_NAMES}
                     paddingTop="0"
                     borderRadius="0 15px 15px 0"
                     />
@@ -108,7 +67,7 @@ const PostInput = ({ handleButton, pageTitle }) => {
                     <SelectArea>
                         <BoardSelect onChange={handleBoardChange}>
                             <option>게시판을 선택해주세요</option>
-                            {boardItems.map(({id, krName}) => (
+                            {BOARD_NAMES.map(({id, krName}) => (
                             <option key={id} value={id}>{krName}</option>
                             ))}
                         </BoardSelect>
@@ -146,7 +105,7 @@ const PostInput = ({ handleButton, pageTitle }) => {
                             }}
                         />
                         <ContentButtonBox>
-                        {buttonItems.map(({id, faIcon, text}) => (
+                        {BUTTON_ITEMS.map(({id, faIcon, text}) => (
                             <ContentButton key={id}>
                             <FaIcon icon={faIcon}/>
                             <p>{text}</p>

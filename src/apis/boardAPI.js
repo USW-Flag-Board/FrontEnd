@@ -51,7 +51,6 @@ const deletePostAxios = async (postId) => {
   }
 }
 
-
 const boardAPI = {
   getBoardAxios,
   setWritePostAxios,

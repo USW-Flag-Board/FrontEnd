@@ -1,15 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import styled from 'styled-components';
 import boardsActions from "../redux/thunkActions/boardsActions";
+import styled from 'styled-components';
 
 const ListThem = ({itemContents, themList}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const boardPosts = useSelector((state) => state.toDo.getPostsData);
+
     return(
         <>
-            {itemContents ? itemContents.map(({id, memberName, createdAt, viewCount, likeList, title}) => (
+            {itemContents ? itemContents.map(({id, memberName, createdAt, viewCount, likeCount, title, replyCount}) => (
                 <ListThemBox key={id}>
                     <ItemBox>
                         <ListItem>{boardPosts.findIndex(v => v.id === id) + 1}</ListItem>
@@ -24,7 +25,8 @@ const ListThem = ({itemContents, themList}) => {
                         <ListItem>{memberName}</ListItem>
                         <ListItem>{createdAt.slice(0, 3).join('.')}</ListItem>
                         <ListItem>{viewCount}</ListItem>
-                        <ListItem>{likeList}</ListItem>
+                        <ListItem>{likeCount}</ListItem>
+                        <ListItem>{replyCount}</ListItem>
                     </ItemBox>
                 </ListThemBox>
             )) :  
@@ -55,7 +57,6 @@ const ItemBox = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
 `;
 
@@ -68,9 +69,8 @@ const ListItem = styled.div`
     justify-content: center;
     font-size: 0.8rem;
     font-weight: 600;
-    &:nth-of-type(1){width: 5%; height: 50%; background-color: white; border-radius: 15px; color: black; margin-left: 10px};
+    &:nth-of-type(1){width: 5%; height: 50%; background-color: white; border-radius: 15px; color: black; margin-left: 0.7rem};
     &:nth-of-type(2){width: 31%};
-    &:nth-of-type(6){padding-right: 24%};
 `;
 
 export default ListThem;

@@ -98,7 +98,7 @@ const MyPage = ({setHeader}) => {
 const ProfileIcon = styled(FontAwesomeIcon)`
   width: 120px;
   height: 120px;
-  marginbottom: 30px;
+  margin-bottom: 30px;
 `;
 
 const PageArea = styled.div`

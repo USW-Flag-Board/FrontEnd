@@ -1,12 +1,6 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 
-const contents = [
-  {title: "STUDY", content: ["ALGORITHM", "WEB-BACKEND"]},
-  {title: "PROJECT", content: ["FLAG-게시판"]},
-];
-
-
 const Home = ({setHeader}) => {
   useEffect(() => {
     setHeader(true);
@@ -23,10 +17,9 @@ const Home = ({setHeader}) => {
                   <ContentsTitle>FLAG</ContentsTitle>
                 </FlagImgTitle>
                 <BookImgBox>
-                  <BookImg
-                    src="images/home-book.jpg"
-                    alt="home-book"
-                  />
+                  <BookImg>
+                    Flag활동 이미지 슬라이드
+                  </BookImg>
                 </BookImgBox>
               </MyActivityBox>
               <MyActivityBox>
@@ -86,7 +79,8 @@ const Home = ({setHeader}) => {
 
 const HomeArea = styled.div`
   width: calc(100vw - 8rem);
-  height: calc(91vh - 5rem);
+  height: calc(89vh - 5rem);
+  z-index: 1;
 `;
 
 const HomeBox = styled.div`
@@ -101,11 +95,11 @@ const HomeContents = styled.div`
   width: 100%;
   &:nth-of-type(1) {
     display: flex;
-    height: 70%;
+    height: 60%;
     margin-bottom: 2rem;
   }
   &:nth-of-type(2){
-    height: 30%;
+    height: 40%;
   }
 `;
 
@@ -123,12 +117,12 @@ const MyActivityContents = styled.div`
 `;
 
 const MyActivityBox = styled.div`
-  height: 80%;
+  height: 85%;
   width: 50%;
   margin-left: 2.1rem;
   &:nth-of-type(1) {
     width: 50%;
-    height: 81%;
+    height: 86%;
     margin: 0;
   }
 `;
@@ -143,11 +137,14 @@ const BookImgBox = styled.div`
   height: 100%;
 `;
 
-const BookImg = styled.img`
+const BookImg = styled.div`
   width: 100%;
   height: 100%;
   border: 1.6px solid #9A9A9A;
   border-radius: 1.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const FeedArea = styled.div`

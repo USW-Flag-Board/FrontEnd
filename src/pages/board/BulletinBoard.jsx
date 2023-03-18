@@ -6,32 +6,9 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { SideBar, Footer, ListThem, Pagination } from "../../components";
-
-const boardItems = [
-  {
-      id: 1,
-      krName: "자유게시판",
-      engName: "free_board",
-  },
-  {
-      id: 2,
-      krName: "정보게시판",
-      engName: "information_board",
-  },
-  {
-      id: 3,
-      krName: "사진게시판",
-      engName: "photo_board",
-  },
-  {
-      id: 4,
-      krName: "동아리 이모저모",
-      engName: "etc_board",
-  },
-];
-
-const barItem = ["제목", "작성자", "작성일", "조회수", "좋아요수"];
-const selectItems = ["전체기간", "게시물 + 작성자"];
+import { BOARD_NAMES } from '../../constants/board';
+import { TITLE_ITEMS } from '../../constants/board';
+import { SEARCH_SELECT_ITEMS } from '../../constants/board';
 
 const BulletinBoard = () => {
   const [boardName, setBoarName] = useState("자유게시판");
@@ -43,6 +20,7 @@ const BulletinBoard = () => {
   const writeClick = () => {
     navigate("/board/write");
   }
+  console.log(posts)
 
   useEffect(()=>{
       dispatch(boardsActions.getBoardAPI(board));
@@ -58,7 +36,7 @@ const BulletinBoard = () => {
             subColor="#3C3C3C"
             mainWidth="13%"
             subWidth="90%"
-            items={boardItems}
+            items={BOARD_NAMES}
             boardTitle={setBoarName}
             paddingTop="0"
             paddingTopMain="75px"
@@ -74,7 +52,7 @@ const BulletinBoard = () => {
             </TitleArea>
             <ListBar>
               <BarItemBox>
-              {barItem.map((item) => (
+              {TITLE_ITEMS.map((item) => (
                 <BarItem key={item}>{item}</BarItem>
               ))}
               </BarItemBox>
@@ -92,7 +70,7 @@ const BulletinBoard = () => {
               />
             </PaginationArea>
             <FilterAndSearchForm>
-            {selectItems.map((item) => (
+            {SEARCH_SELECT_ITEMS.map((item) => (
               <FilterSelect key={item}>
                 <option>{item}</option>
               </FilterSelect>
@@ -112,7 +90,7 @@ const BulletinBoard = () => {
 
 const BoardArea = styled.div`
   width: 100vw;
-  height: 88vh;
+  height: 86vh;
 `;
 
 const TitleArea = styled.div`
@@ -172,9 +150,6 @@ const BarItem = styled.li`
     margin-left: 10px;
     padding-left: 6%;
     width: 30%;
-  }
-  &:nth-of-type(5) {
-    padding-right: 24%;
   }
 `;
 
@@ -250,7 +225,6 @@ const InputBase = styled.input`
   }
 `;
 
-//fontAwesome
 const FaPen = styled(FontAwesomeIcon)`
   text-decoration: none;
 `;
