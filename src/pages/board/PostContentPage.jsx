@@ -66,7 +66,7 @@ const PostContentPage = ({setHeader}) => {
             <PostHeaderLeft>
               <PostAuthor>글쓴이</PostAuthor>
               <AuthorName>{getPost.memberName}</AuthorName>
-              <PostTime>{getPost.createdAt.slice(0, 3).join('.')}</PostTime>
+              <PostTime>{getPost?.createdAt.slice(0, 3).join('.')}</PostTime>
             </PostHeaderLeft>
             <PostHeaderRight>
               <PostModify onClick={() => editClick(getPost.id)}>수정하기</PostModify>

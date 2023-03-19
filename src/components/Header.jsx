@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -7,7 +7,6 @@ import styled from "styled-components";
 import Cookies from "universal-cookie";
 import { HEADER_ITEMS } from "../constants/header";
 import { LOGIN_USER_ITEMS } from "../constants/header";
-import { useEffect } from "react";
 
 const Header = () => {
   const [isToggled, setIsToggled] = useState(false);
@@ -15,11 +14,13 @@ const Header = () => {
   const [login, setLogin] = useState(false);
   const navigate = useNavigate();
   const cookies = new Cookies();
+  const ref = useRef();
+
 
   const handleMenuClick = (menu) => {
-    setIsToggled((prev) => !prev);
     setUserToggled(false);
     if (menu === "BOARD") {
+      setIsToggled(!isToggled)
     } else if (menu === "ACTIVITY") {
       alert("구현중입니다.");
       // navigate("/activity");
@@ -30,13 +31,11 @@ const Header = () => {
 
   const handleUserClick = () => {
     setUserToggled((prev) => (!prev));
-    setIsToggled(false);
     cookies.get("refresh_token") ? setLogin(true) : setLogin(false);
   };
 
   const handleUserItemClick = (item) => {
     setUserToggled(false);
-    console.log(item)
     switch(item){
       case '마이페이지':
         navigate('/my');
@@ -64,7 +63,6 @@ const Header = () => {
         </LogoBox>
         <MenuItemBox>
           <MenuItems>
-            <MenuButton onClick={() => navigate("/resume")}>FLAG</MenuButton>
             {HEADER_ITEMS.map((item) => (
               <MenuButton key={item} onClick={() => handleMenuClick(item)}>
                 {item}
@@ -138,6 +136,7 @@ const MenuItems = styled.div`
   align-items: flex-end;
   width: 100%;
   height: 100%;
+  
 `;
 
 const MenuButton = styled.div`
