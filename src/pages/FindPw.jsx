@@ -6,23 +6,21 @@ import {
   PutChangePw,
   PostCertificationCheck,
 } from "../apis/user";
+import { Header } from "../components";
 
 // eslint-disable-next-line
 const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
 const emailExp = /[\{\}\[\]\/?,;:|\)*~`!^\-_+<>\#$%&\\\=\(\'\"]/g;
 const korExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
 const spaceExp = /\s/;
-
-const FindPw = ({setHeader}) => {
+const header = true;
+const FindPw = () => {
   const [successState, setSuccessState] = useState(false);
   const [email, setEmail] = useState("");
 
-  useEffect(() => {
-    setHeader(true);
-  }, []);
-
   return (
     <>
+      {header && <Header/>}
       {successState ? (
         <ShowPw email={email} />
       ) : (

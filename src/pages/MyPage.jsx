@@ -6,8 +6,10 @@ import styled from "styled-components";
 import {cookiesOption} from "../utils/cookiesOption";
 import {GetProfileData} from "../apis/user";
 import {LocalStorage, SessionStorage} from "../utils/browserStorage";
+import { Header } from "../components";
 
-const MyPage = ({setHeader}) => {
+const MyPage = () => {
+  const header = true;
   const navigate = useNavigate();
   const [loginId, setLoginId] = useState("");
   const [nickname, setNickname] = useState("");
@@ -25,8 +27,8 @@ const MyPage = ({setHeader}) => {
     if (loginId !== "") {
       try {
         const response = await GetProfileData(loginId);
-        setNickname(response.data.payload.avatarResponse.nickName);
-        setIntroduceMessage(response.data.payload.avatarResponse.bio);
+        setNickname(response.data.payload.nickName);
+        setIntroduceMessage(response.data.payload.bio);
       } catch (error) {
         if (error.response.status === 404) {
           navigate("/login");
@@ -52,46 +54,48 @@ const MyPage = ({setHeader}) => {
         navigate("/login");
       }
     };
-    setHeader(true);
     DataSet();
   }, [loginId]);
 
   return (
-    <PageArea>
-      <LeftPage>
-        <UserPage>
-          <ProfileArea>
-            <RelativeArea>
-              <ProfileIcon icon={faUser} />
-              <EditProfile onClick={() => navigate("/edit")}>
-                Edit Profile
-              </EditProfile>
-            </RelativeArea>
-            <EditProfile onClick={() => LogOut()}>logout</EditProfile>
-          </ProfileArea>
-          <NickNameArea>
-            <NickName>{nickname}</NickName>
-            <IntroduceArea>
-              <Introduce>{introduceMessage}</Introduce>
-            </IntroduceArea>
-          </NickNameArea>
-        </UserPage>
-        <HistoryArea>
-          <HistoryContent>
-            <HistoryYear>2021</HistoryYear>
-            <HistoryYearList>
-              <HistoryYearListItem>알고리즘 스터디(기초반)</HistoryYearListItem>
-            </HistoryYearList>
-            <HistoryYear>2022</HistoryYear>
-            <HistoryYearList>
-              <HistoryYearListItem>알고리즘 스터디(코테반)</HistoryYearListItem>
-              <HistoryYearListItem>FLAG-게시판 (BE)</HistoryYearListItem>
-            </HistoryYearList>
-          </HistoryContent>
-        </HistoryArea>
-      </LeftPage>
-      <RightPage></RightPage>
-    </PageArea>
+    <>
+      {header && <Header/>}
+      <PageArea>
+        <LeftPage>
+          <UserPage>
+            <ProfileArea>
+              <RelativeArea>
+                <ProfileIcon icon={faUser} />
+                <EditProfile onClick={() => navigate("/edit")}>
+                  Edit Profile
+                </EditProfile>
+              </RelativeArea>
+              <EditProfile onClick={() => LogOut()}>logout</EditProfile>
+            </ProfileArea>
+            <NickNameArea>
+              <NickName>{nickname}</NickName>
+              <IntroduceArea>
+                <Introduce>{introduceMessage}</Introduce>
+              </IntroduceArea>
+            </NickNameArea>
+          </UserPage>
+          <HistoryArea>
+            <HistoryContent>
+              <HistoryYear>2021</HistoryYear>
+              <HistoryYearList>
+                <HistoryYearListItem>알고리즘 스터디(기초반)</HistoryYearListItem>
+              </HistoryYearList>
+              <HistoryYear>2022</HistoryYear>
+              <HistoryYearList>
+                <HistoryYearListItem>알고리즘 스터디(코테반)</HistoryYearListItem>
+                <HistoryYearListItem>FLAG-게시판 (BE)</HistoryYearListItem>
+              </HistoryYearList>
+            </HistoryContent>
+          </HistoryArea>
+        </LeftPage>
+        <RightPage></RightPage>
+      </PageArea>
+    </>
   );
 };
 

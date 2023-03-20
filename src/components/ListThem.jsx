@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import boardsActions from "../redux/thunkActions/boardsActions";
 import styled from 'styled-components';
 
-const ListThem = ({itemContents, themList}) => {
+const ListThem = ({itemContents}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const boardPosts = useSelector((state) => state.toDo.getPostsData);
 
     return(
         <>
-            {itemContents ? itemContents.map(({id, memberName, createdAt, viewCount, likeCount, title, replyCount}) => (
+            {itemContents.map(({id, memberName, createdAt, viewCount, likeCount, title, replyCount}) => (
                 <ListThemBox key={id}>
                     <ItemBox>
                         <ListItem>{boardPosts.findIndex(v => v.id === id) + 1}</ListItem>
@@ -29,17 +29,7 @@ const ListThem = ({itemContents, themList}) => {
                         <ListItem>{replyCount}</ListItem>
                     </ItemBox>
                 </ListThemBox>
-            )) :  
-            <ListThemBox>
-                <ItemBox>
-                    <ListItem>{themList.id}</ListItem>
-                    <ListItem>{themList.title}</ListItem>
-                    <ListItem>{themList.memberName}</ListItem>
-                    <ListItem>{themList.createdAt.slice(0, 3).join('.')}</ListItem>
-                    <ListItem>{themList.viewCount}</ListItem>
-                    <ListItem>{themList.likeList}</ListItem>
-                </ItemBox>
-            </ListThemBox>}
+            ))}
         </>
     )
 }

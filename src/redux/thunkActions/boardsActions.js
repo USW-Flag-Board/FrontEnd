@@ -25,6 +25,7 @@ const deletePostAPI = (PostId) => {
     }
 }
 
+
 const boardsActions = {
     getBoardAPI,
     getPostAPI,

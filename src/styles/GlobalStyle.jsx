@@ -15,6 +15,7 @@ const GlobalStyle = createGlobalStyle`
         margin: 0;
         background-color: #2C2C2C;
         font-family:NanumSquareNeo-Variable;
+        box-sizing: border-box;
     }
 `;
 

@@ -5,29 +5,29 @@ import boardsActions  from '../../redux/thunkActions/boardsActions';
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { SideBar, Footer, ListThem, Pagination } from "../../components";
-import { BOARD_NAMES } from '../../constants/board';
-import { TITLE_ITEMS } from '../../constants/board';
-import { SEARCH_SELECT_ITEMS } from '../../constants/board';
+import { SideBar, Footer, ListThem, Pagination, Header } from "../../components";
+import boardData from '../../constants/board';
 
 const BulletinBoard = () => {
+  const header = true;
   const [boardName, setBoarName] = useState("자유게시판");
   const [currentItems, setCurrentItems] = useState([]); // 페이지당 보여줄 데이터 배열
   const posts = useSelector((state) => state.toDo.getPostsData);
+  console.log(posts)
   const board = useSelector((state) => state.toDo.boardName);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const writeClick = () => {
     navigate("/board/write");
   }
-  console.log(posts)
 
   useEffect(()=>{
       dispatch(boardsActions.getBoardAPI(board));
-    },[board, dispatch])
+  }, [board, dispatch])
 
   return (
     <>
+      {header && <Header/>}
       <BoardArea>
         <ContentArea>
           <SideBar
@@ -36,7 +36,7 @@ const BulletinBoard = () => {
             subColor="#3C3C3C"
             mainWidth="13%"
             subWidth="90%"
-            items={BOARD_NAMES}
+            items={boardData.BOARD_NAMES}
             boardTitle={setBoarName}
             paddingTop="0"
             paddingTopMain="75px"
@@ -52,7 +52,7 @@ const BulletinBoard = () => {
             </TitleArea>
             <ListBar>
               <BarItemBox>
-              {TITLE_ITEMS.map((item) => (
+              {boardData.TITLE_ITEMS.map((item) => (
                 <BarItem key={item}>{item}</BarItem>
               ))}
               </BarItemBox>
@@ -70,7 +70,7 @@ const BulletinBoard = () => {
               />
             </PaginationArea>
             <FilterAndSearchForm>
-            {SEARCH_SELECT_ITEMS.map((item) => (
+            {boardData.SEARCH_SELECT_ITEMS.map((item) => (
               <FilterSelect key={item}>
                 <option>{item}</option>
               </FilterSelect>

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import {PostFindIdEmail, PostCertificationCheck} from "../apis/user";
+import { Header } from "../components";
 
 // eslint-disable-next-line
 const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
@@ -9,16 +10,15 @@ const korExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
 const numExp = /[0-9]/g;
 const spaceExp = /\s/;
 
-const FindId = ({setHeader}) => {
+const FindId = () => {
   const [successState, setSuccessState] = useState(false);
   const [userId, setUserId] = useState("");
+  const header = true;
 
-  useEffect(() => {
-    setHeader(true);
-  }, []);
 
   return (
     <>
+      {header && <Header/>}
       {successState ? (
         <ShowId userId={userId} />
       ) : (

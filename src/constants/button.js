@@ -1,6 +1,6 @@
 import { faImage, faFile } from "@fortawesome/free-regular-svg-icons";
 
-export const BUTTON_ITEMS = [
+const BUTTON_ITEMS = [
     {
         id: 1,
         faIcon: faImage,
@@ -12,3 +12,9 @@ export const BUTTON_ITEMS = [
         text: "파일",
     },
 ];
+
+const buttonData = {
+    BUTTON_ITEMS,
+}
+
+export default buttonData;

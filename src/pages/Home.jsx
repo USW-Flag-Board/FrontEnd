@@ -1,79 +1,80 @@
-import { useEffect } from "react";
 import styled from "styled-components";
+import { Header } from "../components";
 
-const Home = ({setHeader}) => {
-  useEffect(() => {
-    setHeader(true);
-  });
+const Home = () => {
+  const header = true;
 
   return (
-    <HomeArea>
-      <HomeBox>
-        <HomeContents>
-          <MyActivityArea>
-            <MyActivityContents>
-              <MyActivityBox>
-                <FlagImgTitle>
-                  <ContentsTitle>FLAG</ContentsTitle>
-                </FlagImgTitle>
-                <BookImgBox>
-                  <BookImg>
-                    Flag활동 이미지 슬라이드
-                  </BookImg>
-                </BookImgBox>
-              </MyActivityBox>
-              <MyActivityBox>
-                <FeedTitle>FEED</FeedTitle>
-                <FeedArea>
-                  <FeedBox>
-                    <FeedItem>
-                      <FeedItemTitle>#STUDY_ALGOLITHM</FeedItemTitle>
-                      <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
-                      <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
-                      <FeedContent>다음주에 개인사정으로 빠져야 할것 같습니다. 스터디 준비자료는 함께 첨부할게요!</FeedContent>
-                    </FeedItem>
-                    <FeedItem>
-                      <FeedItemTitle>#PROJECT_FLAG</FeedItemTitle>
-                      <FeedContent>공지 12.20(화) 전체 회의 내용입니다.</FeedContent>
-                      <FeedContent>우리 쪽지 기능 넣으면 여러분 많이 쓰실 것 같나요?</FeedContent>
-                      <FeedContent>관리자 페이지 기능은 다음과 같습니다!</FeedContent>
-                    </FeedItem>
-                  </FeedBox>
-                </FeedArea>
-              </MyActivityBox>
-            </MyActivityContents>
-          </MyActivityArea>
-        </HomeContents>
-        <HomeContents>
-          <FilteredPostArea>
-            <FilteredPostBox>
-              <PostTitle>NOTICE</PostTitle>
-              <HeartBox>
-                <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
-                <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
-                <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
-              </HeartBox>
-            </FilteredPostBox>
-            <FilteredPostBox>
-              <PostTitle>인기글</PostTitle>
-              <HeartBox>
-                <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
-                <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
-                <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
-              </HeartBox>
-            </FilteredPostBox>
-            <FilteredPostBox>
-              <PostTitle>최신글</PostTitle>
-              <HeartBox>
-                <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
-                <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
-                <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
-              </HeartBox>
-            </FilteredPostBox>
-          </FilteredPostArea>
-        </HomeContents>
-      </HomeBox>
-    </HomeArea>
+    <>
+      {header && <Header/>}
+      <HomeArea>
+        <HomeBox>
+          <HomeContents>
+            <MyActivityArea>
+              <MyActivityContents>
+                <MyActivityBox>
+                  <FlagImgTitle>
+                    <ContentsTitle>FLAG</ContentsTitle>
+                  </FlagImgTitle>
+                  <BookImgBox>
+                    <BookImg>
+                      Flag활동 이미지 슬라이드
+                    </BookImg>
+                  </BookImgBox>
+                </MyActivityBox>
+                <MyActivityBox>
+                  <FeedTitle>FEED</FeedTitle>
+                  <FeedArea>
+                    <FeedBox>
+                      <FeedItem>
+                        <FeedItemTitle>#STUDY_ALGOLITHM</FeedItemTitle>
+                        <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
+                        <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
+                        <FeedContent>다음주에 개인사정으로 빠져야 할것 같습니다. 스터디 준비자료는 함께 첨부할게요!</FeedContent>
+                      </FeedItem>
+                      <FeedItem>
+                        <FeedItemTitle>#PROJECT_FLAG</FeedItemTitle>
+                        <FeedContent>공지 12.20(화) 전체 회의 내용입니다.</FeedContent>
+                        <FeedContent>우리 쪽지 기능 넣으면 여러분 많이 쓰실 것 같나요?</FeedContent>
+                        <FeedContent>관리자 페이지 기능은 다음과 같습니다!</FeedContent>
+                      </FeedItem>
+                    </FeedBox>
+                  </FeedArea>
+                </MyActivityBox>
+              </MyActivityContents>
+            </MyActivityArea>
+          </HomeContents>
+          <HomeContents>
+            <FilteredPostArea>
+              <FilteredPostBox>
+                <PostTitle>NOTICE</PostTitle>
+                <HeartBox>
+                  <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
+                  <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
+                  <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
+                </HeartBox>
+              </FilteredPostBox>
+              <FilteredPostBox>
+                <PostTitle>인기글</PostTitle>
+                <HeartBox>
+                  <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
+                  <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
+                  <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
+                </HeartBox>
+              </FilteredPostBox>
+              <FilteredPostBox>
+                <PostTitle>최신글</PostTitle>
+                <HeartBox>
+                  <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
+                  <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
+                  <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
+                </HeartBox>
+              </FilteredPostBox>
+            </FilteredPostArea>
+          </HomeContents>
+        </HomeBox>
+      </HomeArea>
+    </>
   );
 };
 

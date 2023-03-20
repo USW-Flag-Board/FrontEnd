@@ -1,27 +1,26 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { ListThem, SideBar, LikeButton, Reply } from "../../components";
+import { SideBar, LikeButton, Reply, Header } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import boardsActions from "../../redux/thunkActions/boardsActions";
+import sideBarData from "../../constants/sideBar";
 
-const PostContentPage = ({setHeader}) => {
+
+const PostContentPage = () => {
+  const header = true;
   const [input, setInput] = useState('');
   const [comments, setComments] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const getPost = useSelector((state) => state.toDo.getPostData);
-  
+
   const onChange = (e) => {
     setInput(e.target.value);
   };
   
-  useEffect(() => {
-    setHeader(true);
-  },[setHeader]);
-
   const addComment = () => {
     setComments(
       comments.concat({
@@ -46,50 +45,52 @@ const PostContentPage = ({setHeader}) => {
   }
 
   return (
-    <BoardArea>
-      {/* <SideBar
-        title="ACTIVITY"
-        mainColor="#4B4B4B"
-        subColor="#3C3C3C"
-        mainWidth="13%"
-        subWidth="90%"
-        // items={boardItems}
-        paddingTop="0"
-        paddingTopMain="75px"
-        borderRadius="0 15px 15px 0"
-      /> */}
-      <ContentArea>
-        <TitleBox>알고리즘(코테반)</TitleBox>
-        <ListThem themList={getPost}/>
-        <PostDatailBox>
-          <PostHeader>
-            <PostHeaderLeft>
-              <PostAuthor>글쓴이</PostAuthor>
-              <AuthorName>{getPost.memberName}</AuthorName>
-              <PostTime>{getPost?.createdAt.slice(0, 3).join('.')}</PostTime>
-            </PostHeaderLeft>
-            <PostHeaderRight>
-              <PostModify onClick={() => editClick(getPost.id)}>수정하기</PostModify>
-              <PostDelete onClick={() => deleteClick(getPost.id)}>삭제하기</PostDelete>
-            </PostHeaderRight>
-          </PostHeader>
-          <PostContentTitle>{getPost.title}</PostContentTitle>
-          <PostContent>{getPost.content}</PostContent>
-          <PostFooter>
-            <PostViewCount><PostView>View</PostView>{getPost.viewCount}</PostViewCount>
-            <PostLike><LikeButton/>{getPost.likeCount}</PostLike>
-            <CommentCount><FaComment icon={faComment}/>{getPost.replyList.length}</CommentCount>
-          </PostFooter>
-        </PostDatailBox>
-        <CommentInputBox>
-          <CommentInput placeholder="댓글을 입력하세요." value={input} onChange={onChange} onClick={() => {addComment(input); setInput(input);}}></CommentInput>
-          <CommentAddButton type="submit">등록</CommentAddButton>
-        </CommentInputBox>
-        <CommentsArea>
-          <Reply />
-        </CommentsArea>
-      </ContentArea>
-    </BoardArea>
+    <>
+      {header && <Header/>}
+      <BoardArea>
+        <SideBar
+          title="ACTIVITY"
+          mainColor="#4B4B4B"
+          subColor="#3C3C3C"
+          mainWidth="13%"
+          subWidth="90%"
+          items={sideBarData.POST_SIDEBAR_ITEMS}
+          paddingTop="0"
+          paddingTopMain="75px"
+          borderRadius="0 15px 15px 0"
+        />
+        <ContentArea>
+          <TitleBox>알고리즘(코테반)</TitleBox>
+          <PostDatailBox>
+            <PostHeader>
+              <PostHeaderLeft>
+                <PostAuthor>글쓴이</PostAuthor>
+                <AuthorName>{getPost.memberName}</AuthorName>
+                <PostTime>{getPost?.createdAt.slice(0, 3).join('.')}</PostTime>
+              </PostHeaderLeft>
+              <PostHeaderRight>
+                <PostModify onClick={() => editClick(getPost.id)}>수정하기</PostModify>
+                <PostDelete onClick={() => deleteClick(getPost.id)}>삭제하기</PostDelete>
+              </PostHeaderRight>
+            </PostHeader>
+            <PostContentTitle>{getPost.title}</PostContentTitle>
+            <PostContent>{getPost.content}</PostContent>
+            <PostFooter>
+              <PostViewCount><PostView>View</PostView>{getPost.viewCount}</PostViewCount>
+              <PostLike><LikeButton/>{getPost.likeCount}</PostLike>
+              <CommentCount><FaComment icon={faComment}/>{getPost.replyList.length}</CommentCount>
+            </PostFooter>
+          </PostDatailBox>
+          <CommentInputBox>
+            <CommentInput placeholder="댓글을 입력하세요." value={input} onChange={onChange} onClick={() => {addComment(input); setInput(input);}}></CommentInput>
+            <CommentAddButton type="submit">등록</CommentAddButton>
+          </CommentInputBox>
+          <CommentsArea>
+            <Reply />
+          </CommentsArea>
+        </ContentArea>
+      </BoardArea>
+    </>
   );
 };
 

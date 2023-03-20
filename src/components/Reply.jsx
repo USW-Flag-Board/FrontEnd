@@ -1,7 +1,16 @@
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { useEffect } from "react";
+
 const Reply = () => {
+    const dipatch = useDispatch();
+    
+    // useEffect(()=>{
+    //     dipatch(boardsActions.getUserAPI());
+    // },[dipatch])
+    
     return (
         <CommentBox>
             <CommentUserImg icon={faUser}/>

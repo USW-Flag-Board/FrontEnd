@@ -2,8 +2,10 @@ import {useState, useEffect} from "react";
 import {useNavigate, useLocation} from "react-router-dom";
 import styled from "styled-components";
 import {PatchChangePw} from "../apis/user";
+import { Header } from "../components";
 
-const ChangePw = ({setHeader}) => {
+const ChangePw = () => {
+  const header = true;
   const navigate = useNavigate();
   const location = useLocation();
   const [currentPassword, setCurrentPassword] = useState("");
@@ -60,12 +62,11 @@ const ChangePw = ({setHeader}) => {
     }
   };
 
-  useEffect(() => {
-    setHeader(true);
-  }, []);
+
 
   return (
     <>
+      {header && <Header/>}
       <Mainbox>
         <PwTitle>
           새 비밀번호{" "}

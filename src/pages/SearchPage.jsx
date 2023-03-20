@@ -1,170 +1,94 @@
-import {useEffect} from "react";
 import styled from "styled-components";
-import SideBar from "../components/SideBar";
+import { Header, Footer } from "../components";
 
-const searchItem = ["자유게시판(2)", "동아리 이모저모(0)"];
-const searchContent = ["'조던'"];
-const allUser = ["조던1", "조던2", "조던 범고래", "조던던"];
-
-const SearchPage = ({setHeader}) => {
-  const count = Object.keys(allUser).length;
-
-  useEffect(() => {
-    setHeader(true);
-  });
-
+const SearchPage = () => {
+  const header = true;
+  
   return (
     <>
-      <SearchResults>{searchContent} 검색결과</SearchResults>
-      <MainBox>
-        <SideBox>
-          <SideBar
-            title={searchContent}
-            mainColor="#4B4B4B"
-            subColor="#3C3C3C"
-            mainWidth="210px"
-            subWidth="90%"
-            items={searchItem}
-            paddingTop="0"
-            borderRadius="0 15px 15px 0"
-          />
-        </SideBox>
-        <ResultBox>
-          <Box>
-            <TitleBox>유저 ({count})</TitleBox>
-            <UserBox>
-              <User />
-            </UserBox>
-          </Box>
-          <Box>
-            <TitleBox>{searchContent} 인기 글</TitleBox>
-            <PopularBox>
-              <PopularPosts />
-              <PopularPosts />
-            </PopularBox>
-          </Box>
-        </ResultBox>
-      </MainBox>
+      {header && <Header/>}
+      <SearchPageArea>
+        <SearchBox>
+          <SearchResultBox>
+            <SearchResult>
+              '강지은' 검색결과
+            </SearchResult>
+          </SearchResultBox>
+          <SearchUserBox>
+            <UserResultCount>유저 (4)</UserResultCount>
+            <SearchUser>
+              <UserBox>강지은 (정보보호)</UserBox>
+              <UserBox>강지은 (정보보호)</UserBox>
+              <UserBox>강지은 (정보보호)</UserBox>
+              <UserBox>강지은 (정보보호)</UserBox>
+            </SearchUser>
+          </SearchUserBox>
+        </SearchBox>
+      </SearchPageArea>
+      <Footer/>
     </>
   );
 };
 
-const User = () => {
-  return (
-    <>
-      {allUser.map((i) => (
-        <SearchUser>
-          <img
-            className="logo"
-            src="img/logo.JPG"
-            style={{
-              height: "30px",
-              width: "30%",
-              margin: "10px",
-              borderRadius: "7px",
-            }}
-          />
-          {i}
-        </SearchUser>
-      ))}
-    </>
-  );
-};
+export default SearchPage;
 
-const PopularPosts = () => {
-  return (
-    <>
-      <PopularCard />
-    </>
-  );
-};
-
-const Box = styled.div`
-  width: auto;
-  height: auto;
+const SearchPageArea = styled.div`
+  width: 100vw;
   display: flex;
-  flex-direction: column;
-  margin: 15px;
-`;
-
-const SideBox = styled.div`
-  width: auto;
-  height: 100vh;
-  margin-right: 2vw;
-  border: 1px solid gray;
-`;
-
-const MainBox = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  border: 1px solid gray;
-`;
-
-const ResultBox = styled.div`
-  width: 100%;
-  height: 20%;
-  display: flex;
-  border: 1px solid gray;
-`;
-
-const SearchResults = styled.div`
-  width: 70vw;
-  padding-left: 220px;
-  margin-top: 100px;
-  color: white;
-  font-size: 2rem;
-  font-weight: 700;
-`;
-
-const TitleBox = styled.div`
-  marginleft: 2vw;
-  width: 10vw;
-  height: 20px;
-  verticalalign: middle;
-  color: white;
-  fontweight: bold;
-`;
-
-const UserBox = styled.div`
-  width: 34vw;
-  display: flex;
-  flex-wrap: wrap;
-  border: 2px solid gray;
-  border-radius: 15px;
-`;
-
-const SearchUser = styled.div`
-  width: 200px;
-  height: 40px;
-  background-color: #3b3b3b;
-  color: white;
-  margin: 5px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  border: 1px solid gray;
-`;
-
-const PopularCard = styled.div`
-  width: 20vw;
-  height: 100px;
-  background-color: #3b3b3b;
-  color: white;
-  margin: 5px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  border: 1px solid gray;
-`;
-const PopularBox = styled.div`
-  width: 43vw;
-  display: flex;
-  flex-wrap: wrap;
-  border: 2px solid gray;
-  border-radius: 15px;
-  align-items: center;
   justify-content: center;
 `;
 
-export default SearchPage;
+const SearchBox = styled.div`
+  width: 80%;
+`;
+
+const SearchResultBox = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const SearchResult = styled.h3`
+  font-weight: bold;
+  font-size: 2.5rem;
+  margin: 2rem 0;
+`;
+
+const SearchUserBox = styled.div`
+`;
+
+const UserResultCount = styled.h3`
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0 0 1rem 1rem;
+`;
+
+const SearchUser = styled.div`
+  border: 1px solid #9A9A9A;
+  border-radius: 1.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem;
+`;
+
+const UserBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  height: 2.5rem;
+  background-color: #363636;
+  margin: 0.3rem;
+  border-radius: 0.6rem;
+  padding: 0 0.5rem;
+`;
+
+const BoardResultBox = styled.div`
+  
+`;
+
+const BoardResultTitle = styled.div`
+  
+`;
+
+
+

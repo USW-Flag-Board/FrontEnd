@@ -1,50 +1,46 @@
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import Cookies from "universal-cookie";
-import { HEADER_ITEMS } from "../constants/header";
-import { LOGIN_USER_ITEMS } from "../constants/header";
+import headerData from "../constants/header";
+import { LocalStorage, SessionStorage } from "../utils/browserStorage";
+import { cookiesOption } from "../utils/cookiesOption";
+import logo from "../assets/images/logo.JPG"
 
 const Header = () => {
-  const [isToggled, setIsToggled] = useState(false);
-  const [userToggled, setUserToggled] = useState(false);
   const [login, setLogin] = useState(false);
   const navigate = useNavigate();
-  const cookies = new Cookies();
-  const ref = useRef();
-
-
-  const handleMenuClick = (menu) => {
-    setUserToggled(false);
-    if (menu === "BOARD") {
-      setIsToggled(!isToggled)
-    } else if (menu === "ACTIVITY") {
-      alert("구현중입니다.");
-      // navigate("/activity");
-    } else if (menu === "NOTICE") {
-      alert("구현중입니다.");
-    }
-  };
-
-  const handleUserClick = () => {
-    setUserToggled((prev) => (!prev));
+  
+  useEffect(()=>{
+    const cookies = new Cookies();
     cookies.get("refresh_token") ? setLogin(true) : setLogin(false);
+  }, [login])
+
+  const handleLogOut = () => {
+    LocalStorage.clear();
+    SessionStorage.clear();
+    cookiesOption.remove("refresh_token");
+    cookiesOption.remove("remember_id");
+    setLogin(false);
+    navigate("/login");
   };
 
   const handleUserItemClick = (item) => {
-    setUserToggled(false);
     switch(item){
       case '마이페이지':
         navigate('/my');
         break;
-      case '로그인 / 회원가입':
+      case '로그인':
         navigate('/login')
         break;
       case '로그아웃':
-
+        handleLogOut();
+        break;
+      case '회원가입':
+        navigate('/signup');
         break;
       default:
         
@@ -52,53 +48,54 @@ const Header = () => {
   };
 
   return (
-    <HomeHeaderArea>
-      <HomeHeader>
-        <LogoBox>
-          <LogoImg
-            src="../images/logo.JPG"
-            alt="blog-logo"
-            onClick={() => navigate("/")}
-          />
-        </LogoBox>
-        <MenuItemBox>
-          <MenuItems>
-            {HEADER_ITEMS.map((item) => (
-              <MenuButton key={item} onClick={() => handleMenuClick(item)}>
+    <HomeHeader>
+      <LogoBox>
+        <LogoImg
+          src={logo}
+          alt="blog-logo"
+          onClick={() => navigate("/")}
+        />
+      </LogoBox>
+      <MenuItemBox>
+        <MenuItems>
+          {headerData.HEADER_ITEMS.map((item) => (
+            <MenuButton key={item}>
+              {item}
+              <DropHeaderArea>
+
+              </DropHeaderArea>
+            </MenuButton>
+          ))}
+        </MenuItems>
+      </MenuItemBox>
+      <SearchBox>
+        <SearchPaper>
+          <FaMagnifyingGlass icon={faMagnifyingGlass}/>
+          <InputBase type="text" />
+        </SearchPaper>
+        <UserBox>
+          <FaUser icon={faUser}/>
+          <DropUserArea>
+            {login 
+            ? headerData.LOGIN_USER_ITEMS.map((item) => 
+              (<DropUserBox 
+                key={item} 
+                onClick={()=> handleUserItemClick(item)}
+                >
+                  {item}
+                </DropUserBox>))
+            : headerData.LOGOUT_USER_ITEMS.map((item) => 
+              (<DropUserBox
+                key={item} 
+                onClick={()=> handleUserItemClick(item)}>
                 {item}
-              </MenuButton>
-            ))}
-          </MenuItems>
-        </MenuItemBox>
-        <SearchBox>
-          <SearchPaper>
-            <FaMagnifyingGlass icon={faMagnifyingGlass}/>
-            <InputBase type="text" />
-          </SearchPaper>
-          <FaUser icon={faUser} onClick={handleUserClick}/>
-        </SearchBox>
-      </HomeHeader>
-      {isToggled ? <DropHeaderArea></DropHeaderArea> : ""}
-      {userToggled ? login 
-        ? <DropUserArea>
-            {LOGIN_USER_ITEMS.map((item) => (
-              <DropUserBox key={item} onClick={()=> handleUserItemClick(item)}>
-                {item}
-              </DropUserBox>
-            ))}
+              </DropUserBox>))}
           </DropUserArea> 
-        : 
-          <DropUserArea >
-            <DropUserBox onClick={()=> handleUserItemClick("로그인 / 회원가입")}>
-              로그인 / 회원가입
-            </DropUserBox>
-          </DropUserArea> : ""
-      }
-    </HomeHeaderArea>
+        </UserBox>
+      </SearchBox>
+    </HomeHeader>
   );
 };
-
-const HomeHeaderArea = styled.div``;
 
 const HomeHeader = styled.div`
   box-sizing: border-box;
@@ -136,7 +133,6 @@ const MenuItems = styled.div`
   align-items: flex-end;
   width: 100%;
   height: 100%;
-  
 `;
 
 const MenuButton = styled.div`
@@ -153,6 +149,9 @@ const MenuButton = styled.div`
     border-radius: 0.6rem;
   }
   cursor: pointer;
+  &:hover > div {
+    display: block;
+  }
 `;
 
 const SearchBox = styled.div`
@@ -165,12 +164,12 @@ const SearchBox = styled.div`
 
 const SearchPaper = styled.form`
   display: flex;
+  align-items: center;
   width: 80%;
   height: 60%;
   margin-left: 0.1rem;
   border: 2px solid #5c5c5c;
   border-radius: 2rem;
-  align-items: center;
 `;
 
 const InputBase = styled.input`
@@ -188,8 +187,19 @@ const FaMagnifyingGlass = styled(FontAwesomeIcon)`
   align-items: center;
 `;
 
-const FaUser = styled(FontAwesomeIcon)`
+const UserBox = styled.div`
+  display: flex;
+  align-items: center;
   width: 14%; 
+  color: #BABABA; 
+  height: 100%;
+  &:hover > div{
+    display: block !important;
+  }
+`;
+
+const FaUser = styled(FontAwesomeIcon)`
+  width: 80%; 
   color: #BABABA; 
   height: 50%;
 `;
@@ -201,12 +211,18 @@ const DropHeaderArea = styled.div`
   border-radius: 0 0 50px 50px;
   position: absolute;
   z-index: 1;
+  left: 0;
+  top: 11vh;
+  display: none;
+  cursor: default;
 `;
 
 const DropUserArea = styled.div`
   position: absolute;
+  display: none !important;
   height: 16vh; 
   width: 13vw;
+  top: 11vh;
   right: 0;
   background-color: #F2F2F2;
   border-radius: 0 0 10px 10px;

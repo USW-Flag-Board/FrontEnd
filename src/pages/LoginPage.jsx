@@ -9,8 +9,9 @@ import IdRememberButton from "../components/IdRememberButton";
 import {PostLogin} from "../apis/auth";
 import {LocalStorage, SessionStorage} from "../utils/browserStorage";
 import {cookiesOption} from "../utils/cookiesOption";
+import logo from "../assets/images/logo-White.png";
 
-const LoginPage = ({setHeader}) => {
+const LoginPage = () => {
   const navigate = useNavigate();
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
@@ -97,8 +98,6 @@ const LoginPage = ({setHeader}) => {
       navigate("/my");
     }
 
-    setHeader(false);
-
     const remember_Id = cookiesOption.get("remember_id");
 
     if (remember_Id !== undefined) {
@@ -112,7 +111,7 @@ const LoginPage = ({setHeader}) => {
         <img
           alt="Flag 로고"
           className="Logo"
-          src="../images/logo-White.PNG"
+          src={logo}
           width="200"
           height="100"
           style={{
