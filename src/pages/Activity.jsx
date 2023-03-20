@@ -77,9 +77,9 @@ const Completed = () => {
                   value={githubLink}
                   onChange={onChangeGithubLink}
               ></Modalgit>
-              <RowBox>
+              <CompletedButtonBox>
               <CompletedButton onClick={() => Completed()}>작성완료</CompletedButton>
-              </RowBox>
+              </CompletedButtonBox>
           </FormBox>
       </>
   );
@@ -186,9 +186,9 @@ const Study = () =>{
                       </OnOff>
                   </RowBox>
               </BookBox>
-              <RowBox>
+              <CompletedButtonBox>
               <CompletedButton onClick={Completed}>작성완료</CompletedButton>
-              </RowBox>
+              </CompletedButtonBox>
           </FormBox>
       </>
   );
@@ -273,9 +273,9 @@ const Mentoring = () =>{
                       </OnOff>
                   </RowBox>
               </BookBox>
-              <RowBox>
+              <CompletedButtonBox>
               <CompletedButton>작성완료</CompletedButton>
-              </RowBox>
+              </CompletedButtonBox>
           </FormBox>
       </>
   );
@@ -356,37 +356,29 @@ const Activity = ({setHeader}) => {
         </HeaderMenu>
         <MainContent>
           <ButtonBox onClick={() => setUser(!user)}>
-            <ActivityCard title={title} text={day} tag={tag} name={name} />
+            <ActivityCard title={title} name={name} />
           </ButtonBox>
           <ButtonBox onClick={() => setManager(!manager)}>
             <ActivityCard
               title="누르면 개설자 컴포넌트 나와요"
-              text="모집 마감일: 2023.01.30"
-              tag="#flag #flag2"
               name="이수빈"
             />
           </ButtonBox>
           <ButtonBox onClick={() => setUser(!user)}>
             <ActivityCard
               title="테스트 입니다"
-              text="모집 마감일: 2023.01.30"
-              tag="#flag #flag2"
               name="이수빈"
             />
           </ButtonBox>
           <ButtonBox onClick={() => setUser(!user)}>
             <ActivityCard
               title="테스트 입니다"
-              text="모집 마감일: 2023.01.30"
-              tag="#flag #flag2"
               name="이수빈"
             />
           </ButtonBox>
           <ButtonBox onClick={() => setUser(!user)}>
             <ActivityCard
               title="테스트 입니다"
-              text="모집 마감일: 2023.01.30"
-              tag="#flag #flag2"
               name="이수빈"
             />
           </ButtonBox>
@@ -501,6 +493,12 @@ const RowBox = styled.div`
     display: flex;
     align-items: center;
    
+`;
+
+const CompletedButtonBox = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 `;
 
 const Modaltype = styled.select`
