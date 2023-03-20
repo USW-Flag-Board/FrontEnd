@@ -4,9 +4,12 @@ const ActivityCard = (props) => {
     return (
         <>
             <Mainbox>
-                <span><Title>{props.title}</Title></span>
-                <span><Text>{props.text}</Text></span>
-                <span><Name>{props.name}</Name></span>
+                <Box>
+                    <span><Title>{props.title}</Title></span>
+                    <NameBox>
+                        <span><Name>{props.name}</Name></span>
+                    </NameBox>
+                </Box>
             </Mainbox>       
         </>
     );
@@ -14,45 +17,45 @@ const ActivityCard = (props) => {
 
 const Mainbox = styled.div`
     width: 30vw;
-    height: 130px;
+    height: 80px;
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
     border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 20px;
-    padding-right: 13px;
-    padding-left: 13px;
-    cursor:pointer;
-    
+    justify-content: center;
+    align-item: center;
+    cursor:pointer;    
 `;
 
 const Title = styled.div`
-    width: 100%;
+    width: 24vw;
+    margin-top: 2vh;
     padding: 10px;
-    font-size: 18px;
+    font-size: 1.2rem;
     font-weight: bold;
     maigin: 8px;
     display: flex;
-    justify-content: flex-start;
 `;
 
-const Text = styled.div`
-    width: 100%;
-    font-size: 14px;
-    maigin: 5px;
-    padding: 10px;
+const Box = styled.div`
+    width: 95%;
+    height: 80%;
     display: flex;
-    justify-content: flex-start;
 `;
 
-
+const NameBox = styled.div`
+    width: auto;
+    display: flex;
+    margin-top: 2vh;
+    margin-right: 5vw; 
+    flex-direction: column;
+    justify-content: center;
+`;
 
 const Name = styled.div`
-    width:100%;
-    font-size: 14px;
+    width:50px;
+    font-size: 1rem;
     display: flex;
-    justify-content: flex-end;
-    
+    justify-content: flex-end; 
 `;
 
 export default ActivityCard;
