@@ -101,8 +101,9 @@ const MyPage = ({setHeader}) => {
     if (loginId !== "") {
       try {
         const response = await GetProfileData(loginId);
-        setNickname(response.data.payload.avatarResponse.nickName);
-        setIntroduceMessage(response.data.payload.avatarResponse.bio);
+        setNickname(response.data.payload.nickName);
+        setIntroduceMessage(response.data.payload.bio);
+        
       } catch (error) {
         if (error.response.status === 404) {
           navigate("/login");

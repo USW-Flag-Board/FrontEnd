@@ -5,7 +5,12 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser, faCircle} from "@fortawesome/free-regular-svg-icons";
 import {faLock, faCircleCheck} from "@fortawesome/free-solid-svg-icons";
 import {JoinTypeButton} from "../components";
-import {PostLoginId, PostEmail, PostCurrentEmail} from "../apis/auth";
+import {
+  PostLoginId,
+  PostEmail,
+  PostCurrentEmail,
+  PostCertificationEmail,
+} from "../apis/auth";
 
 // eslint-disable-next-line
 const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
@@ -158,6 +163,16 @@ const ServiceAgree = ({setButtonState}) => {
           message={"[필수] FLAG 계정 약관"}
           allAgree={allAgree}
         />
+        <button
+          onClick={() =>
+            window.open(
+              "https://sites.google.com/view/suwiki-policy-terms",
+              "_blank"
+            )
+          }
+        >
+          1
+        </button>
         <CheckButton
           setAccountAgree={setPersonalAgree}
           message={"[필수] 개인정보 수집 및 이용 동의"}
@@ -629,6 +644,8 @@ const EmailAuth = ({
   const [emailStateMessage, setEmailStateMessage] = useState("");
   const [rePost, setRePost] = useState(false);
   const [certification, setCertification] = useState("");
+  const [email, setEmail] = useState("");
+  const [signUpButton, setSignUpButton] = useState(false);
 
   const EmailValid = () => {
     if (originEmailData === "") {
@@ -641,7 +658,6 @@ const EmailAuth = ({
           return setEmailStateMessage("이미 사용중인 이메일입니다.");
         }
         setEmailStateMessage("");
-        return setButtonState(true);
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -662,8 +678,10 @@ const EmailAuth = ({
       phoneNumber,
       studentId
     )
-      .then(() => {
+      .then((response) => {
         alert("메일이 전송되었습니다.");
+        setEmail(response.data.payload.email);
+        setSignUpButton(true);
         setRePost(true);
       })
       .catch((error) => {
@@ -672,6 +690,33 @@ const EmailAuth = ({
         }
       });
   };
+
+  const EmailCertificationPost = () => {
+    PostCertificationEmail(certification, email)
+      .then(() => {
+        alert("인증 성공!");
+        setButtonState(true);
+      })
+      .catch((error) => {
+        switch (error.response.status) {
+          case 400:
+            alert("가입 시간이 만료되었습니다.");
+            break;
+          case 404:
+            alert("가입 정보가 존재하지 않습니다. 회원가입을 재시도 해주세요.");
+            break;
+          case 409:
+            alert("인증번호가 일치하지 않습니다.");
+            break;
+          default:
+            alert("서버 오류로 인해 회원가입이 불가능합니다.");
+        }
+      });
+  };
+
+  useEffect(() => {
+    setButtonState(false);
+  }, []);
 
   return (
     <>
@@ -696,11 +741,28 @@ const EmailAuth = ({
         </AuthButton>
       </EmailInputArea>
       <InfoState style={{width: "40%"}}>{emailStateMessage}</InfoState>
-      <WriteArea
-        onChange={(e) => {
-          setCertification(e.target.value);
-        }}
-      ></WriteArea>
+
+      <EmailInputArea>
+        <WriteArea
+          style={{
+            marginLeft: 73,
+            paddingLeft: 10,
+            width: 210,
+            marginRight: 10,
+          }}
+          onChange={(e) => {
+            setCertification(e.target.value);
+          }}
+          onBlur={() => EmailValid()}
+        ></WriteArea>
+        <AuthButton
+          className={signUpButton ? "successSignUp" : "close"}
+          disabled={!signUpButton}
+          onClick={() => EmailCertificationPost()}
+        >
+          인증하기
+        </AuthButton>
+      </EmailInputArea>
       <RowLine style={{marginTop: 50, width: 450}} />
       <IntroduceArea style={{fontSize: 15, justifyContent: "center"}}>
         FLAGround 가입을 환영합니다.
@@ -713,7 +775,7 @@ const EmailInputArea = styled.div`
   position: relative;
   display: flex;
   width: 100%;
-  justifycontent: flex-start;
+  justify-content: flex-start;
 `;
 
 const AuthButton = styled.div`
@@ -737,12 +799,20 @@ const AuthButton = styled.div`
     border-color: gainsboro;
     background: #2b2b2b;
   }
+
+  &.successSignUp {
+    background: #2b88de;
+    :hover {
+      transition: 0.2s;
+      background: #4aa0f0;
+    }
+  }
 `;
 
 const ServiceAgreeArea = styled.div`
   display: flex;
   width: 450px;
-  justifycontent: flex-start;
+  justify-content: flex-start;
   flex-direction: column;
 `;
 

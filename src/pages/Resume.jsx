@@ -36,9 +36,9 @@ const Resume = ({setHeader}) => {
   };
 
   useEffect(() => {
-    GetAllFlagHistory.then((response) => {
+    GetAllFlagHistory().then((response) => {
       console.log(response);
-    });
+    })
 
     if (year === 2021) {
       setResumeList(RESUME.map((resume, key) => <li key={key}>{resume}</li>));

@@ -44,6 +44,13 @@ export const PostCurrentEmail = (
   });
 };
 
+export const PostCertificationEmail = (certification, email) => {
+  return baseInstance.post("/auth/sign-up", {
+    certification,
+    email,
+  });
+};
+
 export const PostRefreshToken = (accessToken, refreshToken) => {
   return axios.post(`http://3.39.36.239:8080/auth/reissue`, {
     accessToken,
