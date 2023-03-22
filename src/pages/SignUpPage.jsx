@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser, faCircle} from "@fortawesome/free-regular-svg-icons";
 import {faLock, faCircleCheck} from "@fortawesome/free-solid-svg-icons";
-import {JoinTypeButton} from "../components";
+import {JoinTypeButton, Header} from "../components";
 import {PostLoginId, PostEmail, PostCurrentEmail} from "../apis/auth";
 
 // eslint-disable-next-line
@@ -13,6 +13,7 @@ const korExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
 const numExp = /[0-9]/g;
 const spaceExp = /\s/;
 const engExp = /[a-zA-Z]/g;
+const header = true;
 
 const SPECIALIZED = [
   {
@@ -50,7 +51,6 @@ const SignUpPage = ({setHeader}) => {
   };
 
   useEffect(() => {
-    setHeader(false);
     if (signUpIndex === 5) {
       alert("회원가입이 완료되었습니다.");
       navigate("/login");
@@ -58,71 +58,74 @@ const SignUpPage = ({setHeader}) => {
   }, [signUpIndex]);
 
   return (
-    <PageArea>
-      <SignUpArea>
-        <img
-          alt="Flag 로고"
-          className="Logo"
-          src="../images/logo-White.PNG"
-          width="200"
-          height="100"
-          style={{marginBottom: 20, marginTop: 40}}
-          onClick={() => navigate("/")}
-        />
-        {signUpIndex === 0 && <ServiceAgree setButtonState={setButtonState} />}
-        {signUpIndex === 1 && (
-          <JoinTypeSelect
-            setButtonState={setButtonState}
-            joinType={joinType}
-            setJoinType={setJoinType}
+    <> 
+      {header && <Header></Header>}
+      <PageArea>
+        <SignUpArea>
+          <img
+            alt="Flag 로고"
+            className="Logo"
+            src="../images/logo-White.PNG"
+            width="200"
+            height="100"
+            style={{marginBottom: 20, marginTop: 40}}
+            onClick={() => navigate("/")}
           />
-        )}
-        {signUpIndex === 2 && (
-          <Id_Password
-            setButtonState={setButtonState}
-            setLoginId={setLoginId}
-            setPassword={setPassword}
-          />
-        )}
-        {signUpIndex === 3 && (
-          <Privacy
-            setButtonState={setButtonState}
-            setName={setName}
-            setNickName={setNickName}
-            setMajor={setMajor}
-            setStudentId={setStudentId}
-            setPhoneNumber={setPhoneNumber}
-          />
-        )}
-        {signUpIndex === 4 && (
-          <EmailAuth
-            setButtonState={setButtonState}
-            joinType={joinType}
-            loginId={loginId}
-            major={major}
-            name={name}
-            nickName={nickName}
-            password={password}
-            phoneNumber={phoneNumber}
-            studentId={studentId}
-          />
-        )}
-        <AccountButton
-          className={buttonState ? "open" : "close"}
-          disabled={!buttonState}
-          onClick={() => NextIndex()}
-        >
-          {signUpIndex === 4 ? "회원가입 완료" : "Next"}
-        </AccountButton>
-      </SignUpArea>
-      <RadioArea>
-        <Radio className={signUpIndex === 0 && "current"} />
-        <Radio className={signUpIndex === 1 && "current"} />
-        <Radio className={signUpIndex === 2 && "current"} />
-        <Radio className={signUpIndex === 3 && "current"} />
-        <Radio className={signUpIndex === 4 && "current"} />
-      </RadioArea>
-    </PageArea>
+          {signUpIndex === 0 && <ServiceAgree setButtonState={setButtonState} />}
+          {signUpIndex === 1 && (
+            <JoinTypeSelect
+              setButtonState={setButtonState}
+              joinType={joinType}
+              setJoinType={setJoinType}
+            />
+          )}
+          {signUpIndex === 2 && (
+            <Id_Password
+              setButtonState={setButtonState}
+              setLoginId={setLoginId}
+              setPassword={setPassword}
+            />
+          )}
+          {signUpIndex === 3 && (
+            <Privacy
+              setButtonState={setButtonState}
+              setName={setName}
+              setNickName={setNickName}
+              setMajor={setMajor}
+              setStudentId={setStudentId}
+              setPhoneNumber={setPhoneNumber}
+            />
+          )}
+          {signUpIndex === 4 && (
+            <EmailAuth
+              setButtonState={setButtonState}
+              joinType={joinType}
+              loginId={loginId}
+              major={major}
+              name={name}
+              nickName={nickName}
+              password={password}
+              phoneNumber={phoneNumber}
+              studentId={studentId}
+            />
+          )}
+          <AccountButton
+            className={buttonState ? "open" : "close"}
+            disabled={!buttonState}
+            onClick={() => NextIndex()}
+          >
+            {signUpIndex === 4 ? "회원가입 완료" : "Next"}
+          </AccountButton>
+        </SignUpArea>
+        <RadioArea>
+          <Radio className={signUpIndex === 0 && "current"} />
+          <Radio className={signUpIndex === 1 && "current"} />
+          <Radio className={signUpIndex === 2 && "current"} />
+          <Radio className={signUpIndex === 3 && "current"} />
+          <Radio className={signUpIndex === 4 && "current"} />
+        </RadioArea>
+      </PageArea>
+    </>
   );
 };
 

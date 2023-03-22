@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Header } from "../components";
+import home from "../assets/images/home.png"
 
 const Home = () => {
   const header = true;
@@ -9,7 +10,10 @@ const Home = () => {
       {header && <Header/>}
       <HomeArea>
         <HomeBox>
-          <HomeContents>
+          <BookImgBox>
+            <BookImg src={home}/>
+          </BookImgBox>
+          {/* <HomeContents>
             <MyActivityArea>
               <MyActivityContents>
                 <MyActivityBox>
@@ -71,7 +75,7 @@ const Home = () => {
                 </HeartBox>
               </FilteredPostBox>
             </FilteredPostArea>
-          </HomeContents>
+          </HomeContents> */}
         </HomeBox>
       </HomeArea>
     </>
@@ -79,20 +83,15 @@ const Home = () => {
 };
 
 const HomeArea = styled.div`
-  width: calc(100vw - 8rem);
-  height: calc(89vh - 5rem);
-  z-index: 1;
+  width: 100vw;
 `;
 
 const HomeBox = styled.div`
-  box-sizing: border-box;
   width: 100%;
   height: 100%;
-  margin: 3rem 4rem 0 4rem;
 `;
 
 const HomeContents = styled.div`
-  box-sizing: border-box;
   width: 100%;
   &:nth-of-type(1) {
     display: flex;
@@ -105,13 +104,11 @@ const HomeContents = styled.div`
 `;
 
 const MyActivityArea = styled.div`
-  box-sizing: border-box;
   width: 100%;
   height: 100%;
 `;
 
 const MyActivityContents = styled.div`
-  box-sizing: border-box;
   display: flex;
   width: 100%;
   height: 100%;
@@ -129,23 +126,17 @@ const MyActivityBox = styled.div`
 `;
 
 const FlagImgTitle = styled.div`
-  box-sizing: border-box;
   padding-left: 1.2rem;
 `;
 
 const BookImgBox = styled.div`
   width: 100%;
-  height: 100%;
+  height: 250px;
 `;
 
-const BookImg = styled.div`
+const BookImg = styled.img`
   width: 100%;
   height: 100%;
-  border: 1.6px solid #9A9A9A;
-  border-radius: 1.8rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const FeedArea = styled.div`
@@ -163,7 +154,6 @@ const FeedItem = styled.div`
   height: 50%;
   border: 1px solid #9a9a9a;
   border-radius: 30px;
-  box-sizing: border-box;
   &:nth-of-type(1) {
     margin-bottom: 0.7rem;
   }
@@ -216,7 +206,6 @@ const HeartBox = styled.div`
 `;
 
 const FilteredPostArea = styled.div`
-  box-sizing: border-box;
   display: flex;
   width: 100%;
   height: 80%;

@@ -10,10 +10,10 @@ const GlobalStyle = createGlobalStyle`
     }
     body{
         list-style: none;
-        color: white;
+        color: black;
         padding: 0;
         margin: 0;
-        background-color: #2C2C2C;
+        background-color: white;
         font-family:NanumSquareNeo-Variable;
         box-sizing: border-box;
     }

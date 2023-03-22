@@ -8,28 +8,18 @@ import { faComment } from "@fortawesome/free-solid-svg-icons";
 import boardsActions from "../../redux/thunkActions/boardsActions";
 import sideBarData from "../../constants/sideBar";
 
-
 const PostContentPage = () => {
+  const getPost = useSelector((state) => state.toDo.getPostData);
   const header = true;
   const [input, setInput] = useState('');
-  const [comments, setComments] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const getPost = useSelector((state) => state.toDo.getPostData);
+  console.log(getPost);
 
   const onChange = (e) => {
     setInput(e.target.value);
   };
   
-  const addComment = () => {
-    setComments(
-      comments.concat({
-        id: comments.length + 1,
-        content: input,
-      })
-    );
-  };
-
   const editClick = (postId) => {
     navigate("/board/edit");
     dispatch(boardsActions.getPostAPI(postId));
@@ -66,7 +56,7 @@ const PostContentPage = () => {
               <PostHeaderLeft>
                 <PostAuthor>글쓴이</PostAuthor>
                 <AuthorName>{getPost.memberName}</AuthorName>
-                <PostTime>{getPost?.createdAt.slice(0, 3).join('.')}</PostTime>
+                <PostTime>{getPost.createdAt.slice(0, 3).join('.')}</PostTime>
               </PostHeaderLeft>
               <PostHeaderRight>
                 <PostModify onClick={() => editClick(getPost.id)}>수정하기</PostModify>
@@ -82,7 +72,7 @@ const PostContentPage = () => {
             </PostFooter>
           </PostDatailBox>
           <CommentInputBox>
-            <CommentInput placeholder="댓글을 입력하세요." value={input} onChange={onChange} onClick={() => {addComment(input); setInput(input);}}></CommentInput>
+            <CommentInput placeholder="댓글을 입력하세요." value={input} onChange={onChange}></CommentInput>
             <CommentAddButton type="submit">등록</CommentAddButton>
           </CommentInputBox>
           <CommentsArea>

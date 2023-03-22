@@ -1,4 +1,3 @@
-import axios from "axios";
 import {useEffect, useState} from "react";
 import styled from "styled-components";
 import {GetAllFlagHistory} from "../apis/activity";
@@ -38,7 +37,7 @@ const Resume = () => {
   };
 
   useEffect(() => {
-    GetAllFlagHistory.then((response) => {
+    GetAllFlagHistory().then((response) => {
       console.log(response);
     });
 

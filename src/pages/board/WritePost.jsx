@@ -13,6 +13,7 @@ const WritePost = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [board, setBoard] = useState("");
+  const [file, setFile] = useState(null);
   
   const data = {
     boardId: parseInt(board),
@@ -21,7 +22,6 @@ const WritePost = () => {
     imgUrl: "",
     status: "NORMAL",
     title: `${title}`,
-    userId: 3,
   };
 
   const canSubmit = useCallback(() => {
@@ -31,6 +31,10 @@ const WritePost = () => {
   const handleBoardChange = (e) => {
     setBoard(e.target.value);
 };
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
 
   
   return(
@@ -84,6 +88,7 @@ const WritePost = () => {
                             setContent(e.target.value);
                         }}
                     />
+                    {/* <FileUpload type="file" onChange={handleFileChange}/> */}
                     <ContentButtonBox>
                     {buttonData.BUTTON_ITEMS.map(({id, faIcon, text}) => (
                         <ContentButton key={id}>
@@ -141,7 +146,7 @@ cursor: pointer;
 border: none;
 `;
 
-const ListArea = styled.form`
+const ListArea = styled.div`
 width: 87%;
 height: 100%;
 padding: 0 2rem 0 2rem;
@@ -256,5 +261,9 @@ const FaIcon = styled(FontAwesomeIcon)`
 width: 100%; 
 height: 50%;
 `;
+
+const FileUpload = styled.input`
+    
+`
 
 export default WritePost;

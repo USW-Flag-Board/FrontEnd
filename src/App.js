@@ -14,7 +14,6 @@ import {
   FindPw,
 } from "./pages";
 import { PostContentPage, BulletinBoard, EditPost, WritePost } from "../src/pages/board"
-import {Header} from "./components";
 import {cookiesOption} from "./utils/cookiesOption";
 import {LocalStorage, SessionStorage} from "./utils/browserStorage";
 import AxiosInterceptorsSetup from "./apis/AxiosInterceptorSetup";

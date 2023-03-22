@@ -1,7 +1,7 @@
 import {baseInstance} from "./instance";
 
 export const PatchChangePw = (currentPassword, newPassword) => {
-  return baseInstance.patch("/member/password", {
+  return baseInstance.put("/members/password", {
     currentPassword,
     newPassword,
   });

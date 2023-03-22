@@ -10,10 +10,9 @@ import boardData from '../../constants/board';
 
 const BulletinBoard = () => {
   const header = true;
-  const [boardName, setBoarName] = useState("자유게시판");
-  const [currentItems, setCurrentItems] = useState([]); // 페이지당 보여줄 데이터 배열
+  const [boardName, setBoardName] = useState("자유게시판");
+  const [currentItems, setCurrentItems] = useState([]);
   const posts = useSelector((state) => state.toDo.getPostsData);
-  console.log(posts)
   const board = useSelector((state) => state.toDo.boardName);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -37,7 +36,7 @@ const BulletinBoard = () => {
             mainWidth="13%"
             subWidth="90%"
             items={boardData.BOARD_NAMES}
-            boardTitle={setBoarName}
+            boardTitle={setBoardName}
             paddingTop="0"
             paddingTopMain="75px"
             borderRadius="0 15px 15px 0"

@@ -19,25 +19,19 @@ const Header = () => {
     cookies.get("refresh_token") ? setLogin(true) : setLogin(false);
   }, [login])
 
-  const handleLogOut = () => {
-    LocalStorage.clear();
-    SessionStorage.clear();
-    cookiesOption.remove("refresh_token");
-    cookiesOption.remove("remember_id");
-    setLogin(false);
-    navigate("/login");
-  };
+  // const handleLogOut = () => {
+  //   LocalStorage.clear();
+  //   SessionStorage.clear();
+  //   cookiesOption.remove("refresh_token");
+  //   cookiesOption.remove("remember_id");
+  //   setLogin(false);
+  //   navigate("/login");
+  // };
 
   const handleUserItemClick = (item) => {
     switch(item){
-      case '마이페이지':
-        navigate('/my');
-        break;
       case '로그인':
         navigate('/login')
-        break;
-      case '로그아웃':
-        handleLogOut();
         break;
       case '회원가입':
         navigate('/signup');
@@ -48,75 +42,68 @@ const Header = () => {
   };
 
   return (
-    <HomeHeader>
-      <LogoBox>
-        <LogoImg
-          src={logo}
-          alt="blog-logo"
-          onClick={() => navigate("/")}
-        />
-      </LogoBox>
-      <MenuItemBox>
-        <MenuItems>
-          {headerData.HEADER_ITEMS.map((item) => (
-            <MenuButton key={item}>
-              {item}
-              <DropHeaderArea>
-
-              </DropHeaderArea>
-            </MenuButton>
-          ))}
-        </MenuItems>
-      </MenuItemBox>
-      <SearchBox>
-        <SearchPaper>
-          <FaMagnifyingGlass icon={faMagnifyingGlass}/>
-          <InputBase type="text" />
-        </SearchPaper>
-        <UserBox>
-          <FaUser icon={faUser}/>
-          <DropUserArea>
-            {login 
-            ? headerData.LOGIN_USER_ITEMS.map((item) => 
-              (<DropUserBox 
-                key={item} 
-                onClick={()=> handleUserItemClick(item)}
-                >
-                  {item}
-                </DropUserBox>))
-            : headerData.LOGOUT_USER_ITEMS.map((item) => 
-              (<DropUserBox
-                key={item} 
-                onClick={()=> handleUserItemClick(item)}>
+    <HeaderArea>
+      <HeaderBox>
+        <LogoBox>
+          <LogoImg
+            src={logo}
+            alt="blog-logo"
+            onClick={() => navigate("/")}
+          />
+        </LogoBox>
+        <MenuItemBox>
+          <MenuItems>
+            {headerData.HEADER_ITEMS.map((item) => (
+              <MenuButton key={item}>
                 {item}
-              </DropUserBox>))}
-          </DropUserArea> 
-        </UserBox>
-      </SearchBox>
-    </HomeHeader>
+                <DropHeaderArea>
+
+                </DropHeaderArea>
+              </MenuButton>
+            ))}
+          </MenuItems>
+        </MenuItemBox>
+        <SearchBox>
+          <SearchPaper>
+            <FaMagnifyingGlass icon={faMagnifyingGlass}/>
+            <InputBase type="text" />
+          </SearchPaper>
+          <UserBox>
+            {headerData.LOGOUT_USER_ITEMS.map((item)=>(
+              <UserButton type="button" key={item} onClick={()=> handleUserItemClick(item)}>{item}</UserButton>
+            ))}
+          </UserBox>
+        </SearchBox>
+      </HeaderBox>
+    </HeaderArea>
   );
 };
 
-const HomeHeader = styled.div`
-  box-sizing: border-box;
-  width: 100vw;
+const HeaderArea = styled.div`
+  width: 100%;
   height: 11vh;
+  `;
+
+const HeaderBox = styled.div`
+  box-sizing: border-box;
+  width: calc(100% - 16rem);
+  height: 100%;
+  margin: 0 8rem;
+  padding-top: 2rem;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   background-color: white;
 `;
 
 const LogoBox = styled.div`
-  box-sizing: border-box;
-  width: 20%;
-  height: 100%;
+  width: 10%;
+  height: 80%;
   display: flex;
   align-items: center;
-  padding-left: 2rem ;
 `;
 
 const LogoImg = styled.img`
-  width: 50%; 
+  width: 100%; 
   height: 80%; 
   cursor: pointer;
 `;
@@ -130,14 +117,14 @@ const MenuItemBox = styled.div`
 
 const MenuItems = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   width: 100%;
   height: 100%;
 `;
 
 const MenuButton = styled.div`
-  width: 25%;
-  height: 60%;
+  width: 18%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -155,21 +142,21 @@ const MenuButton = styled.div`
 `;
 
 const SearchBox = styled.div`
-  width: 20%;
+  box-sizing: border-box;
+  width: 30%;
   height: 60%;
   display: flex;
   align-items: center;
-  padding-left: 1.3rem;
-`;
+  justify-content: flex-start;
+  `;
 
 const SearchPaper = styled.form`
+  width: calc(50% - 1rem);
+  margin-right: 1rem;
   display: flex;
   align-items: center;
-  width: 80%;
-  height: 60%;
-  margin-left: 0.1rem;
-  border: 2px solid #5c5c5c;
-  border-radius: 2rem;
+  height: 80%;
+  border: 1px solid #dee2e6;
 `;
 
 const InputBase = styled.input`
@@ -190,7 +177,8 @@ const FaMagnifyingGlass = styled(FontAwesomeIcon)`
 const UserBox = styled.div`
   display: flex;
   align-items: center;
-  width: 14%; 
+  width: calc(50% - 1rem);
+  height: 100%;
   color: #BABABA; 
   height: 100%;
   &:hover > div{
@@ -208,7 +196,6 @@ const DropHeaderArea = styled.div`
   width: 100vw;
   height: 20vh; 
   background-color: #F2F2F2;
-  border-radius: 0 0 50px 50px;
   position: absolute;
   z-index: 1;
   left: 0;
@@ -217,36 +204,17 @@ const DropHeaderArea = styled.div`
   cursor: default;
 `;
 
-const DropUserArea = styled.div`
-  position: absolute;
-  display: none !important;
-  height: 16vh; 
-  width: 13vw;
-  top: 11vh;
-  right: 0;
-  background-color: #F2F2F2;
-  border-radius: 0 0 10px 10px;
-  display: flex;
-  flex-direction: column;
-  &:nth-child(2){
-    justify-content: center;
+const UserButton = styled.button`
+  width: 50%;
+  height: 80%;
+  border: none;
+  &:nth-child(1){
+    margin-right: 1rem;
   }
-  z-index: 1;
+  &:nth-child(2){
+    background-color: #ff922b;
+  }
 `;
 
-const DropUserBox = styled.div`
-  font-size: 0.8rem;
-  width: 100%;
-  height: 33%;
-  color: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    background-color: white;
-    border-radius: 0.6rem;
-  }
-`;
 
 export default Header;
