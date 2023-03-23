@@ -3,8 +3,9 @@ import {LocalStorage, SessionStorage} from "../utils/browserStorage";
 import {baseInstance} from "./instance";
 import axios from "axios";
 import {PostRefreshToken} from "./auth";
+import {useNavigate} from "react-router-dom";
 
-const AxiosInterceptorsSetup = (navigate) => {
+const AxiosInterceptorsSetup = ({navigate}) => {
   baseInstance.interceptors.response.use(
     (response) => {
       return response;

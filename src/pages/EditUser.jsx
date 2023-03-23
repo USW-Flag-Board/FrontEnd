@@ -15,6 +15,8 @@ const EditUser = ({setHeader}) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [studentId, setStudentId] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [profileImg, setProfileImg] = useState("");
+  let navigate = useNavigate();
 
   const indexSetting = (index) => {
     clickTab(index);
@@ -38,34 +40,41 @@ const EditUser = ({setHeader}) => {
           />
         )}
         <EditTitle>회원 정보 수정</EditTitle>
-        <Editbox>
-          <ImgBox>
-            <Box>
-              <ProFile></ProFile>
-              <ImgSaveButton>프로필 사진 변경</ImgSaveButton>
-            </Box>
-            <Box>
-              <BackGround></BackGround>
-              <ImgSaveButton>배경사진 변경</ImgSaveButton>
-            </Box>
-          </ImgBox>
-          <MainContent>
-            <div style={{display: "flex"}}>
-              <TabMenu>
-                {MENU_ARRAY.map((el, index) => (
-                  <li
-                    className={
-                      index === currentTab ? "submenu focused" : "submenu"
-                    }
-                    onClick={() => indexSetting(index)}
-                    key={index}
-                  >
-                    {el.name}
-                  </li>
-                ))}
-              </TabMenu>
-            </div>
-            <TabContent>
+        <MainContent>
+          <div style={{display: "flex"}}>
+            <TabMenu>
+              {MENU_ARRAY.map((el, index) => (
+                <li
+                  className={
+                    index === currentTab ? "submenu focused" : "submenu"
+                  }
+                  onClick={() => indexSetting(index)}
+                  key={index}
+                >
+                  {el.name}
+                </li>
+              ))}
+            </TabMenu>
+          </div>
+          <TabContent>
+            <ImgBox>
+              <ProFile
+                style={
+                  profileImg === "default"
+                    ? {backgroundImage: `url("../images/base-profile.png")`}
+                    : {backgroundImage: `url(${profileImg})`}
+                }
+              ></ProFile>
+              <InputProfileLabel htmlFor="profileImg">
+                프로필 사진 변경
+              </InputProfileLabel>
+              <InputProfileImg
+                id="profileImg"
+                type="file"
+                accept="image/*"
+              ></InputProfileImg>
+            </ImgBox>
+            <ContentBox>
               {currentTab === 0 && (
                 <AvatarEdit
                   setName={setName}
@@ -73,6 +82,7 @@ const EditUser = ({setHeader}) => {
                   setMajor={setMajor}
                   setPhoneNumber={setPhoneNumber}
                   setStudentId={setStudentId}
+                  setProfileImg={setProfileImg}
                 />
               )}
               {currentTab === 1 && (
@@ -84,8 +94,9 @@ const EditUser = ({setHeader}) => {
                   studentId={studentId}
                 />
               )}
-            </TabContent>
-            <DeleteBox>
+            </ContentBox>
+
+            {/* <DeleteBox>
               <DeleteModalButton
                 onClick={() => {
                   DeleteUser();
@@ -93,9 +104,9 @@ const EditUser = ({setHeader}) => {
               >
                 회원탈퇴
               </DeleteModalButton>
-            </DeleteBox>
-          </MainContent>
-        </Editbox>
+            </DeleteBox> */}
+          </TabContent>
+        </MainContent>
       </Mainbox>
     </>
   );
@@ -107,15 +118,15 @@ const AvatarEdit = ({
   setMajor,
   setPhoneNumber,
   setStudentId,
+  setProfileImg,
 }) => {
   const navigate = useNavigate();
   const [bio, setBio] = useState("");
   const [nickName, setNickName] = useState("");
-  const [profileImg, setProfileImg] = useState("");
   const [editable, setEditable] = useState(false);
 
   const ProfileUpdate = () => {
-    PutAvatarInfo(bio, nickName, profileImg)
+    PutAvatarInfo(bio, nickName)
       .then(() => {
         alert("값 변경 완료");
       })
@@ -125,10 +136,14 @@ const AvatarEdit = ({
   };
 
   useEffect(() => {
+    if (nickName) {
+      return;
+    }
     GetUserInfo()
       .then((response) => {
         setNickName(response.data.payload.nickName);
         setBio(response.data.payload.bio);
+        setProfileImg(response.data.payload.profileImg);
         setName(response.data.payload.name);
         setEmail(response.data.payload.email);
         setMajor(response.data.payload.major);
@@ -261,14 +276,36 @@ const DeleteModal = ({setDeleteModalOpen}) => {
   );
 };
 
-const TabContent = styled.div`
+const ContentBox = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 10 0 auto;
+`;
+
+const InputProfileLabel = styled.label`
+  font-size: 1rem;
+  width: 90%;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #434343;
+  padding: 5% 0;
+  display: flex;
+  justify-content: center;
+`;
+
+const InputProfileImg = styled.input`
+  display: none;
+`;
+
+const TabContent = styled.div`
+  display: flex;
   border: 1px solid;
   border-color: #6c6c6c;
-  borderradius: 0px 28px 28px 28px;
+  border-radius: 0px 28px 28px 28px;
   padding: calc(10% + 20px) 0px 20px 20px;
   width: 90%;
+  height: 30vh;
 `;
 
 const DeleteModalBox = styled.div`
@@ -374,15 +411,6 @@ const Mainbox = styled.div`
   margin-bottom: 10vh;
 `;
 
-const Editbox = styled.div`
-  display: flex;
-  border: 1px solid gray;
-  width: 65vw;
-  height: 75vh;
-  border-radius: 2.5vh;
-  font-size: 1vw;
-`;
-
 const MainContent = styled.div`
   display: flex;
   width: 80%;
@@ -421,31 +449,18 @@ const Box = styled.div`
 `;
 
 const ImgBox = styled.div`
-  margin-top: 3vw;
-  margin-bottom: 3vw;
-  width: 15vw;
-  height: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-right: 1px solid gray;
+  flex: 2 0 auto;
 `;
 
 const ProFile = styled.div`
   border-radius: 50%;
   border: 2px solid white;
-  width: 60%;
-  height: 60%;
+  width: 200px;
+  height: 200px;
   margin-bottom: 2vh;
-`;
-
-const BackGround = styled.div`
-  border: 2px solid white;
-  width: 60%;
-  height: 60%;
-  border-radius: 2vh;
-  margin-bottom: 2vh;
+  background-size: cover;
 `;
 
 const NameInput = styled.input`
@@ -525,40 +540,18 @@ const SaveButton = styled.button`
   }
 `;
 
-const ImgSaveButton = styled.button`
-  width: 50%;
-  height: 15%;
-  background: #6c6c6c;
-  color: white;
-  border-radius: 1vh;
-  border: 0px;
-  margin-left: 5%;
-  font-size: 0.5rem;
-  font-weight: 500;
-  outline: none;
-  transition: 0.2s;
-  :hover {
-    transition: 0.2s;
-    background-color: #575757;
-  }
-`;
-
 const ProfileTitle = styled.div`
   display: flex;
-  alignitems: center;
+  align-items: center;
   font-size: 1.5rem;
   font-weight: 800px;
   margin-bottom: 2vh;
 `;
 
 const DeleteBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 90%;
-  justify-content: flex-end;
-  align-items: flex-end;
-  margin-bottom: 2vh;
+  display: fix;
+  top: 50%;
+  left: 50%;
 `;
 
 const DeleteModalButton = styled.button`
