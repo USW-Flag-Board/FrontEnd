@@ -45,7 +45,7 @@ const AxiosInterceptorsSetup = (navigate) => {
                 SessionStorage.clear();
                 LocalStorage.clear();
                 cookiesOption.remove("refresh_token");
-                navigate("/");
+                navigate("/login");
               }
             });
         } else {

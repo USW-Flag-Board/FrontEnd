@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Header } from "../components";
-import home from "../assets/images/home.png"
-
+import ImageSlider from "../components/activity/ImageSlider";
 const Home = () => {
   const header = true;
 
@@ -11,71 +10,47 @@ const Home = () => {
       <HomeArea>
         <HomeBox>
           <BookImgBox>
-            <BookImg src={home}/>
+            <ImageSlider/>
           </BookImgBox>
-          {/* <HomeContents>
-            <MyActivityArea>
-              <MyActivityContents>
-                <MyActivityBox>
-                  <FlagImgTitle>
-                    <ContentsTitle>FLAG</ContentsTitle>
-                  </FlagImgTitle>
-                  <BookImgBox>
-                    <BookImg>
-                      Flag활동 이미지 슬라이드
-                    </BookImg>
-                  </BookImgBox>
-                </MyActivityBox>
-                <MyActivityBox>
-                  <FeedTitle>FEED</FeedTitle>
-                  <FeedArea>
-                    <FeedBox>
-                      <FeedItem>
-                        <FeedItemTitle>#STUDY_ALGOLITHM</FeedItemTitle>
-                        <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
-                        <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
-                        <FeedContent>다음주에 개인사정으로 빠져야 할것 같습니다. 스터디 준비자료는 함께 첨부할게요!</FeedContent>
-                      </FeedItem>
-                      <FeedItem>
-                        <FeedItemTitle>#PROJECT_FLAG</FeedItemTitle>
-                        <FeedContent>공지 12.20(화) 전체 회의 내용입니다.</FeedContent>
-                        <FeedContent>우리 쪽지 기능 넣으면 여러분 많이 쓰실 것 같나요?</FeedContent>
-                        <FeedContent>관리자 페이지 기능은 다음과 같습니다!</FeedContent>
-                      </FeedItem>
-                    </FeedBox>
-                  </FeedArea>
-                </MyActivityBox>
-              </MyActivityContents>
-            </MyActivityArea>
-          </HomeContents>
           <HomeContents>
-            <FilteredPostArea>
-              <FilteredPostBox>
-                <PostTitle>NOTICE</PostTitle>
-                <HeartBox>
-                  <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
-                  <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
-                  <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
-                </HeartBox>
-              </FilteredPostBox>
-              <FilteredPostBox>
-                <PostTitle>인기글</PostTitle>
-                <HeartBox>
-                  <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
-                  <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
-                  <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
-                </HeartBox>
-              </FilteredPostBox>
-              <FilteredPostBox>
-                <PostTitle>최신글</PostTitle>
-                <HeartBox>
-                  <FeedContent>공지 이번주 주제는 DP, 브르투포스입니다!</FeedContent>
-                  <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
-                  <FeedContent>백준 12345번 푸는 중에 사고회로가 멈췄습니다..</FeedContent>
-                </HeartBox>
-              </FilteredPostBox>
-            </FilteredPostArea>
-          </HomeContents> */}
+            <FlagInfo>
+              <FlagCountArea>
+                <FlagCountBox>현재 Flag의 동아리원은<br/><FlagCount>174</FlagCount> 명 입니다.</FlagCountBox>
+                <FlagContent>Flag는 수원대생에게 더 큰 소통의 장을 <br/>마련하기위해 만들어진 개발동아리입니다.</FlagContent>
+                <FlagButtonBox>
+                  <FlagButton>동아리 가입하기</FlagButton>
+                </FlagButtonBox>
+              </FlagCountArea>
+              <FlagCountArea>
+                <FlagCountBox>진행중인 Activity는<br/><FlagCount>30</FlagCount> 개 입니다.</FlagCountBox>
+                <FlagContent>Flag는 수원대생에게 더 큰 소통의 장을 <br/>마련하기위해 만든 개발동아리입니다.</FlagContent>
+                <FlagButtonBox>
+                  <FlagButton>Activity 참여하기</FlagButton>
+                </FlagButtonBox> 
+              </FlagCountArea>
+              <FlagCountArea>
+                <FlagCountBox>현재까지 작성된 게시글은<br/><FlagCount>174</FlagCount> 개 입니다.</FlagCountBox>
+                <FlagContent>Flag는 수원대생에게 더 큰 소통의 장을 <br/>마련하기위해 만든 개발동아리입니다.</FlagContent>
+                <FlagButtonBox>
+                  <FlagButton>게시글 작성하기</FlagButton>
+                </FlagButtonBox>
+              </FlagCountArea>
+            </FlagInfo>
+            <PostsArea>
+              <FeedBox>
+                <FeedTitle>공지사항</FeedTitle>
+                <FeedPostsBox></FeedPostsBox>
+              </FeedBox>
+              <FeedBox>
+                <FeedTitle>인기글</FeedTitle>
+                <FeedPostsBox></FeedPostsBox>
+              </FeedBox>
+              <FeedBox>
+                <FeedTitle>최신글</FeedTitle>
+                <FeedPostsBox></FeedPostsBox>
+              </FeedBox>
+            </PostsArea>
+          </HomeContents>
         </HomeBox>
       </HomeArea>
     </>
@@ -88,141 +63,86 @@ const HomeArea = styled.div`
 
 const HomeBox = styled.div`
   width: 100%;
-  height: 100%;
 `;
 
 const HomeContents = styled.div`
-  width: 100%;
-  &:nth-of-type(1) {
-    display: flex;
-    height: 60%;
-    margin-bottom: 2rem;
-  }
-  &:nth-of-type(2){
-    height: 40%;
-  }
-`;
-
-const MyActivityArea = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
-const MyActivityContents = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-`;
-
-const MyActivityBox = styled.div`
-  height: 85%;
-  width: 50%;
-  margin-left: 2.1rem;
-  &:nth-of-type(1) {
-    width: 50%;
-    height: 86%;
-    margin: 0;
-  }
-`;
-
-const FlagImgTitle = styled.div`
-  padding-left: 1.2rem;
+  width: calc(100% - 16rem);
+  margin: 0 8rem;
 `;
 
 const BookImgBox = styled.div`
-  width: 100%;
-  height: 250px;
+  overflow: hidden;
 `;
 
-const BookImg = styled.img`
+const PostsArea = styled.div`
   width: 100%;
-  height: 100%;
-`;
-
-const FeedArea = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
-const FeedBox = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
-const FeedItem = styled.div`
-  width: 100%;
-  height: 50%;
-  border: 1px solid #9a9a9a;
-  border-radius: 30px;
-  &:nth-of-type(1) {
-    margin-bottom: 0.7rem;
-  }
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 3rem;
 `;
 
-const FeedContent = styled.div`
-  width: 85%;
-  height: 18%;
-  border: 1px solid #9a9a9a;
-  border-radius: 18px;
+const FlagInfo = styled.div`
   display: flex;
-  align-items: center;
-  padding: 0.1rem 0.7rem;
-  margin: 0.3rem 0;
-  font-size: 0.8rem;
+  justify-content: space-between;
+  box-sizing: border-box;
+`
+
+const FlagCountArea = styled.div`
+  height: 300px;
+  margin-top: 2rem;
 `;
 
-const ContentsTitle = styled.h4`
-  color: white;
-  padding-bottom: 1.3rem;
-  font-weight: bold;
+const FlagCountBox = styled.h3`
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  box-sizing: border-box;
+  `;
+
+const FlagCount = styled.span`
+  line-height: 150%;
+  color: #47c880;
+  `;
+
+const FlagContent = styled.div`
+  color: #757575;
+  line-height: 170%;
+`;
+
+const FlagButton = styled.button`
+  cursor: pointer;
+  width: 50%;
+  height: 50px;
+  border: 1px solid #1dc078;
+  background: none;
+`;
+
+const FlagButtonBox = styled.div`
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`
+
+const FeedBox = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  height: 300px;
 `;
 
 const FeedTitle = styled.h3`
-  font-size: 1.1rem;
   padding-bottom: 1rem;
-  padding-left: 1.2rem;
-`
-const FeedItemTitle = styled.h3`
-  font-size: 0.8rem;
-  width: 87%;
-  margin-bottom: 0.4rem;
-`
-
-const HeartBox = styled.div`
-  width: 100%;
-  height: 75%; 
-  border: 1px solid #9a9a9a;
-  border-radius: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 0.1rem 0.7rem;
-  font-size: 0.8rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: black;
+  border-bottom: 2px solid black;
+  height: 15%;
 `;
 
-const FilteredPostArea = styled.div`
-  display: flex;
-  width: 100%;
-  height: 80%;
-  margin-bottom: 0.8rem;
-`;
-
-const FilteredPostBox = styled.div`
-  width: 30%;
-  height: 100%;
-  &:nth-of-type(2){
-    margin: 0 3.4rem; 
-  }
-`;
-
-const PostTitle = styled.h3`
-  width: 50%;
-  margin: 0  0 0.8rem 1rem;
+const FeedPostsBox = styled.div`
+  height: 85%;
 `;
 
 export default Home;

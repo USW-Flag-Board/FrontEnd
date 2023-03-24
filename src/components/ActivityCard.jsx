@@ -1,58 +1,48 @@
 import styled from "styled-components";
 
-const ActivityCard = (props) => {
+const ActivityCard = () => {
     return (
-        <>
-            <Mainbox>
-                <span><Title>{props.title}</Title></span>
-                <span><Text>{props.text}</Text></span>
-                <span><Name>{props.name}</Name></span>
-            </Mainbox>       
-        </>
+        <Mainbox>
+            <Title>ㅇㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅇㅇㅇㅁㄴ</Title>
+            <Deadline>모집 마감일: <span>2023.03.23</span></Deadline>
+            <Name>어준혁</Name>
+        </Mainbox>       
     );
-} 
+}
+
 
 const Mainbox = styled.div`
-    width: 30vw;
-    height: 130px;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 20px;
-    padding-right: 13px;
-    padding-left: 13px;
+    box-sizing: border-box;
+    width: 23%;
+    height: 150px;
+    border: 2px solid #d1d1d1;
+    border-radius: 30px;
     cursor:pointer;
-    
+    padding: 1rem 1rem 1.5rem 1rem;
+    @media screen and (max-width: 767px){
+        width: 100%;
+    }
 `;
 
 const Title = styled.div`
-    width: 100%;
-    padding: 10px;
+    height: 50%;
     font-size: 18px;
     font-weight: bold;
-    maigin: 8px;
     display: flex;
     justify-content: flex-start;
 `;
 
-const Text = styled.div`
-    width: 100%;
-    font-size: 14px;
-    maigin: 5px;
-    padding: 10px;
-    display: flex;
-    justify-content: flex-start;
+const Deadline = styled.div`
+    height: 20%;
+    margin: 0.7rem 0;
+    font-size: 0.8rem;
+    font-weight: 500;
 `;
-
-
 
 const Name = styled.div`
     width:100%;
     font-size: 14px;
-    display: flex;
-    justify-content: flex-end;
-    
+    display: flex;    
 `;
 
 export default ActivityCard;

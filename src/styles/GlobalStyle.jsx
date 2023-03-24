@@ -5,12 +5,13 @@ import "./fonts/NanumSquareNeo.css";
 const GlobalStyle = createGlobalStyle`
     ${reset}
     *{
+        box-sizing: border-box;
         text-decoration: none;
         font-family:NanumSquareNeo-Variable;
     }
     body{
-        list-style: none;
         color: black;
+        list-style: none;
         padding: 0;
         margin: 0;
         background-color: white;

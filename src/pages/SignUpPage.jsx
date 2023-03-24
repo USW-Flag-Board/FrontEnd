@@ -13,7 +13,6 @@ const korExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
 const numExp = /[0-9]/g;
 const spaceExp = /\s/;
 const engExp = /[a-zA-Z]/g;
-const header = true;
 
 const SPECIALIZED = [
   {
@@ -33,7 +32,7 @@ const SPECIALIZED = [
 //1. 잘못된 값 입력시, 빨간색으로 ㄱㄱ
 //2. 동그라미 누르면 뒤로 가기? 고민중
 
-const SignUpPage = ({setHeader}) => {
+const SignUpPage = () => {
   const navigate = useNavigate();
   const [buttonState, setButtonState] = useState(false);
   const [signUpIndex, setSignUpIndex] = useState(0);
@@ -59,7 +58,6 @@ const SignUpPage = ({setHeader}) => {
 
   return (
     <> 
-      {header && <Header></Header>}
       <PageArea>
         <SignUpArea>
           <img

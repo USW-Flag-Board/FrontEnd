@@ -8,7 +8,7 @@ import Cookies from "universal-cookie";
 import headerData from "../constants/header";
 import { LocalStorage, SessionStorage } from "../utils/browserStorage";
 import { cookiesOption } from "../utils/cookiesOption";
-import logo from "../assets/images/logo.JPG"
+import logo from "../assets/images/logo2.png"
 
 const Header = () => {
   const [login, setLogin] = useState(false);
@@ -41,6 +41,22 @@ const Header = () => {
     }
   };
 
+  const handleMenuClick = (item) => {
+    switch(item){
+      case 'BOARD':
+        navigate('/board')
+        break;
+      case 'ACTIVITY':
+        navigate('/activity');
+        break;
+      case 'INTRODUCTION':
+        navigate('/resume');
+        break;
+      default:
+        
+    }
+  }
+
   return (
     <HeaderArea>
       <HeaderBox>
@@ -54,7 +70,7 @@ const Header = () => {
         <MenuItemBox>
           <MenuItems>
             {headerData.HEADER_ITEMS.map((item) => (
-              <MenuButton key={item}>
+              <MenuButton key={item} onClick={()=> handleMenuClick(item)}>
                 {item}
                 <DropHeaderArea>
 
@@ -80,13 +96,13 @@ const Header = () => {
 };
 
 const HeaderArea = styled.div`
-  width: 100%;
   height: 11vh;
-  `;
+  border-bottom: 1px solid black;
+`;
 
 const HeaderBox = styled.div`
+  width: calc(100vw - 16rem);
   box-sizing: border-box;
-  width: calc(100% - 16rem);
   height: 100%;
   margin: 0 8rem;
   padding-top: 2rem;
@@ -97,14 +113,14 @@ const HeaderBox = styled.div`
 
 const LogoBox = styled.div`
   width: 10%;
-  height: 80%;
+  height: 100%;
   display: flex;
   align-items: center;
 `;
 
 const LogoImg = styled.img`
   width: 100%; 
-  height: 80%; 
+  height: 100%; 
   cursor: pointer;
 `;
 
@@ -123,22 +139,22 @@ const MenuItems = styled.div`
 `;
 
 const MenuButton = styled.div`
-  width: 18%;
+  width: 17%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 0.5rem;
   font-weight: bold;
   color: black;
+  cursor: pointer;
   &:hover {
     background-color: #F2F2F2;
     border-radius: 0.6rem;
   }
-  cursor: pointer;
-  &:hover > div {
+  /* &:hover > div {
     display: block;
-  }
+  } */
 `;
 
 const SearchBox = styled.div`
@@ -148,7 +164,7 @@ const SearchBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  `;
+`;
 
 const SearchPaper = styled.form`
   width: calc(50% - 1rem);
@@ -177,13 +193,11 @@ const FaMagnifyingGlass = styled(FontAwesomeIcon)`
 const UserBox = styled.div`
   display: flex;
   align-items: center;
-  width: calc(50% - 1rem);
+  width: 50%;
   height: 100%;
   color: #BABABA; 
   height: 100%;
-  &:hover > div{
-    display: block !important;
-  }
+  justify-content: flex-end;
 `;
 
 const FaUser = styled(FontAwesomeIcon)`
@@ -193,7 +207,7 @@ const FaUser = styled(FontAwesomeIcon)`
 `;
 
 const DropHeaderArea = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 20vh; 
   background-color: #F2F2F2;
   position: absolute;
@@ -215,6 +229,5 @@ const UserButton = styled.button`
     background-color: #ff922b;
   }
 `;
-
 
 export default Header;

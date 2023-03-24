@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import styled from "styled-components";
-import {GetAllFlagHistory} from "../apis/activity";
+import {GetAllFlagHistory} from "../apis/activityAPI";
 import { Header } from "../components";
 
 const STUDY2022 = [
