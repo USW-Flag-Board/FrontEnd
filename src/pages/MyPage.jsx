@@ -88,6 +88,7 @@ const MyPage = ({setHeader}) => {
   const [loginId, setLoginId] = useState("");
   const [nickname, setNickname] = useState("");
   const [introduceMessage, setIntroduceMessage] = useState("");
+  const [profileImg, setProfileImg] = useState("");
 
   const LoginIdSetting = async () => {
     if (SessionStorage.get("id")) {
@@ -103,7 +104,7 @@ const MyPage = ({setHeader}) => {
         const response = await GetProfileData(loginId);
         setNickname(response.data.payload.nickName);
         setIntroduceMessage(response.data.payload.bio);
-        
+        setProfileImg(response.data.payload.profileImg);
       } catch (error) {
         if (error.response.status === 404) {
           navigate("/login");
@@ -158,7 +159,15 @@ const MyPage = ({setHeader}) => {
           <UserPage>
             <ProfileArea>
               <RelativeArea>
-                <ProfileIcon icon={faUser} />
+                <ProfileIcon
+                  style={
+                    profileImg === "default"
+                      ? {
+                          backgroundImage: `url("../images/base-profile.png")`,
+                        }
+                      : {backgroundImage: `url(${profileImg})`}
+                  }
+                />
                 <EditProfile onClick={() => navigate("/edit")}>
                   Edit Profile
                 </EditProfile>
@@ -209,10 +218,14 @@ const HistoryPaginationButton = styled.li`
   margin: 5px;
 `;
 
-const ProfileIcon = styled(FontAwesomeIcon)`
-  width: 120px;
-  height: 120px;
-  margin-bottom: 1.5rem;
+const ProfileIcon = styled.div`
+  border-radius: 50%;
+  border: 2px solid white;
+  width: 220px;
+  height: 220px;
+  margin-bottom: 2vh;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 `;
 
 const PageArea = styled.div`
@@ -257,7 +270,8 @@ const ProfileArea = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-right: 15%;
+  margin-right: 5%;
+  margin-left: 15%;
 `;
 
 const EditProfile = styled.button`
@@ -267,8 +281,8 @@ const EditProfile = styled.button`
   background-color: #434343;
   height: 25px;
   width: 80px;
-  left: 70px;
-  top: 100px;
+  left: 130px;
+  top: 170px;
   outline: none;
   border: 0px;
   border-radius: 28px;
