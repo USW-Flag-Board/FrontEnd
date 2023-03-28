@@ -7,10 +7,10 @@ const accessToken = sessionStorage.getItem("UserToken");
 const baseInstance = axios.create({
   baseURL: REACT_APP_DEV_API_END_POINT,
   withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${localStorage.getItem(accessToken)}`
-  }
+  // headers: {
+  //   "Content-Type": "application/json",
+  //   "Authorization": `Bearer ${localStorage.getItem(accessToken)}`
+  // }
 });
 
 export { baseInstance };

@@ -1,15 +1,15 @@
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUser} from "@fortawesome/free-regular-svg-icons";
-import {faLock} from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import AutoLoginButton from "../components/AutoLoginButton";
 import IdRememberButton from "../components/IdRememberButton";
-import {PostLogin} from "../apis/auth";
-import {LocalStorage, SessionStorage} from "../utils/browserStorage";
-import {cookiesOption} from "../utils/cookiesOption";
-import logo from "../assets/images/logo-White.png";
+import { PostLogin } from "../apis/auth";
+import { LocalStorage, SessionStorage } from "../utils/browserStorage";
+import { cookiesOption } from "../utils/cookiesOption";
+import logo from "../assets/images/logo2.png"
 
 const LoginPage = () => {
   const navigate = useNavigate();

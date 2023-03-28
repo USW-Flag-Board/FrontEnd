@@ -47,12 +47,12 @@ const BOOK_RADIO_OPTION =  [
     {
         id: 1,
         option: "Yes",
-        value: "사용",
+        value: "USE",
     },
     {
         id: 2,
         option: "No",
-        value: "미사용",
+        value: "NOT_USE",
     }
 ];
 
@@ -60,12 +60,12 @@ const ONLINE_RADIO_OPTION =  [
     {
         id: 1,
         option: "온라인",
-        value: "온라인",
+        value: "ONLINE",
     },
     {
         id: 2,
         option: "오프라인",
-        value: "오프라인",
+        value: "OFFLINE",
     },
     {
         id: 3,

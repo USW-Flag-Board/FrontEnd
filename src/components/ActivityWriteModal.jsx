@@ -21,9 +21,6 @@ const ActivityWriteModal = ({closeModal}) =>{
         proceed: proceed,
     }
 
-    console.log(data);
-    console.log(title);
-
     const handleType = (e) => {
         setType(e.target.value);
     }
