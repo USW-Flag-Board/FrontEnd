@@ -1,13 +1,17 @@
-import {baseInstance} from "./instance";
-
+import { baseInstance } from "./instance";
 
 export const GetAllFlagHistory = () => {
   return baseInstance.get("/activities");
 };
 
-export const setPostActivity = async (data) => {
+export const setPostActivity = async (data, accessToken) => {
   try{
-    const res = await baseInstance.post("http://3.39.36.239:8080/activities", data);
+    const res = await baseInstance.post("/activities", data, {
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${accessToken}`
+      }
+    });
       return res;
     }catch(error){
       console.log(error);

@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
-import ActivityCard from "../components/ActivityCard";
+import ActivityCard from "../components/activity/ActivityCard";
 import Toggle from "../components/Toggle";
-import ActivityWriteModal from "../components/ActivityWriteModal";
+import ActivityWriteModal from "../components/activity/ActivityWriteModal";
 import { Header } from "../components";
 import activityData from "../constants/activity";
 
 const Activity = () => {
+
   const header = true;
   const [isOpen, setIsOpen] = useState(false);
 

@@ -714,7 +714,7 @@ const EmailInputArea = styled.div`
   position: relative;
   display: flex;
   width: 100%;
-  justifycontent: flex-start;
+  justify-content: flex-start;
 `;
 
 const AuthButton = styled.div`
@@ -722,7 +722,7 @@ const AuthButton = styled.div`
   text-align: center;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.8);
+  color: black;
   font-size: 16px;
   border: 2px solid rgba(255, 255, 255, 0.6);
   border-radius: 30px;
@@ -743,7 +743,7 @@ const AuthButton = styled.div`
 const ServiceAgreeArea = styled.div`
   display: flex;
   width: 450px;
-  justifycontent: flex-start;
+  justify-content: flex-start;
   flex-direction: column;
 `;
 
@@ -752,7 +752,7 @@ const AgreeMessage = styled.div`
   font-weight: 100;
   line-height: 33px;
   width: 400px;
-  color: rgba(255, 255, 255, 0.8);
+  color: black;
   margin-bottom: 30px;
   margin-left: 5px;
   text-align: left;
@@ -761,7 +761,7 @@ const AgreeMessage = styled.div`
 `;
 
 const AllAgreeMessage = styled.div`
-  color: rgba(150, 150, 150, 0.8);
+  color: black;
   font-size: 16px;
   width: 450px;
   padding-left: 25px;
@@ -778,7 +778,7 @@ const RowLine = styled.hr`
 `;
 
 const InfoState = styled.div`
-  color: rgba(163, 163, 163, 0.8);
+  color: black;
   display: flex;
   width: 100%;
   font-size: 12px;
@@ -836,7 +836,7 @@ const IntroduceArea = styled.div`
   font-weight: 100;
   line-height: 33px;
   width: 450px;
-  color: rgba(255, 255, 255, 0.8);
+  color: black;
   margin-top: 20px;
   margin-bottom: 45px;
   text-align: left;
@@ -846,7 +846,7 @@ const IntroduceArea = styled.div`
 
 const WriteArea = styled.input`
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.8);
+  color: black;
   padding-right: 30px;
   padding-left: 20px;
   padding-top: 0px;
@@ -866,7 +866,7 @@ const WriteArea = styled.input`
     border-color: gainsboro;
   }
   ::placeholder {
-    color: rgba(255, 255, 255, 0.8);
+    color: black;
   }
 `;
 
@@ -875,23 +875,22 @@ const RelativeArea = styled.div`
 `;
 
 const StaticText = styled.div`
-  color: white;
+  color: black;
   position: absolute;
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.8);
   left: 95px;
   top: 28px;
 `;
 
 const Icon = styled(FontAwesomeIcon)`
-  color: white;
+  color: black;
   position: absolute;
   left: 430px;
   top: 28px;
 `;
 
 const AccountButton = styled.button`
-  color: #ffffff;
+  color: black;
   margin-top: 10px;
   margin-bottom: 30px;
   border-radius: 28px;
@@ -919,7 +918,7 @@ const AccountButton = styled.button`
 
 const SelectSpecialize = styled.select`
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.8);
+  color: black;
   padding-right: 30px;
   padding-left: 20px;
   height: 54px;
