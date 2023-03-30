@@ -4,37 +4,40 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import ActivityCard from "../components/activity/ActivityCard";
 import Toggle from "../components/Toggle";
-import ActivityWriteModal from "../components/activity/ActivityWriteModal";
+import WriteModal from "../components/activity/WriteModal";
+import ContentModal from "../components/activity/ContentModal";
 import { Header } from "../components";
 import activityData from "../constants/activity";
 
 const Activity = () => {
-
   const header = true;
   const [isOpen, setIsOpen] = useState(false);
+  const [contentOpen, setContentOpen] = useState(false);
+  console.log(isOpen)
+  
+  const writeModal = () => {
+    setIsOpen(!isOpen);
+  };
 
-  const openModal = () => {
-      setIsOpen(true);
-  }
-
-  const closeModal = () => {
-    setIsOpen(false);
-  }
+  const contentModal = () => {
+    setContentOpen(!contentOpen);
+  };
 
 
   return (
     <>
       {header && <Header />}
-      {isOpen && <ActivityWriteModal closeModal={closeModal}/>}
+      {isOpen && <WriteModal closeModal={writeModal} />}
+      {contentOpen && <ContentModal closeModal={contentModal} />}
       <ActivityArea>
         <ActivityBox>
           <KategorieBox>
-          {activityData.ACTIVITY_CATEGORIE.map(({id, icon, title})=>(
-            <Kategorie key={id}> 
-              <KategorieIcon icon={icon} />
-              <KategorieContent>{title}</KategorieContent>
-            </Kategorie>
-          ))}
+            {activityData.ACTIVITY_CATEGORIE.map(({ id, icon, title }) => (
+              <Kategorie key={id}>
+                <KategorieIcon icon={icon} />
+                <KategorieContent>{title}</KategorieContent>
+              </Kategorie>
+            ))}
           </KategorieBox>
           <SwitchArea>
             <SwitchBox>
@@ -42,25 +45,17 @@ const Activity = () => {
               <Toggle />
             </SwitchBox>
             <ActivityWriteButton type="button">
-              <WriteButtonIcon icon={faPencil}/>
-              <WriteButton type="button" onClick={openModal}>글쓰기</WriteButton>
+              <WriteButtonIcon icon={faPencil} />
+              <WriteButton type="button" onClick={writeModal}>
+                글쓰기
+              </WriteButton>
             </ActivityWriteButton>
           </SwitchArea>
         </ActivityBox>
         <CardBox>
-          <ActivityCard/>
-          <ActivityCard/>
-          <ActivityCard/>
-          <ActivityCard/>
-          <ActivityCard/>
-          <ActivityCard/>
-          <ActivityCard/>
-          <ActivityCard/>
-          <ActivityCard/>
-          <ActivityCard/>
-          <ActivityCard/>
-          <ActivityCard/>
-          <ActivityCard/>
+          <Card onClick={contentModal}>
+            <ActivityCard />
+          </Card>
         </CardBox>
       </ActivityArea>
     </>
@@ -96,14 +91,14 @@ const Kategorie = styled.div`
   font-weight: bold;
   cursor: pointer;
   &.active {
-      color: lightblue;
-    }
+    color: lightblue;
+  }
 `;
 
 const KategorieContent = styled.span``;
 
 const KategorieIcon = styled(FontAwesomeIcon)`
-  margin-right: 0.5rem
+  margin-right: 0.5rem;
 `;
 
 const SwitchArea = styled.div`
@@ -146,5 +141,9 @@ const CardBox = styled.div`
   gap: 30px;
   width: 100%;
   padding: 3rem 0.5rem;
-`
+`;
 
+const Card = styled.div`
+  width: 23%;
+  height: 150px;
+`

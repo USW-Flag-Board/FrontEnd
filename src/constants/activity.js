@@ -31,7 +31,7 @@ const SELECT_OPTION = [
     },
     {
         id: 1,
-        title: "PROJECT"
+        title: "project"
     },
     {
         id: 2,
@@ -47,7 +47,7 @@ const BOOK_RADIO_OPTION =  [
     {
         id: 1,
         option: "Yes",
-        value: "USE",
+        value: "use",
     },
     {
         id: 2,
@@ -60,7 +60,7 @@ const ONLINE_RADIO_OPTION =  [
     {
         id: 1,
         option: "온라인",
-        value: "ONLINE",
+        value: "online",
     },
     {
         id: 2,

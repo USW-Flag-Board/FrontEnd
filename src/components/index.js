@@ -8,7 +8,7 @@ export { default as SearchList } from "./SearchList";
 export { default as SideBar } from "./SideBar";
 export { default as Reply } from "./Reply";
 export { default as ActivityCard } from "./activity/ActivityCard";
-export { default as ActivityWriteModal } from "./activity/ActivityWriteModal";
+export { default as ActivityWriteModal } from "./activity/WriteModal";
 export { default as ActivityUserModal } from "./activity/ActivityUserModal";
 export { default as LikeButton } from "./LikeButton";
 export { default as Toggle } from "./Toggle";

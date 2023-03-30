@@ -3,7 +3,6 @@ import styled from "styled-components";
 import activityData from "../../constants/activity";
 import { setPostActivity } from "../../apis/activityAPI";
 import { SessionStorage } from "../../utils/browserStorage";
-import axios from "axios";
 import { baseInstance } from "../../apis/instance";
 
 const ActivityWriteModal = ({ closeModal }) => {
@@ -29,23 +28,20 @@ const ActivityWriteModal = ({ closeModal }) => {
     setType(e.target.value);
   };
 
-  const submit = () => {
-    // setPostActivity(data, accessToken);
-    baseInstance
-      .post("/activities", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        data,
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
+  const submit = async () => {
+    try{
+      const res = await baseInstance.post("/activities", {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+        // "Content-Length": data.length.toString(),
+        }, data
       });
-  };
+        return res;
+      }catch(error){
+        console.log(error);
+    }
+  }  
 
   return (
     <ModalArea>

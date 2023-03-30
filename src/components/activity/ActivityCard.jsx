@@ -13,8 +13,8 @@ const ActivityCard = () => {
 
 const Mainbox = styled.div`
     box-sizing: border-box;
-    width: 23%;
-    height: 150px;
+    width: 100%;
+    height: 100%;
     border: 2px solid #d1d1d1;
     border-radius: 30px;
     cursor:pointer;
