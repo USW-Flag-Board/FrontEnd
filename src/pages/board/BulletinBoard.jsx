@@ -12,8 +12,8 @@ const BulletinBoard = () => {
   const header = true;
   const [boardName, setBoardName] = useState("자유게시판");
   const [currentItems, setCurrentItems] = useState([]);
-  const posts = useSelector((state) => state.toDo.getPostsData);
-  const board = useSelector((state) => state.toDo.boardName);
+  const posts = useSelector((state) => state.boardSlice.getPostsData);
+  const board = useSelector((state) => state.boardSlice.boardName);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const writeClick = () => {

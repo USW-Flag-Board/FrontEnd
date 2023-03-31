@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { useDispatch } from 'react-redux';
-import { postActions } from '../redux/slice/toDos';
+import { postActions } from '../redux/slice/boardSlice';
 import { useCallback } from "react";
+
 const SideBar = ({
     mainWidth, 
     paddingTop, 

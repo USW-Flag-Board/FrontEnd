@@ -1,15 +1,15 @@
 import styled from "styled-components";
 
-const ActivityCard = () => {
+const ActivityCard = ({ title, name, type, createAt }) => {
     return (
         <Mainbox>
-            <Title>ㅇㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅇㅇㅇㅁㄴ</Title>
-            <Deadline>모집 마감일: <span>2023.03.23</span></Deadline>
-            <Name>어준혁</Name>
+            <Type>{type}</Type>
+            <Title>{title}</Title>
+            <Deadline>생성일: <span>{createAt.slice(0, 3).join('.')}</span></Deadline>
+            <Name>{name}</Name>
         </Mainbox>       
     );
 }
-
 
 const Mainbox = styled.div`
     box-sizing: border-box;
@@ -19,13 +19,14 @@ const Mainbox = styled.div`
     border-radius: 30px;
     cursor:pointer;
     padding: 1rem 1rem 1.5rem 1rem;
-    @media screen and (max-width: 767px){
-        width: 100%;
-    }
+`;
+
+const Type = styled.div`
+    height: 10%;
 `;
 
 const Title = styled.div`
-    height: 50%;
+    height: 40%;
     font-size: 18px;
     font-weight: bold;
     display: flex;
@@ -40,7 +41,7 @@ const Deadline = styled.div`
 `;
 
 const Name = styled.div`
-    width:100%;
+    width: 100%;
     font-size: 14px;
     display: flex;    
 `;

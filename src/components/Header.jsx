@@ -1,33 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import Cookies from "universal-cookie";
 import headerData from "../constants/header";
-import { LocalStorage, SessionStorage } from "../utils/browserStorage";
-import { cookiesOption } from "../utils/cookiesOption";
 import logo from "../assets/images/logo2.png"
+import { useDispatch, useSelector } from "react-redux";
+import activitiesActions from "../redux/thunkActions/activityActions";
 
 const Header = () => {
   const [login, setLogin] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   
-  useEffect(()=>{
-    const cookies = new Cookies();
-    cookies.get("refresh_token") ? setLogin(true) : setLogin(false);
-  }, [login])
-
-  // const handleLogOut = () => {
-  //   LocalStorage.clear();
-  //   SessionStorage.clear();
-  //   cookiesOption.remove("refresh_token");
-  //   cookiesOption.remove("remember_id");
-  //   setLogin(false);
-  //   navigate("/login");
-  // };
-
   const handleUserItemClick = (item) => {
     switch(item){
       case '로그인':
@@ -47,6 +32,7 @@ const Header = () => {
         navigate('/board')
         break;
       case 'ACTIVITY':
+        dispatch(activitiesActions.getAllactivitiesAPI())
         navigate('/activity');
         break;
       case 'INTRODUCTION':

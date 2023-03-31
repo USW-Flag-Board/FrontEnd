@@ -9,8 +9,9 @@ import {
     PURGE,
     REGISTER,
     } from 'redux-persist';
-import toDoReducer from "./slice/toDos";
+import boardSliceReducer from "./slice/boardSlice";
 import storage from 'redux-persist/lib/storage';
+import activitySliceReducer from "./slice/activitySlice";
 
 
 const persistConfig = {
@@ -20,7 +21,8 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-    toDo: toDoReducer,
+    boardSlice: boardSliceReducer,
+    activitySlice: activitySliceReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

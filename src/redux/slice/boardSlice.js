@@ -8,8 +8,8 @@ const initialState = {
     postId: 0,
 };
 
-const toDos = createSlice({
-    name: 'toDos',
+const boardSlice = createSlice({
+    name: 'boardSlice',
     initialState,
     reducers: {
         getPosts: (state, action) => {
@@ -31,6 +31,6 @@ const toDos = createSlice({
     },
 });
 
-export const postActions = toDos.actions;
+export const postActions = boardSlice.actions;
 
-export default toDos.reducer;
+export default boardSlice.reducer;

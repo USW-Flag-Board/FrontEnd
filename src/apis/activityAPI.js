@@ -1,7 +1,12 @@
 import { baseInstance } from "./instance";
 
-export const GetAllFlagHistory = () => {
-  return baseInstance.get("/activities");
+export const GetAllFlagHistory = async () => {
+  try{
+    const res = await baseInstance.get("/activities");
+    return res.data.payload.allActivities;
+  }catch(error){
+    console.log(error);
+  }
 };
 
 export const getPostActivity = async (id) => {

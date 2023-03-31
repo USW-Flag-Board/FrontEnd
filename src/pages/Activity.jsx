@@ -1,23 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
+import { Header } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import ActivityCard from "../components/activity/ActivityCard";
 import Toggle from "../components/Toggle";
 import WriteModal from "../components/activity/WriteModal";
 import ContentModal from "../components/activity/ContentModal";
-import { Header } from "../components";
 import activityData from "../constants/activity";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Activity = () => {
   const header = true;
   const [isOpen, setIsOpen] = useState(false);
   const [contentOpen, setContentOpen] = useState(false);
-  console.log(isOpen)
-  
+  const dispatch = useDispatch();
+  const allActivities = useSelector((state)=> state.activitySlice.getAllActivitiesData);
+  // console.log(allActivities);
+  // useEffect(()=>{
+  // }, [])
+
   const writeModal = () => {
     setIsOpen(!isOpen);
   };
+
 
   const contentModal = () => {
     setContentOpen(!contentOpen);
@@ -52,11 +59,22 @@ const Activity = () => {
             </ActivityWriteButton>
           </SwitchArea>
         </ActivityBox>
-        <CardBox>
+        <CardArea>
           <Card onClick={contentModal}>
-            <ActivityCard />
+            {Object.keys(allActivities).map(year => (
+              Object.keys(allActivities[year]).map((type) => (
+                allActivities[year][type].map(({id, name, leader, activityType, createdAt}) => (                  
+                  <ActivityCard
+                    key={id} 
+                    title={name}
+                    name={leader}
+                    type={activityType}
+                    createAt={createdAt}/>
+                ))
+              ))
+            ))}
           </Card>
-        </CardBox>
+        </CardArea>
       </ActivityArea>
     </>
   );
@@ -66,7 +84,6 @@ export default Activity;
 
 const ActivityArea = styled.div`
   width: calc(100vw - 16rem);
-  height: calc(88vh - 4rem);
   margin: 4rem 8rem 0 8rem;
   z-index: 0;
 `;
@@ -135,15 +152,19 @@ const WriteButtonIcon = styled(FontAwesomeIcon)`
 
 const WriteButton = styled.span``;
 
-const CardBox = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  width: 100%;
+const CardArea = styled.div`
+  box-sizing: border-box;
   padding: 3rem 0.5rem;
+  width: 100%;
 `;
 
 const Card = styled.div`
-  width: 23%;
+  gap: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  /* width: 23%; */
   height: 150px;
+  @media screen and (max-width: 767px){
+  }
 `

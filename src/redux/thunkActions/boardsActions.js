@@ -1,4 +1,4 @@
-import { postActions } from '../slice/toDos';
+import { postActions } from '../slice/boardSlice';
 import boardAPI from '../../apis/boardAPI';
 
 // Board 클릭시 게시판 가져오기
