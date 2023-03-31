@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import styled from "styled-components";
-import {GetAllFlagHistory} from "../apis/activityAPI";
+import {getAllActivitiesAxios} from "../apis/activityAPI";
 import { Header } from "../components";
 
 const STUDY2022 = [
@@ -37,7 +37,7 @@ const Resume = () => {
   };
 
   useEffect(() => {
-    GetAllFlagHistory().then((response) => {
+    getAllActivitiesAxios().then((response) => {
       console.log(response);
     });
 

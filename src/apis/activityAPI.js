@@ -1,6 +1,6 @@
 import { baseInstance } from "./instance";
 
-export const GetAllFlagHistory = async () => {
+export const getAllActivitiesAxios = async () => {
   try{
     const res = await baseInstance.get("/activities");
     return res.data.payload.allActivities;
@@ -9,7 +9,7 @@ export const GetAllFlagHistory = async () => {
   }
 };
 
-export const getPostActivity = async (id) => {
+export const getActivityAxios = async (id) => {
   try {
     const res = await baseInstance.get(`/activities/${id}`);
     return res;
@@ -18,16 +18,3 @@ export const getPostActivity = async (id) => {
   }
 }
 
-export const setPostActivity = async (data, accessToken) => {
-  try{
-    const res = await baseInstance.post("/activities", data, {
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${accessToken}`
-      }
-    });
-      return res;
-    }catch(error){
-      console.log(error);
-  }
-}

@@ -15,9 +15,10 @@ const Activity = () => {
   const header = true;
   const [isOpen, setIsOpen] = useState(false);
   const [contentOpen, setContentOpen] = useState(false);
+  const [kategorie, setKategorie] =  useState("");
   const dispatch = useDispatch();
   const allActivities = useSelector((state)=> state.activitySlice.getAllActivitiesData);
-  // console.log(allActivities);
+  console.log(allActivities);
   // useEffect(()=>{
   // }, [])
 
@@ -29,6 +30,14 @@ const Activity = () => {
   const contentModal = () => {
     setContentOpen(!contentOpen);
   };
+
+  const KategorieClick = () => {
+
+  };
+
+  const ActivityCardClick = (id) => {
+
+  }
 
 
   return (
@@ -69,7 +78,9 @@ const Activity = () => {
                     title={name}
                     name={leader}
                     type={activityType}
-                    createAt={createdAt}/>
+                    createAt={createdAt}
+                    onClick={()=> ActivityCardClick(id)}
+                  />
                 ))
               ))
             ))}
