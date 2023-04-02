@@ -15,7 +15,7 @@ const Activity = () => {
   const header = true;
   const [isOpen, setIsOpen] = useState(false);
   const [contentOpen, setContentOpen] = useState(false);
-  const [kategorie, setKategorie] =  useState("");
+  const [kategorie, setKategorie] =  useState("전체");
   const dispatch = useDispatch();
   const allActivities = useSelector((state)=> state.activitySlice.getAllActivitiesData);
   console.log(allActivities);
@@ -31,8 +31,8 @@ const Activity = () => {
     setContentOpen(!contentOpen);
   };
 
-  const KategorieClick = () => {
-
+  const KategorieClick = (title) => {
+    setKategorie(title)
   };
 
   const ActivityCardClick = (id) => {
@@ -49,7 +49,9 @@ const Activity = () => {
         <ActivityBox>
           <KategorieBox>
             {activityData.ACTIVITY_CATEGORIE.map(({ id, icon, title }) => (
-              <Kategorie key={id}>
+              <Kategorie 
+                key={id}
+                onClick={() => KategorieClick(title)}>
                 <KategorieIcon icon={icon} />
                 <KategorieContent>{title}</KategorieContent>
               </Kategorie>
