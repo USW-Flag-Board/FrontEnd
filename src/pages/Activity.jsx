@@ -36,7 +36,7 @@ const Activity = () => {
   };
 
   const ActivityCardClick = (id) => {
-
+    
   }
 
 
@@ -71,22 +71,24 @@ const Activity = () => {
           </SwitchArea>
         </ActivityBox>
         <CardArea>
-          <Card onClick={contentModal}>
-            {Object.keys(allActivities).map(year => (
-              Object.keys(allActivities[year]).map((type) => (
-                allActivities[year][type].map(({id, name, leader, activityType, createdAt}) => (                  
-                  <ActivityCard
-                    key={id} 
-                    title={name}
-                    name={leader}
-                    type={activityType}
-                    createAt={createdAt}
-                    onClick={()=> ActivityCardClick(id)}
-                  />
+          {/* {allActivities && */}
+            <Card onClick={contentModal}>
+              {/* {Object.keys(allActivities).map(year => (
+                Object.keys(allActivities[year]).map((type) => (
+                  allActivities[year][type].map(({id, name, leader, activityType, createdAt}) => (                  
+                    <ActivityCard
+                      key={id} 
+                      title={name}
+                      name={leader}
+                      type={activityType}
+                      createAt={createdAt}
+                      onClick={()=> ActivityCardClick(id)}
+                    />
+                  ))
                 ))
-              ))
-            ))}
-          </Card>
+              ))} */}
+            </Card>
+          {/* } */}
         </CardArea>
       </ActivityArea>
     </>
