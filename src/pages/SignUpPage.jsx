@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser, faCircle} from "@fortawesome/free-regular-svg-icons";
 import {faLock, faCircleCheck} from "@fortawesome/free-solid-svg-icons";
-import {JoinTypeButton, Header} from "../components";
+import { JoinTypeButton } from "../components";
 import {PostLoginId, PostEmail, PostCurrentEmail} from "../apis/auth";
 
 // eslint-disable-next-line
@@ -28,9 +28,6 @@ const SPECIALIZED = [
     value: "컴퓨터SW",
   },
 ];
-
-//1. 잘못된 값 입력시, 빨간색으로 ㄱㄱ
-//2. 동그라미 누르면 뒤로 가기? 고민중
 
 const SignUpPage = () => {
   const navigate = useNavigate();
