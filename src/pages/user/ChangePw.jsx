@@ -1,8 +1,8 @@
-import {useState, useEffect} from "react";
-import {useNavigate, useLocation} from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import {PatchChangePw} from "../apis/user";
-import { Header } from "../components";
+import { PatchChangePw } from "../../apis/user";
+import { Header } from "../../components";
 
 const ChangePw = () => {
   const header = true;
@@ -62,11 +62,9 @@ const ChangePw = () => {
     }
   };
 
-
-
   return (
     <>
-      {header && <Header/>}
+      {header && <Header />}
       <Mainbox>
         <PwTitle>
           새 비밀번호{" "}

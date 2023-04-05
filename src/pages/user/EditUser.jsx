@@ -1,10 +1,10 @@
 import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
-import {cookiesOption} from "../utils/cookiesOption";
-import {LocalStorage, SessionStorage} from "../utils/browserStorage";
-import {PutAvatarInfo, GetUserInfo, DeleteUser} from "../apis/user";
-import { Header } from "../components";
+import {cookiesOption} from "../../utils/cookiesOption";
+import {LocalStorage, SessionStorage} from "../../utils/browserStorage";
+import {PutAvatarInfo, GetUserInfo, DeleteUser} from "../../apis/user";
+import { Header } from "../../components";
 
 const MENU_ARRAY = [{name: "아바타"}, {name: "개인정보"}];
 

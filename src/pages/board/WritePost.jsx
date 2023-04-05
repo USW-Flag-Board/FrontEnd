@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import boardAPI from '../../apis/boardAPI'; 
 import boardData from "../../constants/board";
-import buttonData from "../../constants/button";
 import { Footer, SideBar, Header } from "../../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
@@ -90,7 +89,7 @@ const WritePost = () => {
                     />
                     {/* <FileUpload type="file" onChange={handleFileChange}/> */}
                     <ContentButtonBox>
-                    {buttonData.BUTTON_ITEMS.map(({id, faIcon, text}) => (
+                    {boardData.FILE_IMAGE_BUTTON.map(({id, faIcon, text}) => (
                         <ContentButton key={id}>
                         <FaIcon icon={faIcon}/>
                         <p>{text}</p>

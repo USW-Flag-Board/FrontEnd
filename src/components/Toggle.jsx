@@ -9,16 +9,16 @@ const Toggle = () => {
   };
 
   return (
-    <ToggleBox>
-      <div className={isOn ? 'toggle-box toggle__checked' : 'toggle-box'} onClick={toggleHandler} />
-      <div className={isOn ? 'toggle-icon toggle__checked' : 'toggle-icon'} onClick={toggleHandler} />        
-    </ToggleBox>
+    <ToggleArea>
+      <ToggleBox className={isOn ? 'toggle-box toggle__checked' : 'toggle-box'} onClick={toggleHandler} />
+      <ToggleBox className={isOn ? 'toggle-icon toggle__checked' : 'toggle-icon'} onClick={toggleHandler} />        
+    </ToggleArea>
   );
 };
 
 export default Toggle;
 
-const ToggleBox = styled.div`
+const ToggleArea = styled.div`
   position: relative;
   width: 4rem;
   cursor: pointer;
@@ -49,4 +49,8 @@ const ToggleBox = styled.div`
   > .toggle-icon.toggle__checked {
     right: 0;
   }
+`;
+
+const ToggleBox = styled.div`
+  
 `;

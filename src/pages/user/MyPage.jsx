@@ -1,12 +1,12 @@
-import {useState, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUser} from "@fortawesome/free-regular-svg-icons";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
-import {cookiesOption} from "../utils/cookiesOption";
-import {GetProfileData} from "../apis/user";
-import {LocalStorage, SessionStorage} from "../utils/browserStorage";
-import { Header } from "../components";
+import { cookiesOption } from "../../utils/cookiesOption";
+import { GetProfileData } from "../../apis/user";
+import { LocalStorage, SessionStorage } from "../../utils/browserStorage";
+import { Header } from "../../components";
 
 const MyPage = () => {
   const header = true;

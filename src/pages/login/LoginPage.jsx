@@ -4,12 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import AutoLoginButton from "../components/AutoLoginButton";
-import IdRememberButton from "../components/IdRememberButton";
-import { PostLogin } from "../apis/auth";
-import { LocalStorage, SessionStorage } from "../utils/browserStorage";
-import { cookiesOption } from "../utils/cookiesOption";
-import logo from "../assets/images/logo2.png"
+import IdRememberButton from "../../components/IdRememberButton";
+import { PostLogin } from "../../apis/auth";
+import { LocalStorage, SessionStorage } from "../../utils/browserStorage";
+import { cookiesOption } from "../../utils/cookiesOption";
+import logo from "../../assets/images/logo2.png"
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -145,7 +144,6 @@ const LoginPage = () => {
         </RelativeArea>
         <SortArea>
           <CheckArea>
-            <AutoLoginButton getButtonValue={getButtonValue} />
             <CheckLabel>로그인 상태 유지</CheckLabel>
           </CheckArea>
           <CheckArea>

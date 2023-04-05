@@ -1,125 +1,94 @@
-import {useState, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
-import {
-  PostFindPwEmail,
-  PutChangePw,
-  PostCertificationCheck,
-} from "../apis/user";
-import { Header } from "../components";
+import {PostFindIdEmail, PostCertificationCheck} from "../../apis/user";
+import { Header } from "../../components";
 
 // eslint-disable-next-line
 const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
 const emailExp = /[\{\}\[\]\/?,;:|\)*~`!^\-_+<>\#$%&\\\=\(\'\"]/g;
 const korExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
+const numExp = /[0-9]/g;
 const spaceExp = /\s/;
-const header = true;
-const FindPw = () => {
+
+const FindId = () => {
   const [successState, setSuccessState] = useState(false);
-  const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState("");
+  const header = true;
+
 
   return (
     <>
       {header && <Header/>}
       {successState ? (
-        <ShowPw email={email} />
+        <ShowId userId={userId} />
       ) : (
-        <FindPwPage setEmail={setEmail} setSuccessState={setSuccessState} />
+        <FindIdPage setUserId={setUserId} setSuccessState={setSuccessState} />
       )}
     </>
   );
 };
 
-const ShowPw = ({email}) => {
-  const navigate = useNavigate();
-  const [password, setPassword] = useState("");
-  const [verifyPassword, setVerifyPassword] = useState("");
-  const [passwordError, setPasswordError] = useState(false);
-
-  const onChangePasswordChk = (e) => {
-    setPasswordError(e.target.value !== password);
-    setVerifyPassword(e.target.value);
-  };
-
-  const ChangePassword = () => {
-    PutChangePw(email, password)
-      .then(() => {
-        alert("비밀번호를 변경했습니다.");
-        navigate("/");
-      })
-      .catch((error) => {
-        switch (error.response.status) {
-          case 404:
-            alert("존재하지 않는 사용자입니다.");
-            break;
-          case 422:
-            alert("사용할 수 없는 비밀번호 입니다.");
-            break;
-          default:
-            alert("서버 통신 오류.");
-        }
-      });
-  };
-
+const ShowId = ({userId}) => {
   return (
     <>
-      <Mainbox>
-        <EmailTitle>
-          비밀번호 변경하기
-          <FindButton onClick={() => ChangePassword()}>변경하기</FindButton>
-        </EmailTitle>
-        <Emailbox>
-          <Emailfield>
-            <Box>
-              <TextBox>새 비밀번호</TextBox>
-              <InsertBox>
-                <Insert
-                  type="text"
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </InsertBox>
-            </Box>
-            <Box>
-              <TextBox>새 비밀번호 확인</TextBox>
-              <InsertBox>
-                <Insert type="text" onChange={onChangePasswordChk} required />
-              </InsertBox>
-            </Box>
-            <ErrorBox>
-              {passwordError && <div>비밀번호가 일치하지 않습니다.</div>}
-            </ErrorBox>
-          </Emailfield>
-        </Emailbox>
-      </Mainbox>
+      <Pagebox>
+        <Mainbox>
+          <Emailbox
+            style={{margin: 0, padding: 50, paddingLeft: 0, paddingRight: 0}}
+          >
+            <Emailfield
+              style={{margin: 0, padding: 0, justifyContent: "center"}}
+            >
+              <Box>당신의 아이디는 "{userId}" 입니다.</Box>
+            </Emailfield>
+          </Emailbox>
+        </Mainbox>
+      </Pagebox>
     </>
   );
 };
 
-const FindPwPage = (props) => {
+const FindIdPage = ({setUserId, setSuccessState}) => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [userId, setUserId] = useState("");
   const [auth, setAuth] = useState(false);
 
   const Find = () => {
-    PostFindPwEmail(email, userId)
+    PostFindIdEmail(email, name)
       .then(() => {
-        props.setEmail(email);
         setAuth(true);
         alert("이메일로 인증번호가 전송되었습니다.");
       })
       .catch((error) => {
         switch (error.response.status) {
+          case 400:
+            alert("이메일 형식이 아닙니다.");
+            break;
           case 404:
+          case 409:
             alert("존재하지 않는 사용자입니다.");
             break;
-          case 409:
-            alert("이메일과 아이디가 일치하지 않습니다.");
+          case 422:
+            alert("수원대학교 이메일 주소가 아닙니다.");
             break;
           default:
             alert("서버 통신 오류.");
         }
       });
+  };
+
+  const NameValid = () => {
+    if (name === "") {
+      alert("이름을 정확히 입력해주세요.");
+    } else if (regExp.test(name)) {
+      alert("이름에는 특수문자를 입력할 수 없습니다.");
+    } else if (numExp.test(name)) {
+      alert("이름에는 숫자를 포함할 수 없습니다.");
+    } else if (spaceExp.test(name)) {
+      alert("이름에는 공백을 포함할 수 없습니다.");
+    } else {
+      EmailValid();
+    }
   };
 
   const EmailValid = () => {
@@ -134,37 +103,34 @@ const FindPwPage = (props) => {
     } else if (!email.includes("@suwon.ac.kr")) {
       alert("수원대학교 이메일이 아닙니다.");
     } else {
-      IdValid();
-    }
-  };
-
-  const IdValid = () => {
-    if (userId === "") {
-      alert("아이디를 정확히 입력해주세요.");
-    } else if (regExp.test(userId)) {
-      alert("아이디에는 특수문자를 입력할 수 없습니다.");
-    } else if (korExp.test(userId)) {
-      alert("아이디에는 한글을 포함할 수 없습니다.");
-    } else if (spaceExp.test(userId)) {
-      alert("아이디에는 공백을 포함할 수 없습니다.");
-    } else {
+      setEmail(email);
       Find();
     }
   };
 
   useEffect(() => {
-    props.setSuccessState(false);
+    setSuccessState(false);
   }, []);
 
   return (
     <>
       <Mainbox>
         <EmailTitle>
-          비밀번호 찾기
-          <FindButton onClick={() => EmailValid()}>찾기</FindButton>
+          아이디 찾기
+          <FindButton onClick={() => NameValid()}>찾기</FindButton>
         </EmailTitle>
         <Emailbox>
           <Emailfield>
+            <Box>
+              <TextBox>이름</TextBox>
+              <InsertBox>
+                <Insert
+                  type="text"
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </InsertBox>
+            </Box>
             <Box>
               <TextBox>이메일</TextBox>
               <InsertBox>
@@ -175,20 +141,11 @@ const FindPwPage = (props) => {
                 />
               </InsertBox>
             </Box>
-            <Box>
-              <TextBox>아이디</TextBox>
-              <InsertBox>
-                <Insert
-                  type="text"
-                  onChange={(e) => setUserId(e.target.value)}
-                  required
-                />
-              </InsertBox>
-            </Box>
             {auth && (
               <CertificateBox
+                setUserId={setUserId}
                 email={email}
-                setSuccessState={props.setSuccessState}
+                setSuccessState={setSuccessState}
               />
             )}
           </Emailfield>
@@ -198,18 +155,19 @@ const FindPwPage = (props) => {
   );
 };
 
-const CertificateBox = ({email, setSuccessState}) => {
+const CertificateBox = ({email, setSuccessState, setUserId}) => {
   const [certification, setCertification] = useState("");
 
   const AuthCheck = () => {
     PostCertificationCheck(certification, email)
-      .then(() => {
+      .then((response) => {
         setSuccessState(true);
+        setUserId(response.data.payload);
       })
       .catch((error) => {
         switch (error.response.status) {
           case 404:
-            alert("비밀번호 찾기 요청이 존재하지 않습니다. 다시 시도해주세요.");
+            alert("아이디 찾기 요청이 존재하지 않습니다. 다시 시도해주세요.");
             break;
           case 409:
             alert("인증번호가 일치하지 않습니다.");
@@ -250,6 +208,15 @@ const CertificateBox = ({email, setSuccessState}) => {
     </>
   );
 };
+
+const Pagebox = styled.div`
+  display: flex;
+  width: 100%;
+  height: 88vh;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const Mainbox = styled.div`
   display: flex;
@@ -376,11 +343,4 @@ const AuthButton = styled.button`
   }
 `;
 
-const ErrorBox = styled.div`
-  width: 200px;
-  margin-left: 2vw;
-  font-size: 0.8rem;
-  align-items: center;
-`;
-
-export default FindPw;
+export default FindId;

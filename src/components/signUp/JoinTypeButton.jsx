@@ -72,13 +72,12 @@ const JoinTypeButton = ({getJoinTypeValue}) => {
 };
 
 const IntroduceJoinTypeArea = styled.div`
-  display: flex;
   border: 2px solid #9a9a9a;
   border-radius: 20px;
   font-size: 14px;
-  margin: 10px 0px 40px 0px;
+  margin: 10px 0 40px 0;
   padding: 20px;
-  color: rgba(255, 255, 255, 0.8);
+  color: black;
   line-height: 28px;
 `;
 
@@ -96,7 +95,7 @@ const CheckArea = styled.label`
 const CheckLabel = styled.p`
   margin-left: 10px;
   font-size: 20px;
-  color: rgba(255, 255, 255, 0.8);
+  color: black;
 `;
 
 const ToggleButton = styled(FontAwesomeIcon)`
