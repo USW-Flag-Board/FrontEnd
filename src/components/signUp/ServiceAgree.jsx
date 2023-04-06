@@ -1,20 +1,33 @@
-import { useState, useEffect} from 'react';
+import { type } from '@testing-library/user-event/dist/type';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircle } from "@fortawesome/free-regular-svg-icons";
-import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 
 const ServiceAgree = ({setButtonState}) => {
-  const [allAgree, setAllAgree] = useState(false);
-  const [AccountAgree, setAccountAgree] = useState(false);
-  const [personalAgree, setPersonalAgree] = useState(false);
+  const [checkItems, setCheckitems] = useState([]);
+  
+  const checkAll = (checked) => {
+    checked
+    ? setCheckitems(["personalAgree", "accountAgree"])
+    : setCheckitems([]);
+  }
+
+  const check = (checked, name) => {
+    console.log(checked)
+    checked
+      ? setCheckitems([...checkItems, name])
+      : setCheckitems(checkItems.filter((choice)=> choice !== name));
+  }
 
   useEffect(() => {
-    if (AccountAgree & personalAgree) {
-      return setButtonState(true);
+    if(
+      checkItems.includes("personalAgree") &&
+      checkItems.includes("accountAgree")
+    ){
+      setButtonState(true);
+    } else{
+      setButtonState(false);
     }
-    return setButtonState(false);
-  }, [AccountAgree, personalAgree, setButtonState]);
+  }, [checkItems, setButtonState])
 
   return (
     <>
@@ -24,96 +37,44 @@ const ServiceAgree = ({setButtonState}) => {
         서비스 약관에 동의해 주세요.
       </IntroduceArea>
       <ServiceAgreeArea>
-        <AllCheckButton setAllAgree={setAllAgree} />
+        <RelativeArea>
+          <AgreeButton 
+            type='checkbox'
+            checked={checkItems.length === 2}
+            onChange={(e) => checkAll(e.target.checked)}
+          />
+          <AgreeMessage>모두 동의합니다.</AgreeMessage>
+        </RelativeArea>
         <AllAgreeMessage>
           전체 동의는 필수/선택 정보에 대한 동의가 포함되어 있으며
           <br />
           개별적으로도 동의하실 수 있습니다.
         </AllAgreeMessage>
         <RowLine />
-        <CheckButton
-          setAccountAgree={setAccountAgree}
-          message={"[필수] FLAG 계정 약관"}
-          allAgree={allAgree}
-        />
-        <CheckButton
-          setAccountAgree={setPersonalAgree}
-          message={"[필수] 개인정보 수집 및 이용 동의"}
-          allAgree={allAgree}
-        />
+        <RelativeArea>
+          <AgreeButton
+            type='checkbox'
+            name="accountAgree"
+            checked={checkItems.includes("accountAgree")}
+            onChange={(e) => check(e.target.checked, "accountAgree")}
+            />
+          <AgreeMessage>[필수] FLAG 계정 약관</AgreeMessage>
+        </RelativeArea>
+        <RelativeArea>
+          <AgreeButton 
+            type='checkbox'
+            name="personalAgree"
+            checked={checkItems.includes("personalAgree")}
+            onChange={(e) => check(e.target.checked, "personalAgree")}
+          />
+          <AgreeMessage>[필수] 개인정보 수집 및 이용 동의</AgreeMessage>
+        </RelativeArea>
       </ServiceAgreeArea>
     </>
   );
 };
 
-const AllCheckButton = ({setAllAgree}) => {
-  const [toggle, setToggle] = useState(false);
-
-  useEffect(() => {
-    setAllAgree(toggle);
-  }, [setAllAgree, toggle]);
-
-  return (
-    <>
-      {toggle ? (
-        <RelativeArea>
-          <AgreeButton
-            icon={faCircleCheck}
-            onClick={() => setToggle(!toggle)}
-          />
-          <AgreeMessage onClick={() => setToggle(!toggle)}>
-            모두 동의합니다.
-          </AgreeMessage>
-        </RelativeArea>
-      ) : (
-        <RelativeArea>
-          <AgreeButton icon={faCircle} onClick={() => setToggle(!toggle)} />
-          <AgreeMessage onClick={() => setToggle(!toggle)}>
-            모두 동의합니다.
-          </AgreeMessage>
-        </RelativeArea>
-      )}
-    </>
-  );
-};
-
-const CheckButton = ({setAccountAgree, message, allAgree}) => {
-  const [toggle, setToggle] = useState(false);
-
-  useEffect(() => {
-    setToggle(allAgree);
-  }, [allAgree]);
-
-  useEffect(() => {
-    setAccountAgree(toggle);
-  }, [setAccountAgree, toggle]);
-
-  return (
-    <>
-      {toggle ? (
-        <RelativeArea>
-          <AgreeButton
-            icon={faCircleCheck}
-            onClick={() => setToggle(!toggle)}
-          />
-          <AgreeMessage onClick={() => setToggle(!toggle)}>
-            {message}
-          </AgreeMessage>
-        </RelativeArea>
-      ) : (
-        <RelativeArea>
-          <AgreeButton icon={faCircle} onClick={() => setToggle(!toggle)} />
-          <AgreeMessage onClick={() => setToggle(!toggle)}>
-            {message}
-          </AgreeMessage>
-        </RelativeArea>
-      )}
-    </>
-  );
-};
-
 export default ServiceAgree;
-
 
 const ServiceAgreeArea = styled.div`
   display: flex;
@@ -134,16 +95,22 @@ const AllAgreeMessage = styled.div`
 const RelativeArea = styled.div`
   display: flex;
   align-items: center;
-  width: 100%;
   margin: 0.6rem 0;
 `;
 
-const AgreeButton = styled(FontAwesomeIcon)`
+const AgreeButton = styled.input`
+  width: 20px;
   height: 20px;
   margin-right: 0.8rem;
+  appearance: none;
+  border: 1px solid #868e96;
+  border-radius: 50px;
+  &:checked{
+    background-color: #228be6;
+  }
 `;
 
-const AgreeMessage = styled.div`
+const AgreeMessage = styled.label`
   font-size: 20px;
   font-weight: 100;
   line-height: 33px;

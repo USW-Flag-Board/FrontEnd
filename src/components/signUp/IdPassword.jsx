@@ -1,109 +1,48 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { regExp, korExp, numExp,spaceExp, engExp, SPECIALIZED } from "../../constants/user";
-import { PostLoginId } from "../../apis/auth";
+import { regExp, korExp, numExp, spaceExp } from "../../constants/user";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 
-const IdPassword = ({ setButtonState, setLoginId, setPassword }) => {
-    const [idStateMessage, setIdStateMessage] = useState(" ");
-    const [passwordMessage, setPasswordMessage] = useState("");
-    const [passwordVerifyMessage, setPasswordVerifyMessage] = useState("");
-    const [loginIdData, setLoginIdData] = useState("");
-    const [passwordData, setPasswordData] = useState("");
+const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
+    const [loginId, setLoginId] = useState("");
+    const [password, setPassword] = useState("");
     const [passwordVerify, setPasswordVerify] = useState("");
-    const [checkInfo, setCheckInfo] = useState([false, false, false]);
-  
-    const BooleanCheck = (index, state) => {
-      setCheckInfo((prevState) =>
-        prevState.map((item, idx) => (idx === index ? state : item))
-      );
-    };
-  
-    const IdSet = async (text) => {
-      setLoginIdData(text);
+    const IdSet = (text) => {
+      setLoginId(text);
     };
   
     const IdValid = () => {
-      if (loginIdData === "") {
-        setIdStateMessage("아이디를 정확히 입력해주세요.");
-        BooleanCheck(0, false);
-      } else if (regExp.test(loginIdData)) {
-        setIdStateMessage("아이디에는 특수문자를 입력할 수 없습니다.");
-        BooleanCheck(0, false);
-      } else if (korExp.test(loginIdData)) {
-        setIdStateMessage("아이디에는 한글을 포함할 수 없습니다.");
-        BooleanCheck(0, false);
-      } else if (spaceExp.test(loginIdData)) {
-        setIdStateMessage("아이디에는 공백을 포함할 수 없습니다.");
-        BooleanCheck(0, false);
-      } else if (loginIdData.length <= 2) {
-        setIdStateMessage("아이디는 세글자 이상으로 설정해주세요.");
-        BooleanCheck(0, false);
+      if (loginId === "") {
+      } else if (regExp.test(loginId)) {
+      } else if (korExp.test(loginId)) {
+      } else if (spaceExp.test(loginId)) {
+      } else if (loginId.length <= 2) {
       } else {
-        PostLoginId(loginIdData)
-          .then((response) => {
-            if (!response.data.payload) {
-              setIdStateMessage("사용 가능한 아이디입니다.");
-              BooleanCheck(0, true);
-            } else {
-              setIdStateMessage("이미 사용중인 아이디입니다.");
-              BooleanCheck(0, false);
-            }
-          })
-          .catch(() => {
-            setIdStateMessage("서버와의 연결에 실패했습니다.");
-            BooleanCheck(0, false);
-          });
+
       }
     };
   
     const PasswordValid = () => {
-      if (passwordData === "") {
-        setPasswordMessage("비밀번호를 정확히 입력해주세요.");
-  
-        BooleanCheck(1, false);
-      } else if (passwordData.length < 8 || passwordData.length > 20) {
-        setPasswordMessage("비밀번호의 길이는 8-20자 이내여야 합니다.");
-        BooleanCheck(1, false);
-      } else if (!regExp.test(passwordData)) {
-        setPasswordMessage("특수문자가 입력되지 않았습니다.");
-        BooleanCheck(1, false);
-      } else if (korExp.test(passwordData)) {
-        setPasswordMessage("비밀번호에는 한글을 포함할 수 없습니다.");
-        BooleanCheck(1, false);
-      } else if (!numExp.test(passwordData)) {
-        setPasswordMessage("비밀번호에는 숫자를 포함해야 합니다.");
-        BooleanCheck(1, false);
-      } else if (spaceExp.test(passwordData)) {
-        setPasswordMessage("비밀번호에는 공백을 포함할 수 없습니다.");
-        BooleanCheck(1, false);
+      if (password === "") {
+      } else if (password.length < 8 || password.length > 20) {
+      } else if (!regExp.test(password)) {
+      } else if (korExp.test(password)) {
+      } else if (!numExp.test(password)) {
+      } else if (spaceExp.test(password)) {
       } else {
-        setPasswordMessage("사용 가능한 비밀번호입니다.");
-        BooleanCheck(1, true);
       }
     };
   
-    const PasswordVerifyValid = async () => {
+    const PasswordVerifyValid = () => {
       if (passwordVerify === "") {
-        setPasswordVerifyMessage("비밀번호 확인을 입력해주세요.");
-        BooleanCheck(2, false);
-      } else if (passwordData !== passwordVerify) {
-        setPasswordVerifyMessage("비밀번호와 일치하지 않습니다.");
-        BooleanCheck(2, false);
+      } else if (password !== passwordVerify) {
       } else {
-        setPasswordVerifyMessage("비밀번호와 일치합니다.");
-        BooleanCheck(2, true);
       }
     };
   
-    useEffect(() => {
-      setButtonState(checkInfo[0] & checkInfo[1] & checkInfo[2]);
-      setLoginId(loginIdData);
-      setPassword(passwordData);
-    }, [checkInfo]);
-  
+
     return (
       <>
         <IntroduceArea>
@@ -112,30 +51,32 @@ const IdPassword = ({ setButtonState, setLoginId, setPassword }) => {
           아이디, 비밀번호를 입력해주세요
         </IntroduceArea>
         <RelativeArea>
-          <WriteArea
-            type="text"
-            placeholder="아이디"
-            onChange={(e) => {
-              IdSet(e.target.value);
-            }}
-            onBlur={() => {
-              IdValid();
-            }}
-          />
-          <Icon icon={faUser} />
-          <InfoState>{idStateMessage}</InfoState>
+          <div>
+            <WriteArea
+              type="text"
+              placeholder="아이디"
+              onChange={(e) => {
+                IdSet(e.target.value);
+              }}
+              onBlur={() => {
+                IdValid();
+              }}
+            />
+            <Icon icon={faUser} />
+          </div>
+          {/* <InfoState>{message.idMessage}</InfoState> */}
         </RelativeArea>
         <RelativeArea>
           <WriteArea
             type="password"
             placeholder="비밀번호"
             onChange={(e) => {
-              setPasswordData(e.target.value);
+              setPassword(e.target.value);
               PasswordValid();
             }}
           />
           <Icon icon={faLock} />
-          <InfoState>{passwordMessage}</InfoState>
+          {/* <InfoState>{message.passwordMessage}</InfoState> */}
         </RelativeArea>
         <RelativeArea>
           <WriteArea
@@ -149,7 +90,7 @@ const IdPassword = ({ setButtonState, setLoginId, setPassword }) => {
             }}
           />
           <Icon icon={faLock} />
-          <InfoState>{passwordVerifyMessage}</InfoState>
+          {/* <InfoState>{message.passwordVerifyMessage}</InfoState> */}
         </RelativeArea>
       </>
     );
@@ -164,7 +105,7 @@ const IntroduceArea = styled.div`
   width: 450px;
   color: black;
   margin-top: 20px;
-  margin-bottom: 45px;
+  margin-bottom: 20px;
   text-align: left;
   display: flex;
   align-items: flex-end;
@@ -172,13 +113,12 @@ const IntroduceArea = styled.div`
 
 const Icon = styled(FontAwesomeIcon)`
   color: black;
-  position: absolute;
   left: 430px;
   top: 28px;
 `;
 
 const RelativeArea = styled.div`
-  position: relative;
+
 `;
 
 const WriteArea = styled.input`

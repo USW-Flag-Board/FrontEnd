@@ -2,25 +2,23 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo2 from "../../assets/images/logo2.png";
-import ServiceAgree from "../../components/signUp/ServiceAgree";
-import JoinTypeSelect from "../../components/signUp/JoinTypeSelect";
-import IdPassword from "../../components/signUp/IdPassword";
-import Privacy from "../../components/signUp/Privacy";
-import EmailAuth from "../../components/signUp/EmailAuth";
+import { ServiceAgree, JoinTypeSelect, IdPassword, Privacy, EmailAuth } from "../../components/signUp";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
   const [buttonState, setButtonState] = useState(false);
   const [signUpIndex, setSignUpIndex] = useState(0);
-  const [joinType, setJoinType] = useState("");
-  const [loginId, setLoginId] = useState("");
-  const [major, setMajor] = useState("");
-  const [name, setName] = useState("");
-  const [nickName, setNickName] = useState("");
-  const [password, setPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [studentId, setStudentId] = useState("");
-
+  const [signUpData, setSignUpData] = useState({
+    joinType: "",
+    loginId: "",
+    major: "",
+    name: "",
+    nickName: "",
+    password: "",
+    phoneNumber: "",
+    studentId: "",
+  })
+  console.log(signUpData)
   const NextIndex = () => {
     setSignUpIndex((signUpIndex) => signUpIndex + 1);
   };
@@ -39,38 +37,27 @@ const SignUpPage = () => {
           {signUpIndex === 1 && (
             <JoinTypeSelect
               setButtonState={setButtonState}
-              joinType={joinType}
-              setJoinType={setJoinType}
+              signUpData={signUpData}
+              setJoinType={setSignUpData}
             />
           )}
           {signUpIndex === 2 && (
             <IdPassword
               setButtonState={setButtonState}
-              setLoginId={setLoginId}
-              setPassword={setPassword}
+              signUpData={signUpData}
+              setIdPassword={setSignUpData}
             />
           )}
           {signUpIndex === 3 && (
             <Privacy
               setButtonState={setButtonState}
-              setName={setName}
-              setNickName={setNickName}
-              setMajor={setMajor}
-              setStudentId={setStudentId}
-              setPhoneNumber={setPhoneNumber}
+              setPrivacy={setSignUpData}
             />
           )}
           {signUpIndex === 4 && (
             <EmailAuth
               setButtonState={setButtonState}
-              joinType={joinType}
-              loginId={loginId}
-              major={major}
-              name={name}
-              nickName={nickName}
-              password={password}
-              phoneNumber={phoneNumber}
-              studentId={studentId}
+              emailAuth={signUpData}
             />
           )}
           <AccountButton
