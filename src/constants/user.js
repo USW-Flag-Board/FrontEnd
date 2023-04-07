@@ -4,6 +4,12 @@ export const korExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
 export const numExp = /[0-9]/g;
 export const spaceExp = /\s/;
 export const engExp = /[a-zA-Z]/g;
+export const loginRegex = {
+    id: /^[a-zA-Z0-9]{4,16}$/,
+    password: /^(?=.*[a-zA-Z])(?=.*[0-9!@#$%^&*])(?=.{8,20})/,
+  };
+  
+
 
 export const SPECIALIZED = [
   {
@@ -19,3 +25,4 @@ export const SPECIALIZED = [
     value: "컴퓨터SW",
   },
 ];
+
