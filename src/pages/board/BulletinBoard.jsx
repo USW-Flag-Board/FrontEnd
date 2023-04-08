@@ -1,43 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import postsActions  from '../../redux/thunkActions/boardsActions';
+import boardsActions  from '../../redux/thunkActions/boardsActions';
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { SideBar, Footer, ListThem, Pagination } from "../../components";
-
-const boardItems = [
-  { 
-    id: 1,
-    krName: "자유게시판",
-    engName: "free_board"
-  }, 
-  { 
-    id: 2,
-    krName: "동아리 이모저모",
-    engName: ""
-  }, 
-  { 
-    id: 3,
-    krName: "사전게시판",
-    engName: ""
-  }, 
-  { 
-    id: 4,
-    krName: "정보게시판",
-    engName: ""
-  }
-];
-
-const barItem = ["제목", "작성자", "작성일", "조회수", "좋아요수"];
-const selectItems = ["전체기간", "게시물 + 작성자"];
+import { SideBar, Footer, ListThem, Pagination, Header } from "../../components";
+import boardData from '../../constants/board';
 
 const BulletinBoard = () => {
-  // const [selectBoard, setSelectBoard] = useState("free_board");
-  const [currentItems, setCurrentItems] = useState([]); // 페이지당 보여줄 데이터 배열
-  const posts = useSelector((state) => state.toDo.getPostsData);
-  console.log(posts)
+  const header = true;
+  const [boardName, setBoardName] = useState("자유게시판");
+  const [currentItems, setCurrentItems] = useState([]);
+  const posts = useSelector((state) => state.boardSlice.getPostsData);
+  const board = useSelector((state) => state.boardSlice.boardName);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const writeClick = () => {
@@ -45,11 +21,12 @@ const BulletinBoard = () => {
   }
 
   useEffect(()=>{
-      dispatch(postsActions.getBoardAPI());
-    },[dispatch])
-  
+      dispatch(boardsActions.getBoardAPI(board));
+  }, [board, dispatch])
+
   return (
     <>
+      {header && <Header/>}
       <BoardArea>
         <ContentArea>
           <SideBar
@@ -58,15 +35,15 @@ const BulletinBoard = () => {
             subColor="#3C3C3C"
             mainWidth="13%"
             subWidth="90%"
-            items={boardItems}
+            items={boardData.BOARD_NAMES}
+            boardTitle={setBoardName}
             paddingTop="0"
             paddingTopMain="75px"
             borderRadius="0 15px 15px 0"
-            // setSelectBoard={setSelectBoard}
           />
           <ListArea>
             <TitleArea>
-              <TitleBox>자유게시판</TitleBox>
+              <TitleBox>{boardName}</TitleBox>
               <WriteButton onClick={writeClick}>
                 <FaPen icon={faPen} />
                   글쓰기
@@ -74,7 +51,7 @@ const BulletinBoard = () => {
             </TitleArea>
             <ListBar>
               <BarItemBox>
-              {barItem.map((item) => (
+              {boardData.TITLE_ITEMS.map((item) => (
                 <BarItem key={item}>{item}</BarItem>
               ))}
               </BarItemBox>
@@ -92,7 +69,7 @@ const BulletinBoard = () => {
               />
             </PaginationArea>
             <FilterAndSearchForm>
-            {selectItems.map((item) => (
+            {boardData.SEARCH_SELECT_ITEMS.map((item) => (
               <FilterSelect key={item}>
                 <option>{item}</option>
               </FilterSelect>
@@ -112,7 +89,7 @@ const BulletinBoard = () => {
 
 const BoardArea = styled.div`
   width: 100vw;
-  height: 88vh;
+  height: 86vh;
 `;
 
 const TitleArea = styled.div`
@@ -172,9 +149,6 @@ const BarItem = styled.li`
     margin-left: 10px;
     padding-left: 6%;
     width: 30%;
-  }
-  &:nth-of-type(5) {
-    padding-right: 24%;
   }
 `;
 
@@ -250,7 +224,6 @@ const InputBase = styled.input`
   }
 `;
 
-//fontAwesome
 const FaPen = styled(FontAwesomeIcon)`
   text-decoration: none;
 `;

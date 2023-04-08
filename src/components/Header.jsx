@@ -1,142 +1,164 @@
-import {useState} from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import {useNavigate} from "react-router-dom";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUser} from "@fortawesome/free-regular-svg-icons";
-import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
-import Cookies from "universal-cookie";
-
-const sections = ["BOARD", "ACTIVITY", "NOTICE"];
+import headerData from "../constants/header";
+import logo from "../assets/images/logo2.png"
+import { useDispatch, useSelector } from "react-redux";
+import activitiesActions from "../redux/thunkActions/activityActions";
 
 const Header = () => {
-  const [isToggled, setIsToggled] = useState(false);
-  const [userToggled, setUserToggled] = useState(false);
+  const [login, setLogin] = useState(false);
   const navigate = useNavigate();
-  const handleMenuClick = (menu) => {
-    if (menu === "BOARD") {
-      navigate("/board");
-    } else if (menu === "ACTIVITY") {
-      alert("구현중입니다.");
-      // navigate("/activity");
-    } else if (menu === "NOTICE") {
-      alert("구현중입니다.");
+  const dispatch = useDispatch();
+  
+  const handleUserItemClick = (item) => {
+    switch(item){
+      case '로그인':
+        navigate('/login')
+        break;
+      case '회원가입':
+        navigate('/signup');
+        break;
+      default:
+        
     }
   };
-  const cookies = new Cookies();
 
-  const LoginCheck = () => {
-    if (cookies.get("refresh_token")) {
-      navigate("/my");
-    } else {
-      navigate("/login");
+  const handleMenuClick = (item) => {
+    switch(item){
+      case 'BOARD':
+        navigate('/board')
+        break;
+      case 'ACTIVITY':
+        dispatch(activitiesActions.getAllactivitiesAPI())
+        navigate('/activity');
+        break;
+      case 'INTRODUCTION':
+        navigate('/resume');
+        break;
+      default:
+        
     }
-  };
+  }
 
   return (
-    <HomeHeader>
-      <LogoBox>
-        <LogoImg
-          src="../images/logo.JPG"
-          alt="blog-logo"
-          onClick={() => navigate("/")}
-        />
-      </LogoBox>
-      <MenuItemBox>
-        <MenuItems>
-          <MenuButton onClick={() => navigate("/resume")}>FLAG</MenuButton>
-          {sections.map((item) => (
-            <MenuButton key={item} onClick={() => handleMenuClick(item)}>
-              {item}
-            </MenuButton>
-          ))}
-        </MenuItems>
-      </MenuItemBox>
-      <SearchBox>
-        <SearchPaper>
-          <FaMagnifyingGlass icon={faMagnifyingGlass}/>
-          <InputBase type="text" />
-        </SearchPaper>
-        <FaUser icon={faUser} onClick={() => LoginCheck()}/>
-      </SearchBox>
-    </HomeHeader>
+    <HeaderArea>
+      <HeaderBox>
+        <LogoBox>
+          <LogoImg
+            src={logo}
+            alt="blog-logo"
+            onClick={() => navigate("/")}
+          />
+        </LogoBox>
+        <MenuItemBox>
+          <MenuItems>
+            {headerData.HEADER_ITEMS.map((item) => (
+              <MenuButton key={item} onClick={()=> handleMenuClick(item)}>
+                {item}
+                <DropHeaderArea>
+
+                </DropHeaderArea>
+              </MenuButton>
+            ))}
+          </MenuItems>
+        </MenuItemBox>
+        <SearchBox>
+          <SearchPaper>
+            <FaMagnifyingGlass icon={faMagnifyingGlass}/>
+            <InputBase type="text" />
+          </SearchPaper>
+          <UserBox>
+            {headerData.LOGOUT_USER_ITEMS.map((item)=>(
+              <UserButton type="button" key={item} onClick={()=> handleUserItemClick(item)}>{item}</UserButton>
+            ))}
+          </UserBox>
+        </SearchBox>
+      </HeaderBox>
+    </HeaderArea>
   );
 };
 
-const HomeHeader = styled.div`
+const HeaderArea = styled.div`
+  height: 11vh;
+  border-bottom: 1px solid black;
+`;
+
+const HeaderBox = styled.div`
+  width: calc(100vw - 16rem);
   box-sizing: border-box;
-  width: 100%;
-  height: 9vh;
+  height: 100%;
+  margin: 0 8rem;
+  padding-top: 2rem;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   background-color: white;
-  // @media screen and (max-width: 768px){
-  //   width: 768px;
-  // }
 `;
 
 const LogoBox = styled.div`
-  width: 20%;
+  width: 10%;
   height: 100%;
   display: flex;
   align-items: center;
-  padding-left: 15px;
 `;
 
 const LogoImg = styled.img`
-  width: 50%; 
-  height: 80%; 
+  width: 100%; 
+  height: 100%; 
   cursor: pointer;
 `;
 
 const MenuItemBox = styled.div`
   width: 60%;
+  height: 100%;
   display: flex;
-  justify-content: end;
   align-items: center;
-  // @media screen and (max-width: 768px){
-  //   display: none;
-  // }
 `;
 
 const MenuItems = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  margin: 0;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 `;
 
 const MenuButton = styled.div`
-  width: 200px;
-  height: 50px;
+  width: 17%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 0.5rem;
+  font-weight: bold;
   color: black;
-  &:hover {
-    background-color: #adb5bd;
-    border-radius: 10px;
-  }
   cursor: pointer;
+  &:hover {
+    background-color: #F2F2F2;
+    border-radius: 0.6rem;
+  }
+  /* &:hover > div {
+    display: block;
+  } */
 `;
 
 const SearchBox = styled.div`
-  width: 20%;
+  box-sizing: border-box;
+  width: 30%;
   height: 60%;
   display: flex;
   align-items: center;
-  padding-left: 20px;
+  justify-content: flex-start;
 `;
 
 const SearchPaper = styled.form`
+  width: calc(50% - 1rem);
+  margin-right: 1rem;
   display: flex;
-  width: 80%;
-  height: 60%;
-  margin-left: 2px;
-  border: 2px solid #5c5c5c;
-  border-radius: 2rem;
   align-items: center;
+  height: 80%;
+  border: 1px solid #dee2e6;
 `;
 
 const InputBase = styled.input`
@@ -147,7 +169,6 @@ const InputBase = styled.input`
   }
 `;
 
-//fontAwesomeIcon
 const FaMagnifyingGlass = styled(FontAwesomeIcon)`
   width: 14%;
   color: #BABABA;
@@ -155,10 +176,44 @@ const FaMagnifyingGlass = styled(FontAwesomeIcon)`
   align-items: center;
 `;
 
+const UserBox = styled.div`
+  display: flex;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+  color: #BABABA; 
+  height: 100%;
+  justify-content: flex-end;
+`;
+
 const FaUser = styled(FontAwesomeIcon)`
-  width: 14%; 
+  width: 80%; 
   color: #BABABA; 
   height: 50%;
+`;
+
+const DropHeaderArea = styled.div`
+  width: 100%;
+  height: 20vh; 
+  background-color: #F2F2F2;
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 11vh;
+  display: none;
+  cursor: default;
+`;
+
+const UserButton = styled.button`
+  width: 50%;
+  height: 80%;
+  border: none;
+  &:nth-child(1){
+    margin-right: 1rem;
+  }
+  &:nth-child(2){
+    background-color: #ff922b;
+  }
 `;
 
 export default Header;

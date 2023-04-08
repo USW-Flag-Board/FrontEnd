@@ -1,7 +1,7 @@
-import axios from "axios";
 import {useEffect, useState} from "react";
 import styled from "styled-components";
-import {GetAllFlagHistory} from "../apis/activity";
+import {getAllActivitiesAxios} from "../apis/activityAPI";
+import { Header } from "../components";
 
 const STUDY2022 = [
   "2022 2학기 - 코딩테스트 [6명] (진행중)",
@@ -18,10 +18,11 @@ const RESUME2 = [
   "2022 1학기 - 알고리즘 - 코테반 [4명] (완료)",
 ];
 
-const Resume = ({setHeader}) => {
+const Resume = () => {
   const [year, setYear] = useState(2022);
   const study = STUDY2022.map((study, key) => <li key={key}>{study}</li>);
   const [resumeList, setResumeList] = useState("");
+  const header = true;
 
   const PrevYear = (currentYear) => {
     if (currentYear !== 2021) {
@@ -36,7 +37,7 @@ const Resume = ({setHeader}) => {
   };
 
   useEffect(() => {
-    GetAllFlagHistory.then((response) => {
+    getAllActivitiesAxios().then((response) => {
       console.log(response);
     });
 
@@ -47,12 +48,9 @@ const Resume = ({setHeader}) => {
     }
   }, [year]);
 
-  useEffect(() => {
-    setHeader(true);
-  }, []);
-
   return (
     <>
+      {header && <Header/>}
       <Mainbox>
         <Box>
           <FlexArea>

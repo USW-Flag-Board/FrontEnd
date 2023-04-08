@@ -1,7 +1,9 @@
 import styled from "styled-components";
+import { useDispatch } from 'react-redux';
+import { postActions } from '../redux/slice/boardSlice';
+import { useCallback } from "react";
 
 const SideBar = ({
-    setSelectBoard, 
     mainWidth, 
     paddingTop, 
     paddingTopMain, 
@@ -11,11 +13,13 @@ const SideBar = ({
     subColor, 
     subWidth, 
     title, 
-    items}) => {
-  
-    const handleBoardClick = (board) => {
-    setSelectBoard(board);
-  }
+    items,
+    boardTitle}) => {
+    
+  const dispatch = useDispatch();
+  const handleBoardClick = useCallback((board) => {
+    dispatch(postActions.getBoard(board));
+  },[dispatch])
   
   return (
     <SideArea
@@ -39,7 +43,7 @@ const SideBar = ({
           <ContentsTitle>{title}</ContentsTitle>
           <ItemBox>
             {items.map(({id, engName, krName}) => (
-              <Item key={id} onClick={()=> handleBoardClick(engName)}>{krName}</Item>
+              <Item key={id} onClick={()=> {handleBoardClick(engName); boardTitle(krName)}}>{krName}</Item>
             ))}
           </ItemBox>
         </SideBarContent>
@@ -51,9 +55,6 @@ const SideBar = ({
 const SideArea = styled.div`
   box-sizing: border-box;
   height: 100%;
-  @media screen and (max-width: 1200px){
-    display: none;
-  }
 `;
   
 const SideBarBox = styled.div`
@@ -67,9 +68,9 @@ const SideBarContent = styled.div`
 
 const ContentsTitle = styled.div`
   box-sizing: border-box;
-  font-size: 23px;
+  font-size: 1.4rem;
   font-weight: 700;
-  padding: 3rem 0px 1rem 2.5rem;
+  padding: 3rem 0 1rem 2.5rem;
   border-bottom: 1px solid #cccccc;
 `;
 
@@ -77,14 +78,14 @@ const ItemBox = styled.ul`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: 1rem 0px 3rem 2.5rem;
+  padding: 1rem 0 3rem 2.5rem;
 `;
 
 const Item = styled.li`
   box-sizing: border-box;
   font-size: 0.8rem;
   font-weight: 700;
-  padding: 0px 0px 1rem 0px;
+  padding: 0 0 1rem 0;
   cursor: pointer;
   &:hover{
     color: black;

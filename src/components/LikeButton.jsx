@@ -6,7 +6,6 @@ import styled from "styled-components";
 
 const LikeButton = () => {
   const [state, setState] = useState(false);
-
   const Like = () => {
     state ? setState(false) : setState(true);
   };

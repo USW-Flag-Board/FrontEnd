@@ -5,14 +5,18 @@ import "./fonts/NanumSquareNeo.css";
 const GlobalStyle = createGlobalStyle`
     ${reset}
     *{
+        box-sizing: border-box;
         text-decoration: none;
         font-family:NanumSquareNeo-Variable;
     }
     body{
-        color: white;
+        color: black;
+        list-style: none;
+        padding: 0;
         margin: 0;
-        background-color: #2C2C2C;
+        background-color: white;
         font-family:NanumSquareNeo-Variable;
+        box-sizing: border-box;
     }
 `;
 
