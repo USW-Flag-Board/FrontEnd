@@ -1,4 +1,3 @@
-import { type } from '@testing-library/user-event/dist/type';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
@@ -30,7 +29,7 @@ const ServiceAgree = ({setButtonState}) => {
   }, [checkItems, setButtonState])
 
   return (
-    <>
+    <IdPasswordArea>
       <IntroduceArea>
         Flaground
         <br />
@@ -70,25 +69,30 @@ const ServiceAgree = ({setButtonState}) => {
           <AgreeMessage>[필수] 개인정보 수집 및 이용 동의</AgreeMessage>
         </RelativeArea>
       </ServiceAgreeArea>
-    </>
+    </IdPasswordArea>
   );
 };
 
 export default ServiceAgree;
 
+const IdPasswordArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+`;
+
 const ServiceAgreeArea = styled.div`
   display: flex;
-  width: 450px;
-  justify-content: flex-start;
+  width: 80%;
   flex-direction: column;
 `;
 
 const AllAgreeMessage = styled.div`
   color: black;
-  font-size: 16px;
-  width: 450px;
-  padding-left: 25px;
-  line-height: 25px;
+  font-size: 1rem;
+  padding-left: 1.6rem;
+  line-height: 1.6rem;
   font-weight: 600;
 `;
 
@@ -99,40 +103,40 @@ const RelativeArea = styled.div`
 `;
 
 const AgreeButton = styled.input`
-  width: 20px;
-  height: 20px;
+  width: 1.2rem;
+  height: 1.25rem;
   margin-right: 0.8rem;
   appearance: none;
   border: 1px solid #868e96;
-  border-radius: 50px;
+  border-radius: 3.1rem;
   &:checked{
     background-color: #228be6;
   }
 `;
 
 const AgreeMessage = styled.label`
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 100;
-  line-height: 33px;
+  line-height: 2rem;
   color: black;
 `;
 
 const RowLine = styled.hr`
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
   border: 1px solid #9a9a9a;
   width: 100%;
   opacity: 0.6;
 `;
 
 const IntroduceArea = styled.div`
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 100;
-  line-height: 33px;
-  width: 450px;
+  line-height: 2.1rem;
+  width: 80%;
   color: black;
-  margin-top: 20px;
-  margin-bottom: 45px;
+  margin-top: 1.25rem;
+  margin-bottom: 2.8rem;
   text-align: left;
   display: flex;
   align-items: flex-end;

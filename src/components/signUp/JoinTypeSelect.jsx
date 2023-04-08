@@ -55,30 +55,27 @@ const JoinTypeSelect = ({ setButtonState, signUpData, setJoinType }) => {
 export default JoinTypeSelect;
 
 const IntroduceArea = styled.div`
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 100;
-  line-height: 33px;
-  width: 450px;
+  line-height: 2rem;
+  width: 80%;
   color: black;
-  margin-bottom:20px;
-  text-align: left;
-  display: flex;
-  align-items: flex-end;
+  margin-bottom: 1.25rem;
 `;
 
 const IntroduceJoinTypeArea = styled.div`
   border: 2px solid #9a9a9a;
-  border-radius: 20px;
-  font-size: 14px;
-  margin: 10px 0 40px 0;
-  padding: 20px;
+  border-radius: 1.25rem;
+  font-size: 0.9rem;
+  margin: 0.6rem 0 2.5rem 0;
+  padding: 1.25rem;
   color: black;
-  line-height: 28px;
+  line-height: 1.75rem;
   white-space: pre-wrap;
 `;
 
 const SortArea = styled.div`
-  width: 450px;
+  width: 100%;
   display: flex;
   flex-direction: column;
 `;
@@ -89,17 +86,17 @@ const CheckArea = styled.div`
 `;
 
 const CheckLabel = styled.label`
-  margin-left: 10px;
-  font-size: 20px;
+  margin-left: 0.6rem;
+  font-size: 1.25rem;
   color: black;
 `;
 
 const AgreeButton = styled.input`
-  width: 20px;
-  height: 20px;
+  width: 1.25rem;
+  height: 1.25rem;
   appearance: none;
   border: 1px solid #868e96;
-  border-radius: 50px;
+  border-radius: 3.1rem;
   &:checked{
     background-color: #228be6;
   }

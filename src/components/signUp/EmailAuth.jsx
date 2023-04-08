@@ -1,109 +1,84 @@
 import { useState } from "react";
 import { PostEmail, PostCurrentEmail } from "../../apis/auth";
 import styled from "styled-components";
+import { useEffect } from "react";
 
 const EmailAuth = ({
     setButtonState,
-    joinType,
-    loginId,
-    major,
-    name,
-    nickName,
-    password,
-    phoneNumber,
-    studentId,
+    setEmailAuth,
+    signUpData,
   }) => {
-    const [originEmailData, setOriginEmailData] = useState("");
-    const [emailStateMessage, setEmailStateMessage] = useState("");
+    const [state, setState] = useState({
+      email: "",
+      emailMessage: ""
+    });
+    const { email, emailMessage } = state;
     const [rePost, setRePost] = useState(false);
     const [certification, setCertification] = useState("");
-  
-    const EmailValid = () => {
-      if (originEmailData === "") {
-        return setEmailStateMessage("이메일을 정확히 입력해주세요.");
-      }
-  
-      PostEmail(originEmailData)
-        .then((response) => {
-          if (response.data.payload) {
-            return setEmailStateMessage("이미 사용중인 이메일입니다.");
-          }
-          setEmailStateMessage("");
-          return setButtonState(true);
-        })
-        .catch((error) => {
-          if (error.response.status === 400) {
-            setEmailStateMessage("이메일 앞부분만 정확하게 입력해주세요.");
-          }
-        });
-    };
-  
-    const AuthEmailPost = () => {
-      PostCurrentEmail(
-        originEmailData,
-        joinType,
-        loginId,
-        major,
-        name,
-        nickName,
-        password,
-        phoneNumber,
-        studentId
-      )
-        .then(() => {
-          alert("메일이 전송되었습니다.");
-          setRePost(true);
-        })
-        .catch((error) => {
-          if (error.response.status === 500) {
-            alert("서버 에러입니다. 관리자에게 문의해주세요.");
-          }
-        });
-    };
+
+    const handleAuthClick = () => {
+
+    }
+
+    const updateState = () => {
+
+    }
+
+    
+
+    useEffect(()=>{
+
+    }, [])
   
     return (
-      <>
+      <IdPasswordArea>
         <IntroduceArea>수원대학교 이메일 인증</IntroduceArea>
         <EmailInputArea>
-          <StaticText>이메일</StaticText>
-          <WriteArea
-            style={{
-              marginLeft: 73,
-              paddingLeft: 80,
-              width: 210,
-              marginRight: 10,
-            }}
-            onChange={(e) => {
-              setOriginEmailData(e.target.value);
-            }}
-            onBlur={() => EmailValid()}
-          ></WriteArea>
-          <StaticText style={{ left: 270 }}>@suwon.ac.kr</StaticText>
-          <AuthButton onClick={() => AuthEmailPost()}>
-            {rePost ? "재전송" : "인증번호\n발송"}
-          </AuthButton>
+          <EmailInputBox>
+            <WriteArea
+              type="text"
+              placeholder="이메일@suwon.ac.kr"
+              onChange={updateState}
+            />
+            <AuthButton 
+              onClick={handleAuthClick}>
+              {rePost ? "재전송" : "인증번호\n발송"}
+            </AuthButton>
+          </EmailInputBox>
         </EmailInputArea>
-        <InfoState style={{ width: "40%" }}>{emailStateMessage}</InfoState>
+        <InfoState>{emailMessage}</InfoState>
         <WriteArea
-          onChange={(e) => {
-            setCertification(e.target.value);
-          }}
-        ></WriteArea>
-        <RowLine style={{ marginTop: 50, width: 450 }} />
-        <IntroduceArea style={{ fontSize: 15, justifyContent: "center" }}>
+          placeholder="인증번호를 입력해주세요."
+          onChange={updateState}
+        />
+        <RowLine/>
+        <IntroduceArea>
           FLAGround 가입을 환영합니다.
         </IntroduceArea>
-      </>
+      </IdPasswordArea>
     );
   };
 
 export default EmailAuth;
 
-const EmailInputArea = styled.div`
-  position: relative;
+const IdPasswordArea = styled.div`
   display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  justify-content: flex-start;
+`;
+
+const EmailInputArea = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+`;
+
+
+const EmailInputBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 const AuthButton = styled.div`
@@ -112,26 +87,23 @@ const AuthButton = styled.div`
   align-items: center;
   justify-content: center;
   color: black;
-  font-size: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.6);
-  border-radius: 30px;
-  background: #181818;
-  width: 90px;
-  height: 50px;
-  margin: 10px 0px 10px 0px;
-  padding: 0px 13px 0px 13px;
+  font-size: 0.8rem;
+  border: 2px solid gainsboro;
+  border-radius: 1.9rem;
+  width: 25%;
+  height: 3.1rem;
+  padding: 0 0.8rem 0 0.8rem;
   transition: 0.2s;
   white-space: pre-line;
   &:hover {
     transition: 0.2s;
-    border-color: gainsboro;
-    background: #2b2b2b;
+    border-color: #228be6;
   }
 `;
 
 const RowLine = styled.hr`
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
   border: 1px solid #9a9a9a;
   width: 100%;
   opacity: 0.6;
@@ -140,53 +112,43 @@ const RowLine = styled.hr`
 const InfoState = styled.div`
   color: black;
   display: flex;
-  width: 100%;
-  font-size: 12px;
   justify-content: end;
-  height: 11px;
-  margin-bottom: 20px;
+  width: 75%;
+  font-size: 0.75rem;
+  height: 0.7rem;
+  margin-bottom: 1.25rem;
 `;
 
 const IntroduceArea = styled.div`
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 100;
-  line-height: 33px;
-  width: 450px;
+  line-height: 2rem;
+  width: 80%;
   color: black;
-  margin-top: 20px;
-  margin-bottom: 45px;
-  text-align: left;
+  margin-top: 1.25rem;
+  margin-bottom: 2.8rem;
   display: flex;
   align-items: flex-end;
 `;
 
 const WriteArea = styled.input`
-  font-size: 16px;
+  font-size: 1rem;
   color: black;
-  padding: 0 30px 0 20px;
-  height: 50px;
-  width: 400px;
-  background: transparent;
-  border-radius: 30px;
-  border: 2px solid rgba(255, 255, 255, 0.6);
+  padding: 0 1.9rem 0 1.25rem;
+  height: 3.1rem;
+  width: 80%;
+  border-radius: 1.9rem;
+  border: 2px solid gainsboro;
   outline: none;
-  margin: 20px;
-  margin-top: 10px;
-  margin-bottom: 10px;
   transition: 0.2s;
-  :hover {
+  &:nth-child(1){
+    width: 70%;
+  }
+  :focus {
     transition: 0.2s;
-    border-color: gainsboro;
+    border-color: black;
   }
   ::placeholder {
     color: black;
   }
-`;
-
-const StaticText = styled.div`
-  color: black;
-  position: absolute;
-  font-size: 16px;
-  left: 95px;
-  top: 28px;
 `;

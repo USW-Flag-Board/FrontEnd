@@ -13,29 +13,29 @@ export const SORTBOX_DATA = [
     },
   ];
 
-  export const ID_PASSWORD_MESSAGE = {
-      id: [
-        "아이디를 정확히 입력해주세요.",
-        "아이디에는 특수문자를 입력할 수 없습니다.",
-        "아이디에는 한글을 포함할 수 없습니다.",
-        "아이디에는 공백을 포함할 수 없습니다.",
-        "아이디는 세글자 이상으로 설정해주세요.",
-      ],
-      password: [
-        "비밀번호를 정확히 입력해주세요.",
-        "비밀번호의 길이는 8-20자 이내여야 합니다.",
-        "특수문자가 입력되지 않았습니다.",
-        "비밀번호에는 한글을 포함할 수 없습니다.",
-        "비밀번호에는 숫자를 포함해야 합니다.",
-        "비밀번호에는 공백을 포함할 수 없습니다.",
-        "사용 가능한 비밀번호입니다.",
-      ],
-      passwordVerify: [
-        "비밀번호 확인을 입력해주세요.",
-        "비밀번호와 일치하지 않습니다.",
-        "비밀번호와 일치합니다.",
-      ]
-  }
-    
 
-  
+  // eslint-disable-next-line
+export const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+export const korExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
+export const numExp = /[0-9]/g;
+export const spaceExp = /\s/;
+export const engExp = /[a-zA-Z]/g;
+export const loginRegex = {
+    id: /^[a-zA-Z0-9]{4,16}$/,
+    password: /^(?=.*[a-zA-Z])(?=.*[0-9!@#$%^&*])(?=.{8,20})/,
+  };
+export const nameRegex = /^[a-zA-Z가-힣\s-' ]{2,20}$/;
+export const phoneRegex = /^\d{10,11}$/;
+export const studentIdRegex = /^\d{8}$/;
+
+
+export const SPECIALIZED = [
+  {
+    label: "국어국문",
+    value: "국어국문",
+  },
+  {
+    label: "컴퓨터SW",
+    value: "컴퓨터SW",
+  },
+];

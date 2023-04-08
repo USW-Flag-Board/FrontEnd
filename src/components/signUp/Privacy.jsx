@@ -1,263 +1,152 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { regExp, korExp, numExp,spaceExp, engExp, SPECIALIZED } from "../../constants/user";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { SPECIALIZED, studentIdRegex, nameRegex, phoneRegex } from "../../constants/signUp";
 
 const Privacy = ({
     setButtonState,
-    setName,
-    setNickName,
-    setMajor,
-    setStudentId,
-    setPhoneNumber,
+    setPrivacy,
+    signUpData
   }) => {
-    const [nameData, setNameData] = useState("");
-    const [studentIdData, setStudentIdData] = useState("");
-    const [phoneNumberData, setPhoneNumberData] = useState("");
-    const [nickNameData, setNickNameData] = useState("");
-    const [majorData, setMajorData] = useState("");
-    const [nameMessage, setNameMessage] = useState(" ");
-    const [nickNameMessage, setNickNameMessage] = useState("");
-    const [majorMessage, setMajorMessage] = useState("");
-    const [studentIdMessage, setStudentIdMessage] = useState("");
-    const [phoneNumberMessage, setPhoneNumberMessage] = useState("");
-    const [checkInfo, setCheckInfo] = useState([
-      false,
-      false,
-      false,
-      false,
-      false,
-    ]);
-  
-    const BooleanCheck = (index, state) => {
-      setCheckInfo((prevState) =>
-        prevState.map((item, idx) => (idx === index ? state : item))
-      );
+    const [state, setState] = useState({
+      name: "",
+      studentId: "",
+      phoneNumber: "",
+      nickName: "",
+      major: "",
+      nameMessage: "",
+      studentIdMessage: "",
+      phoneNumberMessage: "",
+      nickNameMessage: "",
+      majorMessage: "",
+    });
+    const { name, major, nickName, studentId, phoneNumber } = state;
+    const { studentIdMessage, phoneNumberMessage, nickNameMessage, majorMessage, nameMessage } = state;
+    console.log(state)
+    const updateState = (key, value) => {
+      setState(prevState => ({
+        ...prevState,
+        [key]: value
+      }));
     };
-  
-    const NameValid = () => {
-      if (nameData === "") {
-        setNameMessage("이름이 입력되지 않았습니다.");
-        BooleanCheck(0, false);
-      } else if (regExp.test(nameData)) {
-        setNameMessage("이름에는 특수문자를 입력할 수 없습니다.");
-        BooleanCheck(0, false);
-      } else if (numExp.test(nameData)) {
-        setNameMessage("이름에는 숫자를 포함할 수 없습니다.");
-        BooleanCheck(0, false);
-      } else if (spaceExp.test(nameData)) {
-        setNameMessage("이름에는 공백을 포함할 수 없습니다.");
-        BooleanCheck(0, false);
-      } else {
-        setNameMessage("");
-        BooleanCheck(0, true);
+
+    const handleInputChange = (event) => {
+      const { value, name } = event.target;
+      updateState(name, value);
+    
+      switch (name) {
+        case "name":
+          updateState("nameMessage", nameRegex.test(value) ? "O" : "이름은 한글, 영문 대소문자, 띄어쓰기, 특수문자(-, ')만 입력 가능하며, 최소 2자 이상, 최대 20자 이하로 입력해야 합니다.");
+          break;
+        case "phoneNumber":
+          updateState("phoneNumberMessage", phoneRegex.test(value.replace(/-/g, "").replace(/ /g, "")) ? "O" : "핸드폰번호는 숫자 10자리 또는 11자리만 입력 가능합니다.");
+          break;
+        case "nickName":
+          updateState("nickNameMessage", value.length >= 3 ? "O" : "3글자 이상 입력해주세요.");
+          break;
+        case "major":
+          updateState("majorMessage", value === "전공을 선택해주세요" ? "": "O");
+          break;
+        case "studentId":
+          updateState("studentIdMessage", studentIdRegex.test(value) ? "O" : "학번은 숫자 8자리로 입력해야 합니다.");
+          break;
+        default:
+          break;
       }
     };
-  
-    const NickNameValid = () => {
-      if (nickNameData === "") {
-        setNickNameMessage("닉네임이 입력되지 않았습니다.");
-        BooleanCheck(1, false);
-      } else {
-        setNickNameMessage("");
-        BooleanCheck(1, true);
-      }
-    };
-  
-    const MajorValid = () => {
-      if (majorData === "" || majorData === "전공을 선택하세요") {
-        setMajorMessage("전공을 선택해주세요.");
-        BooleanCheck(2, false);
-      } else {
-        setMajorMessage("");
-        BooleanCheck(2, true);
-      }
-    };
-  
-    const StudentIdValid = () => {
-      if (studentIdData === "") {
-        setStudentIdMessage("학번을 입력해주세요.");
-        BooleanCheck(3, false);
-      } else if (regExp.test(studentIdData)) {
-        setStudentIdMessage("학번에는 특수문자가 포함되지 않습니다.");
-        BooleanCheck(3, false);
-      } else if (korExp.test(studentIdData)) {
-        setStudentIdMessage("학번에는 한글이 포함되지 않습니다.");
-        BooleanCheck(3, false);
-      } else if (spaceExp.test(studentIdData)) {
-        setStudentIdMessage("학번에는 공백이 포함되지 않습니다.");
-        BooleanCheck(3, false);
-      } else if (engExp.test(studentIdData)) {
-        setStudentIdMessage("학번에는 영문이 포함되지 않습니다.");
-        BooleanCheck(3, false);
-      } else if (studentIdData.length !== 8) {
-        setStudentIdMessage("학번의 길이는 8자입니다.");
-        BooleanCheck(3, false);
-      } else {
-        setStudentIdMessage("");
-        BooleanCheck(3, true);
-      }
-    };
-  
-    const PhoneNumberValid = () => {
-      if (phoneNumberData === "") {
-        setPhoneNumberMessage("핸드폰 번호를 입력해주세요.");
-        BooleanCheck(4, false);
-      } else if (phoneNumberData.includes("-")) {
-        setPhoneNumberMessage("전화번호는 하이폰을 제외한 숫자만 입력해주세요.");
-        BooleanCheck(4, false);
-      } else if (regExp.test(phoneNumberData)) {
-        setPhoneNumberMessage("전화번호에는 특수문자가 포함되지 않습니다.");
-        BooleanCheck(4, false);
-      } else if (korExp.test(phoneNumberData)) {
-        setPhoneNumberMessage("전화번호에는 한글이 포함되지 않습니다.");
-        BooleanCheck(4, false);
-      } else if (spaceExp.test(phoneNumberData)) {
-        setPhoneNumberMessage("전화번호에는 공백이 포함되지 않습니다.");
-        BooleanCheck(4, false);
-      } else if (engExp.test(phoneNumberData)) {
-        setPhoneNumberMessage("전화번호에는 영문이 포함되지 않습니다.");
-        BooleanCheck(4, false);
-      } else if (phoneNumberData.length !== 11) {
-        setPhoneNumberMessage("전화번호를 정확히 입력해주세요.");
-        BooleanCheck(3, false);
-      } else {
-        setPhoneNumberMessage("");
-        BooleanCheck(4, true);
-      }
-    };
-  
+
     useEffect(() => {
-      setButtonState(
-        checkInfo[0] & checkInfo[1] & checkInfo[2] & checkInfo[3] & checkInfo[4]
-      );
-      setName(nameData);
-      setNickName(nickNameData);
-      setMajor(majorData);
-      setStudentId(studentIdData);
-      setPhoneNumber(phoneNumberData);
-    }, [checkInfo]);
+      const isAllValid = Object.values(state).slice(0, 5).every((value) => value !== "" && value !== undefined) && Object.values(state).slice(5).every((message) => message === "O");
+      setButtonState(isAllValid);
+      if(isAllValid){
+        setPrivacy({
+          ...signUpData,
+          major: major,
+          name: name,
+          nickName: nickName,
+          studentId: studentId,
+          phoneNumber: phoneNumber
+        })
+      }
+    }, [setButtonState, state]);
   
     return (
-      <>
+      <IdPasswordArea>
         <IntroduceArea>사용자 정보를 입력하세요.</IntroduceArea>
-        <RelativeArea>
-          <WriteArea
-            type="text"
-            placeholder="이름"
-            key="name"
-            onChange={(e) => {
-              setNameData(e.target.value);
-            }}
-            onBlur={() => {
-              NameValid();
-            }}
-          />
-          <InfoState style={{ marginBottom: 0 }}>{nameMessage}</InfoState>
-        </RelativeArea>
-        <RelativeArea>
-          <WriteArea
-            type="text"
-            placeholder="닉네임"
-            onChange={(e) => {
-              setNickNameData(e.target.value);
-            }}
-            onBlur={(e) => {
-              NickNameValid(e);
-            }}
-          />
-          <InfoState style={{ marginBottom: 0 }}>{nickNameMessage}</InfoState>
-        </RelativeArea>
-        <RelativeArea>
-          <SelectSpecialize
-            onChange={(e) => {
-              setMajorData(e.target.value);
-            }}
-            onBlur={() => {
-              MajorValid();
-            }}
-          >
-            {SPECIALIZED.map((special, index) => (
-              <option value={special.value} key={index}>
-                {special.label}
-              </option>
-            ))}
-          </SelectSpecialize>
-          <InfoState style={{ marginBottom: 0 }}>{majorMessage}</InfoState>
-        </RelativeArea>
-        <RelativeArea>
-          <WriteArea
-            type="text"
-            placeholder="학번"
-            onChange={(e) => {
-              setStudentIdData(e.target.value);
-            }}
-            onBlur={() => {
-              StudentIdValid();
-            }}
-          />
-          <InfoState style={{ marginBottom: 0 }}>{studentIdMessage}</InfoState>
-        </RelativeArea>
-        <RelativeArea>
-          <WriteArea
-            type="text"
-            placeholder="ex) 01012345678"
-            onChange={(e) => {
-              setPhoneNumberData(e.target.value);
-            }}
-            onBlur={() => {
-              PhoneNumberValid();
-            }}
-          />
-          <InfoState style={{ marginBottom: 0 }}>{phoneNumberMessage}</InfoState>
-        </RelativeArea>
-      </>
+        <WriteArea
+          type="text"
+          placeholder="이름"
+          name="name"
+          onChange={handleInputChange}
+        />
+        <InfoState>{nameMessage}</InfoState>
+        <WriteArea
+          type="text"
+          placeholder="닉네임"
+          name="nickName"
+          onChange={handleInputChange}
+        />
+        <InfoState>{nickNameMessage}</InfoState>
+        <SelectSpecialize
+          name="major"
+          onChange={handleInputChange}
+        >
+          <option value="전공을 선택해주세요">전공을 선택해주세요.</option>
+          {SPECIALIZED.map((special, index) => (
+            <option value={special.value} key={index}>
+              {special.label}
+            </option>
+          ))}
+        </SelectSpecialize>
+        <InfoState>{majorMessage}</InfoState>
+        <WriteArea
+          type="text"
+          placeholder="학번"
+          name="studentId"
+          onChange={handleInputChange}
+        />
+        <InfoState>{studentIdMessage}</InfoState>
+        <WriteArea
+          type="text"
+          placeholder="ex) 01012345678"
+          name="phoneNumber"
+          onChange={handleInputChange}
+        />
+        <InfoState>{phoneNumberMessage}</InfoState>
+      </IdPasswordArea>
     );
   };
 
 export default Privacy;
 
-const IntroduceArea = styled.div`
-  font-size: 24px;
-  font-weight: 100;
-  line-height: 33px;
-  width: 450px;
-  color: black;
-  margin-top: 20px;
-  margin-bottom: 45px;
-  text-align: left;
+const IdPasswordArea = styled.div`
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 `;
 
-const Icon = styled(FontAwesomeIcon)`
+const IntroduceArea = styled.div`
+  font-size: 1.5rem;
+  font-weight: 100;
+  line-height: 2rem;
+  width: 80%;
   color: black;
-  position: absolute;
-  left: 430px;
-  top: 28px;
-`;
-
-const RelativeArea = styled.div`
-  position: relative;
+  margin-top: 1.25rem;
+  margin-bottom: 2.8rem;
 `;
 
 const WriteArea = styled.input`
-  font-size: 16px;
+  font-size: 1rem;
   color: black;
-  padding: 0 30px 0 20px;
-  height: 50px;
-  width: 400px;
-  background: transparent;
-  border-radius: 30px;
-  border: 2px solid rgba(255, 255, 255, 0.6);
+  padding: 0 1.9rem 0 1.25rem;
+  height: 3.1rem;
+  width: 80%;
+  border-radius: 1.9rem;
+  border: 2px solid gainsboro;
   outline: none;
-  margin: 20px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  transition: 0.2s;
-  :hover {
-    transition: 0.2s;
-    border-color: gainsboro;
+  margin: 0.6rem 1.25rem;
+  :focus {
+    border-color: black;
   }
   ::placeholder {
     color: black;
@@ -267,34 +156,26 @@ const WriteArea = styled.input`
 const InfoState = styled.div`
   color: black;
   display: flex;
-  width: 100%;
-  font-size: 12px;
+  width: 75%;
+  font-size: 0.75rem;
   justify-content: end;
-  height: 11px;
-  margin-bottom: 20px;
+  height: 0.7rem;
+  margin-bottom: 1.25rem;
 `;
 
 const SelectSpecialize = styled.select`
-  font-size: 16px;
+  font-size: 1rem;
   color: black;
-  padding-right: 30px;
-  padding-left: 20px;
-  height: 54px;
-  width: 450px;
-  background: transparent;
-  border-radius: 30px;
-  border: 2px solid rgba(255, 255, 255, 0.6);
+  padding-left: 1.25rem;
+  height: 3.4rem;
+  width: 80%;
+  border-radius: 1.9rem;
+  border: 2px solid gainsboro;
   outline: none;
-  margin: 20px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  transition: 0.2s;
-  :hover {
-    transition: 0.2s;
-    border-color: gainsboro;
-  }
-
-  option {
-    background: #2c2c2c;
+  margin: 1.25rem;
+  margin-top: 0.6rem;
+  margin-bottom: 0.6rem;
+  :focus {
+    border-color: black;
   }
 `;

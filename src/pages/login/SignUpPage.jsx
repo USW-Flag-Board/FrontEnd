@@ -52,12 +52,14 @@ const SignUpPage = () => {
             <Privacy
               setButtonState={setButtonState}
               setPrivacy={setSignUpData}
+              signUpData={setSignUpData}
             />
           )}
           {signUpIndex === 4 && (
             <EmailAuth
               setButtonState={setButtonState}
-              emailAuth={signUpData}
+              setEmailAuth={setSignUpData}
+              signUpData={signUpData}
             />
           )}
           <AccountButton
@@ -90,7 +92,6 @@ const PageArea = styled.div`
 
 const PageBox = styled.div`
   width: 80%;
-  height: 700px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -124,7 +125,7 @@ const RadioArea = styled.div`
 const Radio = styled.div`
   width: 20px;
   height: 20px;
-  margin: 0px 5px 0px 5px;
+  margin: 0 5px 1rem 5px;
   transition: 0.2s;
   background: none;
   border: 2px solid #9a9a9a;
@@ -143,7 +144,7 @@ const AccountButton = styled.button`
   margin-bottom: 30px;
   border-radius: 28px;
   height: 60px;
-  width: 450px;
+  width: 80%;
   transition: 0.2s;
 
   &.close {

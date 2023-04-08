@@ -82,13 +82,6 @@ const UserBox = styled.div`
   padding: 0 0.5rem;
 `;
 
-const BoardResultBox = styled.div`
-  
-`;
-
-const BoardResultTitle = styled.div`
-  
-`;
 
 
 
