@@ -92,7 +92,7 @@ const CheckLabel = styled.label`
 `;
 
 const AgreeButton = styled.input`
-  width: 1.25rem;
+  width: 5%;
   height: 1.25rem;
   appearance: none;
   border: 1px solid #868e96;

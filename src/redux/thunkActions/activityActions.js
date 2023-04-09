@@ -1,9 +1,9 @@
 import { activityActions } from '../slice/activitySlice';
-import { getAllActivitiesAxios } from '../../apis/activityAPI';
+import { getDataAPI } from '../../apis/getDataAPI';
 
-const getAllactivitiesAPI = () => {
+const getAllactivitiesAPI = (url) => {
     return async function(dispatch){
-        const response = await getAllActivitiesAxios();
+        const response = await getDataAPI(url);
         dispatch(activityActions.getAllActivities(response));
     };
 };

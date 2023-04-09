@@ -18,7 +18,6 @@ const SignUpPage = () => {
     phoneNumber: "",
     studentId: "",
   })
-  console.log(signUpData)
   const NextIndex = () => {
     setSignUpIndex((signUpIndex) => signUpIndex + 1);
   };
@@ -52,7 +51,7 @@ const SignUpPage = () => {
             <Privacy
               setButtonState={setButtonState}
               setPrivacy={setSignUpData}
-              signUpData={setSignUpData}
+              signUpData={signUpData}
             />
           )}
           {signUpIndex === 4 && (
@@ -91,7 +90,7 @@ const PageArea = styled.div`
 `;
 
 const PageBox = styled.div`
-  width: 80%;
+  width: 40%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -102,10 +101,10 @@ const SignUpArea = styled.div`
   align-items: center;
   justify-content: flex-start;
   display: flex;
-  width: 600px;
+  width: 100%;
   height: 100%;
   border: 2px solid #9a9a9a;
-  border-radius: 20px;
+  border-radius: 1.25rem;
 `;
 
 const Logo = styled.img`
@@ -114,18 +113,17 @@ const Logo = styled.img`
 `;
 
 const RadioArea = styled.div`
-  width: 220px;
-  height: 30px;
-  margin-top: 10px;
+  width: 50%;
+  margin-top: 0.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
 const Radio = styled.div`
-  width: 20px;
-  height: 20px;
-  margin: 0 5px 1rem 5px;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0 0.3rem 1rem 0.3rem;
   transition: 0.2s;
   background: none;
   border: 2px solid #9a9a9a;
@@ -140,9 +138,9 @@ const Radio = styled.div`
 
 const AccountButton = styled.button`
   color: black;
-  margin-top: 10px;
-  margin-bottom: 30px;
-  border-radius: 28px;
+  margin-top: 0.6rem;
+  margin-bottom: 1.9rem;
+  border-radius: 1.75rem;
   height: 60px;
   width: 80%;
   transition: 0.2s;

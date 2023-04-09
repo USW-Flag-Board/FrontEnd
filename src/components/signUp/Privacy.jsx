@@ -21,7 +21,7 @@ const Privacy = ({
     });
     const { name, major, nickName, studentId, phoneNumber } = state;
     const { studentIdMessage, phoneNumberMessage, nickNameMessage, majorMessage, nameMessage } = state;
-    console.log(state)
+    console.log(signUpData)
     const updateState = (key, value) => {
       setState(prevState => ({
         ...prevState,
@@ -67,7 +67,7 @@ const Privacy = ({
           phoneNumber: phoneNumber
         })
       }
-    }, [setButtonState, state]);
+    }, [state]);
   
     return (
       <IdPasswordArea>

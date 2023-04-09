@@ -32,7 +32,7 @@ const Header = () => {
         navigate('/board')
         break;
       case 'ACTIVITY':
-        dispatch(activitiesActions.getAllactivitiesAPI())
+        dispatch(activitiesActions.getAllactivitiesAPI('/activities'))
         navigate('/activity');
         break;
       case 'INTRODUCTION':
