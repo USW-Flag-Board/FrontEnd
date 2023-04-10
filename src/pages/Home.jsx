@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { Header } from "../components";
-import ImageSlider from "../components/ImageSlider";
+import { Header, ImageSlider } from "../components";
+
 const Home = () => {
   const header = true;
 

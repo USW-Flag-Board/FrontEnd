@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import headerData from "../constants/header";
+import { LOGOUT_USER_ITEMS, HEADER_ITEMS } from "../constants/header";
 import logo from "../assets/images/logo2.png"
 import { useDispatch, useSelector } from "react-redux";
 import activitiesActions from "../redux/thunkActions/activityActions";
@@ -13,7 +13,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
-  const handleUserItemClick = (item) => {
+  const handleItemClick = (item) => {
     switch(item){
       case '로그인':
         navigate('/login')
@@ -21,13 +21,6 @@ const Header = () => {
       case '회원가입':
         navigate('/signup');
         break;
-      default:
-        
-    }
-  };
-
-  const handleMenuClick = (item) => {
-    switch(item){
       case 'BOARD':
         navigate('/board')
         break;
@@ -39,9 +32,10 @@ const Header = () => {
         navigate('/resume');
         break;
       default:
-        
+        break;
     }
-  }
+  };
+
 
   return (
     <HeaderArea>
@@ -55,8 +49,8 @@ const Header = () => {
         </LogoBox>
         <MenuItemBox>
           <MenuItems>
-            {headerData.HEADER_ITEMS.map((item) => (
-              <MenuButton key={item} onClick={()=> handleMenuClick(item)}>
+            {HEADER_ITEMS.map((item) => (
+              <MenuButton key={item} onClick={()=> handleItemClick(item)}>
                 {item}
                 <DropHeaderArea>
 
@@ -71,8 +65,8 @@ const Header = () => {
             <InputBase type="text" />
           </SearchPaper>
           <UserBox>
-            {headerData.LOGOUT_USER_ITEMS.map((item)=>(
-              <UserButton type="button" key={item} onClick={()=> handleUserItemClick(item)}>{item}</UserButton>
+            {LOGOUT_USER_ITEMS.map((item)=>(
+              <UserButton type="button" key={item} onClick={()=> handleItemClick(item)}>{item}</UserButton>
             ))}
           </UserBox>
         </SearchBox>

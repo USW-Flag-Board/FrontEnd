@@ -1,8 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home, SearchPage, Resume, Activity } from "./pages";
-import { PostContentPage, BulletinBoard, EditPost, WritePost } from "../src/pages/board";
-import { EditUser, ChangePw, MyPage,} from "./pages/user";
-import { SignUpPage, LoginPage, FindId, FindPw } from "./pages/login";
+import { PostContentPage, BulletinBoard, EditPost, WritePost, EditUser, ChangePw, MyPage, SignUpPage, LoginPage, FindId, FindPw, Home, SearchPage, Resume, Activity } from "./pages";
 import GlobalStyle from "./styles/GlobalStyle";
 
 const App = () => {

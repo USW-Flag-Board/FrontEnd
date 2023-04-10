@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import IdRememberButton from "../../components/IdRememberButton";
+import { IdRememberButton } from "../../components";
 import { PostLogin } from "../../apis/auth";
 import { LocalStorage, SessionStorage } from "../../utils/browserStorage";
 import { cookiesOption } from "../../utils/cookiesOption";

@@ -6,43 +6,45 @@ const ContentModal = ({ closeModal }) => {
 
     const handleApplyClick = () => { 
       setApply(!apply);
-    }
+    };
+
     return(
-    <ModalArea>
-      <ModalBox>
-        <SelectAndTitle>
-          <Select>
-            PROJECT
-          </Select>
-          <TitleArea>
-            <Title>FLAG 프론트엔드(React) 추가 팀원 모집</Title>
-          </TitleArea>
-        </SelectAndTitle>
-        <Master>활동장: 어준혁</Master>
-        <ContentBox>
-          <Content
-            placeholder="내용을 입력해주세요."
-            // value={content}
-          >안녕하세요. 플래그 프론트엔드 팀장 어준혁입니다.</Content>
-        </ContentBox>
-        <CheckBox>
-          <RadioBox>
-            <Span>깃허브 링크:</Span>
-              https://github.com/USW-Flag-Board/FrontEnd.git
-          </RadioBox>
-        </CheckBox>
-        <ButtonBox>
-          {apply ?
-            <ModalButton className="onApply" onClick={handleApplyClick}>신청하기</ModalButton>
-          :
-            <ModalButton className="offApply" onClick={handleApplyClick}>취소하기</ModalButton>
-          }
-          <ModalButton onClick={closeModal}>모달닫기</ModalButton>
-        </ButtonBox>
-      </ModalBox>
-    </ModalArea>
+      <ModalArea>
+        <ModalBox>
+          <SelectAndTitle>
+            <Select>
+              PROJECT
+            </Select>
+            <TitleArea>
+              <Title>FLAG 프론트엔드(React) 추가 팀원 모집</Title>
+            </TitleArea>
+          </SelectAndTitle>
+          <Master>활동장: 어준혁</Master>
+          <ContentBox>
+            <Content
+              placeholder="내용을 입력해주세요."
+              // value={content}
+            >안녕하세요. 플래그 프론트엔드 팀장 어준혁입니다.</Content>
+          </ContentBox>
+          <CheckBox>
+            <RadioBox>
+              <Span>깃허브 링크:</Span>
+                https://github.com/USW-Flag-Board/FrontEnd.git
+            </RadioBox>
+          </CheckBox>
+          <ButtonBox>
+            <div></div>
+            {apply ?
+              <ModalButton className="onApply" onClick={handleApplyClick}>신청하기</ModalButton>
+            :
+              <ModalButton className="offApply" onClick={handleApplyClick}>취소하기</ModalButton>
+            }
+            <ModalButton onClick={closeModal}>모달닫기</ModalButton>
+          </ButtonBox>
+        </ModalBox>
+      </ModalArea>
     )
-}
+  }
 
 export default ContentModal;
 
@@ -98,7 +100,7 @@ const TitleArea = styled.div`
 `;
 
 const Title = styled.div`
-
+  font-size: 1rem;
 `;
 
 const Master = styled.div`
@@ -146,7 +148,7 @@ const RadioBox = styled.div`
   font-size: 0.8rem;
 `;
 
-const ButtonBox = styled.form`
+const ButtonBox = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -167,6 +169,7 @@ const ModalButton = styled.button`
   background-color: #404040;
   color: white;
 `;
+
 
 const Span = styled.span`
     margin-right: 1rem;

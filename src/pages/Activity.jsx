@@ -1,56 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Header } from "../components";
+import { useDispatch, useSelector } from "react-redux";
+import { Header, ActivityCard, Toggle, WriteModal, ContentModal } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
-import ActivityCard from "../components/activity/ActivityCard";
-import Toggle from "../components/Toggle";
-import WriteModal from "../components/activity/WriteModal";
-import ContentModal from "../components/activity/ContentModal";
 import activityData from "../constants/activity";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+
+const allActivities = {
+  2022: {
+    PROJECT: [{id: 1, name: "제목1", leader: "어준혁", activityType: "PROJECT", }],
+    MENTORING: [{id: 2, name: "제목2", leader: "문희조", activityType: "MENTORING", }],
+    STUDY: [{id: 3, name: "제목3", leader: "정충일", activityType: "STUDTY", }],
+  },
+  2023: { 
+    PROJECT: [{id: 4, name: "제목4", leader: "이준엽", activityType: "PROJECT", }],
+    MENTORING: [{id: 5, name: "제목5", leader: "김진수", activityType: "MENTORING", }],
+    STUDY: [{id: 6, name: "제목6", leader: "조주현", activityType: "STUDTY", }],
+  },
+};
 
 const Activity = () => {
   const header = true;
   const [isOpen, setIsOpen] = useState(false);
   const [contentOpen, setContentOpen] = useState(false);
+  const [cardId, setCardId] = useState();
   const [kategorie, setKategorie] =  useState("전체");
   const dispatch = useDispatch();
-  const allActivities = useSelector((state)=> state.activitySlice.getAllActivitiesData);
-  console.log(allActivities);
+  // const allActivities = useSelector((state)=> state.activitySlice.getAllActivitiesData);
   // useEffect(()=>{
   // }, [])
 
-  const writeModal = () => {
-    setIsOpen(!isOpen);
-  };
 
-
-  const contentModal = () => {
+  const handleCard = () => {
     setContentOpen(!contentOpen);
-  };
+  }
+
+  const handleWrite = () => {
+    setIsOpen(!isOpen);
+  }
 
   const KategorieClick = (title) => {
     setKategorie(title)
   };
 
-  const ActivityCardClick = (id) => {
-    
-  }
-
-
   return (
     <>
       {header && <Header />}
-      {isOpen && <WriteModal closeModal={writeModal} />}
-      {contentOpen && <ContentModal closeModal={contentModal} />}
+      {isOpen && <WriteModal closeModal={handleWrite} />}
+      {contentOpen && <ContentModal closeModal={handleCard}/>}
       <ActivityArea>
         <ActivityBox>
           <KategorieBox>
             {activityData.ACTIVITY_CATEGORIE.map(({ id, icon, title }) => (
               <Kategorie 
                 key={id}
+
                 onClick={() => KategorieClick(title)}>
                 <KategorieIcon icon={icon} />
                 <KategorieContent>{title}</KategorieContent>
@@ -62,9 +66,9 @@ const Activity = () => {
               <SwitchTitle>모집 중만 보기</SwitchTitle>
               <Toggle />
             </SwitchBox>
-            <ActivityWriteButton type="button">
+            <ActivityWriteButton onClick={handleWrite} type="button">
               <WriteButtonIcon icon={faPencil} />
-              <WriteButton type="button" onClick={writeModal}>
+              <WriteButton>
                 글쓰기
               </WriteButton>
             </ActivityWriteButton>
@@ -72,7 +76,7 @@ const Activity = () => {
         </ActivityBox>
         <CardArea>
           {allActivities &&
-            <Card onClick={contentModal}>
+            <Card onClick={handleCard}>
               {Object.keys(allActivities).map(year => (
                 Object.keys(allActivities[year]).map((type) => (
                   allActivities[year][type].map(({id, name, leader, activityType, createdAt}) => (                  
@@ -81,14 +85,12 @@ const Activity = () => {
                       title={name}
                       name={leader}
                       type={activityType}
-                      createAt={createdAt}
-                      onClick={()=> ActivityCardClick(id)}
+                      // createAt={createdAt}
                     />
                   ))
                 ))
               ))}
-            </Card>
-          }
+            </Card>}
         </CardArea>
       </ActivityArea>
     </>

@@ -1,6 +1,6 @@
 import { baseInstance } from "./instance";
 
-export const getDataAPI = async (url) => {
+export const getDataAxios = async (url) => {
     try{
         const res = await baseInstance.get(url);
         return res;

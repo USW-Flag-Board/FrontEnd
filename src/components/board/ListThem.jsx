@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import boardsActions from "../redux/thunkActions/boardsActions";
+import boardsActions from "../../redux/thunkActions/boardsActions";
 import styled from 'styled-components';
 
 const ListThem = ({itemContents}) => {

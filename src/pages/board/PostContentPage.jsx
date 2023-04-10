@@ -14,7 +14,6 @@ const PostContentPage = () => {
   const [input, setInput] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(getPost);
 
   const onChange = (e) => {
     setInput(e.target.value);
