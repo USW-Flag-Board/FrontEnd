@@ -8,12 +8,6 @@ export const PostLogin = (loginId, password) => {
   });
 };
 
-export const PostLoginId = (loginId) => {
-  return baseInstance.post("/auth/check/id", {
-    loginId,
-  });
-};
-
 export const PostEmail = (originEmailData) => {
   return baseInstance.post("/auth/check/email", {
     email: originEmailData + "@suwon.ac.kr",

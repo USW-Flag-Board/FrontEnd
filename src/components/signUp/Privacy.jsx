@@ -10,18 +10,15 @@ const Privacy = ({
     const [state, setState] = useState({
       name: "",
       studentId: "",
-      phoneNumber: "",
       nickName: "",
       major: "",
       nameMessage: "",
       studentIdMessage: "",
-      phoneNumberMessage: "",
       nickNameMessage: "",
       majorMessage: "",
     });
-    const { name, major, nickName, studentId, phoneNumber } = state;
-    const { studentIdMessage, phoneNumberMessage, nickNameMessage, majorMessage, nameMessage } = state;
-    console.log(signUpData)
+    const { name, major, nickName, studentId } = state;
+    const { studentIdMessage, nickNameMessage, majorMessage, nameMessage } = state;
     const updateState = (key, value) => {
       setState(prevState => ({
         ...prevState,
@@ -36,9 +33,6 @@ const Privacy = ({
       switch (name) {
         case "name":
           updateState("nameMessage", nameRegex.test(value) ? "O" : "이름은 한글, 영문 대소문자, 띄어쓰기, 특수문자(-, ')만 입력 가능하며, 최소 2자 이상, 최대 20자 이하로 입력해야 합니다.");
-          break;
-        case "phoneNumber":
-          updateState("phoneNumberMessage", phoneRegex.test(value.replace(/-/g, "").replace(/ /g, "")) ? "O" : "핸드폰번호는 숫자 10자리 또는 11자리만 입력 가능합니다.");
           break;
         case "nickName":
           updateState("nickNameMessage", value.length >= 3 ? "O" : "3글자 이상 입력해주세요.");
@@ -64,7 +58,6 @@ const Privacy = ({
           name: name,
           nickName: nickName,
           studentId: studentId,
-          phoneNumber: phoneNumber
         })
       }
     }, [state]);
@@ -105,13 +98,6 @@ const Privacy = ({
           onChange={handleInputChange}
         />
         <InfoState>{studentIdMessage}</InfoState>
-        <WriteArea
-          type="text"
-          placeholder="ex) 01012345678"
-          name="phoneNumber"
-          onChange={handleInputChange}
-        />
-        <InfoState>{phoneNumberMessage}</InfoState>
       </IdPasswordArea>
     );
   };

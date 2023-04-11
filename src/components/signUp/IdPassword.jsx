@@ -4,6 +4,8 @@ import { loginRegex } from "../../constants/signUp";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { signUpIdCheck } from "../../apis/auth";
+import { baseInstance } from "../../apis/instance";
 
 const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
     const [state, setState] = useState({
@@ -12,10 +14,24 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
       passwordConfirm: "",
       idMessage: "",
       passwordMessage: "",
-      passwordConfirmMessage: ""
+      passwordConfirmMessage: "",
+      idCheck: false,
     });
     const { id, password, passwordConfirm } = state;
     const { idMessage, passwordMessage, passwordConfirmMessage} = state;
+    
+    const handleIdCheck = async () => {
+      const  value  = id;
+      try{
+        const res = await baseInstance.post("/auth/check/id", {
+          loginId: value,
+        });
+        res.data.payload ? updateState("idMessage", "중복된 아이디입니다.") : updateState("idMessage", "사용가능한 아이디입니다.")
+      }catch(error){
+        console.log(error)
+      }
+    };
+
     
     const updateState = (key, value) => {
       setState(prevState => ({
@@ -38,9 +54,9 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
           setButtonState(false);
         }
     },[idMessage, passwordConfirmMessage, passwordMessage])
-
+    
     useEffect(() => {
-      updateState("passwordConfirmMessage", password === passwordConfirm ? "입력한 비밀번호와 일치합니다." : "비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+      updateState("passwordConfirmMessage", password.trim() !== "" && passwordConfirm.trim() !== "" && password === passwordConfirm ? "입력한 비밀번호와 일치합니다." : (password.trim() === "" && passwordConfirm.trim() === "" ? "" : "비밀번호와 비밀번호 확인이 일치하지 않습니다."));
     }, [password, passwordConfirm]);
   
     const handleInputChange = (event) => {
@@ -49,7 +65,7 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
     
       switch (name) {
         case "id":
-          updateState("idMessage", loginRegex.id.test(value) ? "사용가능한 아이디입니다." : "아이디는 영문자와 숫자로 이루어져 있어야 하며, 최소 4자 이상, 최대 16자 이하여야 합니다.");
+          updateState("idMessage", loginRegex.id.test(value) ? "" : "아이디는 영문자와 숫자로 이루어져 있어야 하며, 최소 4자 이상, 최대 16자 이하여야 합니다.");
           break;
         case "password":
           updateState("passwordMessage", loginRegex.password.test(value) ? "사용가능한 비밀번호입니다." : "비밀번호는 영문자와 숫자, 특수문자 중 2가지 이상을 조합하여 최소 8자 이상, 최대 20자 이하여야 합니다.");
@@ -68,13 +84,14 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
         </IntroduceArea>
         <InputBox>
           <WriteArea
+            className="loginId"
             name="id"
             type="text"
             placeholder="아이디"
             value={id}
             onChange={handleInputChange}
           />
-          <Icon icon={faUser}/>
+          <IdCheckButton onClick={handleIdCheck}>중복체크</IdCheckButton>
         </InputBox>
         <InfoState>{idMessage}</InfoState>
         <InputBox>
@@ -126,7 +143,15 @@ const InputBox = styled.div`
   display: flex;
   align-items: center;
   width: 80%;
-`
+  .loginId{
+    width: 70%;
+  }
+`;
+
+const IdCheckButton = styled.button`
+  width: 30%;
+  height: 3.1rem;
+`;
 
 const Icon = styled(FontAwesomeIcon)``;
 

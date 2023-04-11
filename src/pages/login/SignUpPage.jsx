@@ -15,7 +15,6 @@ const SignUpPage = () => {
     name: "",
     nickName: "",
     password: "",
-    phoneNumber: "",
     studentId: "",
   })
   const NextIndex = () => {

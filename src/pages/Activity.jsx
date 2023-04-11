@@ -4,18 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { Header, ActivityCard, Toggle, WriteModal, ContentModal } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
-import activityData from "../constants/activity";
+import { ACTIVITY_CATEGORIE } from "../constants/activity";
 
-const allActivities = {
+const activities = {
   2022: {
     PROJECT: [{id: 1, name: "제목1", leader: "어준혁", activityType: "PROJECT", }],
-    MENTORING: [{id: 2, name: "제목2", leader: "문희조", activityType: "MENTORING", }],
+    MENTORING: [{id: 7, name: "제목2", leader: "문희조", activityType: "MENTORING", }],
     STUDY: [{id: 3, name: "제목3", leader: "정충일", activityType: "STUDTY", }],
   },
   2023: { 
     PROJECT: [{id: 4, name: "제목4", leader: "이준엽", activityType: "PROJECT", }],
-    MENTORING: [{id: 5, name: "제목5", leader: "김진수", activityType: "MENTORING", }],
-    STUDY: [{id: 6, name: "제목6", leader: "조주현", activityType: "STUDTY", }],
+    MENTORING: [{id: 2, name: "제목5", leader: "김진수", activityType: "MENTORING", }],
+    STUDY: [{id: 20, name: "제목6", leader: "조주현", activityType: "STUDTY", }],
   },
 };
 
@@ -26,13 +26,14 @@ const Activity = () => {
   const [cardId, setCardId] = useState();
   const [kategorie, setKategorie] =  useState("전체");
   const dispatch = useDispatch();
-  // const allActivities = useSelector((state)=> state.activitySlice.getAllActivitiesData);
+  // const activities = useSelector((state)=> state.activitySlice.getAllActivitiesData);
   // useEffect(()=>{
   // }, [])
 
 
-  const handleCard = () => {
+  const handleCard = (id) => {
     setContentOpen(!contentOpen);
+    console.log(id);
   }
 
   const handleWrite = () => {
@@ -40,7 +41,8 @@ const Activity = () => {
   }
 
   const KategorieClick = (title) => {
-    setKategorie(title)
+    setKategorie(title);
+    console.log(title)
   };
 
   return (
@@ -51,10 +53,9 @@ const Activity = () => {
       <ActivityArea>
         <ActivityBox>
           <KategorieBox>
-            {activityData.ACTIVITY_CATEGORIE.map(({ id, icon, title }) => (
+            {ACTIVITY_CATEGORIE.map(({ id, icon, title }) => (
               <Kategorie 
                 key={id}
-
                 onClick={() => KategorieClick(title)}>
                 <KategorieIcon icon={icon} />
                 <KategorieContent>{title}</KategorieContent>
@@ -75,22 +76,20 @@ const Activity = () => {
           </SwitchArea>
         </ActivityBox>
         <CardArea>
-          {allActivities &&
-            <Card onClick={handleCard}>
-              {Object.keys(allActivities).map(year => (
-                Object.keys(allActivities[year]).map((type) => (
-                  allActivities[year][type].map(({id, name, leader, activityType, createdAt}) => (                  
-                    <ActivityCard
-                      key={id} 
-                      title={name}
-                      name={leader}
-                      type={activityType}
-                      // createAt={createdAt}
-                    />
-                  ))
-                ))
-              ))}
-            </Card>}
+          {Object.keys(activities).map(year => (
+            Object.keys(activities[year]).map((type) => (
+              activities[year][type].map(({id, name, leader, activityType, createdAt}) => (                  
+                <Card key={id} onClick={() => handleCard(id)}>  
+                  <ActivityCard
+                    title={name}
+                    name={leader}
+                    type={activityType}
+                    // createAt={createdAt}
+                  />
+                </Card>  
+              ))
+            ))
+          ))}
         </CardArea>
       </ActivityArea>
     </>

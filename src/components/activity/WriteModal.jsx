@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import activityData from "../../constants/activity";
+import { SELECT_OPTION, BOOK_RADIO_OPTION, ONLINE_RADIO_OPTION } from "../../constants/activity";
 import { setPostActivity } from "../../apis/activityAPI";
 import { SessionStorage } from "../../utils/browserStorage";
 import { baseInstance } from "../../apis/instance";
@@ -48,7 +48,7 @@ const ActivityWriteModal = ({ closeModal }) => {
       <ModalBox>
         <SelectAndTitle>
           <Select onChange={handleType}>
-            {activityData.SELECT_OPTION.map(({ id, title }) => (
+            {SELECT_OPTION.map(({ id, title }) => (
               <Option key={id} value={title}>
                 {title}
               </Option>
@@ -71,7 +71,7 @@ const ActivityWriteModal = ({ closeModal }) => {
         <CheckBox>
           <RadioBox>
             <Span>책 사용 여부</Span>
-            {activityData.BOOK_RADIO_OPTION.map(({ id, option, value }) => (
+            {BOOK_RADIO_OPTION.map(({ id, option, value }) => (
               <Radio key={id}>
                 <Span>{option}</Span>
                 <RadioInput
@@ -85,7 +85,7 @@ const ActivityWriteModal = ({ closeModal }) => {
           </RadioBox>
           <RadioBox>
             <Span>온/오프라인</Span>
-            {activityData.ONLINE_RADIO_OPTION.map(({ id, option, value }) => (
+            {ONLINE_RADIO_OPTION.map(({ id, option, value }) => (
               <Radio key={id}>
                 <Span>{option}</Span>
                 <RadioInput

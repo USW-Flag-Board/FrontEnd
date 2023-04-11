@@ -10,12 +10,12 @@ const EmailAuth = ({
   }) => {
     const [state, setState] = useState({
       email: "",
-      emailMessage: ""
+      emailMessage: "",
+      repost: false,
+      certification: ""
     });
-    const { email, emailMessage } = state;
-    const [rePost, setRePost] = useState(false);
-    const [certification, setCertification] = useState("");
-
+    const { email, emailMessage, repost, certification } = state;
+    console.log(signUpData)
     const handleAuthClick = () => {
 
     }
@@ -42,15 +42,22 @@ const EmailAuth = ({
             />
             <AuthButton 
               onClick={handleAuthClick}>
-              {rePost ? "재전송" : "인증번호\n발송"}
+              {repost ? "재전송" : "인증번호 발송"}
             </AuthButton>
           </EmailInputBox>
         </EmailInputArea>
         <InfoState>{emailMessage}</InfoState>
-        <WriteArea
-          placeholder="인증번호를 입력해주세요."
-          onChange={updateState}
-        />
+        <EmailInputArea>
+          <EmailInputBox>
+            <WriteArea
+              placeholder="인증번호를 입력해주세요."
+              onChange={updateState}
+            />
+            <AuthButton 
+              onClick={handleAuthClick}>
+            </AuthButton>
+          </EmailInputBox>
+        </EmailInputArea>
         <RowLine/>
         <IntroduceArea>
           FLAGround 가입을 환영합니다.

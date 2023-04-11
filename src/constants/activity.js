@@ -1,7 +1,7 @@
 import { faFolder, faCopy } from "@fortawesome/free-regular-svg-icons";
 import { faPencil, faChalkboardUser } from "@fortawesome/free-solid-svg-icons";
 
-const ACTIVITY_CATEGORIE = [
+export const ACTIVITY_CATEGORIE = [
     {
         id: 1,
         icon: faCopy,
@@ -24,14 +24,14 @@ const ACTIVITY_CATEGORIE = [
     },
 ];
 
-const SELECT_OPTION = [
+export const SELECT_OPTION = [
     {
         id: 0,
         title: "카테고리를 선택해주세요."
     },
     {
         id: 1,
-        title: "project"
+        title: "PROJECT"
     },
     {
         id: 2,
@@ -43,7 +43,7 @@ const SELECT_OPTION = [
     }
 ];
 
-const BOOK_RADIO_OPTION =  [
+export const BOOK_RADIO_OPTION =  [
     {
         id: 1,
         option: "Yes",
@@ -56,7 +56,7 @@ const BOOK_RADIO_OPTION =  [
     }
 ];
 
-const ONLINE_RADIO_OPTION =  [
+export const ONLINE_RADIO_OPTION =  [
     {
         id: 1,
         option: "온라인",
@@ -73,12 +73,3 @@ const ONLINE_RADIO_OPTION =  [
         value: "혼합",
     },
 ];
-
-const activityData = {
-    ACTIVITY_CATEGORIE,
-    SELECT_OPTION,
-    BOOK_RADIO_OPTION,
-    ONLINE_RADIO_OPTION,
-}
-
-export default activityData;
