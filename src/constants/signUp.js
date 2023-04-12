@@ -3,13 +3,13 @@ export const SORTBOX_DATA = [
       id: 1,
       qualification: "일반회원",
       introduce: "FLAGROUND의 일반 회원입니다. \n 동아리 활동을 제외하고 모든 활동이 가능합니다.",
-      value: "일반",
+      value: "NORMAL",
     },
     {
       id: 2,
       qualification: "FLAG 동아리원",
       introduce: "FLAGROUND의 동아리 회원입니다. \n프로젝트, 스터디, 멘토링 참여 및 등록 등 모든 활동이 가능합니다.\n+ FLAG 동아리원은 관리자의 승인절차 이후 가입이 완료됩니다.",
-      value: "동아리",
+      value: "CREW",
     },
   ];
 
@@ -27,8 +27,7 @@ export const loginRegex = {
 export const nameRegex = /^[a-zA-Z가-힣\s-' ]{2,20}$/;
 export const phoneRegex = /^\d{10,11}$/;
 export const studentIdRegex = /^\d{8}$/;
-
-
+export const emailRegex = /^[a-zA-Z0-9._%+-]+@suwon\.ac\.kr$/;
 export const SPECIALIZED = [
   {
     label: "국어국문",

@@ -21,7 +21,7 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
     const { idMessage, passwordMessage, passwordConfirmMessage} = state;
     
     const handleIdCheck = async () => {
-      const  value  = id;
+      const value = id;
       try{
         const res = await baseInstance.post("/auth/check/id", {
           loginId: value,

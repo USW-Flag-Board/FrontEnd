@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo2 from "../../assets/images/logo2.png";
 import { ServiceAgree, JoinTypeSelect, IdPassword, Privacy, EmailAuth } from "../../components/signUp";
+import { PostSignUp } from "../../apis/auth";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -17,8 +18,14 @@ const SignUpPage = () => {
     password: "",
     studentId: "",
   })
+  const [certification, setCertification] = useState("");
+
   const NextIndex = () => {
     setSignUpIndex((signUpIndex) => signUpIndex + 1);
+    if(signUpIndex === 4){
+      PostSignUp()
+      navigate("/")
+    }
   };
 
   return (
@@ -58,6 +65,8 @@ const SignUpPage = () => {
               setButtonState={setButtonState}
               setEmailAuth={setSignUpData}
               signUpData={signUpData}
+              certification={certification}
+              setCertification={setCertification}
             />
           )}
           <AccountButton

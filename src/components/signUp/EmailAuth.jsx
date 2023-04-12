@@ -1,70 +1,94 @@
 import { useState } from "react";
-import { PostEmail, PostCurrentEmail } from "../../apis/auth";
+import { PostCurrentEmail, PostEmail } from "../../apis/auth";
 import styled from "styled-components";
 import { useEffect } from "react";
+import { emailRegex } from "../../constants/signUp";
+import { baseInstance } from "../../apis/instance";
 
 const EmailAuth = ({
     setButtonState,
     setEmailAuth,
     signUpData,
+    setCertification
   }) => {
-    const [state, setState] = useState({
-      email: "",
-      emailMessage: "",
-      repost: false,
-      certification: ""
-    });
-    const { email, emailMessage, repost, certification } = state;
-    console.log(signUpData)
-    const handleAuthClick = () => {
-
-    }
-
-    const updateState = () => {
-
-    }
-
-    
-
-    useEffect(()=>{
-
-    }, [])
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [repost, setRepost] = useState(false);
+  const [authNumber, setAuthNumber] = useState("");
+  console.log(signUpData)
   
-    return (
-      <IdPasswordArea>
-        <IntroduceArea>수원대학교 이메일 인증</IntroduceArea>
-        <EmailInputArea>
-          <EmailInputBox>
-            <WriteArea
-              type="text"
-              placeholder="이메일@suwon.ac.kr"
-              onChange={updateState}
-            />
-            <AuthButton 
-              onClick={handleAuthClick}>
-              {repost ? "재전송" : "인증번호 발송"}
-            </AuthButton>
-          </EmailInputBox>
-        </EmailInputArea>
-        <InfoState>{emailMessage}</InfoState>
-        <EmailInputArea>
-          <EmailInputBox>
-            <WriteArea
-              placeholder="인증번호를 입력해주세요."
-              onChange={updateState}
-            />
-            <AuthButton 
-              onClick={handleAuthClick}>
-            </AuthButton>
-          </EmailInputBox>
-        </EmailInputArea>
-        <RowLine/>
-        <IntroduceArea>
-          FLAGround 가입을 환영합니다.
-        </IntroduceArea>
-      </IdPasswordArea>
-    );
+  
+  const handleEmailInput = (event) => {
+    const { value } = event.target;
+    setEmail(value);
+    emailRegex.test(value) ? setMessage("") : setMessage("이메일을 형식에 맞게 정확히 입력해주세요.")
   };
+
+  const handleAuthNumInput = (event) => {
+    const { value } = event.tartget;
+    setAuthNumber(value);
+  }
+
+  const handleAuthNumCheck = () => {
+    setCertification(authNumber);
+  }
+
+  const handleEmailCheck = async () => {
+    try {
+      const response = await baseInstance.post("/auth/check/email", {
+        email: email
+      })
+      console.log(response)
+      // if(response.data.payload === false){
+      //   handleAuthNumCheck();
+      // }
+    }catch(error){
+      console.log(error)
+    }
+  }
+
+  const handleAuthNumSend = async () => {
+
+  }
+
+  useEffect(()=>{
+
+  }, [])
+  
+  return (
+    <IdPasswordArea>
+      <IntroduceArea>수원대학교 이메일 인증</IntroduceArea>
+      <EmailInputArea>
+        <EmailInputBox>
+          <WriteArea
+            type="text"
+            placeholder="이메일@suwon.ac.kr"
+            value={email}
+            onChange={handleEmailInput}
+          />
+          <AuthButton 
+            onClick={handleEmailCheck}>
+            {repost ? "재전송" : "인증번호 발송"}
+          </AuthButton>
+        </EmailInputBox>
+      </EmailInputArea>
+      <InfoState>{message}</InfoState>
+      <EmailInputArea>
+        <EmailInputBox>
+          <WriteArea
+            value={authNumber}
+            placeholder="인증번호를 입력해주세요."
+            onChange={handleAuthNumInput}
+          />
+        </EmailInputBox>
+      </EmailInputArea>
+      <RowLine/>
+      <IntroduceArea>
+        FLAGround 가입을 환영합니다.
+      </IntroduceArea>
+    </IdPasswordArea>
+  );
+};
 
 export default EmailAuth;
 
@@ -79,6 +103,7 @@ const EmailInputArea = styled.div`
   display: flex;
   justify-content: space-between;
   width: 80%;
+
 `;
 
 

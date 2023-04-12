@@ -1,5 +1,4 @@
 import {baseInstance} from "./instance";
-import axios from "axios";
 
 export const PostLogin = (loginId, password) => {
   return baseInstance.post("/auth/login", {
@@ -8,39 +7,21 @@ export const PostLogin = (loginId, password) => {
   });
 };
 
-export const PostEmail = (originEmailData) => {
-  return baseInstance.post("/auth/check/email", {
-    email: originEmailData + "@suwon.ac.kr",
+export const PostEmail = async (originEmailData) => {
+  return await baseInstance.post("/auth/check/email", {
+    email: originEmailData
   });
 };
 
-export const PostCurrentEmail = (
-  originEmailData,
-  joinType,
-  loginId,
-  major,
-  name,
-  nickName,
-  password,
-  phoneNumber,
-  studentId
-) => {
-  return baseInstance.post("/auth/join", {
-    email: originEmailData + "@suwon.ac.kr",
-    joinType,
-    loginId,
-    major,
-    name,
-    nickName,
-    password,
-    phoneNumber,
-    studentId,
+export const PostCurrentEmail = async (signUpdata) => {
+  return await baseInstance.post("/auth/join", {
+    signUpdata
   });
 };
 
-export const PostRefreshToken = (accessToken, refreshToken) => {
-  return axios.post(`http://3.39.36.239:8080/auth/reissue`, {
-    accessToken,
-    refreshToken,
+export const PostSignUp = async (email, certification) => {
+  return await baseInstance.post("/auth/join", {
+      certification: certification,
+      email: email
   });
 };
