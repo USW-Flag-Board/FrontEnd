@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo2 from "../../assets/images/logo2.png";
 import { ServiceAgree, JoinTypeSelect, IdPassword, Privacy, EmailAuth } from "../../components/signUp";
-import { PostSignUp } from "../../apis/auth";
+import { baseInstance } from "../../apis/instance";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -19,12 +19,29 @@ const SignUpPage = () => {
     studentId: "",
   })
   const [certification, setCertification] = useState("");
-
-  const NextIndex = () => {
+  console.log(certification)
+  const NextIndex = async () => {
     setSignUpIndex((signUpIndex) => signUpIndex + 1);
-    if(signUpIndex === 4){
-      PostSignUp()
-      navigate("/")
+    if (signUpIndex + 1 === 5) {
+      setButtonState(false);
+      try {
+        await baseInstance.post("/auth/sign-up", {
+          certification: certification,
+          email: signUpData.email,
+        });
+        navigate("/login");
+      } catch (error) {
+        console.error(error);
+        if (error.response.status === 400) {
+          navigate("/signup");
+        } else if (error.response.status === 404) {
+          alert("존재하지 않는 가입정보입니다.");
+        } else if (error.response.status === 409) {
+          alert("인증번호가 일치하지 않습니다.");
+        }
+      } finally {
+        setButtonState(true);
+      }
     }
   };
 

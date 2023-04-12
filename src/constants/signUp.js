@@ -22,7 +22,7 @@ export const spaceExp = /\s/;
 export const engExp = /[a-zA-Z]/g;
 export const loginRegex = {
     id: /^[a-zA-Z0-9]{4,16}$/,
-    password: /^(?=.*[a-zA-Z])(?=.*[0-9!@#$%^&*])(?=.{8,20})/,
+    password: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,20})/
   };
 export const nameRegex = /^[a-zA-Z가-힣\s-' ]{2,20}$/;
 export const phoneRegex = /^\d{10,11}$/;

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { PostCurrentEmail, PostEmail } from "../../apis/auth";
 import styled from "styled-components";
 import { useEffect } from "react";
 import { emailRegex } from "../../constants/signUp";
@@ -9,15 +8,13 @@ const EmailAuth = ({
     setButtonState,
     setEmailAuth,
     signUpData,
-    setCertification
+    setCertification,
+    certification
   }) => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [repost, setRepost] = useState(false);
-  const [authNumber, setAuthNumber] = useState("");
-  console.log(signUpData)
-  
-  
+
   const handleEmailInput = (event) => {
     const { value } = event.target;
     setEmail(value);
@@ -25,12 +22,8 @@ const EmailAuth = ({
   };
 
   const handleAuthNumInput = (event) => {
-    const { value } = event.tartget;
-    setAuthNumber(value);
-  }
-
-  const handleAuthNumCheck = () => {
-    setCertification(authNumber);
+    const { value } = event.target;
+    setCertification(value);
   }
 
   const handleEmailCheck = async () => {
@@ -38,23 +31,35 @@ const EmailAuth = ({
       const response = await baseInstance.post("/auth/check/email", {
         email: email
       })
-      console.log(response)
-      // if(response.data.payload === false){
-      //   handleAuthNumCheck();
-      // }
+      if(response.data.payload === false){
+        setEmailAuth({...signUpData, email: email})
+        handleAuthNumSend();
+        setRepost(true);
+      }
     }catch(error){
-      console.log(error)
+      if(error.response.status === 400){
+        alert("이메일 형식이 아닙니다.");
+        setRepost(false);
+      }
     }
   }
 
   const handleAuthNumSend = async () => {
-
+    try {
+      const response = await baseInstance.post("/auth/join",{
+        signUpData
+      });
+      if(response.status===200) setButtonState(true)
+    }catch(error){
+      if(error.response.status === 422){
+        alert("사용할 수 없는 비밀번호 입니다. (8~20자 이내 영문, 숫자, 특수문자를 모두 포함).");
+      }
+      if(error.response.status === 500){
+        alert("서버 에러입니다. 관리자에게 문의해주세요.");
+      }
+    }
   }
 
-  useEffect(()=>{
-
-  }, [])
-  
   return (
     <IdPasswordArea>
       <IntroduceArea>수원대학교 이메일 인증</IntroduceArea>
@@ -76,7 +81,8 @@ const EmailAuth = ({
       <EmailInputArea>
         <EmailInputBox>
           <WriteArea
-            value={authNumber}
+            value={certification}
+            type="text"
             placeholder="인증번호를 입력해주세요."
             onChange={handleAuthNumInput}
           />

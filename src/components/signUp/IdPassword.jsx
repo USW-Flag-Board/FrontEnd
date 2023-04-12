@@ -68,7 +68,7 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
           updateState("idMessage", loginRegex.id.test(value) ? "" : "아이디는 영문자와 숫자로 이루어져 있어야 하며, 최소 4자 이상, 최대 16자 이하여야 합니다.");
           break;
         case "password":
-          updateState("passwordMessage", loginRegex.password.test(value) ? "사용가능한 비밀번호입니다." : "비밀번호는 영문자와 숫자, 특수문자 중 2가지 이상을 조합하여 최소 8자 이상, 최대 20자 이하여야 합니다.");
+          updateState("passwordMessage", loginRegex.password.test(value) ? "사용가능한 비밀번호입니다." : "최소 8자 이상 20자 이하의 비밀번호를 입력해주세요. 비밀번호는 알파벳, 숫자, 특수문자를 모두 포함해야 합니다.");
           break;
         default:
           break;
