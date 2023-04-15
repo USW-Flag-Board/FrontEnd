@@ -2,16 +2,21 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
 import { LOGOUT_USER_ITEMS, HEADER_ITEMS } from "../constants/header";
 import logo from "../assets/images/logo2.png"
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import activitiesActions from "../redux/thunkActions/activityActions";
+import { baseInstance } from "../apis/instance";
+import { userActions } from "../redux/slice/userSlice";
+import { SessionStorage } from "../utils/browserStorage";
 
 const Header = () => {
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const accessToken = SessionStorage.get("UserToken");
   
   const handleItemClick = (item) => {
     switch(item){
@@ -36,6 +41,23 @@ const Header = () => {
     }
   };
 
+  useEffect(()=>{
+    if (accessToken) setLogin(false);
+  }, [accessToken])
+
+  const handleUserClick = async () => {
+    try{
+      const response = await baseInstance.get("/members",{
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      })
+      dispatch(userActions.getUser(response.data.payload));
+      navigate("/my")
+    }catch(error){
+      console.log(error)
+    }
+  }
 
   return (
     <HeaderArea>
@@ -60,14 +82,16 @@ const Header = () => {
           </MenuItems>
         </MenuItemBox>
         <SearchBox>
-          <SearchPaper>
+          <SearchPaper login={login}>
             <FaMagnifyingGlass icon={faMagnifyingGlass}/>
             <InputBase type="text" />
           </SearchPaper>
           <UserBox>
-            {LOGOUT_USER_ITEMS.map((item)=>(
+            {login ? (LOGOUT_USER_ITEMS.map((item)=>(
               <UserButton type="button" key={item} onClick={()=> handleItemClick(item)}>{item}</UserButton>
-            ))}
+            ))
+          ) : 
+            <FaUser icon={faUser} onClick={handleUserClick}/>}
           </UserBox>
         </SearchBox>
       </HeaderBox>
@@ -147,7 +171,7 @@ const SearchBox = styled.div`
 `;
 
 const SearchPaper = styled.form`
-  width: calc(50% - 1rem);
+  width: ${props => props.login ? "calc(50% - 1rem)" : "100%"};
   margin-right: 1rem;
   display: flex;
   align-items: center;
@@ -177,13 +201,15 @@ const UserBox = styled.div`
   height: 100%;
   color: #BABABA; 
   height: 100%;
-  justify-content: flex-end;
 `;
 
 const FaUser = styled(FontAwesomeIcon)`
-  width: 80%; 
+  display: flex;
+  justify-content: left;
+  width: 30%; 
   color: #BABABA; 
   height: 50%;
+  cursor: pointer;
 `;
 
 const DropHeaderArea = styled.div`

@@ -1,9 +1,9 @@
 import {baseInstance} from "./instance";
 
-export const PostLogin = (loginId, password) => {
-  return baseInstance.post("/auth/login", {
-    loginId,
-    password,
+export const PostLogin = async (loginId, password) => {
+  return await baseInstance.post("/auth/login", {
+    loginId: loginId,
+    password: password,
   });
 };
 

@@ -19,7 +19,7 @@ const SignUpPage = () => {
     studentId: "",
   })
   const [certification, setCertification] = useState("");
-  console.log(certification)
+  
   const NextIndex = async () => {
     setSignUpIndex((signUpIndex) => signUpIndex + 1);
     if (signUpIndex + 1 === 5) {
@@ -31,7 +31,6 @@ const SignUpPage = () => {
         });
         navigate("/login");
       } catch (error) {
-        console.error(error);
         if (error.response.status === 400) {
           navigate("/signup");
         } else if (error.response.status === 404) {

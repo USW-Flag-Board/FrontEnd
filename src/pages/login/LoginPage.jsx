@@ -4,105 +4,47 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import { IdRememberButton } from "../../components";
-import { PostLogin } from "../../apis/auth";
-import { LocalStorage, SessionStorage } from "../../utils/browserStorage";
+import { SessionStorage } from "../../utils/browserStorage";
 import { cookiesOption } from "../../utils/cookiesOption";
 import logo from "../../assets/images/logo2.png"
+import { baseInstance } from "../../apis/instance";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [loginId, setLoginId] = useState("");
-  const [password, setPassword] = useState("");
-  const [loginType, setLoginType] = useState(1);
-  const [idRemember, setIdRemember] = useState(false);
-
-  const getButtonValue = (text) => {
-    setLoginType(text);
+  const [idPassword, setIdPassword] = useState({
+    loginId: "",
+    password: "", 
+  });
+  
+  const updateIdPassword = (event) => {
+    const { name, value } = event.target;
+    setIdPassword({
+      ...idPassword,
+      [name]: value
+    })
   };
 
-  const getRememberState = (text) => {
-    setIdRemember(text);
-  };
-
-  const RememberCookie = () => {
-    if (idRemember) {
-      return cookiesOption.set("remember_id", loginId);
+  const handleLogin = async () => {
+    try{
+      const response = await baseInstance.post("/auth/login", {
+        loginId: idPassword.loginId,
+        password: idPassword.password
+      });
+      const accessToken = response.data.payload.accessToken;
+      const accessTokenExpiresIn =
+        response.data.payload.accessTokenExpiresIn;
+      const expireTime = new Date(accessTokenExpiresIn).getTime();
+      SessionStorage.set("expire", expireTime);
+      SessionStorage.set("UserToken", accessToken);
+      cookiesOption.setRefresh(
+        "refresh_token",
+        response.data.payload.refreshToken
+      );
+      navigate("/")
+    }catch(error){
+      console.log(error);
     }
-    return cookiesOption.remove("remember_id");
-  };
-
-  const handleOnKeyPress = (e) => {
-    if (e.key === "Enter") {
-      OnLogin();
-    }
-  };
-
-  const OnLogin = () => {
-    if (loginId === "") {
-      return alert("아이디를 입력해주세요.");
-    } else if (password === "") {
-      return alert("비밀번호를 입력해주세요.");
-    }
-
-    if (loginType === 1) {
-      PostLogin(loginId, password)
-        .then((response) => {
-          const accessToken = response.data.payload.accessToken;
-          const accessTokenExpiresIn =
-            response.data.payload.accessTokenExpiresIn;
-          const expireTime = new Date(accessTokenExpiresIn).getTime();
-          SessionStorage.set("expire", expireTime);
-          SessionStorage.set("UserToken", accessToken);
-          SessionStorage.set("id", loginId);
-          cookiesOption.setRefresh(
-            "refresh_token",
-            response.data.payload.refreshToken
-          );
-          navigate("/");
-        })
-        .catch((error) => {
-          if (error.response.status === 404) {
-            alert("존재하지 않는 사용자입니다.");
-          }
-        });
-      RememberCookie();
-    } else if (loginType === 2) {
-      PostLogin(loginId, password)
-        .then((response) => {
-          const accessToken = response.data.payload.accessToken;
-          const accessTokenExpiresIn =
-            response.data.payload.accessTokenExpiresIn;
-          const expireTime = new Date(accessTokenExpiresIn).getTime();
-          LocalStorage.set("expire", expireTime);
-          LocalStorage.set("UserToken", accessToken);
-          LocalStorage.set("id", loginId);
-          cookiesOption.setRefresh(
-            "refresh_token",
-            response.data.payload.refreshToken
-          );
-          navigate("/");
-        })
-        .catch((error) => {
-          if (error.response.status === 404) {
-            alert("존재하지 않는 사용자입니다.");
-          }
-        });
-      RememberCookie();
-    }
-  };
-
-  useEffect(() => {
-    if (SessionStorage.get("UserToken") || LocalStorage.get("UserToken")) {
-      navigate("/my");
-    }
-
-    const remember_Id = cookiesOption.get("remember_id");
-
-    if (remember_Id !== undefined) {
-      setLoginId(remember_Id);
-    }
-  }, []);
+  }
 
   return (
     <PageArea>
@@ -111,47 +53,27 @@ const LoginPage = () => {
           alt="Flag 로고"
           className="Logo"
           src={logo}
-          width="200"
-          height="100"
-          style={{
-            marginBottom: 50,
-          }}
           onClick={() => navigate("/")}
         />
         <RelativeArea>
           <WriteArea
             type="text"
+            name="loginId"
             placeholder="아이디"
-            defaultValue={loginId}
-            onChange={(e) => {
-              setLoginId(e.target.value);
-            }}
+            onChange={updateIdPassword}
           />
           <Icon icon={faUser} />
         </RelativeArea>
         <RelativeArea>
           <WriteArea
             type="password"
+            name="password"
             placeholder="비밀번호"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            onKeyPress={(e) => {
-              handleOnKeyPress(e);
-            }}
+            onChange={updateIdPassword}
           />
           <Icon icon={faLock} />
         </RelativeArea>
-        <SortArea>
-          <CheckArea>
-            <CheckLabel>로그인 상태 유지</CheckLabel>
-          </CheckArea>
-          <CheckArea>
-            <IdRememberButton getRememberState={getRememberState} />
-            <CheckLabel>아이디 기억하기</CheckLabel>
-          </CheckArea>
-        </SortArea>
-        <LoginButton onClick={() => OnLogin()} fullWidth variant="contained">
+        <LoginButton onClick={handleLogin} fullWidth variant="contained">
           로그인
         </LoginButton>
         <SortArea>
@@ -194,7 +116,7 @@ const LoginArea = styled.div`
 `;
 
 const WriteArea = styled.input`
-  font-size: 16px;
+  font-size: 1rem;
   color: white;
   padding-left: 50px;
   height: 60px;
@@ -203,7 +125,7 @@ const WriteArea = styled.input`
   border-radius: 28px;
   border: 0px;
   outline: none;
-  margin: 20px;
+  margin: 1.25rem;
   transition: 0.2s;
   :hover {
     transition: 0.2s;
@@ -224,24 +146,18 @@ const RelativeArea = styled.div`
   position: relative;
 `;
 
-const CheckArea = styled.label`
-  display: flex;
-  align-items: center;
-`;
-const CheckLabel = styled.p`
-  margin-left: 10px;
-`;
 
 const LoginButton = styled.button`
   background-color: #378975;
   color: #ffffff;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  border-radius: 28px;
+  margin-top: 1.9rem;
+  margin-bottom: 1.9rem;
+  border-radius: 1.8rem;
   height: 60px;
   width: 400px;
   border: 0px;
   transition: 0.2s;
+  font-size: 1rem;
   :hover {
     transition: 0.2s;
     background-color: #38b597;
@@ -249,12 +165,12 @@ const LoginButton = styled.button`
 `;
 
 const LinkText = styled.a`
-  color: #ffffffcc;
+  color: black;
   :visited {
-    color: #ffffffcc;
+    color: black;
   }
   :hover {
-    color: #e1e1e1d9;
+    color: #adb5bd;
   }
 `;
 

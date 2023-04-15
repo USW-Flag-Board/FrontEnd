@@ -14,7 +14,6 @@ const EmailAuth = ({
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [repost, setRepost] = useState(false);
-
   const handleEmailInput = (event) => {
     const { value } = event.target;
     setEmail(value);
@@ -32,7 +31,7 @@ const EmailAuth = ({
         email: email
       })
       if(response.data.payload === false){
-        setEmailAuth({...signUpData, email: email})
+        setEmailAuth({...signUpData, email: email});
         handleAuthNumSend();
         setRepost(true);
       }
@@ -47,7 +46,7 @@ const EmailAuth = ({
   const handleAuthNumSend = async () => {
     try {
       const response = await baseInstance.post("/auth/join",{
-        signUpData
+        ...signUpData
       });
       if(response.status===200) setButtonState(true)
     }catch(error){

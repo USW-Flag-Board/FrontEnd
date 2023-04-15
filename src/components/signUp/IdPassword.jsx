@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { loginRegex } from "../../constants/signUp";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { signUpIdCheck } from "../../apis/auth";
 import { baseInstance } from "../../apis/instance";
 
 const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {

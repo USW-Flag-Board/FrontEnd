@@ -12,7 +12,7 @@ import {
 import boardSliceReducer from "./slice/boardSlice";
 import storage from 'redux-persist/lib/storage';
 import activitySliceReducer from "./slice/activitySlice";
-
+import userSliceReducer from "./slice/userSlice";
 
 const persistConfig = {
     key: "root",
@@ -23,6 +23,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     boardSlice: boardSliceReducer,
     activitySlice: activitySliceReducer,
+    userSlice: userSliceReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

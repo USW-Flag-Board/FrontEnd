@@ -6,19 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { ACTIVITY_CATEGORIE } from "../constants/activity";
 
-const activities = {
-  2022: {
-    PROJECT: [{id: 1, name: "제목1", leader: "어준혁", activityType: "PROJECT", }],
-    MENTORING: [{id: 7, name: "제목2", leader: "문희조", activityType: "MENTORING", }],
-    STUDY: [{id: 3, name: "제목3", leader: "정충일", activityType: "STUDTY", }],
-  },
-  2023: { 
-    PROJECT: [{id: 4, name: "제목4", leader: "이준엽", activityType: "PROJECT", }],
-    MENTORING: [{id: 2, name: "제목5", leader: "김진수", activityType: "MENTORING", }],
-    STUDY: [{id: 20, name: "제목6", leader: "조주현", activityType: "STUDTY", }],
-  },
-};
-
 const Activity = () => {
   const header = true;
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +13,7 @@ const Activity = () => {
   const [cardId, setCardId] = useState();
   const [kategorie, setKategorie] =  useState("전체");
   const dispatch = useDispatch();
-  // const activities = useSelector((state)=> state.activitySlice.getAllActivitiesData);
+  const activities = useSelector((state)=> state.activitySlice.getAllActivitiesData);
   // useEffect(()=>{
   // }, [])
 

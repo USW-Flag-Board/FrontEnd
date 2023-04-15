@@ -11,4 +11,3 @@ export { default as Toggle } from "./activity/Toggle";
 export { default as ActivityCard } from "./activity/ActivityCard";
 export { default as ContentModal } from "./activity/ContentModal";
 export { default as WriteModal } from "./activity/WriteModal";
-export { default as IdRememberButton } from "./login/IdRememberButton";
