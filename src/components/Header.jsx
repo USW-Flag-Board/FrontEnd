@@ -8,15 +8,11 @@ import { LOGOUT_USER_ITEMS, HEADER_ITEMS } from "../constants/header";
 import logo from "../assets/images/logo2.png"
 import { useDispatch } from "react-redux";
 import activitiesActions from "../redux/thunkActions/activityActions";
-import { baseInstance } from "../apis/instance";
-import { userActions } from "../redux/slice/userSlice";
-import { SessionStorage } from "../utils/browserStorage";
 
 const Header = () => {
   const [login, setLogin] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const accessToken = SessionStorage.get("UserToken");
   
   const handleItemClick = (item) => {
     switch(item){
@@ -25,6 +21,9 @@ const Header = () => {
         break;
       case '회원가입':
         navigate('/signup');
+        break;
+      case '마이페이지':
+        navigate('/my');
         break;
       case 'BOARD':
         navigate('/board')
@@ -41,23 +40,6 @@ const Header = () => {
     }
   };
 
-  useEffect(()=>{
-    if (accessToken) setLogin(false);
-  }, [accessToken])
-
-  const handleUserClick = async () => {
-    try{
-      const response = await baseInstance.get("/members",{
-        headers: {
-          'Authorization': `Bearer ${accessToken}`
-        }
-      })
-      dispatch(userActions.getUser(response.data.payload));
-      navigate("/my")
-    }catch(error){
-      console.log(error)
-    }
-  }
 
   return (
     <HeaderArea>
@@ -87,11 +69,10 @@ const Header = () => {
             <InputBase type="text" />
           </SearchPaper>
           <UserBox>
-            {login ? (LOGOUT_USER_ITEMS.map((item)=>(
+            {(LOGOUT_USER_ITEMS.map((item)=>(
               <UserButton type="button" key={item} onClick={()=> handleItemClick(item)}>{item}</UserButton>
             ))
-          ) : 
-            <FaUser icon={faUser} onClick={handleUserClick}/>}
+          )}
           </UserBox>
         </SearchBox>
       </HeaderBox>
@@ -201,6 +182,7 @@ const UserBox = styled.div`
   height: 100%;
   color: #BABABA; 
   height: 100%;
+  justify-content: space-evenly;
 `;
 
 const FaUser = styled(FontAwesomeIcon)`
@@ -225,12 +207,9 @@ const DropHeaderArea = styled.div`
 `;
 
 const UserButton = styled.button`
-  width: 50%;
+  width: 30%;
   height: 80%;
   border: none;
-  &:nth-child(1){
-    margin-right: 1rem;
-  }
   &:nth-child(2){
     background-color: #ff922b;
   }

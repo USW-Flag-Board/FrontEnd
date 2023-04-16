@@ -5,22 +5,20 @@ import axios from "axios";
 
 async function handleUnauthorizedError(error, originalRequest) {
   const status = error.response.status;
-  const tokenExp = SessionStorage.get("expire");
-  const currentTime = new Date().getTime();
-
+    
   if (status === 401) {
-    if (tokenExp - currentTime < 0) {
-      const { accessToken, refreshToken } = await refreshTokens();
-      updateTokens(accessToken, refreshToken);
-      originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-    } else {
-      const accessToken = sessionStorage.getItem("UserToken");
-      originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-    }
+    const { accessToken, refreshToken } = await refreshTokens();
+    updateTokens(accessToken, refreshToken);
+    originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+
     return axios(originalRequest);
-  } else {
-    return Promise.reject(error);
   }
+  return Promise.reject(error); 
+}
+
+function updateTokens(accessToken, refreshToken) {
+  sessionStorage.setItem("UserToken", accessToken);
+  cookiesOption.setRefresh("refresh_token", refreshToken);
 }
 
 async function refreshTokens() {
@@ -33,17 +31,15 @@ async function refreshTokens() {
     });
     const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data.payload;
     const expiresIn = response.data.payload.accessTokenExpiresIn;
-    SessionStorage.set("expire", new Date(expiresIn).getTime());
+    SessionStorage.set("expire", expiresIn);
+
+    setTimeout(refreshTokens, expiresIn * 1000);
     return { accessToken: newAccessToken, refreshToken: newRefreshToken };
   } catch (error) {
     return Promise.reject(error);
   }
 }
 
-function updateTokens(accessToken, refreshToken) {
-  sessionStorage.setItem("UserToken", accessToken);
-  cookiesOption.setRefresh("refresh_token", refreshToken);
-}
 
 async function AxiosInterceptorsSetup() {
   baseInstance.interceptors.response.use(
@@ -52,10 +48,15 @@ async function AxiosInterceptorsSetup() {
     },
     async (error) => {
       const originalRequest = error.config;
-      const result = await handleUnauthorizedError(error, originalRequest);
-      if (result) {
-        return result;
-      } else {
+      try {
+        const result = await handleUnauthorizedError(error, originalRequest);
+        if (result) {
+          return result;
+        } else {
+          return Promise.reject(error);
+        }
+      } catch (error) {
+        console.error(error);
         return Promise.reject(error);
       }
     }

@@ -33,9 +33,9 @@ const LoginPage = () => {
       const accessToken = response.data.payload.accessToken;
       const accessTokenExpiresIn =
         response.data.payload.accessTokenExpiresIn;
-      const expireTime = new Date(accessTokenExpiresIn).getTime();
-      SessionStorage.set("expire", expireTime);
+      SessionStorage.set("expire", accessTokenExpiresIn);
       SessionStorage.set("UserToken", accessToken);
+      SessionStorage.set("User_id", idPassword.loginId);
       cookiesOption.setRefresh(
         "refresh_token",
         response.data.payload.refreshToken

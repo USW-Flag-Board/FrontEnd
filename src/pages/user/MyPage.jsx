@@ -4,13 +4,13 @@ import styled from "styled-components";
 import { cookiesOption } from "../../utils/cookiesOption";
 import { SessionStorage } from "../../utils/browserStorage";
 import { Header } from "../../components";
-import { useSelector } from "react-redux";
+import { baseInstance } from "../../apis/instance";
 
 const MyPage = () => {
   const header = true;
   const navigate = useNavigate();
-  const userData = useSelector((state)=> state.userSlice.getUserData)
-  const { bio, nickName, profileImg } = userData;
+  const [userData, setUserData] = useState("");
+  const { bio, nickName, profileImg, loginId } = userData;
   
   const LogOut = () => {
     SessionStorage.clear();
@@ -18,7 +18,15 @@ const MyPage = () => {
     navigate("/login");
   };
 
-  useEffect(()=>{
+  useEffect(()=> {
+    const loginId = SessionStorage.get("User_id");
+    baseInstance.get(`/members/${loginId}`)
+      .then(response => {
+        setUserData(response.data.payload);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }, [])
 
   return (
@@ -33,6 +41,7 @@ const MyPage = () => {
               </ProfileBox>
               <NickNameArea>
                 <NickName>{nickName}</NickName>
+                <UserId>{loginId}</UserId>
                 <Introduce>{bio}</Introduce>
               </NickNameArea>
             </ProfileArea>
@@ -56,7 +65,6 @@ const ProfileImg = styled.img`
   height: 6rem;
   border: 3px solid gray;
   border-radius: 50%;
-  padding: 1rem;
 `;
 
 const PageArea = styled.div`
@@ -76,7 +84,6 @@ const BottomPage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url(../images/home-book.JPG);
   font-size: 3rem;
   font-weight: bold;
 `;
@@ -131,6 +138,7 @@ const NickNameArea = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
 `;
 
 const NickName = styled.div`
@@ -145,8 +153,14 @@ const NickName = styled.div`
 const Introduce = styled.div`
   font-size: 1rem;
   width: 100%;
-  height: 60%;
+  height: 50%;
   padding-top: 1rem;
+`;
+
+const UserId = styled.div`
+  font-size: 1rem;
+  width: 100%;
+  height: 10%;
 `;
 
 const HistoryArea = styled.div`
