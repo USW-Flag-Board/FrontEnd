@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { PostContentPage, BulletinBoard, EditPost, WritePost, EditUser, ChangePw, MyPage, SignUpPage, LoginPage, FindId, FindPw, Home, SearchPage, Resume, Activity } from "./pages";
+import { PostContentPage, BulletinBoard, EditPost, WritePost, EditUser, ChangePw, MyPage, SignUpPage, LoginPage, FindId, FindPw, Home, SearchPage, Resume, Activity, Certification } from "./pages";
 import GlobalStyle from "./styles/GlobalStyle";
 
 const App = () => {
@@ -19,6 +19,7 @@ const App = () => {
         <Route path="/edit" element={<EditUser />} />
         <Route path="/resume" element={<Resume />} />
         <Route path="/activity" element={<Activity />} />
+        <Route path="/login/certification" element={<Certification />} />
         <Route path="/findid" element={<FindId />} />
         <Route path="/findpw" element={<FindPw />} />
         <Route path="/board/edit" element={<EditPost />} />

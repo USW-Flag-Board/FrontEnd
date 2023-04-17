@@ -13,3 +13,4 @@ export { default as BulletinBoard } from "./board/BulletinBoard";
 export { default as PostContentPage } from "./board/PostContentPage";
 export { default as WritePost } from "./board/WritePost";
 export { default as EditPost } from "./board/EditPost";
+export { default as Certification } from "./login/Certification";

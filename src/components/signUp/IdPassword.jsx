@@ -173,10 +173,10 @@ const WriteArea = styled.input`
 `;
 
 const InfoState = styled.div`
-  color: black;
-  display: flex;
   width: 75%;
+  color: black;
   font-size: 0.8rem;
+  display: flex;
   justify-content: end;
   height: 0.7rem;
   margin-bottom: 1.25rem;

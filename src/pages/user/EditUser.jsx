@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { baseInstance } from "../../apis/instance";
 import { SessionStorage } from "../../utils/browserStorage";
-
+import instance from "../../apis/AxiosInterceptorSetup";
 
 const EditUser = () => {
   const [userData, setUserData] = useState({
+    loginId: "",
     bio: "",
     email: "",
     major: "",
@@ -14,12 +14,12 @@ const EditUser = () => {
     profileImg: "",
     studentId: "",
   });
-  const UserId = SessionStorage.get("User_id")
   const accessToken = SessionStorage.get("UserToken");
-  const { bio, email, major, name, nickName, profileImg, studentId} = userData;
+  const { bio, email, major, name, nickName, profileImg, studentId, loginId} = userData;
+  const navigate = useNavigate();
   
   useEffect(()=> {
-    baseInstance.get("/members",{
+    instance.get("/members",{
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }
@@ -49,7 +49,27 @@ const EditUser = () => {
       [name]: value,
     }))
   }
-  
+
+  const handleSave = () => {
+    const headers = {
+      'Authorization': `Bearer ${accessToken}`
+    };
+    const data = {
+      bio: bio,
+      major: major,
+      nickName: nickName,
+      studentId: studentId
+    };
+    instance
+      .put("/members/avatar", data, {headers: headers})
+      .then((response) => {
+        if(response.status === 200) navigate("/my");
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
+
   return (
     <EditPageArea>
       <TitleBox>회원 정보 수정</TitleBox>
@@ -59,7 +79,7 @@ const EditUser = () => {
             <ProfileImg src={profileImg}/>
           </ProfileImgBox>
           <IdButtonBox>
-            <label>
+            <label htmlFor="file">
               <div className="btn-upload">프로필 사진 변경</div>
             </label>
             <ImgEditButton type="file" name="file" id="file"/>
@@ -69,8 +89,8 @@ const EditUser = () => {
           <UserInfoBox>
             <TitleButtonBox className="edit-button">
               <span>프로필 정보 수정</span>
-              <EditButton>저장하기</EditButton>
-              <EditButton>비밀번호 변경</EditButton>
+              <EditButton onClick={handleSave}>저장하기</EditButton>
+              <EditButton onClick={()=> navigate("/changepw")}>비밀번호 변경</EditButton>
               <EditButton>회원탈퇴</EditButton>
             </TitleButtonBox>
             <InfoBox>
@@ -79,31 +99,31 @@ const EditUser = () => {
             </InfoBox>
             <InfoBox className="introduce-box">
               <InfoTitle>소개</InfoTitle>
-              <EditInputBox type="text" className="introduce" name="bio" value={bio} onChange={updateState}/>
+              <IntroduceInputBox className="introduce" name="bio" value={bio} onChange={updateState}/>
             </InfoBox>
           </UserInfoBox>
           <UserInfoBox>
             <TitleButtonBox>상세 정보 수정</TitleButtonBox>
-              <InfoBox>
-                <InfoTitle>아이디</InfoTitle>
-                <FixBox>{UserId}</FixBox>
-              </InfoBox>
-              <InfoBox>
-                <InfoTitle>닉네임</InfoTitle>
-                <EditInputBox type="text" name="nickName" value={nickName} onChange={updateState}/>
-              </InfoBox>
-              <InfoBox>
-                <InfoTitle>이메일</InfoTitle>
-                <FixBox>{email}</FixBox>
-              </InfoBox>
-              <InfoBox>
-                <InfoTitle>전공</InfoTitle>
-                <EditInputBox type="text" name="major" value={major} onChange={updateState}/>
-              </InfoBox>
-              <InfoBox>
-                <InfoTitle>학번</InfoTitle>
-                <EditInputBox type="text" name="studentId" value={studentId} onChange={updateState}/>
-              </InfoBox>
+            <InfoBox>
+              <InfoTitle>아이디</InfoTitle>
+              <FixBox>{loginId}</FixBox>
+            </InfoBox>
+            <InfoBox>
+              <InfoTitle>닉네임</InfoTitle>
+              <EditInputBox type="text" name="nickName" value={nickName} onChange={updateState}/>
+            </InfoBox>
+            <InfoBox>
+              <InfoTitle>이메일</InfoTitle>
+              <FixBox>{email}</FixBox>
+            </InfoBox>
+            <InfoBox>
+              <InfoTitle>전공</InfoTitle>
+              <EditInputBox type="text" name="major" value={major} onChange={updateState}/>
+            </InfoBox>
+            <InfoBox>
+              <InfoTitle>학번</InfoTitle>
+              <EditInputBox type="text" name="studentId" value={studentId} onChange={updateState}/>
+            </InfoBox>
           </UserInfoBox>
         </UserInfoArea>
       </EditPageBox>
@@ -170,23 +190,27 @@ const IdButtonBox = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 2rem;
+  cursor: pointer;
   #file {
     display: none;
   }
   .btn-upload{
     border: 1px solid #9A9A9A;
     border-radius: 1rem;
+    width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     padding: 1rem;
     &:hover{
-      background-color: #9A9A9A;
+      border: none;
+      background-color: #a5d8ff;
     }
   }
 `;
 
 const ImgEditButton = styled.input`
+  width: 100%;
   height: 100%;
 `;
 
@@ -237,7 +261,16 @@ const InfoBox = styled.div`
 
 const InfoTitle = styled.label`
   width: 15%;
+  font-weight: bold;
 `;
+
+const IntroduceInputBox = styled.textarea`
+  outline: none;
+  resize: none;
+  border-radius: 10px;
+  border: 1px solid #9A9A9A;
+  padding: 1rem 0.5rem;
+`
 
 const EditInputBox = styled.input`
   width: 40%;
@@ -252,17 +285,18 @@ const EditInputBox = styled.input`
 `;
 
 const FixBox = styled.div`
-  border: 1px solid #9A9A9A;
   width: 40%;
   height: 60%;
   font-size: 1rem;
   display: flex;
   align-items: center;
   padding-left: 0.5rem;
-  border-radius: 10px;
-  border: 1px solid #9A9A9A;
 `;
 
 const EditButton = styled.button`
-  
+  height: 70%;
+  background-color: #a5d8ff;
+  border: 1px solid white;
+  border-radius: 10px;
+  cursor: pointer;
 `

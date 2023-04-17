@@ -1,19 +1,18 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
 import { LOGOUT_USER_ITEMS, HEADER_ITEMS } from "../constants/header";
 import logo from "../assets/images/logo2.png"
 import { useDispatch } from "react-redux";
 import activitiesActions from "../redux/thunkActions/activityActions";
+import { SessionStorage } from "../utils/browserStorage";
 
 const Header = () => {
-  const [login, setLogin] = useState(true);
+  const [login, setLogin] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
   const handleItemClick = (item) => {
     switch(item){
       case '로그인':
@@ -40,6 +39,10 @@ const Header = () => {
     }
   };
 
+  useLayoutEffect(()=> {
+    if(SessionStorage.get("UserToken")) setLogin(true);
+  }, [])
+
 
   return (
     <HeaderArea>
@@ -56,9 +59,6 @@ const Header = () => {
             {HEADER_ITEMS.map((item) => (
               <MenuButton key={item} onClick={()=> handleItemClick(item)}>
                 {item}
-                <DropHeaderArea>
-
-                </DropHeaderArea>
               </MenuButton>
             ))}
           </MenuItems>
@@ -68,11 +68,26 @@ const Header = () => {
             <FaMagnifyingGlass icon={faMagnifyingGlass}/>
             <InputBase type="text" />
           </SearchPaper>
-          <UserBox>
-            {(LOGOUT_USER_ITEMS.map((item)=>(
-              <UserButton type="button" key={item} onClick={()=> handleItemClick(item)}>{item}</UserButton>
-            ))
-          )}
+          <UserBox loging={login}>
+            { login 
+              ? 
+                (<UserButton
+                  login={login}
+                  type="button" 
+                  onClick={()=>navigate("/my")}>
+                  마이페이지
+                </UserButton>) 
+              : 
+                (LOGOUT_USER_ITEMS.map((item)=>(
+                  <UserButton 
+                    type="button" 
+                    key={item} 
+                    onClick={()=> handleItemClick(item)}
+                    >
+                      {item}
+                  </UserButton>
+                ))
+              )}
           </UserBox>
         </SearchBox>
       </HeaderBox>
@@ -110,7 +125,7 @@ const LogoImg = styled.img`
 `;
 
 const MenuItemBox = styled.div`
-  width: 60%;
+  width: 50%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -137,14 +152,11 @@ const MenuButton = styled.div`
     background-color: #F2F2F2;
     border-radius: 0.6rem;
   }
-  /* &:hover > div {
-    display: block;
-  } */
 `;
 
 const SearchBox = styled.div`
   box-sizing: border-box;
-  width: 30%;
+  width: 40%;
   height: 60%;
   display: flex;
   align-items: center;
@@ -152,7 +164,7 @@ const SearchBox = styled.div`
 `;
 
 const SearchPaper = styled.form`
-  width: ${props => props.login ? "calc(50% - 1rem)" : "100%"};
+  width: ${props => props.login ? "70%" : "calc(50% - 1rem)"};
   margin-right: 1rem;
   display: flex;
   align-items: center;
@@ -178,37 +190,17 @@ const FaMagnifyingGlass = styled(FontAwesomeIcon)`
 const UserBox = styled.div`
   display: flex;
   align-items: center;
-  width: 50%;
+  width: ${props => props.login ? "30%" : "50%"};
   height: 100%;
   color: #BABABA; 
   height: 100%;
-  justify-content: space-evenly;
+  justify-content: ${props => props.login ? "flex-end" : "space-evenly"};
 `;
 
-const FaUser = styled(FontAwesomeIcon)`
-  display: flex;
-  justify-content: left;
-  width: 30%; 
-  color: #BABABA; 
-  height: 50%;
-  cursor: pointer;
-`;
-
-const DropHeaderArea = styled.div`
-  width: 100%;
-  height: 20vh; 
-  background-color: #F2F2F2;
-  position: absolute;
-  z-index: 1;
-  left: 0;
-  top: 11vh;
-  display: none;
-  cursor: default;
-`;
 
 const UserButton = styled.button`
-  width: 30%;
-  height: 80%;
+  width: ${props => props.login ? "50%" : "40%"};
+  height: 90%;
   border: none;
   &:nth-child(2){
     background-color: #ff922b;

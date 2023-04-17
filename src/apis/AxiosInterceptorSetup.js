@@ -1,7 +1,12 @@
 import { cookiesOption } from "../utils/cookiesOption";
 import { SessionStorage } from "../utils/browserStorage";
-import { baseInstance } from "./instance";
 import axios from "axios";
+
+const { REACT_APP_DEV_API_END_POINT } = process.env;
+const instance = axios.create({
+  baseURL: REACT_APP_DEV_API_END_POINT,
+  withCredentials: true,
+});
 
 async function handleUnauthorizedError(error, originalRequest) {
   const status = error.response.status;
@@ -23,9 +28,9 @@ function updateTokens(accessToken, refreshToken) {
 
 async function refreshTokens() {
   try {
-    const accessToken = sessionStorage.getItem("UserToken");
+    const accessToken = SessionStorage.get("UserToken");
     const refreshToken = await cookiesOption.get("refresh_token");
-    const response = await baseInstance.post('/auth/reissue', {
+    const response = await instance.post('/auth/reissue', {
       accessToken: accessToken,
       refreshToken: refreshToken,
     });
@@ -40,27 +45,24 @@ async function refreshTokens() {
   }
 }
 
-
-async function AxiosInterceptorsSetup() {
-  baseInstance.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    async (error) => {
-      const originalRequest = error.config;
-      try {
-        const result = await handleUnauthorizedError(error, originalRequest);
-        if (result) {
-          return result;
-        } else {
-          return Promise.reject(error);
-        }
-      } catch (error) {
-        console.error(error);
+instance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config;
+    try {
+      const result = await handleUnauthorizedError(error, originalRequest);
+      if (result) {
+        return result;
+      } else {
         return Promise.reject(error);
       }
+    } catch (error) {
+      console.error(error);
+      return Promise.reject(error);
     }
-  );
-}
+  }
+);
 
-export default AxiosInterceptorsSetup;
+export default instance;

@@ -5,86 +5,72 @@ import { Header } from "../../components";
 import { baseInstance } from "../../apis/instance";
 import { SessionStorage } from "../../utils/browserStorage";
 
-const FindPw = () => {
+const Certification = () => {
   const header = true;
-  const [state, setState] = useState({
-    email: "",
-    loginId: "",
-  });
-  const { email, loginId } = state;
+  const [certification, setCertification] = useState("");
   const navigate = useNavigate();
+  const email = SessionStorage.get("email");
   
-  const updateState = (event) => {
-    const { name, value } = event.target;
-    setState(prevState => ({
-      ...prevState,
-      [name]: value,
-    }))
-  }
-
   const handleSave = async () => {
-    const data = {
-      email: email,
-      loginId: loginId 
-    };
     try{
-      const response = await baseInstance.post("/members/find/password", data);
-      if(response.status === 201){
-        SessionStorage.set("email", email);
-        SessionStorage.set("type", "password");
-        navigate("/login/certification")
-      }
+      const res = await baseInstance.post("/members/certification", {
+        certification: certification,
+        email: email
+      })
+      console.log(res)
+      SessionStorage.remove("email");
+      if(SessionStorage.get("type")){
+        SessionStorage.remove("type")
+        navigate("/changepw");
+      }else{
+
+      };
     }catch(error){
       const status = error.response.status;
       switch(status){
         case 409:
-          alert("이메일과 아이디가 일치하지 않습니다.");
+          alert("인증번호가 일치하지 않습니다.");
           break;
         case 404:
-          alert("존재하지 않는 사용자입니다.");
+          alert("아이디/비밀번호 찾기 요청이 존재하지 않습니다.");
           break;
         default:
           break;
       }
     }
   }
-
   return (
-    <>
+    <div>
       {header && <Header/>}
       <EditPageArea>
         <TitleArea>
-          <TitleBox>비밀번호 찾기</TitleBox>
+          <TitleBox>이메일 인증</TitleBox>
           <EditButton 
             type="button" 
             onClick={handleSave}>
-            저장하기
+            인증하기
           </EditButton>
         </TitleArea>
         <EditPageBox>
           <InfoBox>
-            <InfoTitle>아이디</InfoTitle>
-            <EditInputBox 
-              type="text"
-              name="loginId"
-              value={loginId}
-              onChange={updateState}/>
+            <InfoTitle>이메일</InfoTitle>
+            <FixBox>{email}</FixBox>
           </InfoBox>
           <InfoBox>
-            <InfoTitle>이메일</InfoTitle>
+            <InfoTitle>인증번호</InfoTitle>
             <EditInputBox 
               type="text"
-              name="email"
-              value={email}
-              onChange={updateState}/>
+              name="certification"
+              value={certification}
+              onChange={(e)=>setCertification(e.target.value)}/>
           </InfoBox>
         </EditPageBox>
       </EditPageArea>
-    </>
-  );
-};
+    </div>
+  )
+}
 
-export default FindPw;
+export default Certification
 
 const EditPageArea = styled.div`
   width: 100%;
@@ -141,6 +127,15 @@ const EditInputBox = styled.input`
   border-radius: 10px;
   border: 1px solid #9A9A9A;
   margin-right: 1rem;
+`;
+
+const FixBox = styled.div`
+  width: 60%;
+  height: 60%;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  padding-left: 0.5rem;
 `;
 
 const EditButton = styled.button`

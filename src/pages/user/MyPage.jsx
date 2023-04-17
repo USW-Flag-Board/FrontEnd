@@ -33,28 +33,30 @@ const MyPage = () => {
     <>
       {header && <Header/>}
       <PageArea>
-        <TopPage>
-          <UserPage>
-            <ProfileArea>
-              <ProfileBox>
-                <ProfileImg src={profileImg} />
-              </ProfileBox>
-              <NickNameArea>
-                <NickName>{nickName}</NickName>
-                <UserId>{loginId}</UserId>
-                <Introduce>{bio}</Introduce>
-              </NickNameArea>
-            </ProfileArea>
-            <ProfileButtonBox>
-              <EditProfile onClick={() => navigate("/edit")}>프로필 수정</EditProfile>
-              <EditProfile onClick={() => LogOut()}>로그아웃</EditProfile>
-            </ProfileButtonBox>
-          </UserPage>
-          <HistoryArea>
+        <PageBox>
+          <TopPage>
+            <UserPage>
+              <ProfileArea>
+                <ProfileBox>
+                  <ProfileImg src={profileImg} />
+                </ProfileBox>
+                <NickNameArea>
+                  <NickName>{nickName}</NickName>
+                  <UserId>{loginId}</UserId>
+                  <Introduce>{bio}</Introduce>
+                </NickNameArea>
+              </ProfileArea>
+              <ProfileButtonBox>
+                <EditProfile onClick={() => navigate("/edit")}>프로필 수정</EditProfile>
+                <EditProfile onClick={() => LogOut()}>로그아웃</EditProfile>
+              </ProfileButtonBox>
+            </UserPage>
+            <HistoryArea>
 
-          </HistoryArea>
-        </TopPage>
-        <BottomPage>내가 쓴 글</BottomPage>
+            </HistoryArea>
+          </TopPage>
+          <BottomPage>내가 쓴 글</BottomPage>
+        </PageBox>
       </PageArea>
     </>
   );
@@ -70,7 +72,14 @@ const ProfileImg = styled.img`
 const PageArea = styled.div`
   width: 100%;
   height: 89vh;
+  display: flex;
+  justify-content: center;
 `;
+
+const PageBox = styled.div`
+  width: calc(100vw - 16rem);
+  box-sizing: border-box;
+`
 
 const TopPage = styled.div`
   width: 100%;
@@ -91,6 +100,7 @@ const BottomPage = styled.div`
 const UserPage = styled.div`
   width: 40%;
   height: 100%;
+  background-color: #e7f5ff;
 `;
 
 const ProfileArea = styled.div`
@@ -118,14 +128,14 @@ const ProfileBox = styled.div`
 const EditProfile = styled.button`
   font-size: 1rem;
   width: 30%;
-  height: 40%;
+  height: 50%;
   color: white;
   background-color: #434343;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 0px;
-  border-radius: 28px;
+  border-radius: 10px;
   :hover {
     background-color: #4d4d4d;
   }
@@ -164,7 +174,7 @@ const UserId = styled.div`
 `;
 
 const HistoryArea = styled.div`
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #f1f3f5;
   width: 60%;
   height: 100%;
 `;

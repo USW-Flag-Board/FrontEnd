@@ -68,6 +68,9 @@ const HomeBox = styled.div`
 const HomeContents = styled.div`
   width: calc(100% - 16rem);
   margin: 0 8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const BookImgBox = styled.div`
@@ -75,7 +78,7 @@ const BookImgBox = styled.div`
 `;
 
 const PostsArea = styled.div`
-  width: 100%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

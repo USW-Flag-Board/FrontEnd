@@ -36,13 +36,24 @@ const LoginPage = () => {
       SessionStorage.set("expire", accessTokenExpiresIn);
       SessionStorage.set("UserToken", accessToken);
       SessionStorage.set("User_id", idPassword.loginId);
+      SessionStorage.remove("email");
       cookiesOption.setRefresh(
         "refresh_token",
         response.data.payload.refreshToken
       );
       navigate("/")
     }catch(error){
-      console.log(error);
+      const status = error.response.status;
+      switch(status){
+        case 400:
+          alert("비밀번호가 틀립니다.");
+          break;
+        case 404:
+          alert("존재하지 않는 사용자입니다.");
+          break;
+        default:
+          break;
+      }
     }
   }
 
@@ -93,7 +104,7 @@ const LoginPage = () => {
 };
 
 const Icon = styled(FontAwesomeIcon)`
-  color: white;
+  color: black;
   position: absolute;
   left: 40px;
   top: 42px;
@@ -117,22 +128,15 @@ const LoginArea = styled.div`
 
 const WriteArea = styled.input`
   font-size: 1rem;
-  color: white;
   padding-left: 50px;
   height: 60px;
   width: 350px;
-  background-color: #6c6c6c;
-  border-radius: 28px;
-  border: 0px;
+  border: 1px solid #adb5bd;
   outline: none;
   margin: 1.25rem;
   transition: 0.2s;
-  :hover {
-    transition: 0.2s;
-    background-color: #575757;
-  }
   ::placeholder {
-    color: #ffffffcc;
+    color: black;
   }
 `;
 
@@ -148,20 +152,15 @@ const RelativeArea = styled.div`
 
 
 const LoginButton = styled.button`
-  background-color: #378975;
+  background-color: #4dabf7;
   color: #ffffff;
   margin-top: 1.9rem;
   margin-bottom: 1.9rem;
-  border-radius: 1.8rem;
   height: 60px;
-  width: 400px;
+  width: 350px;
   border: 0px;
   transition: 0.2s;
   font-size: 1rem;
-  :hover {
-    transition: 0.2s;
-    background-color: #38b597;
-  }
 `;
 
 const LinkText = styled.a`

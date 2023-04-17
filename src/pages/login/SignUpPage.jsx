@@ -150,12 +150,12 @@ const Radio = styled.div`
   margin: 0 0.3rem 1rem 0.3rem;
   transition: 0.2s;
   background: none;
-  border: 2px solid #9a9a9a;
+  border: 2px solid #4dabf7;
   border-radius: 20px;
 
   &.current {
     transition: 0.2s;
-    background: #9a9a9a;
+    background: #4dabf7;
   }
 `;
 
@@ -164,24 +164,17 @@ const AccountButton = styled.button`
   color: black;
   margin-top: 0.6rem;
   margin-bottom: 1.9rem;
-  border-radius: 1.75rem;
   height: 60px;
   width: 80%;
   transition: 0.2s;
+  border: none;
 
   &.close {
-    background: #8e8e8e;
-    :hover {
-      background: #8e8e8e;
-    }
+    background: #a5d8ff;
   }
 
   &.open {
-    background: #378975;
-    :hover {
-      transition: 0.2s;
-      background: #38b597;
-    }
+    background: #4dabf7;
   }
 `;
 
