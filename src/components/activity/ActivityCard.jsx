@@ -5,7 +5,7 @@ const ActivityCard = ({ title, name, type, createAt }) => {
         <Mainbox>
             <Type>{type}</Type>
             <Title>{title}</Title>
-            {/* <Deadline>생성일: <span>{createAt.slice(0, 3).join('.')}</span></Deadline> */}
+            <Deadline>생성일: <span>{createAt.slice(0, 3).join('.')}</span></Deadline>
             <Name>{name}</Name>
         </Mainbox>       
     );
@@ -31,6 +31,7 @@ const Title = styled.div`
     font-weight: bold;
     display: flex;
     justify-content: flex-start;
+    align-items: center;
 `;
 
 const Deadline = styled.div`

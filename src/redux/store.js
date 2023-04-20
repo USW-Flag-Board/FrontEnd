@@ -11,7 +11,6 @@ import {
     } from 'redux-persist';
 import boardSliceReducer from "./slice/boardSlice";
 import storage from 'redux-persist/lib/storage';
-import activitySliceReducer from "./slice/activitySlice";
 import userSliceReducer from "./slice/userSlice";
 
 const persistConfig = {
@@ -22,7 +21,6 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     boardSlice: boardSliceReducer,
-    activitySlice: activitySliceReducer,
     userSlice: userSliceReducer,
 });
 

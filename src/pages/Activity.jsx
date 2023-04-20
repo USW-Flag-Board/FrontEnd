@@ -1,51 +1,80 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
 import { Header, ActivityCard, Toggle, WriteModal, ContentModal } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { ACTIVITY_CATEGORIE } from "../constants/activity";
+import { baseInstance } from "../apis/instance";
 
 const Activity = () => {
   const header = true;
   const [isOpen, setIsOpen] = useState(false);
   const [contentOpen, setContentOpen] = useState(false);
-  const [cardId, setCardId] = useState();
-  const [kategorie, setKategorie] =  useState("전체");
-  const dispatch = useDispatch();
-  const activities = useSelector((state)=> state.activitySlice.getAllActivitiesData);
-  // useEffect(()=>{
-  // }, [])
+  const [cardId, setCardId] = useState("");
+  const [kategorie, setKategorie] =  useState('ALL');
+  const [activities, setActivities] = useState({
+    ALL: [],
+    PROJECT: [],
+    STUDY: [],
+    MENTORING: [],
+  });
 
+  
+  useEffect(()=>{
+    async function fetchData(){
+      await baseInstance.get("/activities")
+      .then((response)=>{
+        const allActivities = response.data.payload.allActivities;
+      
+        const filteredActivities = {
+          ALL: allActivities,
+          PROJECT: filterActivities(allActivities,'PROJECT'),
+          STUDY: filterActivities(allActivities,'STUDY'),
+          MENTORING: filterActivities(allActivities, 'MENTORING'),
+        }
+
+        setActivities(filteredActivities);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    }
+    fetchData();
+  }, [])
+
+  function filterActivities(activities, type) {
+    return activities.filter(activity => activity.activityType === type);
+  }
 
   const handleCard = (id) => {
+    setCardId(id);
     setContentOpen(!contentOpen);
-    console.log(id);
-  }
+  }   
 
   const handleWrite = () => {
     setIsOpen(!isOpen);
   }
 
   const KategorieClick = (title) => {
-    setKategorie(title);
-    console.log(title)
+    setKategorie(title)
   };
 
   return (
     <>
       {header && <Header />}
       {isOpen && <WriteModal closeModal={handleWrite} />}
-      {contentOpen && <ContentModal closeModal={handleCard}/>}
+      {contentOpen && <ContentModal 
+        closeModal={handleCard}
+        cardId={cardId}/>}
       <ActivityArea>
         <ActivityBox>
           <KategorieBox>
-            {ACTIVITY_CATEGORIE.map(({ id, icon, title }) => (
+            {ACTIVITY_CATEGORIE.map(({ id, icon, title, value }) => (
               <Kategorie 
                 key={id}
-                onClick={() => KategorieClick(title)}>
+                onClick={() => KategorieClick(value)}>
                 <KategorieIcon icon={icon} />
-                <KategorieContent>{title}</KategorieContent>
+                <span>{title}</span>
               </Kategorie>
             ))}
           </KategorieBox>
@@ -63,20 +92,16 @@ const Activity = () => {
           </SwitchArea>
         </ActivityBox>
         <CardArea>
-          {Object.keys(activities).map(year => (
-            Object.keys(activities[year]).map((type) => (
-              activities[year][type].map(({id, name, leader, activityType, createdAt}) => (                  
-                <Card key={id} onClick={() => handleCard(id)}>  
-                  <ActivityCard
-                    title={name}
-                    name={leader}
-                    type={activityType}
-                    // createAt={createdAt}
-                  />
-                </Card>  
-              ))
-            ))
-          ))}
+          {activities && 
+            activities[kategorie].map(({id, name, leader, activityType, createdAt}) => (                  
+              <Card key={id} onClick={() => handleCard(id)}>  
+                <ActivityCard
+                  title={name}
+                  name={leader}
+                  type={activityType}
+                  createAt={createdAt}
+                />
+              </Card>))}
         </CardArea>
       </ActivityArea>
     </>
@@ -114,8 +139,6 @@ const Kategorie = styled.div`
     color: lightblue;
   }
 `;
-
-const KategorieContent = styled.span``;
 
 const KategorieIcon = styled(FontAwesomeIcon)`
   margin-right: 0.5rem;
@@ -159,14 +182,13 @@ const CardArea = styled.div`
   box-sizing: border-box;
   padding: 3rem 0.5rem;
   width: 100%;
-`;
-
-const Card = styled.div`
-  gap: 30px;
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
-  /* width: 23%; */
+  gap: 30px;
+  `;
+
+const Card = styled.div`
+  width: 23%;
   height: 150px;
   @media screen and (max-width: 767px){
   }

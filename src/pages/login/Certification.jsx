@@ -17,13 +17,13 @@ const Certification = () => {
         certification: certification,
         email: email
       })
-      console.log(res)
       SessionStorage.remove("email");
       if(SessionStorage.get("type")){
         SessionStorage.remove("type")
         navigate("/changepw");
       }else{
-
+        alert(`회원님의 아이디는: ${res.data.payload.loginId}입니다.`);
+        navigate("/login");
       };
     }catch(error){
       const status = error.response.status;

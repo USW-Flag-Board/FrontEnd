@@ -1,46 +1,72 @@
 import styled from "styled-components";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { baseInstance } from "../../apis/instance";
+import { SessionStorage } from "../../utils/browserStorage";
 
-const ContentModal = ({ closeModal }) => {
+const ContentModal = ({ closeModal, cardId }) => {
     const [apply, setApply] = useState(true);
-
+    const [modalContent, setModalContent] = useState("");
+    const { activityType, createdAt, id, leader, name, semester, status } = modalContent;
+    const writerName = SessionStorage.get("name");
+    
     const handleApplyClick = () => { 
       setApply(!apply);
     };
+
+    useEffect(()=>{
+      baseInstance.get(`/activities/${cardId}`)
+      .then((response)=>{
+        setModalContent(response.data.payload);
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+    }, [cardId])
 
     return(
       <ModalArea>
         <ModalBox>
           <SelectAndTitle>
             <Select>
-              PROJECT
+              {activityType}
             </Select>
             <TitleArea>
-              <Title>FLAG 프론트엔드(React) 추가 팀원 모집</Title>
+              <Title>{name}</Title>
             </TitleArea>
           </SelectAndTitle>
-          <Master>활동장: 어준혁</Master>
+          <Master>활동장: {leader}</Master>
+          {leader === writerName ?<EditButtonBox>
+            <EditButton type="button">수정</EditButton>
+          </EditButtonBox> : null}
           <ContentBox>
-            <Content
-              placeholder="내용을 입력해주세요."
-              // value={content}
-            >안녕하세요. 플래그 프론트엔드 팀장 어준혁입니다.</Content>
+            <Content></Content>
           </ContentBox>
           <CheckBox>
             <RadioBox>
               <Span>깃허브 링크:</Span>
-                https://github.com/USW-Flag-Board/FrontEnd.git
             </RadioBox>
           </CheckBox>
-          <ButtonBox>
-            <div></div>
-            {apply ?
-              <ModalButton className="onApply" onClick={handleApplyClick}>신청하기</ModalButton>
+          <ButtonArea>
+            {leader === writerName ?
+            <>
+              <ButtonBox>
+                <ModalButton className="delete-button" type="button" >활동삭제</ModalButton>
+              </ButtonBox>
+              <ButtonBox className="on-writer">
+                <ModalButton type="button">신청자 정보 확인</ModalButton>
+                <ModalButton type="button" onClick={closeModal}>닫기</ModalButton>
+              </ButtonBox>
+            </>
             :
-              <ModalButton className="offApply" onClick={handleApplyClick}>취소하기</ModalButton>
-            }
-            <ModalButton onClick={closeModal}>모달닫기</ModalButton>
-          </ButtonBox>
+            <ButtonBox className="no-writer">
+              {apply ?
+                <ModalButton type="button" className="onApply" onClick={handleApplyClick}>신청하기</ModalButton>
+              :
+                <ModalButton type="button" className="offApply" onClick={handleApplyClick}>취소하기</ModalButton>
+              }
+              <ModalButton type="button" onClick={closeModal}>닫기</ModalButton>
+            </ButtonBox>}
+          </ButtonArea>
         </ModalBox>
       </ModalArea>
     )
@@ -148,18 +174,39 @@ const RadioBox = styled.div`
   font-size: 0.8rem;
 `;
 
-const ButtonBox = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+const ButtonArea = styled.div`
+  width: 100%;
   gap: 1rem;
   height: 13%;
+  display: flex;
+  justify-content: space-between;
 
+  .on-writer{
+    width: 25%;
+  }
+
+  .no-writer{
+    width: 100%;
+  }
+  
   .offApply{
     background-color: #CD5E5E;
     border: none;
     color: black;
   }
+  .delete-button{
+    background: none;
+    width: fit-content;
+    color: black;
+    border: none;
+  }
+`;
+
+const ButtonBox = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const ModalButton = styled.button`
@@ -168,9 +215,22 @@ const ModalButton = styled.button`
   height: 50%;
   background-color: #404040;
   color: white;
+  cursor: pointer;
 `;
 
 
 const Span = styled.span`
     margin-right: 1rem;
 `;
+
+const EditButtonBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+`
+
+const EditButton = styled.button`
+  border: none;
+  cursor: pointer;
+  background: none;
+`

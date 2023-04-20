@@ -8,7 +8,7 @@ import { SessionStorage } from "../../utils/browserStorage";
 import { cookiesOption } from "../../utils/cookiesOption";
 import logo from "../../assets/images/logo2.png"
 import { baseInstance } from "../../apis/instance";
-
+import instance from "../../apis/AxiosInterceptorSetup";
 const LoginPage = () => {
   const navigate = useNavigate();
   const [idPassword, setIdPassword] = useState({
@@ -41,6 +41,11 @@ const LoginPage = () => {
         "refresh_token",
         response.data.payload.refreshToken
       );
+      const headers = {
+        'Authorization': `Bearer ${accessToken}`
+      };
+      const myInfo = await instance.get('/members', {headers: headers})
+      SessionStorage.set("name", myInfo.data.payload.name)
       navigate("/")
     }catch(error){
       const status = error.response.status;
@@ -56,6 +61,7 @@ const LoginPage = () => {
       }
     }
   }
+
 
   return (
     <PageArea>

@@ -11,7 +11,7 @@ const instance = axios.create({
 async function handleUnauthorizedError(error, originalRequest) {
   const status = error.response.status;
     
-  if (status === 401) {
+  if (status === 401 || status === 409) {
     const { accessToken, refreshToken } = await refreshTokens();
     updateTokens(accessToken, refreshToken);
     originalRequest.headers.Authorization = `Bearer ${accessToken}`;

@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { LOGOUT_USER_ITEMS, HEADER_ITEMS } from "../constants/header";
 import logo from "../assets/images/logo2.png"
 import { useDispatch } from "react-redux";
-import activitiesActions from "../redux/thunkActions/activityActions";
 import { SessionStorage } from "../utils/browserStorage";
 
 const Header = () => {
@@ -28,7 +27,6 @@ const Header = () => {
         navigate('/board')
         break;
       case 'ACTIVITY':
-        dispatch(activitiesActions.getAllactivitiesAPI('/activities'))
         navigate('/activity');
         break;
       case 'INTRODUCTION':

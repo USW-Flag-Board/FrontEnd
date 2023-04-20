@@ -1,46 +1,55 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { SELECT_OPTION, BOOK_RADIO_OPTION, ONLINE_RADIO_OPTION } from "../../constants/activity";
-import { setPostActivity } from "../../apis/activityAPI";
 import { SessionStorage } from "../../utils/browserStorage";
-import { baseInstance } from "../../apis/instance";
+import instance from "../../apis/AxiosInterceptorSetup";
+
 
 const ActivityWriteModal = ({ closeModal }) => {
   const [type, setType] = useState("");
   const [title, setTitle] = useState("");
-  const [book, setBook] = useState("");
+  const [bookUsage, setBookUsage] = useState("");
   const [content, setContent] = useState("");
-  const [name, setName] = useState("");
+  const [bookName, setbookName] = useState("");
   const [proceed, setProceed] = useState("");
+  const [githubLink, setGithubLink] = useState("");
   const accessToken = SessionStorage.get("UserToken");
 
-  const data = {
-    activityType: type,
-    bookName: title,
-    bookUsage: book,
-    description: content,
-    githubLink: "https://github.com/Eojoonhyuk",
-    name: "어준혁",
-    proceed: proceed,
-  };
+  useEffect(()=>{
+    setbookName("");
+    setProceed("");
+    setGithubLink("");
+    setBookUsage("");
+  }, [type])
 
   const handleType = (e) => {
     setType(e.target.value);
   };
 
   const submit = async () => {
-    try{
-      const res = await baseInstance.post("/activities", {
+    const data = {
+      activityType: type,
+      bookName: bookName,
+      bookUsage: bookUsage,
+      description: content,
+      githubLink: githubLink,
+      name: title,
+      proceed: proceed,
+    }
+      instance.post("/activities", data, {
       headers: {
         "Authorization": `Bearer ${accessToken}`,
         "Content-Type": "application/json",
-        // "Content-Length": data.length.toString(),
-        }, data
-      });
-        return res;
-      }catch(error){
+        }
+      })
+      .then((response) => {
+        console.log(response)
+        if(response.status === 201) closeModal();
+      })
+      .catch((error) => {
         console.log(error);
-    }
+      })
+
   }  
 
   return (
@@ -49,9 +58,9 @@ const ActivityWriteModal = ({ closeModal }) => {
         <SelectAndTitle>
           <Select onChange={handleType}>
             {SELECT_OPTION.map(({ id, title }) => (
-              <Option key={id} value={title}>
+              <option key={id} value={title}>
                 {title}
-              </Option>
+              </option>
             ))}
           </Select>
           <Title
@@ -68,26 +77,33 @@ const ActivityWriteModal = ({ closeModal }) => {
             onChange={(e) => setContent(e.target.value)}
           />
         </ContentBox>
+        {type === "MENTORING" || type === "STUDY" ?
         <CheckBox>
           <RadioBox>
-            <Span>책 사용 여부</Span>
+            <Label>책 사용 여부</Label>
             {BOOK_RADIO_OPTION.map(({ id, option, value }) => (
               <Radio key={id}>
-                <Span>{option}</Span>
+                <span>{option}</span>
                 <RadioInput
                   type="radio"
                   value={value}
-                  name="book"
-                  onClick={() => setBook(value)}
+                  name="bookUsage"
+                  onClick={() => setBookUsage(value)}
                 />
               </Radio>
             ))}
-          </RadioBox>
+            {bookUsage === "USE" ? 
+              <RadioInput 
+                type="text"
+                placeholder="책 이름을 입력해주세요"
+                value={bookName}
+                onChange={(e) => setbookName(e.target.value)}/> : null}
+          </RadioBox> 
           <RadioBox>
-            <Span>온/오프라인</Span>
+            <Label>온/오프라인</Label>
             {ONLINE_RADIO_OPTION.map(({ id, option, value }) => (
               <Radio key={id}>
-                <Span>{option}</Span>
+                <span>{option}</span>
                 <RadioInput
                   type="radio"
                   value={value}
@@ -97,7 +113,34 @@ const ActivityWriteModal = ({ closeModal }) => {
               </Radio>
             ))}
           </RadioBox>
-        </CheckBox>
+        </CheckBox> : null}
+        {type === "PROJECT" ? 
+          (<RadioBox>
+            <CheckBox>
+              <RadioBox>
+                <Label>깃허브 링크:</Label>
+                <RadioInput 
+                  type="text"
+                  placeholder="링크를 입력해주세요."
+                  value={githubLink}
+                  onChange={(e) => setGithubLink(e.target.value)}/>
+              </RadioBox>
+              <RadioBox>
+                <Label>온/오프라인</Label>
+                {ONLINE_RADIO_OPTION.map(({ id, option, value }) => (
+                  <Radio key={id}>
+                    <span>{option}</span>
+                    <RadioInput
+                      type="radio"
+                      value={value}
+                      name="online"
+                      onClick={() => setProceed(value)}
+                    />
+                  </Radio>
+                ))}
+              </RadioBox>
+            </CheckBox>
+          </RadioBox>): null}
         <ButtonBox>
           <ModalButton onClick={submit}>작성완료</ModalButton>
           <ModalButton onClick={closeModal}>작성취소</ModalButton>
@@ -119,7 +162,7 @@ const ModalArea = styled.div`
   z-index: 10;
 `;
 
-const ModalBox = styled.form`
+const ModalBox = styled.div`
   box-sizing: border-box;
   position: absolute;
   top: 50%;
@@ -147,8 +190,6 @@ const Select = styled.select`
   padding-left: 0.5rem;
 `;
 
-const Option = styled.option``;
-
 const Title = styled.input`
   width: 68%;
   height: 100%;
@@ -160,7 +201,7 @@ const Title = styled.input`
 const ContentBox = styled.div`
   box-sizing: border-box;
   width: 100%;
-  height: 60%;
+  height: 55%;
   margin: 1rem 0;
 `;
 
@@ -182,7 +223,8 @@ const CheckBox = styled.div`
   border: 1px solid #8e8e8e;
   border-radius: 20px;
   padding: 1rem;
-  height: 15%;
+  width: 100%;
+  height: 20%;
   margin-bottom: 0.5rem;
   display: flex;
   flex-direction: column;
@@ -198,11 +240,12 @@ const RadioBox = styled.div`
 const Radio = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 1rem;
+  margin-right: 1rem;
 `;
 
 const RadioInput = styled.input`
   margin-left: 0.3rem;
+  outline: none;
 `;
 
 const ButtonBox = styled.div`
@@ -221,4 +264,6 @@ const ModalButton = styled.button`
   color: white;
 `;
 
-const Span = styled.span``;
+const Label = styled.label`
+  margin-right: 1rem;
+`;

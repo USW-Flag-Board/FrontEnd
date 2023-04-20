@@ -22,7 +22,7 @@ const Home = () => {
                 </FlagButtonBox>
               </FlagCountArea>
               <FlagCountArea>
-                <FlagCountBox>진행중인 Activity는<br/><FlagCount>30</FlagCount> 개 입니다.</FlagCountBox>
+                <FlagCountBox>모집중인 Activity는<br/><FlagCount>30</FlagCount> 개 입니다.</FlagCountBox>
                 <FlagContent>Flag는 수원대생에게 더 큰 소통의 장을 <br/>마련하기위해 만든 개발동아리입니다.</FlagContent>
                 <FlagButtonBox>
                   <FlagButton>Activity 참여하기</FlagButton>
@@ -58,7 +58,7 @@ const Home = () => {
 };
 
 const HomeArea = styled.div`
-  width: 100vw;
+  width: 100%;
 `;
 
 const HomeBox = styled.div`
@@ -66,8 +66,8 @@ const HomeBox = styled.div`
 `;
 
 const HomeContents = styled.div`
-  width: calc(100% - 16rem);
-  margin: 0 8rem;
+  width: 100%;
+  padding: 0 8rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -78,7 +78,7 @@ const BookImgBox = styled.div`
 `;
 
 const PostsArea = styled.div`
-  width: 80%;
+  width: 85%;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -86,31 +86,33 @@ const PostsArea = styled.div`
 `;
 
 const FlagInfo = styled.div`
+  width: 85%;
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
 `
 
 const FlagCountArea = styled.div`
-  height: 300px;
+  height: 250px;
   margin-top: 2rem;
 `;
 
 const FlagCountBox = styled.h3`
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin-bottom: 1rem;
   font-weight: 600;
   box-sizing: border-box;
-  `;
+`;
 
 const FlagCount = styled.span`
   line-height: 150%;
   color: #47c880;
-  `;
+`;
 
 const FlagContent = styled.div`
   color: #757575;
   line-height: 170%;
+  font-size: 1rem;
 `;
 
 const FlagButton = styled.button`
