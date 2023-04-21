@@ -2,42 +2,56 @@ import styled from "styled-components";
 import { useEffect, useState } from 'react';
 import { baseInstance } from "../../apis/instance";
 import { SessionStorage } from "../../utils/browserStorage";
-import ApplyCheckModal from "./ApplyCheckModal";
 import instance from "../../apis/AxiosInterceptorSetup";
+import ApplyCheckModal from "./ApplyCheckModal";
+import SelectedCheckModal from "./SelectedCheckModal";
 
 const ContentModal = ({ closeModal, cardId }) => {
     const [apply, setApply] = useState(true);
+    const [isLeader, setIsLeader] = useState(false);
     const [modalContent, setModalContent] = useState("");
-    const [applyCheck, setApplyCheck] = useState(false);
+    const [applyMembersCheck, setApplyMembersCheck] = useState(false);
+    const [selectedMembersCheck, setSelectedMembersCheck] = useState(false);
     const { activityType, id, leader, name, semester, status, description } = modalContent;
     const writerName = SessionStorage.get("name");
     
     const hadleApplyClick = async () => {
       try{
-        const response = await instance.post(`activities/${id}/apply`)
-        console.log(response)
+        await instance.post(`activities/${id}/apply`)
       }catch(error){
         console.log(error);
       }
     };
 
     const handledDelteClick = async () => {
-      try{
-        await instance.delete(`activities/${id}`)
-        closeModal();
-      }catch(error){
-        console.log(error)
+      if(window.confirm("정말 삭제하시겠습니까?")){
+        try{
+          await instance.delete(`activities/${id}`)
+          alert("삭제되었습니다.")
+          closeModal();
+        }catch(error){
+          console.log(error)
+        }
       }
     }
 
     const handleCancelClick = async () => {
-      try{
-        await instance.delete(`activities/${id}/apply`)
-        closeModal();
-      }catch(error){
-        console.log(error)
+      if(window.confirm("신청을 취소하시겠습니까?")){
+        try{
+          await instance.delete(`activities/${id}/apply`)
+          alert("신청이 취소되었습니다.")
+          closeModal();
+        }catch(error){
+          console.log(error)
+        }
       }
     }
+
+    useEffect(()=>{
+      if(leader === writerName){
+        setIsLeader(true);
+      }
+    }, [leader, writerName])
 
     useEffect(()=>{
       async function fetchData(){
@@ -55,8 +69,8 @@ const ContentModal = ({ closeModal, cardId }) => {
       async function fetchData(){
         try{
           const response = await instance.post(`/activities/${cardId}/check`)
-          if(response.data.payload) setApply(false)
-          else setApply(true)
+          if(response.data.payload) setApply(true)
+          else setApply(false)
         }catch(error){
           console.log(error);
         }
@@ -67,77 +81,100 @@ const ContentModal = ({ closeModal, cardId }) => {
     return(
       <ModalArea>
         <ModalBox>
-        {!applyCheck ?
-        <>
-          <SelectAndTitle>
-            <Select>{activityType}</Select>
-            <TitleArea><Title>{name}</Title></TitleArea>
-          </SelectAndTitle>
-          <Master>활동장: {leader}</Master>
-          <EditButtonBox>
-            <EditButton type="button">수정</EditButton>
-          </EditButtonBox> 
-          <ContentBox>
-            <Content>{description}</Content>
-          </ContentBox>
-          <CheckBox>
-            <RadioBox>
-              <Span>깃허브 링크:</Span>
-            </RadioBox>
-          </CheckBox>
-          <ButtonArea>
-            {leader === writerName ?
-              <>
-                <ButtonBox>
+          {!applyMembersCheck && !selectedMembersCheck && (
+          <>
+            <SelectAndTitle>
+              <Select>{activityType}</Select>
+              <TitleArea><Title>{name}</Title></TitleArea>
+            </SelectAndTitle>
+            <Master>활동장: {leader}</Master>
+            <ContentBox>
+              <Content>{description}</Content>
+            </ContentBox>
+            <CheckBox>
+              <RadioBox>
+                <Span>깃허브 링크:</Span>
+              </RadioBox>
+            </CheckBox>
+            <ButtonArea>
+              <ButtonBox>
+                {isLeader && (
                   <ModalButton 
                     className="delete-button"
                     type="button"
-                    onClick={handledDelteClick}
-                  >
+                    onClick={handledDelteClick}>
                     활동삭제
                   </ModalButton>
-                </ButtonBox>
-                <ButtonBox className="on-writer">
+                )}
+
+                {isLeader && status !== 'ON' && (
+                <>
                   <ModalButton 
                     type="button"
-                    onClick={()=>setApplyCheck(true)}
-                    >
-                      신청자 정보 확인
-                    </ModalButton>
-                  <ModalButton
-                    type="button"
-                    onClick={closeModal}
-                  >
-                    닫기
+                    className="delete-button">
+                    수정
                   </ModalButton>
-                </ButtonBox>
-              </>
-            :
-              <ButtonBox className="no-writer">
-                {apply ?
+                  <ModalButton 
+                    type="button"
+                    className="check-members"
+                    onClick={()=>setApplyMembersCheck(true)}>
+                      신청자 정보 확인
+                  </ModalButton>
+                </>
+                )}
+
+                {isLeader && status === 'ON' && (
+                <>
+                  <ModalButton 
+                    className="delete-button"
+                    type="button"
+                    >
+                    활동종료
+                  </ModalButton>
+                  <ModalButton 
+                    type="button"
+                    className="check-members"
+                    onClick={()=>setSelectedMembersCheck(true)}>
+                      참여자 정보 확인
+                  </ModalButton>
+                </>
+                )}
+
+                {!isLeader && status !== 'ON' && !apply &&(
                   <ModalButton 
                     type="button"
                     className="onApply"
-                    onClick={hadleApplyClick}
-                    >
+                    onClick={hadleApplyClick}>
                       신청하기
                   </ModalButton>
-                :
+                )}
+                
+                {!isLeader && status !== 'ON' && apply &&(
                   <ModalButton
                     type="button"
                     className="offApply"
-                    onClick={handleCancelClick}
-                    >
+                    onClick={handleCancelClick}>
                       취소하기
-                    </ModalButton>
-                }
+                  </ModalButton>
+                )}
                 <ModalButton type="button" onClick={closeModal}>닫기</ModalButton>
-              </ButtonBox>}
+              </ButtonBox>
             </ButtonArea>
           </>
-          : 
-          <ApplyCheckModal setApplyCheck={setApplyCheck} id={id}/>
-          }
+        )}
+        {leader && status !== 'ON' && applyMembersCheck && (
+          <ApplyCheckModal 
+            setApplyMembersCheck={setApplyMembersCheck}
+            id={id}
+            closeModal={closeModal}
+          />
+        )}
+
+        {leader && status === 'ON' && selectedMembersCheck && (
+          <SelectedCheckModal id={id}
+          setSelectedMembersCheck={setSelectedMembersCheck}
+          />
+        )}
         </ModalBox>
       </ModalArea>
     )
@@ -201,8 +238,8 @@ const Title = styled.div`
 `;
 
 const Master = styled.div`
-    margin-left: calc(30% + 2rem);
-    font-weight: bold;
+  margin-left: calc(30% + 2rem);
+  font-weight: bold;
 `;
 
 const ContentBox = styled.div`
@@ -231,7 +268,6 @@ const CheckBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 10px;
   font-weight: bold;
 `;
 
@@ -243,7 +279,6 @@ const RadioBox = styled.div`
 
 const ButtonArea = styled.div`
   width: 100%;
-  gap: 1rem;
   height: 13%;
   display: flex;
   justify-content: space-between;
@@ -266,6 +301,11 @@ const ButtonArea = styled.div`
     width: fit-content;
     color: black;
     border: none;
+    margin-right: 0.5rem;
+  }
+
+  .check-members{
+    float: right;
   }
 `;
 
@@ -288,15 +328,3 @@ const ModalButton = styled.button`
 const Span = styled.span`
     margin-right: 1rem;
 `;
-
-const EditButtonBox = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-`
-
-const EditButton = styled.button`
-  border: none;
-  cursor: pointer;
-  background: none;
-`

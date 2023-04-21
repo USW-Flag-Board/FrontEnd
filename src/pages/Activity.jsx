@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Header, ActivityCard, Toggle, WriteModal, ContentModal } from "../components";
+import {
+  Header,
+  ActivityCard,
+  Toggle,
+  WriteModal,
+  ContentModal,
+} from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { ACTIVITY_CATEGORIE } from "../constants/activity";
@@ -11,7 +17,7 @@ const Activity = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [contentOpen, setContentOpen] = useState(false);
   const [cardId, setCardId] = useState("");
-  const [kategorie, setKategorie] =  useState('ALL');
+  const [kategorie, setKategorie] = useState("ALL");
   const [activities, setActivities] = useState({
     ALL: [],
     PROJECT: [],
@@ -19,59 +25,54 @@ const Activity = () => {
     MENTORING: [],
   });
 
-  
-  useEffect(()=>{
-    async function fetchData(){
-      try{
-        const response = await baseInstance.get("/activities")
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await baseInstance.get("/activities");
         const allActivities = response.data.payload.allActivities;
-        
+
         const filteredActivities = {
           ALL: allActivities,
-          PROJECT: filterActivities(allActivities,'PROJECT'),
-          STUDY: filterActivities(allActivities,'STUDY'),
-          MENTORING: filterActivities(allActivities, 'MENTORING'),
-        }
-  
+          PROJECT: filterActivities(allActivities, "PROJECT"),
+          STUDY: filterActivities(allActivities, "STUDY"),
+          MENTORING: filterActivities(allActivities, "MENTORING"),
+        };
+
         setActivities(filteredActivities);
-      }catch(error){
+      } catch (error) {
         console.log(error);
       }
     }
     fetchData();
-  }, [isOpen])
+  }, [isOpen]);
 
   function filterActivities(activities, type) {
-    return activities.filter(activity => activity.activityType === type);
+    return activities.filter((activity) => activity.activityType === type);
   }
 
   const handleCard = (id) => {
     setCardId(id);
     setContentOpen(!contentOpen);
-  }   
+  };
 
   const handleWrite = () => {
     setIsOpen(!isOpen);
-  }
+  };
 
   const KategorieClick = (title) => {
-    setKategorie(title)
+    setKategorie(title);
   };
 
   return (
     <>
       {header && <Header />}
       {isOpen && <WriteModal closeModal={handleWrite} />}
-      {contentOpen && <ContentModal 
-        closeModal={handleCard}
-        cardId={cardId}/>}
+      {contentOpen && <ContentModal closeModal={handleCard} cardId={cardId} />}
       <ActivityArea>
         <ActivityBox>
           <KategorieBox>
             {ACTIVITY_CATEGORIE.map(({ id, icon, title, value }) => (
-              <Kategorie 
-                key={id}
-                onClick={() => KategorieClick(value)}>
+              <Kategorie key={id} onClick={() => KategorieClick(value)}>
                 <KategorieIcon icon={icon} />
                 <span>{title}</span>
               </Kategorie>
@@ -89,17 +90,20 @@ const Activity = () => {
           </SwitchArea>
         </ActivityBox>
         <CardArea>
-          {activities && 
-            activities[kategorie].map(({id, name, leader, activityType, semester, status}) => (                  
-              <Card key={id} onClick={() => handleCard(id)}>  
-                <ActivityCard
-                  title={name}
-                  name={leader}
-                  type={activityType}
-                  semester={semester}
-                  status={status}
-                />
-              </Card>))}
+          {activities &&
+            activities[kategorie].map(
+              ({ id, name, leader, activityType, semester, status }) => (
+                <Card key={id} onClick={() => handleCard(id)}>
+                  <ActivityCard
+                    title={name}
+                    name={leader}
+                    type={activityType}
+                    semester={semester}
+                    status={status}
+                  />
+                </Card>
+              )
+            )}
         </CardArea>
       </ActivityArea>
     </>
@@ -112,7 +116,7 @@ const ActivityArea = styled.div`
   width: 100%;
   padding: 4rem 8rem 0 8rem;
   z-index: 0;
-  @media screen and (max-width: 1023px){
+  @media screen and (max-width: 1023px) {
     width: 100%;
     padding: 2rem 2rem;
   }
@@ -130,7 +134,7 @@ const KategorieBox = styled.div`
   height: 2rem;
   display: flex;
   align-items: center;
-  @media screen and (max-width: 1023px){
+  @media screen and (max-width: 1023px) {
     width: 100%;
   }
 `;
@@ -156,7 +160,7 @@ const SwitchArea = styled.div`
   width: 30%;
   font-size: 1.2rem;
   font-weight: bold;
-  @media screen and (max-width: 1023px){
+  @media screen and (max-width: 1023px) {
     display: none;
   }
 `;
@@ -193,15 +197,15 @@ const CardArea = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
-  `;
+`;
 
 const Card = styled.div`
   width: 23%;
   height: 150px;
-  @media screen and (max-width: 1023px){
+  @media screen and (max-width: 1023px) {
     width: 48%;
   }
-  @media screen and (max-width: 768px){
+  @media screen and (max-width: 768px) {
     width: 100%;
   }
-`
+`;

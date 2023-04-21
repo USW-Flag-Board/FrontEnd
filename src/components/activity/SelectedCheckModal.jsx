@@ -4,58 +4,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import instance from "../../apis/AxiosInterceptorSetup";
 
-const ApplyCheckModal = ({setApplyMembersCheck, id, closeModal}) => {
-    const [applyMember, setApplyMembers] = useState("");
+const SelectedCheckModal = ({setSelectedMembersCheck, id}) => {
     const [selectedMember, setSelectedMember] = useState([]);
-    
-    const handleMemberClick = (name, major, id, loginId) => {
-      if(!selectedMember.some(member => member.loginId === loginId)){
-      const newMember = {
-        name: name,
-        major: major,
-        id: id,
-        loginId: loginId
-      };
-      setSelectedMember([...selectedMember, newMember])
-      }
-    }
-
-    const handleDeleteMember = (id) => {
-      const deletedMeber = selectedMember.filter(member => member.id !== id);
-      setSelectedMember(deletedMeber);
-    }
-
-    const handleCloseRecruit = async () => {
-      const members = selectedMember.map(member => member.loginId);
-      try{
-        await instance.patch(`/activities/${id}/close`,{
-          loginIdList: members
-        });
-        closeModal();
-      }catch(error){
-        console.log(error)
-      }
-    }
     
     useEffect(()=>{
         async function fetchData(){
-          try{
-            const response = await instance.get(`/activities/${id}/apply`)
-            setApplyMembers(response.data.payload)
-          }catch(error){
-            console.log(error);
-          }
+            try{
+                const response = await instance.get(`activities/${id}/participant`)
+                setSelectedMember(response.data.payload);
+                console.log(response.data.payload)
+            }catch(error){
+                console.log(error)
+            }
         }
         fetchData();
-      }, [id])
+    }, [id])
     
     return(
       <>
         <ContentBox>
           <Content className="content-area">
-            <MembersTitle>신청자 정보 확인</MembersTitle>
-            {applyMember && applyMember.map(({name, major, id, loginId})=> (
-              <MembersBox key={id} onClick={()=>handleMemberClick(name, major, id, loginId)}>
+            <MembersTitle>참여자 정보 확인</MembersTitle>
+            {selectedMember && selectedMember.map(({name, major, loginId})=> (
+              <MembersBox key={loginId}>
                 <MemberIcon icon={faUser}/>
                 <span>{name}</span>
                 <span>({major})</span>
@@ -63,36 +34,21 @@ const ApplyCheckModal = ({setApplyMembersCheck, id, closeModal}) => {
             ))}
           </Content>
         </ContentBox>
-        <ContentBox className="selected-member">
-        <Content>
-          <MembersTitle>선택한 멤버</MembersTitle>
-          {selectedMember && selectedMember.map(({name, major, id})=>(
-            <MembersBox key={id} onClick={()=>handleDeleteMember(id)}>
-              <MemberIcon icon={faUser}/>
-              <span>{name}</span>
-              <span>({major})</span>
-            </MembersBox>
-          ))}
-        </Content>
-        </ContentBox>
         <ButtonArea>
           <ButtonBox>
-            <ModalButton type="button" onClick={()=>setApplyMembersCheck(false)}>뒤로가기</ModalButton>
-          </ButtonBox>
-          <ButtonBox>
-            <ModalButton type="button" onClick={handleCloseRecruit}>마감하기</ModalButton>
+            <ModalButton type="button" onClick={()=>setSelectedMembersCheck(false)}>뒤로가기</ModalButton>
           </ButtonBox>
         </ButtonArea>
       </>
     )
 }
 
-export default ApplyCheckModal;
+export default SelectedCheckModal;
 
 const ContentBox = styled.div`
   box-sizing: border-box;
   width: 100%;
-  height: 50%;
+  height: 80%;
   margin: 1rem 1rem 1rem 0;
   padding-right: 1rem;
   padding-top: 1rem;
@@ -152,7 +108,7 @@ const ButtonArea = styled.div`
   width: 100%;
   height: 15%;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 `;
 
 const ButtonBox = styled.div`
