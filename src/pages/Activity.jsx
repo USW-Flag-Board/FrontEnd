@@ -22,25 +22,24 @@ const Activity = () => {
   
   useEffect(()=>{
     async function fetchData(){
-      await baseInstance.get("/activities")
-      .then((response)=>{
+      try{
+        const response = await baseInstance.get("/activities")
         const allActivities = response.data.payload.allActivities;
-      
+        
         const filteredActivities = {
           ALL: allActivities,
           PROJECT: filterActivities(allActivities,'PROJECT'),
           STUDY: filterActivities(allActivities,'STUDY'),
           MENTORING: filterActivities(allActivities, 'MENTORING'),
         }
-
+  
         setActivities(filteredActivities);
-      })
-      .catch((error) => {
+      }catch(error){
         console.log(error);
-      })
+      }
     }
     fetchData();
-  }, [])
+  }, [isOpen])
 
   function filterActivities(activities, type) {
     return activities.filter(activity => activity.activityType === type);
@@ -85,21 +84,20 @@ const Activity = () => {
             </SwitchBox>
             <ActivityWriteButton onClick={handleWrite} type="button">
               <WriteButtonIcon icon={faPencil} />
-              <WriteButton>
-                글쓰기
-              </WriteButton>
+              <WriteButton>글쓰기</WriteButton>
             </ActivityWriteButton>
           </SwitchArea>
         </ActivityBox>
         <CardArea>
           {activities && 
-            activities[kategorie].map(({id, name, leader, activityType, createdAt}) => (                  
+            activities[kategorie].map(({id, name, leader, activityType, semester, status}) => (                  
               <Card key={id} onClick={() => handleCard(id)}>  
                 <ActivityCard
                   title={name}
                   name={leader}
                   type={activityType}
-                  createAt={createdAt}
+                  semester={semester}
+                  status={status}
                 />
               </Card>))}
         </CardArea>
@@ -111,9 +109,13 @@ const Activity = () => {
 export default Activity;
 
 const ActivityArea = styled.div`
-  width: calc(100vw - 16rem);
-  margin: 4rem 8rem 0 8rem;
+  width: 100%;
+  padding: 4rem 8rem 0 8rem;
   z-index: 0;
+  @media screen and (max-width: 1023px){
+    width: 100%;
+    padding: 2rem 2rem;
+  }
 `;
 
 const ActivityBox = styled.div`
@@ -128,6 +130,9 @@ const KategorieBox = styled.div`
   height: 2rem;
   display: flex;
   align-items: center;
+  @media screen and (max-width: 1023px){
+    width: 100%;
+  }
 `;
 
 const Kategorie = styled.div`
@@ -151,6 +156,9 @@ const SwitchArea = styled.div`
   width: 30%;
   font-size: 1.2rem;
   font-weight: bold;
+  @media screen and (max-width: 1023px){
+    display: none;
+  }
 `;
 
 const SwitchBox = styled.div`
@@ -190,6 +198,10 @@ const CardArea = styled.div`
 const Card = styled.div`
   width: 23%;
   height: 150px;
-  @media screen and (max-width: 767px){
+  @media screen and (max-width: 1023px){
+    width: 48%;
+  }
+  @media screen and (max-width: 768px){
+    width: 100%;
   }
 `

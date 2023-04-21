@@ -10,14 +10,14 @@ const Privacy = ({
     const [state, setState] = useState({
       name: "",
       studentId: "",
-      nickName: "",
+      nickname: "",
       major: "",
       nameMessage: "",
       studentIdMessage: "",
       nickNameMessage: "",
       majorMessage: "",
     });
-    const { name, major, nickName, studentId } = state;
+    const { name, major, nickname, studentId } = state;
     const { studentIdMessage, nickNameMessage, majorMessage, nameMessage } = state;
     const updateState = (key, value) => {
       setState(prevState => ({
@@ -34,7 +34,7 @@ const Privacy = ({
         case "name":
           updateState("nameMessage", nameRegex.test(value) ? "O" : "이름은 한글, 영문 대소문자, 띄어쓰기, 특수문자(-, ')만 입력 가능하며, 최소 2자 이상, 최대 20자 이하로 입력해야 합니다.");
           break;
-        case "nickName":
+        case "nickname":
           updateState("nickNameMessage", value.length >= 3 ? "O" : "3글자 이상 입력해주세요.");
           break;
         case "major":
@@ -56,7 +56,7 @@ const Privacy = ({
           ...signUpData,
           major: major,
           name: name,
-          nickName: nickName,
+          nickname: nickname,
           studentId: studentId,
         })
       }
@@ -75,7 +75,7 @@ const Privacy = ({
         <WriteArea
           type="text"
           placeholder="닉네임"
-          name="nickName"
+          name="nickname"
           onChange={handleInputChange}
         />
         <InfoState>{nickNameMessage}</InfoState>

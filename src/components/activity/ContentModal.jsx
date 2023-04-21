@@ -2,44 +2,83 @@ import styled from "styled-components";
 import { useEffect, useState } from 'react';
 import { baseInstance } from "../../apis/instance";
 import { SessionStorage } from "../../utils/browserStorage";
+import ApplyCheckModal from "./ApplyCheckModal";
+import instance from "../../apis/AxiosInterceptorSetup";
 
 const ContentModal = ({ closeModal, cardId }) => {
     const [apply, setApply] = useState(true);
     const [modalContent, setModalContent] = useState("");
-    const { activityType, createdAt, id, leader, name, semester, status } = modalContent;
+    const [applyCheck, setApplyCheck] = useState(false);
+    const { activityType, id, leader, name, semester, status, description } = modalContent;
     const writerName = SessionStorage.get("name");
     
-    const handleApplyClick = () => { 
-      setApply(!apply);
+    const hadleApplyClick = async () => {
+      try{
+        const response = await instance.post(`activities/${id}/apply`)
+        console.log(response)
+      }catch(error){
+        console.log(error);
+      }
     };
 
+    const handledDelteClick = async () => {
+      try{
+        await instance.delete(`activities/${id}`)
+        closeModal();
+      }catch(error){
+        console.log(error)
+      }
+    }
+
+    const handleCancelClick = async () => {
+      try{
+        await instance.delete(`activities/${id}/apply`)
+        closeModal();
+      }catch(error){
+        console.log(error)
+      }
+    }
+
     useEffect(()=>{
-      baseInstance.get(`/activities/${cardId}`)
-      .then((response)=>{
-        setModalContent(response.data.payload);
-      })
-      .catch((error)=>{
-        console.log(error);
-      })
+      async function fetchData(){
+        try{
+          const response = await baseInstance.get(`/activities/${cardId}`)
+          setModalContent(response.data.payload);
+        }catch(error){
+          console.log(error);
+        }
+      }
+      fetchData();
     }, [cardId])
+
+    useEffect(()=>{
+      async function fetchData(){
+        try{
+          const response = await instance.post(`/activities/${cardId}/check`)
+          if(response.data.payload) setApply(false)
+          else setApply(true)
+        }catch(error){
+          console.log(error);
+        }
+      }
+      fetchData();
+    },[cardId])
 
     return(
       <ModalArea>
         <ModalBox>
+        {!applyCheck ?
+        <>
           <SelectAndTitle>
-            <Select>
-              {activityType}
-            </Select>
-            <TitleArea>
-              <Title>{name}</Title>
-            </TitleArea>
+            <Select>{activityType}</Select>
+            <TitleArea><Title>{name}</Title></TitleArea>
           </SelectAndTitle>
           <Master>활동장: {leader}</Master>
-          {leader === writerName ?<EditButtonBox>
+          <EditButtonBox>
             <EditButton type="button">수정</EditButton>
-          </EditButtonBox> : null}
+          </EditButtonBox> 
           <ContentBox>
-            <Content></Content>
+            <Content>{description}</Content>
           </ContentBox>
           <CheckBox>
             <RadioBox>
@@ -48,25 +87,57 @@ const ContentModal = ({ closeModal, cardId }) => {
           </CheckBox>
           <ButtonArea>
             {leader === writerName ?
-            <>
-              <ButtonBox>
-                <ModalButton className="delete-button" type="button" >활동삭제</ModalButton>
-              </ButtonBox>
-              <ButtonBox className="on-writer">
-                <ModalButton type="button">신청자 정보 확인</ModalButton>
-                <ModalButton type="button" onClick={closeModal}>닫기</ModalButton>
-              </ButtonBox>
-            </>
+              <>
+                <ButtonBox>
+                  <ModalButton 
+                    className="delete-button"
+                    type="button"
+                    onClick={handledDelteClick}
+                  >
+                    활동삭제
+                  </ModalButton>
+                </ButtonBox>
+                <ButtonBox className="on-writer">
+                  <ModalButton 
+                    type="button"
+                    onClick={()=>setApplyCheck(true)}
+                    >
+                      신청자 정보 확인
+                    </ModalButton>
+                  <ModalButton
+                    type="button"
+                    onClick={closeModal}
+                  >
+                    닫기
+                  </ModalButton>
+                </ButtonBox>
+              </>
             :
-            <ButtonBox className="no-writer">
-              {apply ?
-                <ModalButton type="button" className="onApply" onClick={handleApplyClick}>신청하기</ModalButton>
-              :
-                <ModalButton type="button" className="offApply" onClick={handleApplyClick}>취소하기</ModalButton>
-              }
-              <ModalButton type="button" onClick={closeModal}>닫기</ModalButton>
-            </ButtonBox>}
-          </ButtonArea>
+              <ButtonBox className="no-writer">
+                {apply ?
+                  <ModalButton 
+                    type="button"
+                    className="onApply"
+                    onClick={hadleApplyClick}
+                    >
+                      신청하기
+                  </ModalButton>
+                :
+                  <ModalButton
+                    type="button"
+                    className="offApply"
+                    onClick={handleCancelClick}
+                    >
+                      취소하기
+                    </ModalButton>
+                }
+                <ModalButton type="button" onClick={closeModal}>닫기</ModalButton>
+              </ButtonBox>}
+            </ButtonArea>
+          </>
+          : 
+          <ApplyCheckModal setApplyCheck={setApplyCheck} id={id}/>
+          }
         </ModalBox>
       </ModalArea>
     )
@@ -148,10 +219,6 @@ const Content = styled.div`
   padding: 1rem;
   width: 100%;
   height: 100%;
-  resize: none;
-  ::placeholder {
-    color: #acacac;
-  }
 `;
 
 const CheckBox = styled.div`
@@ -217,7 +284,6 @@ const ModalButton = styled.button`
   color: white;
   cursor: pointer;
 `;
-
 
 const Span = styled.span`
     margin-right: 1rem;

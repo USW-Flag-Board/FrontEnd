@@ -14,7 +14,7 @@ const SignUpPage = () => {
     loginId: "",
     major: "",
     name: "",
-    nickName: "",
+    nickname: "",
     password: "",
     studentId: "",
   })

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -9,6 +9,7 @@ import { cookiesOption } from "../../utils/cookiesOption";
 import logo from "../../assets/images/logo2.png"
 import { baseInstance } from "../../apis/instance";
 import instance from "../../apis/AxiosInterceptorSetup";
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const [idPassword, setIdPassword] = useState({
@@ -23,7 +24,7 @@ const LoginPage = () => {
       [name]: value
     })
   };
-
+  
   const handleLogin = async () => {
     try{
       const response = await baseInstance.post("/auth/login", {
@@ -33,18 +34,14 @@ const LoginPage = () => {
       const accessToken = response.data.payload.accessToken;
       const accessTokenExpiresIn =
         response.data.payload.accessTokenExpiresIn;
-      SessionStorage.set("expire", accessTokenExpiresIn);
-      SessionStorage.set("UserToken", accessToken);
-      SessionStorage.set("User_id", idPassword.loginId);
-      SessionStorage.remove("email");
+      sessionStorage.setItem("expire", accessTokenExpiresIn);
+      sessionStorage.setItem("UserToken", accessToken);
+      sessionStorage.setItem("User_id", idPassword.loginId);
       cookiesOption.setRefresh(
         "refresh_token",
         response.data.payload.refreshToken
       );
-      const headers = {
-        'Authorization': `Bearer ${accessToken}`
-      };
-      const myInfo = await instance.get('/members', {headers: headers})
+      const myInfo = await instance.get('/members')
       SessionStorage.set("name", myInfo.data.payload.name)
       navigate("/")
     }catch(error){

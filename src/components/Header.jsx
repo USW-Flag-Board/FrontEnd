@@ -11,7 +11,7 @@ import { SessionStorage } from "../utils/browserStorage";
 const Header = () => {
   const [login, setLogin] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  
   const handleItemClick = (item) => {
     switch(item){
       case '로그인':
@@ -94,15 +94,20 @@ const Header = () => {
 };
 
 const HeaderArea = styled.div`
+  width: 100%;
+  padding: 0 8rem;
   height: 11vh;
   border-bottom: 1px solid black;
+  @media screen and (max-width: 1023px){
+    width: 100%;
+    padding: 0 2rem;
+  }
 `;
 
 const HeaderBox = styled.div`
-  width: calc(100vw - 16rem);
+  width: 100%;
   box-sizing: border-box;
   height: 100%;
-  margin: 0 8rem;
   padding-top: 2rem;
   display: flex;
   align-items: center;

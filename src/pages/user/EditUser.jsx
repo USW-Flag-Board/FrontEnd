@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { SessionStorage } from "../../utils/browserStorage";
 import instance from "../../apis/AxiosInterceptorSetup";
 
 const EditUser = () => {
@@ -14,16 +13,12 @@ const EditUser = () => {
     profileImg: "",
     studentId: "",
   });
-  const accessToken = SessionStorage.get("UserToken");
   const { bio, email, major, name, nickName, profileImg, studentId, loginId} = userData;
   const navigate = useNavigate();
+  console.log(userData)
   
   useEffect(()=> {
-    instance.get("/members",{
-        headers: {
-          'Authorization': `Bearer ${accessToken}`
-        }
-      })
+    instance.get("/members")
       .then((response) => {
         const data = response.data.payload
         setUserData((prevState) => ({
@@ -35,6 +30,7 @@ const EditUser = () => {
           nickName: data.nickName,
           profileImg: data.profileImg,
           studentId: data.studentId,
+          loginId: data.loginId,
         }));
       })
       .catch(error => {
@@ -50,25 +46,20 @@ const EditUser = () => {
     }))
   }
 
-  const handleSave = () => {
-    const headers = {
-      'Authorization': `Bearer ${accessToken}`
-    };
+  const handleSave = async () => {
     const data = {
       bio: bio,
       major: major,
       nickName: nickName,
       studentId: studentId
     };
-    instance
-      .put("/members/avatar", data, {headers: headers})
-      .then((response) => {
-        if(response.status === 200) navigate("/my");
-      })
-      .catch((error) => {
+    try{
+      const response = await instance.put("/members/avatar", data)
+      if(response.status === 200) navigate("/my");  
+    }catch(error){
         console.log(error)
-      })
     }
+  }
 
   return (
     <EditPageArea>

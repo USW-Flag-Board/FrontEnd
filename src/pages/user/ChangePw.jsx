@@ -21,7 +21,6 @@ const ChangePw = () => {
   });
   const { currentPassword, newPassword, passwordConfirm } = password;
   const { newPasswordMessage, passwordConfirmMessage } = password;
-  const accessToken = SessionStorage.get("UserToken");
   
   useEffect(()=>{
     if(SessionStorage.get("email")) {
@@ -41,38 +40,33 @@ const ChangePw = () => {
     }))
   }
 
-  const handleSave = () => {
-    const headers = {
-      'Authorization': `Bearer ${accessToken}`
-    };
+  const handleSave = async () => {
     const data = {
       currentPassword: currentPassword,
       newPassword: newPassword 
     };
-    instance
-      .put("/members/password", data, {headers: headers})
-      .then((response) => {
-        if(response.status === 200){
-          SessionStorage.clear();
-          cookiesOption.remove("refresh_token");
-          navigate("/login");
-        }
-      })
-      .catch((error) => {
-        const status = error.response.status;
-        switch(status){
-          case 409:
-            alert("기존과 같은 비밀번호는 사용할 수 없습니다.");
-            break;
-          case 404:
-            alert("존재하지 않는 사용자입니다.");
-            break;
-          default:
-            break;
-        }
-      })
+    try{
+      const response = await instance.put("/members/password", data)
+      if(response.status === 200){
+        SessionStorage.clear();
+        cookiesOption.remove("refresh_token");
+        navigate("/login");
+      }
+    }catch(error){
+      const status = error.response.status;
+      switch(status){
+        case 409:
+          alert("기존과 같은 비밀번호는 사용할 수 없습니다.");
+          break;
+        case 404:
+          alert("존재하지 않는 사용자입니다.");
+          break;
+        default:
+          break;
+      }
     }
-
+  }
+  
   const handlePasswordEdit = async () => {
     try{
       await baseInstance.put("/members/find/password", {

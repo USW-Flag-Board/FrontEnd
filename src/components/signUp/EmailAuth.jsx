@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { useEffect } from "react";
 import { emailRegex } from "../../constants/signUp";
 import { baseInstance } from "../../apis/instance";
 
@@ -46,9 +45,10 @@ const EmailAuth = ({
   const handleAuthNumSend = async () => {
     try {
       const response = await baseInstance.post("/auth/join",{
-        ...signUpData
+        ...signUpData,
+        email: email
       });
-      if(response.status===200) setButtonState(true)
+      if(response.status === 200) setButtonState(true)
     }catch(error){
       if(error.response.status === 422){
         alert("사용할 수 없는 비밀번호 입니다. (8~20자 이내 영문, 숫자, 특수문자를 모두 포함).");

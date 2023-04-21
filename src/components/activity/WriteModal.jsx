@@ -13,8 +13,7 @@ const ActivityWriteModal = ({ closeModal }) => {
   const [bookName, setbookName] = useState("");
   const [proceed, setProceed] = useState("");
   const [githubLink, setGithubLink] = useState("");
-  const accessToken = SessionStorage.get("UserToken");
-
+  
   useEffect(()=>{
     setbookName("");
     setProceed("");
@@ -36,15 +35,9 @@ const ActivityWriteModal = ({ closeModal }) => {
       name: title,
       proceed: proceed,
     }
-      instance.post("/activities", data, {
-      headers: {
-        "Authorization": `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-        }
-      })
+      instance.post("/activities", data)
       .then((response) => {
-        console.log(response)
-        if(response.status === 201) closeModal();
+      if(response.status === 201) closeModal();
       })
       .catch((error) => {
         console.log(error);

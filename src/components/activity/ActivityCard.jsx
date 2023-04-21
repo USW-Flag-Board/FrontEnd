@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-const ActivityCard = ({ title, name, type, createAt }) => {
+const ActivityCard = ({ title, name, type, semester, status }) => {
     return (
         <Mainbox>
             <Type>{type}</Type>
             <Title>{title}</Title>
-            <Deadline>생성일: <span>{createAt.slice(0, 3).join('.')}</span></Deadline>
+            <Deadline>기간: <span>{semester}</span></Deadline>
             <Name>{name}</Name>
         </Mainbox>       
     );
