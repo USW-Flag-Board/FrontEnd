@@ -38,8 +38,6 @@ const SignUpPage = () => {
         } else if (error.response.status === 409) {
           alert("인증번호가 일치하지 않습니다.");
         }
-      } finally {
-        setButtonState(true);
       }
     }
   };
@@ -54,7 +52,10 @@ const SignUpPage = () => {
             src={logo2}
             onClick={() => navigate("/")}
           />
-          {signUpIndex === 0 && <ServiceAgree setButtonState={setButtonState} />}
+          {signUpIndex === 0 && (
+            <ServiceAgree setButtonState={setButtonState} />
+          )}
+
           {signUpIndex === 1 && (
             <JoinTypeSelect
               setButtonState={setButtonState}
@@ -62,6 +63,7 @@ const SignUpPage = () => {
               setJoinType={setSignUpData}
             />
           )}
+
           {signUpIndex === 2 && (
             <IdPassword
               setButtonState={setButtonState}
@@ -69,6 +71,7 @@ const SignUpPage = () => {
               setIdPassword={setSignUpData}
             />
           )}
+
           {signUpIndex === 3 && (
             <Privacy
               setButtonState={setButtonState}
@@ -76,6 +79,7 @@ const SignUpPage = () => {
               signUpData={signUpData}
             />
           )}
+
           {signUpIndex === 4 && (
             <EmailAuth
               setButtonState={setButtonState}
@@ -85,12 +89,13 @@ const SignUpPage = () => {
               setCertification={setCertification}
             />
           )}
+
           <AccountButton
             className={buttonState ? "open" : "close"}
             disabled={!buttonState}
             onClick={() => NextIndex()}
           >
-            {signUpIndex === 4 ? "회원가입 완료" : "Next"}
+          {signUpIndex === 4 ? "회원가입 완료" : "Next"}
           </AccountButton>
           <RadioArea>
             <Radio className={signUpIndex === 0 && "current"} />
@@ -118,6 +123,13 @@ const PageBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  @media (min-width: 481px ) and (max-width: 1024px){
+    width: 80%;
+  }
+
+  @media (max-width: 480px) {
+    width: 80%;
+  }
 `;
 
 const SignUpArea = styled.div`
@@ -132,6 +144,8 @@ const SignUpArea = styled.div`
 `;
 
 const Logo = styled.img`
+  width: 50%;
+  height: 30;
   margin-bottom: 1rem;
   margin-top: 2rem;
 `;
@@ -158,7 +172,6 @@ const Radio = styled.div`
     background: #4dabf7;
   }
 `;
-
 
 const AccountButton = styled.button`
   color: black;

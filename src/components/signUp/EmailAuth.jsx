@@ -50,12 +50,7 @@ const EmailAuth = ({
       });
       if(response.status === 200) setButtonState(true)
     }catch(error){
-      if(error.response.status === 422){
-        alert("사용할 수 없는 비밀번호 입니다. (8~20자 이내 영문, 숫자, 특수문자를 모두 포함).");
-      }
-      if(error.response.status === 500){
-        alert("서버 에러입니다. 관리자에게 문의해주세요.");
-      }
+      if(error.response.status === 500) alert("서버 에러입니다. 관리자에게 문의해주세요.");
     }
   }
 
@@ -108,9 +103,7 @@ const EmailInputArea = styled.div`
   display: flex;
   justify-content: space-between;
   width: 80%;
-
 `;
-
 
 const EmailInputBox = styled.div`
   display: flex;

@@ -71,6 +71,15 @@ const HomeContents = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (min-width: 481px ) and (max-width: 1024px){
+    width: 100%;
+    padding: 0;
+  }
+  
+  @media (max-width: 480px) {
+    width: 100%;
+    padding: 0;
+  }
 `;
 
 const BookImgBox = styled.div`
@@ -90,6 +99,14 @@ const FlagInfo = styled.div`
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
+  
+  @media (min-width: 481px ) and (max-width: 1079px){
+    display: none;
+  }
+  
+  @media (max-width: 480px) {
+    display: none;
+  }
 `
 
 const FlagCountArea = styled.div`

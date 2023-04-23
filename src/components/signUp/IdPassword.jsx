@@ -30,7 +30,6 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
       }
     };
 
-    
     const updateState = (key, value) => {
       setState(prevState => ({
         ...prevState,
@@ -41,7 +40,7 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
     useEffect(()=>{
       if(idMessage === "사용가능한 아이디입니다." &&
         passwordMessage === "사용가능한 비밀번호입니다." &&
-        passwordConfirmMessage === "입력한 비밀번호와 일치합니다."){
+        passwordConfirmMessage === "비밀번호와 일치합니다."){
           setButtonState(true);
           setIdPassword({
             ...signUpData,
@@ -54,7 +53,19 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
     },[idMessage, passwordConfirmMessage, passwordMessage])
     
     useEffect(() => {
-      updateState("passwordConfirmMessage", password.trim() !== "" && passwordConfirm.trim() !== "" && password === passwordConfirm ? "입력한 비밀번호와 일치합니다." : (password.trim() === "" && passwordConfirm.trim() === "" ? "" : "비밀번호와 비밀번호 확인이 일치하지 않습니다."));
+      if(password === ""){
+        updateState("passwordConfirmMessage", "");
+        updateState("passwordMessage", "");
+        if(passwordConfirm !== "") updateState("passwordConfirmMessage", "비밀번호와 일치하지 않습니다.");
+      }else if(password !== ""){
+        if(passwordConfirm === ""){
+          updateState("passwordConfirmMessage", "")
+        }else{
+          if(password === passwordConfirm) updateState("passwordConfirmMessage", "비밀번호와 일치합니다.");
+          else updateState("passwordConfirmMessage", "비밀번호와 일치하지 않습니다.");
+        }
+      }
+      
     }, [password, passwordConfirm]);
   
     const handleInputChange = (event) => {
@@ -63,10 +74,10 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
     
       switch (name) {
         case "id":
-          updateState("idMessage", loginRegex.id.test(value) ? "" : "아이디는 영문자와 숫자로 이루어져 있어야 하며, 최소 4자 이상, 최대 16자 이하여야 합니다.");
+          updateState("idMessage", value === "" ? "" : loginRegex.id.test(value) ? "" : "아이디는 영문자와 숫자로 이루어져 있어야 하며, 최소 4자 이상, 최대 16자 이하여야 합니다.");
           break;
         case "password":
-          updateState("passwordMessage", loginRegex.password.test(value) ? "사용가능한 비밀번호입니다." : "최소 8자 이상 20자 이하의 비밀번호를 입력해주세요. 비밀번호는 알파벳, 숫자, 특수문자를 모두 포함해야 합니다.");
+          updateState("passwordMessage", loginRegex.password.test(value) ? "사용가능한 비밀번호입니다." : "숫자+영문자+특수문자(!@#$%^+=-) 조합으로 8자리 이상 입력해주세요!.");
           break;
         default:
           break;

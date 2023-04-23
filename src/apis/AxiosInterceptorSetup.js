@@ -65,7 +65,7 @@ async function refreshTokens() {
     const expiresIn = response.data.payload.accessTokenExpiresIn;
     sessionStorage.setItem("expire", expiresIn);
 
-    setTimeout(refreshTokens, expiresIn * 1000);
+    // setTimeout(refreshTokens, expiresIn * 1000);
     return { accessToken: newAccessToken, refreshToken: newRefreshToken };
   } catch (error) {
     if (error.response && error.response.status === 401) {

@@ -27,22 +27,20 @@ const ActivityWriteModal = ({ closeModal }) => {
 
   const submit = async () => {
     const data = {
-      activityType: type,
-      bookName: bookName,
-      bookUsage: bookUsage,
+      type: type,
+      // bookName: bookName,
+      // bookUsage: bookUsage,
       description: content,
-      githubLink: githubLink,
+      githubURL: githubLink,
       name: title,
       proceed: proceed,
     }
-      instance.post("/activities", data)
-      .then((response) => {
+    try{
+      const response = await instance.post("/activities", data)
       if(response.status === 201) closeModal();
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-
+    }catch(error){
+      console.log(error);
+    }
   }  
 
   return (

@@ -7,12 +7,12 @@ import ApplyCheckModal from "./ApplyCheckModal";
 import SelectedCheckModal from "./SelectedCheckModal";
 
 const ContentModal = ({ closeModal, cardId }) => {
-    const [apply, setApply] = useState(true);
-    const [isLeader, setIsLeader] = useState(false);
+    const [apply, setApply] = useState(null);
+    const [isLeader, setIsLeader] = useState(null);
     const [modalContent, setModalContent] = useState("");
     const [applyMembersCheck, setApplyMembersCheck] = useState(false);
     const [selectedMembersCheck, setSelectedMembersCheck] = useState(false);
-    const { activityType, id, leader, name, semester, status, description } = modalContent;
+    const { type, id, leader, name, semester, status, description, githubURL } = modalContent;
     const writerName = SessionStorage.get("name");
     
     const hadleApplyClick = async () => {
@@ -35,6 +35,18 @@ const ContentModal = ({ closeModal, cardId }) => {
       }
     }
 
+    const handleFinishClikc = async () => {
+      if(window.confirm("활동을 종료하시겠습니까?")){
+        try{
+          await instance.delete(`activities/${id}/finish`)
+          alert("활동이 종료되었습니다.")
+          closeModal();
+        }catch(error){
+          console.log(error);
+        }
+      }
+    }
+
     const handleCancelClick = async () => {
       if(window.confirm("신청을 취소하시겠습니까?")){
         try{
@@ -48,10 +60,9 @@ const ContentModal = ({ closeModal, cardId }) => {
     }
 
     useEffect(()=>{
-      if(leader === writerName){
-        setIsLeader(true);
-      }
-    }, [leader, writerName])
+      if(leader === writerName)setIsLeader(true);
+      else setIsLeader(false);
+    }, [writerName])
 
     useEffect(()=>{
       async function fetchData(){
@@ -63,20 +74,22 @@ const ContentModal = ({ closeModal, cardId }) => {
         }
       }
       fetchData();
-    }, [cardId])
-
+    }, [])
+    
     useEffect(()=>{
-      async function fetchData(){
-        try{
-          const response = await instance.post(`/activities/${cardId}/check`)
-          if(response.data.payload) setApply(true)
-          else setApply(false)
-        }catch(error){
-          console.log(error);
-        }
+      if(sessionStorage.getItem("name")){
+        async function fetchData(){
+          try{
+            const response = await instance.post(`/activities/${cardId}/check`)
+            if(response.data.payload) setApply(true)
+            else setApply(false)
+          }catch(error){
+            console.log(error);
+          }
+          }
+          fetchData();
       }
-      fetchData();
-    },[cardId])
+    }, [])
 
     return(
       <ModalArea>
@@ -84,7 +97,7 @@ const ContentModal = ({ closeModal, cardId }) => {
           {!applyMembersCheck && !selectedMembersCheck && (
           <>
             <SelectAndTitle>
-              <Select>{activityType}</Select>
+              <Select>{type}</Select>
               <TitleArea><Title>{name}</Title></TitleArea>
             </SelectAndTitle>
             <Master>활동장: {leader}</Master>
@@ -93,12 +106,12 @@ const ContentModal = ({ closeModal, cardId }) => {
             </ContentBox>
             <CheckBox>
               <RadioBox>
-                <Span>깃허브 링크:</Span>
+                <Span>깃허브 링크: {githubURL}</Span>
               </RadioBox>
             </CheckBox>
             <ButtonArea>
               <ButtonBox>
-                {isLeader && (
+                {isLeader && writerName && (
                   <ModalButton 
                     className="delete-button"
                     type="button"
@@ -107,7 +120,7 @@ const ContentModal = ({ closeModal, cardId }) => {
                   </ModalButton>
                 )}
 
-                {isLeader && status !== 'ON' && (
+                {isLeader && status !== 'ON' && writerName && (
                 <>
                   <ModalButton 
                     type="button"
@@ -117,52 +130,62 @@ const ContentModal = ({ closeModal, cardId }) => {
                   <ModalButton 
                     type="button"
                     className="check-members"
-                    onClick={()=>setApplyMembersCheck(true)}>
+                    onClick={()=>setApplyMembersCheck(true)}
+                    >
                       신청자 정보 확인
                   </ModalButton>
                 </>
                 )}
 
-                {isLeader && status === 'ON' && (
+                {isLeader && status === 'ON' && writerName && (
                 <>
                   <ModalButton 
                     className="delete-button"
                     type="button"
+                    ocClick={handleFinishClikc}
                     >
                     활동종료
                   </ModalButton>
                   <ModalButton 
                     type="button"
                     className="check-members"
-                    onClick={()=>setSelectedMembersCheck(true)}>
+                    onClick={()=>setSelectedMembersCheck(true)}
+                    >
                       참여자 정보 확인
                   </ModalButton>
                 </>
                 )}
 
-                {!isLeader && status !== 'ON' && !apply &&(
+                {!isLeader && status !== 'ON' && !apply && writerName && (
                   <ModalButton 
                     type="button"
                     className="onApply"
-                    onClick={hadleApplyClick}>
+                    onClick={hadleApplyClick}
+                    >
                       신청하기
                   </ModalButton>
                 )}
                 
-                {!isLeader && status !== 'ON' && apply &&(
+                {!isLeader && status !== 'ON' && apply && writerName && (
                   <ModalButton
                     type="button"
                     className="offApply"
-                    onClick={handleCancelClick}>
+                    onClick={handleCancelClick}
+                    >
                       취소하기
                   </ModalButton>
                 )}
-                <ModalButton type="button" onClick={closeModal}>닫기</ModalButton>
+                <ModalButton 
+                  type="button"
+                  onClick={closeModal}
+                  >
+                    닫기
+                </ModalButton>
               </ButtonBox>
             </ButtonArea>
           </>
         )}
-        {leader && status !== 'ON' && applyMembersCheck && (
+        {leader && status !== 'ON' && applyMembersCheck && writerName && (
           <ApplyCheckModal 
             setApplyMembersCheck={setApplyMembersCheck}
             id={id}
@@ -170,7 +193,7 @@ const ContentModal = ({ closeModal, cardId }) => {
           />
         )}
 
-        {leader && status === 'ON' && selectedMembersCheck && (
+        {leader && status === 'ON' && selectedMembersCheck && writerName && (
           <SelectedCheckModal id={id}
           setSelectedMembersCheck={setSelectedMembersCheck}
           />

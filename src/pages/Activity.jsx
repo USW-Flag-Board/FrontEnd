@@ -202,10 +202,10 @@ const CardArea = styled.div`
 const Card = styled.div`
   width: 23%;
   height: 150px;
-  @media screen and (max-width: 1023px) {
+  @media (max-width: 1396px) {
     width: 48%;
   }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 829px) {
     width: 100%;
   }
 `;
