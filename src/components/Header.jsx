@@ -5,7 +5,6 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { LOGOUT_USER_ITEMS, HEADER_ITEMS } from "../constants/header";
 import logo from "../assets/images/logo2.png"
-import { useDispatch } from "react-redux";
 import { SessionStorage } from "../utils/browserStorage";
 
 const Header = () => {
@@ -98,10 +97,28 @@ const HeaderArea = styled.div`
   padding: 0 8rem;
   height: 11vh;
   border-bottom: 1px solid black;
-  @media screen and (max-width: 1023px){
-    width: 100%;
-    padding: 0 2rem;
-  }
+
+  
+@media (max-width: 480px) {
+  padding: 0;
+}
+
+/* 태블릿 */
+@media (min-width: 481px) and (max-width: 1024px) {
+  /* 태블릿에서 적용할 스타일 */
+  width: 100%;
+  padding: 0 2rem;
+}
+
+/* 노트북 */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  /* 노트북에서 적용할 스타일 */
+}
+
+/* 데스크탑 */
+@media (min-width: 1367px) {
+  /* 데스크탑에서 적용할 스타일 */
+}
 `;
 
 const HeaderBox = styled.div`
@@ -112,6 +129,10 @@ const HeaderBox = styled.div`
   display: flex;
   align-items: center;
   background-color: white;
+  @media (max-width: 480px) {
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 const LogoBox = styled.div`
@@ -119,6 +140,9 @@ const LogoBox = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
+  @media (max-width: 480px) {
+    width: 40%;
+  }
 `;
 
 const LogoImg = styled.img`
@@ -132,6 +156,9 @@ const MenuItemBox = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
+  @media (max-width: 480px) {
+    display: none;
+  }
 `;
 
 const MenuItems = styled.div`
@@ -164,6 +191,9 @@ const SearchBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  @media (max-width: 480px) {
+    display: none;
+  }
 `;
 
 const SearchPaper = styled.form`

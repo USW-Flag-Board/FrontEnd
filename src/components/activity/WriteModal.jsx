@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { SELECT_OPTION, BOOK_RADIO_OPTION, ONLINE_RADIO_OPTION } from "../../constants/activity";
-import { SessionStorage } from "../../utils/browserStorage";
 import instance from "../../apis/AxiosInterceptorSetup";
 
 
@@ -14,6 +13,7 @@ const ActivityWriteModal = ({ closeModal }) => {
   const [proceed, setProceed] = useState("");
   const [githubLink, setGithubLink] = useState("");
   
+
   useEffect(()=>{
     setbookName("");
     setProceed("");
@@ -21,19 +21,22 @@ const ActivityWriteModal = ({ closeModal }) => {
     setBookUsage("");
   }, [type])
 
-  const handleType = (e) => {
-    setType(e.target.value);
+  const handleType = (event) => {
+    const { value } = event.target;
+    if(type === "PROJECT") setBookUsage("NOT_USE")
+    setType(value);
+    console.log(type)
   };
-
+  
   const submit = async () => {
     const data = {
       type: type,
-      // bookName: bookName,
-      // bookUsage: bookUsage,
+      bookName: bookName,
+      bookUsage: bookUsage,
       description: content,
       githubURL: githubLink,
-      name: title,
       proceed: proceed,
+      name: title,
     }
     try{
       const response = await instance.post("/activities", data)

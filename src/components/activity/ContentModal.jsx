@@ -62,7 +62,7 @@ const ContentModal = ({ closeModal, cardId }) => {
     useEffect(()=>{
       if(leader === writerName)setIsLeader(true);
       else setIsLeader(false);
-    }, [writerName])
+    }, [writerName, leader])
 
     useEffect(()=>{
       async function fetchData(){
