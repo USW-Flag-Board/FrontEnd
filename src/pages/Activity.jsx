@@ -3,7 +3,6 @@ import styled from "styled-components";
 import {
   Header,
   ActivityCard,
-  Toggle,
   WriteModal,
   ContentModal,
 } from "../components";
@@ -47,7 +46,7 @@ const Activity = () => {
   }, [isOpen]);
 
   function filterActivities(activities, type) {
-    return activities.filter((activity) => activity.activityType === type);
+    return activities.filter((activity) => activity.type === type);
   }
 
   const handleCard = (id) => {
@@ -79,10 +78,6 @@ const Activity = () => {
             ))}
           </KategorieBox>
           <SwitchArea>
-            <SwitchBox>
-              <SwitchTitle>모집 중만 보기</SwitchTitle>
-              <Toggle />
-            </SwitchBox>
             <ActivityWriteButton onClick={handleWrite} type="button">
               <WriteButtonIcon icon={faPencil} />
               <WriteButton>글쓰기</WriteButton>
@@ -92,12 +87,12 @@ const Activity = () => {
         <CardArea>
           {activities &&
             activities[kategorie].map(
-              ({ id, name, leader, activityType, semester, status }) => (
+              ({ id, name, leader, type, semester, status }) => (
                 <Card key={id} onClick={() => handleCard(id)}>
                   <ActivityCard
                     title={name}
                     name={leader}
-                    type={activityType}
+                    type={type}
                     semester={semester}
                     status={status}
                   />
@@ -157,30 +152,15 @@ const SwitchArea = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: 30%;
+  width: 20%;
   font-size: 1.2rem;
   font-weight: bold;
-  @media screen and (max-width: 1023px) {
-    display: none;
-  }
-`;
-
-const SwitchBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 70%;
-  margin-right: 1rem;
-`;
-
-const SwitchTitle = styled.span`
-  margin-right: 0.7rem;
 `;
 
 const ActivityWriteButton = styled.button`
   box-sizing: border-box;
-  width: 20%;
-  height: 80%;
+  width: 40%;
+  height: 100%;
 `;
 
 const WriteButtonIcon = styled(FontAwesomeIcon)`

@@ -16,8 +16,8 @@ const Mainbox = styled.div`
     width: 100%;
     height: 100%;
     border: 2px solid #d1d1d1;
-    border-radius: 1.9rem;
-    cursor:pointer;
+    border-radius: 1rem;
+    cursor: pointer;
     padding: 1rem 1rem 1.5rem 1rem;
 `;
 
@@ -27,7 +27,7 @@ const Type = styled.div`
 
 const Title = styled.div`
     height: 40%;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: bold;
     display: flex;
     justify-content: flex-start;

@@ -115,8 +115,11 @@ const FlagInfo = styled.div`
 `;
 
 const FlagCountArea = styled.div`
-  height: 250px;
+  height: 16rem;
   margin-top: 2rem;
+  @media (min-width: 481px) and (max-width: 1024px) {
+    height: 11rem;
+  }
 `;
 
 const FlagCountBox = styled.h3`
@@ -124,6 +127,9 @@ const FlagCountBox = styled.h3`
   margin-bottom: 1rem;
   font-weight: 600;
   box-sizing: border-box;
+  @media (min-width: 481px) and (max-width: 1024px) {
+    font-size: 1rem;
+  }
 `;
 
 const FlagCount = styled.span`
@@ -135,14 +141,22 @@ const FlagContent = styled.div`
   color: #757575;
   line-height: 170%;
   font-size: 1rem;
+  @media (min-width: 481px) and (max-width: 1024px) {
+    font-size: 0.7rem;
+  }
 `;
 
 const FlagButton = styled.button`
   cursor: pointer;
   width: 50%;
-  height: 50px;
+  height: 3rem;
   border: 1px solid #1dc078;
   background: none;
+  @media (min-width: 481px) and (max-width: 1024px) {
+    height: 2.5rem;
+    width: 60%;
+    font-size: 0.7rem;
+  }
 `;
 
 const FlagButtonBox = styled.div`
@@ -157,7 +171,7 @@ const FeedBox = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: 300px;
-  `;
+`;
 
 const FeedTitle = styled.h3`
   padding-bottom: 1rem;
@@ -169,6 +183,10 @@ const FeedTitle = styled.h3`
   
   @media (max-width: 480px) {
     font-size: 1rem;
+  }
+
+  @media (min-width: 481px) and (max-width: 1024px) {
+    font-size: 1.3rem;
   }
 `;
 

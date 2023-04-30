@@ -17,7 +17,6 @@ const Certification = () => {
         certification: certification,
         email: email
       })
-      SessionStorage.remove("email");
       if(SessionStorage.get("type")){
         SessionStorage.remove("type")
         navigate("/changepw");

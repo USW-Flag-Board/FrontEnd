@@ -1,66 +1,69 @@
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import boardsActions from "../../redux/thunkActions/boardsActions";
 import styled from 'styled-components';
-
-const ListThem = ({itemContents}) => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const boardPosts = useSelector((state) => state.toDo.getPostsData);
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faComment, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
+const ListThem = () => {
 
     return(
-        <>
-            {itemContents.map(({id, memberName, createdAt, viewCount, likeCount, title, replyCount}) => (
-                <ListThemBox key={id}>
-                    <ItemBox>
-                        <ListItem>{boardPosts.findIndex(v => v.id === id) + 1}</ListItem>
-                        <ListItem 
-                            style={{cursor: "pointer"}} 
-                            onClick={()=>{
-                                dispatch(boardsActions.getPostAPI(id)); 
-                                navigate("/board/detail");
-                                }}>
-                                {title}
-                        </ListItem>
-                        <ListItem>{memberName}</ListItem>
-                        <ListItem>{createdAt.slice(0, 3).join('.')}</ListItem>
-                        <ListItem>{viewCount}</ListItem>
-                        <ListItem>{likeCount}</ListItem>
-                        <ListItem>{replyCount}</ListItem>
-                    </ItemBox>
-                </ListThemBox>
-            ))}
-        </>
+        <ListThemBox>
+            <BoardName>
+                자유게시판
+            </BoardName>
+            <Title>
+                오늘 코딩테스트 너무 어렵다.
+            </Title>
+            <WriterName>
+                <span>어준혁</span>
+            </WriterName>
+            <PostInfo>
+                <InfoBox>
+                    <Icon icon={faEye}/>
+                    <span>30</span>
+                </InfoBox>
+                <InfoBox>
+                    <Icon icon={faComment}/>
+                    <span>20</span>
+                </InfoBox>
+                <InfoBox>
+                    <Icon icon={faThumbsUp}/>
+                    <span>17</span>
+                </InfoBox>
+            </PostInfo>
+        </ListThemBox>
     )
 }
 
 const ListThemBox = styled.div`
-    display: flex;
-    flex-wrap: wrap;
     width: 100%;
-    height: 6.9vh;
-    &:nth-of-type(odd){background-color: #313131};
-`;
-
-const ItemBox = styled.div`
+    height: 9rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #dee2e6;
+    cursor: pointer;
     box-sizing: border-box;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
 `;
 
-const ListItem = styled.div`
-    width: 10%;
-    height: 100%;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: 600;
-    &:nth-of-type(1){width: 5%; height: 50%; background-color: white; border-radius: 15px; color: black; margin-left: 0.7rem};
-    &:nth-of-type(2){width: 31%};
+const BoardName = styled.div`
+    padding-bottom: 0.7rem;
 `;
+
+const Title = styled.div`
+    font-weight: bold;
+`;
+
+const WriterName = styled.div`
+    padding: 0.8rem 0;
+`;
+
+const PostInfo = styled.div`
+    display: flex;
+`;
+
+const InfoBox = styled.div`
+    margin-right: 0.5rem;
+`
+
+const Icon = styled(FontAwesomeIcon)`
+    margin-right: 0.3rem;
+    padding: 0;
+`
 
 export default ListThem;

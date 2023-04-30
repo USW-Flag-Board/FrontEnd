@@ -96,12 +96,12 @@ const ChangePw = () => {
           {email ? <TitleBox>새 비밀번호 변경</TitleBox> : <TitleBox>비밀번호 변경</TitleBox>}
           <EditButton 
             type="button" 
-            onClick={email ? handlePasswordEdit : handleSave} >
+            onClick={email ? handlePasswordEdit: handleSave}>
             저장하기
           </EditButton>
         </TitleArea>
         <EditPageBox>
-          {email ? "" : <InfoBox>
+          {email ? null : <InfoBox>
             <InfoTitle 
               htmlFor="currentPassword">현재 비밀번호</InfoTitle>
             <EditInputBox 

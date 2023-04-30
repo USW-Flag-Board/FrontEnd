@@ -1,159 +1,99 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
-import boardsActions  from '../../redux/thunkActions/boardsActions';
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { SideBar, Footer, ListThem, Pagination, Header } from "../../components";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Header, ListThem } from "../../components";
 import boardData from '../../constants/board';
 
 const BulletinBoard = () => {
   const header = true;
-  const [boardName, setBoardName] = useState("자유게시판");
-  const [currentItems, setCurrentItems] = useState([]);
-  const posts = useSelector((state) => state.boardSlice.getPostsData);
-  const board = useSelector((state) => state.boardSlice.boardName);
-  const dispatch = useDispatch();
+  const [board, setBoard] = useState("자유게시판");
   const navigate = useNavigate();
-  const writeClick = () => {
+  
+  const handleWrite = () => {
     navigate("/board/write");
   }
-
-  useEffect(()=>{
-      dispatch(boardsActions.getBoardAPI(board));
-  }, [board, dispatch])
 
   return (
     <>
       {header && <Header/>}
       <BoardArea>
-        <ContentArea>
-          <SideBar
-            title="BOARD"
-            mainColor="#4B4B4B"
-            subColor="#3C3C3C"
-            mainWidth="13%"
-            subWidth="90%"
-            items={boardData.BOARD_NAMES}
-            boardTitle={setBoardName}
-            paddingTop="0"
-            paddingTopMain="75px"
-            borderRadius="0 15px 15px 0"
-          />
-          <ListArea>
-            <TitleArea>
-              <TitleBox>{boardName}</TitleBox>
-              <WriteButton onClick={writeClick}>
-                <FaPen icon={faPen} />
-                  글쓰기
+        <ListArea>
+          <ListBar>
+            <BarItemBox>
+              {boardData.BOARD_NAMES.map(({id, krName})=>(
+                <BarItem key={id}>{krName}</BarItem>
+              ))}
+            </BarItemBox>
+            <WriteButtonBox>
+              <WriteButton onClick={handleWrite}>
+                <FaPen icon={faPlus} />
+                <span>글쓰기</span> 
               </WriteButton>
-            </TitleArea>
-            <ListBar>
-              <BarItemBox>
-              {boardData.TITLE_ITEMS.map((item) => (
-                <BarItem key={item}>{item}</BarItem>
-              ))}
-              </BarItemBox>
-            </ListBar>
-            <ListBox>
-              <ListThem
-                itemContents={currentItems}
-              />
-            </ListBox>
-            <PaginationArea>
-              <Pagination
-                itemsPerPage={8}
-                items={posts}
-                setCurrentItems={setCurrentItems}
-              />
-            </PaginationArea>
-            <FilterAndSearchForm>
-            {boardData.SEARCH_SELECT_ITEMS.map((item) => (
-              <FilterSelect key={item}>
-                <option>{item}</option>
-              </FilterSelect>
-              ))}
-              <SearchArea>
-                <FaMagnifyingGlass icon={faMagnifyingGlass}/>
-                <InputBase type="text" placeholder="게시글 + 작성자" />
-              </SearchArea>
-            </FilterAndSearchForm>
-          </ListArea>
-        </ContentArea>
+            </WriteButtonBox>
+          </ListBar>
+          <ListBox>
+            <ListThem/>
+            <ListThem/>
+            <ListThem/>
+            <ListThem/>
+            <ListThem/>
+            <ListThem/>
+          </ListBox>
+          <FilterAndSearchForm>
+          {/* {boardData.SEARCH_SELECT_ITEMS.map((item) => (
+            <FilterSelect key={item}>
+              <option>{item}</option>
+            </FilterSelect>
+            ))}
+            <SearchArea>
+              <FaMagnifyingGlass icon={faMagnifyingGlass}/>
+              <InputBase type="text" placeholder="게시글 + 작성자" />
+            </SearchArea> */}
+          </FilterAndSearchForm>
+        </ListArea>
       </BoardArea>
-      <Footer />
     </>
   );
 };
 
 const BoardArea = styled.div`
-  width: 100vw;
-  height: 86vh;
-`;
-
-const TitleArea = styled.div`
-  box-sizing: border-box;
   width: 100%;
-  height: 10%;
-  display: flex;
-  padding: 0 0 1rem 0;
-  align-items: flex-end;
-  justify-content: space-between;
-`;
-
-const TitleBox = styled.h2`
-  font-weight: 700px;
-  height: 100%;
-  font-size: 35px;
-  display: flex;
-  align-items: flex-end;
-`;
-
-const ContentArea = styled.div`
-  width: 100%;
-  height: 90%;
-  display: flex;
 `;
 
 const ListArea = styled.div`
-  width: 87%;
-  height: 100%;
-  padding: 0px 2rem 0 2rem;
-  box-sizing: border-box;
+  width: 100%;
 `;
 
 const ListBar = styled.div`
-  height: 10%;
-  background-color: black;
+  width: 100%;
+  height: 3.5rem;
+  padding: 0 8rem;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: space-between;
 `;
 
-const BarItemBox = styled.ul`
+const BarItemBox = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: flex-end;
 `;
 
-const BarItem = styled.li`
-  width: 10%;
+const BarItem = styled.div`
+  width: fit-content;
   height: 100%;
-  color: white;
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 10px;
-  font-size: 1rem;
-  font-weight: 600px;
-  &:nth-of-type(1) {
-    margin-left: 10px;
-    padding-left: 6%;
-    width: 30%;
-  }
+  align-items: center;
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin-right: 1rem;
 `;
 
 const ListBox = styled.div`
-  height: 70%;
+  padding: 0 8rem;
+  margin-top: 1rem;
 `;
 
 const PaginationArea = styled.div`
@@ -164,7 +104,7 @@ const PaginationArea = styled.div`
 `;
 
 const FilterAndSearchForm = styled.form`
-  height: 10%;
+  height: 12%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -187,18 +127,23 @@ const FilterSelect = styled.select`
   align-items: center;
 `;
 
+const WriteButtonBox = styled.div`
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
 const WriteButton = styled.button`
-  background-color: white;
-  width: 6rem;
-  height: 2rem;
-  color: black;
-  font-size: 1rem;
+  background-color: #339af0;
+  color: white;
+  width: 60%;
+  height: 60%;
+  font-size: 0.9rem;
   font-weight: 700;
-  &:hover {
-    background-color: white;
-  }
   border: none;
   border-radius: 5px;
+  cursor: pointer;
 `;
 
 const SearchArea = styled.div`
@@ -226,6 +171,7 @@ const InputBase = styled.input`
 
 const FaPen = styled(FontAwesomeIcon)`
   text-decoration: none;
+  margin-right: 0.5rem;
 `;
 
 const FaMagnifyingGlass = styled(FontAwesomeIcon)`

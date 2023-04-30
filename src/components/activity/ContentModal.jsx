@@ -5,19 +5,22 @@ import { SessionStorage } from "../../utils/browserStorage";
 import instance from "../../apis/AxiosInterceptorSetup";
 import ApplyCheckModal from "./ApplyCheckModal";
 import SelectedCheckModal from "./SelectedCheckModal";
+import EditModal from "./EditModal";
 
 const ContentModal = ({ closeModal, cardId }) => {
     const [apply, setApply] = useState(null);
+    const [edit, setEdit] = useState(false);
     const [isLeader, setIsLeader] = useState(null);
     const [modalContent, setModalContent] = useState("");
     const [applyMembersCheck, setApplyMembersCheck] = useState(false);
     const [selectedMembersCheck, setSelectedMembersCheck] = useState(false);
-    const { type, id, leader, name, semester, status, description, githubURL } = modalContent;
+    const { type, id, leader, name, semester, status, description, githubURL, proceed, bookUsage, bookName } = modalContent;
     const writerName = SessionStorage.get("name");
     
     const hadleApplyClick = async () => {
       try{
         await instance.post(`activities/${id}/apply`)
+        setApply(true)
       }catch(error){
         console.log(error);
       }
@@ -35,10 +38,10 @@ const ContentModal = ({ closeModal, cardId }) => {
       }
     }
 
-    const handleFinishClikc = async () => {
+    const handleFinishClick = async () => {
       if(window.confirm("활동을 종료하시겠습니까?")){
         try{
-          await instance.delete(`activities/${id}/finish`)
+          await instance.patch(`activities/${id}/finish`)
           alert("활동이 종료되었습니다.")
           closeModal();
         }catch(error){
@@ -74,7 +77,7 @@ const ContentModal = ({ closeModal, cardId }) => {
         }
       }
       fetchData();
-    }, [])
+    }, [edit])
     
     useEffect(()=>{
       if(sessionStorage.getItem("name")){
@@ -94,7 +97,7 @@ const ContentModal = ({ closeModal, cardId }) => {
     return(
       <ModalArea>
         <ModalBox>
-          {!applyMembersCheck && !selectedMembersCheck && (
+          {!applyMembersCheck && !selectedMembersCheck && !edit && (
           <>
             <SelectAndTitle>
               <Select>{type}</Select>
@@ -105,9 +108,29 @@ const ContentModal = ({ closeModal, cardId }) => {
               <Content>{description}</Content>
             </ContentBox>
             <CheckBox>
-              <RadioBox>
-                <Span>깃허브 링크: {githubURL}</Span>
-              </RadioBox>
+              {type === 'PROJECT' ? (
+                <>
+                  <RadioBox>
+                    <Span>깃허브 링크: {githubURL}</Span>
+                  </RadioBox>
+                  <RadioBox>
+                    <Span>온/오프라인: {proceed}</Span>
+                  </RadioBox>
+                </>
+              ) :
+                <>
+                  <RadioBox>
+                    <Span>책 사용 여부: {bookUsage}</Span>
+                  </RadioBox>
+                  {bookUsage === 'USE' ? 
+                    <RadioBox>
+                      <Span>책 이름: {bookName}</Span>
+                    </RadioBox>
+                  : null }
+                  <RadioBox>
+                    <Span>온/오프라인: {proceed}</Span>
+                  </RadioBox>
+                </>}
             </CheckBox>
             <ButtonArea>
               <ButtonBox>
@@ -120,11 +143,12 @@ const ContentModal = ({ closeModal, cardId }) => {
                   </ModalButton>
                 )}
 
-                {isLeader && status !== 'ON' && writerName && (
+                {isLeader && status === 'RECRUIT' && writerName && (
                 <>
                   <ModalButton 
                     type="button"
-                    className="delete-button">
+                    className="delete-button"
+                    onClick={()=>setEdit(true)}>
                     수정
                   </ModalButton>
                   <ModalButton 
@@ -142,7 +166,7 @@ const ContentModal = ({ closeModal, cardId }) => {
                   <ModalButton 
                     className="delete-button"
                     type="button"
-                    ocClick={handleFinishClikc}
+                    onClick={handleFinishClick}
                     >
                     활동종료
                   </ModalButton>
@@ -198,6 +222,10 @@ const ContentModal = ({ closeModal, cardId }) => {
           setSelectedMembersCheck={setSelectedMembersCheck}
           />
         )}
+        {edit ? <EditModal 
+          setEdit={setEdit}
+          modalContent={modalContent}
+          /> : null}
         </ModalBox>
       </ModalArea>
     )

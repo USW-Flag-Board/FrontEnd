@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faBars } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { LOGOUT_USER_ITEMS, HEADER_ITEMS } from "../constants/header";
 import logo from "../assets/images/logo2.png"
@@ -18,9 +18,6 @@ const Header = () => {
         break;
       case '회원가입':
         navigate('/signup');
-        break;
-      case '마이페이지':
-        navigate('/my');
         break;
       case 'BOARD':
         navigate('/board')
@@ -44,6 +41,9 @@ const Header = () => {
   return (
     <HeaderArea>
       <HeaderBox>
+        <BarsBox>
+          <FontAwesomeIcon icon={faBars}/>
+        </BarsBox>
         <LogoBox>
           <LogoImg
             src={logo}
@@ -60,33 +60,33 @@ const Header = () => {
             ))}
           </MenuItems>
         </MenuItemBox>
-        <SearchBox>
-          <SearchPaper login={login}>
+        <SearchBox login={login}>
+          <SearchPaper>
             <FaMagnifyingGlass icon={faMagnifyingGlass}/>
             <InputBase type="text" />
           </SearchPaper>
-          <UserBox loging={login}>
-            { login 
-              ? 
-                (<UserButton
-                  login={login}
-                  type="button" 
-                  onClick={()=>navigate("/my")}>
-                  마이페이지
-                </UserButton>) 
-              : 
-                (LOGOUT_USER_ITEMS.map((item)=>(
-                  <UserButton 
-                    type="button" 
-                    key={item} 
-                    onClick={()=> handleItemClick(item)}
-                    >
-                      {item}
-                  </UserButton>
-                ))
-              )}
-          </UserBox>
         </SearchBox>
+        <UserBox loging={login}>
+          { login 
+            ? 
+              (<UserButton
+                login={login}
+                type="button" 
+                onClick={()=>navigate("/edit")}>
+                마이페이지
+              </UserButton>) 
+            : 
+              (LOGOUT_USER_ITEMS.map((item)=>(
+                <UserButton 
+                  type="button" 
+                  key={item} 
+                  onClick={()=> handleItemClick(item)}
+                  >
+                    {item}
+                </UserButton>
+              ))
+            )}
+        </UserBox>
       </HeaderBox>
     </HeaderArea>
   );
@@ -96,11 +96,11 @@ const HeaderArea = styled.div`
   width: 100%;
   padding: 0 8rem;
   height: 11vh;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #e9ecef;
 
-  
 @media (max-width: 480px) {
-  padding: 0;
+  padding: 0 0.5rem;
+  height: 9vh;
 }
 
 /* 태블릿 */
@@ -132,16 +132,28 @@ const HeaderBox = styled.div`
   @media (max-width: 480px) {
     display: flex;
     justify-content: center;
+    padding: 0;
   }
 `;
 
+const BarsBox = styled.div`
+  display: none;
+  @media (max-width: 480px) {
+    display: block;
+    width: 35%;
+    height: 40%;
+    font-size: 1.5rem;
+  }
+
+`;
+
 const LogoBox = styled.div`
-  width: 10%;
+  width: 15%;
   height: 100%;
   display: flex;
   align-items: center;
   @media (max-width: 480px) {
-    width: 40%;
+    width: 30%;
   }
 `;
 
@@ -166,27 +178,28 @@ const MenuItems = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  padding-left: 0.5rem;
 `;
 
 const MenuButton = styled.div`
-  width: 17%;
+  width: 20%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.5rem;
+  font-size: 0.8rem;
   font-weight: bold;
   color: black;
   cursor: pointer;
   &:hover {
-    background-color: #F2F2F2;
-    border-radius: 0.6rem;
+    background-color: #f8f9fa;
+    border-radius: 0.6rem 0.6rem 0 0;
   }
 `;
 
 const SearchBox = styled.div`
   box-sizing: border-box;
-  width: 40%;
+  width: ${props => props.login ? "25%" : "20%"};
   height: 60%;
   display: flex;
   align-items: center;
@@ -197,7 +210,7 @@ const SearchBox = styled.div`
 `;
 
 const SearchPaper = styled.form`
-  width: ${props => props.login ? "70%" : "calc(50% - 1rem)"};
+  width: 100%;
   margin-right: 1rem;
   display: flex;
   align-items: center;
@@ -223,20 +236,30 @@ const FaMagnifyingGlass = styled(FontAwesomeIcon)`
 const UserBox = styled.div`
   display: flex;
   align-items: center;
-  width: ${props => props.login ? "30%" : "50%"};
-  height: 100%;
+  width: ${props => props.login ? "10%" : "15%"};
+  height: 60%;
   color: #BABABA; 
-  height: 100%;
-  justify-content: ${props => props.login ? "flex-end" : "space-evenly"};
+  justify-content: flex-end;
+  @media (max-width: 480px) {
+    width: 35%;
+    height: 80%;
+    font-size: 0.4rem;
+  }
 `;
 
 
 const UserButton = styled.button`
-  width: ${props => props.login ? "50%" : "40%"};
+  width: ${props => props.login ? "70%" : "45%"};
   height: 90%;
   border: none;
   &:nth-child(2){
     background-color: #ff922b;
+    margin-left: 0.5rem;
+  }
+  @media (max-width: 480px) {
+    width: 40%;
+    height: 50%;
+    font-size: 0.2rem;
   }
 `;
 

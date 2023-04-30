@@ -1,33 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import { SELECT_OPTION, BOOK_RADIO_OPTION, ONLINE_RADIO_OPTION } from "../../constants/activity";
+import { BOOK_RADIO_OPTION, ONLINE_RADIO_OPTION } from "../../constants/activity";
 import instance from "../../apis/AxiosInterceptorSetup";
 
 
-const ActivityWriteModal = ({ closeModal }) => {
-  const [type, setType] = useState("");
-  const [title, setTitle] = useState("");
-  const [bookUsage, setBookUsage] = useState("");
-  const [content, setContent] = useState("");
-  const [bookName, setbookName] = useState("");
-  const [proceed, setProceed] = useState("");
-  const [githubLink, setGithubLink] = useState("");
-  
-  useEffect(()=>{
-    if (type === 'PROJECT') setBookUsage('NOT_USE');
-    else setBookUsage("")
-    setbookName("");
-    setGithubLink("");
-  }, [type])
-  
-
-  const handleType = (event) => {
-    setType(event.target.value);
-  };
+const EditModal = ({ modalContent, setEdit }) => {
+  const type = modalContent.type;
+  const [title, setTitle] = useState(modalContent.name);
+  const [bookUsage, setBookUsage] = useState(modalContent.bookUsage);
+  const [content, setContent] = useState(modalContent.description);
+  const [bookName, setbookName] = useState(modalContent.bookName);
+  const [proceed, setProceed] = useState(modalContent.proceed);
+  const [githubLink, setGithubLink] = useState(modalContent.githubURL || "");
   
   const submit = async () => {
     const data = {
-      type: type,
       bookName: bookName,
       bookUsage: bookUsage,
       description: content,
@@ -36,24 +23,17 @@ const ActivityWriteModal = ({ closeModal }) => {
       name: title,
     }
     try{
-      const response = await instance.post("/activities", data)
-      if(response.status === 201) closeModal();
+      await instance.put(`/activities/${modalContent.id}`, data)
+      setEdit(false);
     }catch(error){
       console.log(error);
     }
-  }  
+  } 
 
   return (
-    <ModalArea>
-      <ModalBox>
+      <>
         <SelectAndTitle>
-          <Select onChange={handleType} value={type}>
-            {SELECT_OPTION.map(({ id, title }) => (
-              <option key={id} value={title}>
-                {title}
-              </option>
-            ))}
-          </Select>
+          <Select>{type}</Select>
           <Title
             type="text"
             placeholder="활동의 이름을 입력해주세요."
@@ -79,7 +59,8 @@ const ActivityWriteModal = ({ closeModal }) => {
                   type="radio"
                   value={value}
                   name="bookUsage"
-                  onClick={() => setBookUsage(value)}
+                  checked={bookUsage === value}
+                  onChange={() => setBookUsage(value)}
                 />
               </Radio>
             ))}
@@ -88,7 +69,11 @@ const ActivityWriteModal = ({ closeModal }) => {
                 type="text"
                 placeholder="책 이름을 입력해주세요"
                 value={bookName}
-                onChange={(e) => setbookName(e.target.value)}/> : null}
+                onChange={(e) => setbookName(e.target.value)}
+                /> 
+            : 
+                null
+            }
           </RadioBox> 
           <RadioBox>
             <Label>온/오프라인</Label>
@@ -98,8 +83,9 @@ const ActivityWriteModal = ({ closeModal }) => {
                 <RadioInput
                   type="radio"
                   value={value}
+                  checked={proceed === value}
                   name="online"
-                  onClick={() => setProceed(value)}
+                  onChange={() => setProceed(value)}
                 />
               </Radio>
             ))}
@@ -125,7 +111,8 @@ const ActivityWriteModal = ({ closeModal }) => {
                       type="radio"
                       value={value}
                       name="online"
-                      onClick={() => setProceed(value)}
+                      checked={proceed === value}
+                      onChange={() => setProceed(value)}
                     />
                   </Radio>
                 ))}
@@ -133,38 +120,15 @@ const ActivityWriteModal = ({ closeModal }) => {
             </CheckBox>
           </RadioBox>): null}
         <ButtonBox>
-          <ModalButton onClick={submit}>작성완료</ModalButton>
-          <ModalButton onClick={closeModal}>작성취소</ModalButton>
+          <ModalButton onClick={()=>setEdit(false)}>취소</ModalButton>
+          <ModalButton onClick={submit}>완료</ModalButton>
         </ButtonBox>
-      </ModalBox>
-    </ModalArea>
+      </>
   );
 };
 
-export default ActivityWriteModal;
+export default EditModal;
 
-const ModalArea = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 10;
-`;
-
-const ModalBox = styled.div`
-  box-sizing: border-box;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  border-radius: 10px;
-  width: 680px;
-  height: 550px;
-  padding: 2rem;
-`;
 
 const SelectAndTitle = styled.div`
   display: flex;
@@ -173,12 +137,14 @@ const SelectAndTitle = styled.div`
   height: 10%;
 `;
 
-const Select = styled.select`
+const Select = styled.div`
   width: 30%;
   height: 100%;
   border: 1px solid #8e8e8e;
   border-radius: 20px;
-  padding-left: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Title = styled.input`

@@ -47,7 +47,7 @@ const MyPage = () => {
                 </NickNameArea>
               </ProfileArea>
               <ProfileButtonBox>
-                <EditProfile onClick={() => navigate("/edit")}>프로필 수정</EditProfile>
+                <EditProfile>프로필 수정</EditProfile>
                 <EditProfile onClick={() => LogOut()}>로그아웃</EditProfile>
               </ProfileButtonBox>
             </UserPage>

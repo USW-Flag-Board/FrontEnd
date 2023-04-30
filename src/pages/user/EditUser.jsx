@@ -1,26 +1,44 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
+import { MyProfile } from "../../components";
+import { BAR_NAME } from "../../constants/user";
 
 const EditUser = () => {
+  const [barName, setBarName] = useState("내프로필");
   const [userData, setUserData] = useState({
     loginId: "",
     bio: "",
     email: "",
     major: "",
     nickName: "",
-    profileImg: "",
     studentId: "",
   });
-  const { bio, email, major, name, nickName, profileImg, studentId, loginId} = userData;
-  const navigate = useNavigate();
-  console.log(userData)
+  const [profileImg, setProfileImg] = useState(null);
+  const { bio, email, major, name, nickName, studentId, loginId } = userData;
   
-  useEffect(()=> {
-    instance.get("/members")
-      .then((response) => {
-        const data = response.data.payload
+  const handleBarNameClick = (name) => {
+    switch (name) {
+      case "내프로필":
+        setBarName("내프로필");
+        break;
+      case "보안설정":
+        setBarName("보안설정");
+        break;
+      case "나의활동":
+        setBarName("나의활동");
+        break;
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await instance.get("/members");
+        const data = response.data.payload;
+        setProfileImg(data.profileImg);
         setUserData((prevState) => ({
           ...prevState,
           bio: data.bio,
@@ -28,97 +46,48 @@ const EditUser = () => {
           email: data.email,
           major: data.major,
           nickName: data.nickName,
-          profileImg: data.profileImg,
           studentId: data.studentId,
           loginId: data.loginId,
         }));
-      })
-      .catch(error => {
+      } catch (error) {
         console.log(error);
-      });
+      }
+    }
+    fetchData();
   }, []);
 
-  const updateState = (event) => {
-    const { name, value } = event.target;
-    setUserData(prevState => ({
-      ...prevState,
-      [name]: value,
-    }))
-  }
-
-  const handleSave = async () => {
-    const data = {
-      bio: bio,
-      major: major,
-      nickName: nickName,
-      studentId: studentId
-    };
-    try{
-      const response = await instance.put("/members/avatar", data)
-      if(response.status === 200) navigate("/my");  
-    }catch(error){
-        console.log(error)
-    }
-  }
-
   return (
-    <EditPageArea>
-      <TitleBox>회원 정보 수정</TitleBox>
-      <EditPageBox>
-        <ProfileImgBoxArea>
-          <ProfileImgBox>
-            <ProfileImg src={profileImg}/>
-          </ProfileImgBox>
-          <IdButtonBox>
-            <label htmlFor="file">
-              <div className="btn-upload">프로필 사진 변경</div>
-            </label>
-            <ImgEditButton type="file" name="file" id="file"/>
-          </IdButtonBox>
-        </ProfileImgBoxArea>
-        <UserInfoArea>
-          <UserInfoBox>
-            <TitleButtonBox className="edit-button">
-              <span>프로필 정보 수정</span>
-              <EditButton onClick={handleSave}>저장하기</EditButton>
-              <EditButton onClick={()=> navigate("/changepw")}>비밀번호 변경</EditButton>
-              <EditButton>회원탈퇴</EditButton>
-            </TitleButtonBox>
-            <InfoBox>
-              <InfoTitle>이름</InfoTitle>
-              <FixBox>{name}</FixBox>
-            </InfoBox>
-            <InfoBox className="introduce-box">
-              <InfoTitle>소개</InfoTitle>
-              <IntroduceInputBox className="introduce" name="bio" value={bio} onChange={updateState}/>
-            </InfoBox>
-          </UserInfoBox>
-          <UserInfoBox>
-            <TitleButtonBox>상세 정보 수정</TitleButtonBox>
-            <InfoBox>
-              <InfoTitle>아이디</InfoTitle>
-              <FixBox>{loginId}</FixBox>
-            </InfoBox>
-            <InfoBox>
-              <InfoTitle>닉네임</InfoTitle>
-              <EditInputBox type="text" name="nickName" value={nickName} onChange={updateState}/>
-            </InfoBox>
-            <InfoBox>
-              <InfoTitle>이메일</InfoTitle>
-              <FixBox>{email}</FixBox>
-            </InfoBox>
-            <InfoBox>
-              <InfoTitle>전공</InfoTitle>
-              <EditInputBox type="text" name="major" value={major} onChange={updateState}/>
-            </InfoBox>
-            <InfoBox>
-              <InfoTitle>학번</InfoTitle>
-              <EditInputBox type="text" name="studentId" value={studentId} onChange={updateState}/>
-            </InfoBox>
-          </UserInfoBox>
-        </UserInfoArea>
-      </EditPageBox>
-    </EditPageArea>
+    <div>
+      {/* <ListBar>
+        <BarItemBox>
+          {BAR_NAME.map(({ id, name }) => (
+            <BarItem key={id} onClick={() => handleBarNameClick(name)}>
+              {name}
+            </BarItem>
+          ))}
+        </BarItemBox>
+      </ListBar> */}
+      <EditPageArea>
+        <EditPageBox>
+          <div>
+            <div></div>
+          </div>
+        </EditPageBox>
+        <EditPageBox>
+          {barName === "내프로필" && (
+            <MyProfile
+              profileImg={profileImg}
+              nickName={nickName}
+              bio={bio}
+              major={major}
+              studentId={studentId}
+              setUserData={setUserData}
+              setProfileImg={setProfileImg}
+            />
+          )}
+        </EditPageBox>
+      </EditPageArea>
+    </div>
   );
 };
 
@@ -126,168 +95,37 @@ export default EditUser;
 
 const EditPageArea = styled.div`
   width: 100%;
-  height: 100vh;
+  padding: 0 8rem;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
 `;
 
 const EditPageBox = styled.div`
-  border: 2px solid #9A9A9A;
-  border-radius: 2rem;
-  width: 70%;
-  height: 80%;
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-`;
-
-const TitleBox = styled.div`
-  font-size: 2rem;
-  font-weight: 500;
-  width: 70%;
-  height: 10%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding-left: 2rem;
-`;
-
-const ProfileImgBoxArea = styled.div`
-  width: 30%;
-  height: 90%;
-  flex-direction: column;
-  display: flex;
-  align-items: center;
-  border-right: 1.5px solid #9A9A9A;
-`;
-
-const ProfileImgBox = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`;
-
-const ProfileImg = styled.img`
   width: 60%;
-  border: 3px solid gray;
-  border-radius: 50%;
-`;
-
-const IdButtonBox = styled.div`
-  width: 100%;
-  height: 7%;
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-  cursor: pointer;
-  #file {
-    display: none;
-  }
-  .btn-upload{
-    border: 1px solid #9A9A9A;
-    border-radius: 1rem;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    padding: 1rem;
-    &:hover{
-      border: none;
-      background-color: #a5d8ff;
-    }
-  }
-`;
-
-const ImgEditButton = styled.input`
-  width: 100%;
-  height: 100%;
-`;
-
-const UserInfoArea = styled.div`
-  width: 70%;
-  height: 90%;
-`;
-
-const UserInfoBox = styled.div`
-  width: 90%;
-  height: 60%;
-  padding-left: 2rem;
   &:nth-child(1){
-    height: 40%;
+    width: 40%;
   }
-  &:nth-child(2){
-    display: flex;
-    flex-direction: column;
-  }
-  .edit-button{
-    width: 80%;
-    justify-content: space-between;
-  }
-  .introduce-box{
-    height: 40%
-  }
-`;
-
-const TitleButtonBox = styled.div`
-  width: 100%;
-  height: 20%;
-  display: flex;
-  align-items: center;
-  font-size: 1.5rem;
-`;
-
-const InfoBox = styled.div`
-  display: flex;
-  align-items: center;
-  height: 25%;
-  width: 100%;
-  
-  .introduce{
-    width: 80%;
-    height: 100%;
-  }
-`;
-
-const InfoTitle = styled.label`
-  width: 15%;
-  font-weight: bold;
-`;
-
-const IntroduceInputBox = styled.textarea`
-  outline: none;
-  resize: none;
-  border-radius: 10px;
-  border: 1px solid #9A9A9A;
-  padding: 1rem 0.5rem;
 `
 
-const EditInputBox = styled.input`
-  width: 40%;
-  height: 60%;
-  font-size: 1rem;
-  padding-left: 0.5rem;
+const ListBar = styled.div`
+  width: 100%;
+  height: 3.5rem;
+  padding: 0 8rem;
+  background-color: #f8f9fa;
   display: flex;
-  justify-content: flex-start;
-  outline: none;
-  border-radius: 10px;
-  border: 1px solid #9A9A9A;
+  justify-content: space-between;
 `;
 
-const FixBox = styled.div`
-  width: 40%;
-  height: 60%;
-  font-size: 1rem;
+const BarItemBox = styled.div`
+  width: 20%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const BarItem = styled.div`
+  width: fit-content;
   display: flex;
   align-items: center;
-  padding-left: 0.5rem;
-`;
-
-const EditButton = styled.button`
-  height: 70%;
-  background-color: #a5d8ff;
-  border: 1px solid white;
-  border-radius: 10px;
+  font-size: 0.8rem;
   cursor: pointer;
-`
+`;
