@@ -3,6 +3,7 @@ import styled from "styled-components";
 import boardData from "../../constants/board";
 import { Header } from "../../components";
 import { useNavigate } from "react-router-dom";
+import instance from "../../apis/AxiosInterceptorSetup";
 
 const WritePost = () => {
     const header = true;
@@ -10,16 +11,25 @@ const WritePost = () => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [board, setBoard] = useState("");
-
-    const data = {
-        boardName: board,
-        content: content,
-        title: title,
-    };
+    console.log(title, content, board)
 
     const handleBoardChange = (e) => {
         setBoard(e.target.value);
     };
+
+    const handlePostClick = async () => {
+        const data = {
+            boardName: board,
+            content: content,
+            title: title,
+        };
+        try{
+            const response = await instance.post('/posts', data)
+            console.log(response)
+        }catch(error){
+            console.log(error);
+        }
+    }
 
     return(
         <>  
@@ -54,8 +64,8 @@ const WritePost = () => {
                         />
                     </ContentInputBox>
                     <ContentButtonBox>
-                        <ContentButton>취소</ContentButton>
-                        <ContentButton>등록</ContentButton>
+                        <ContentButton onClick={()=>navigate('/board')}>취소</ContentButton>
+                        <ContentButton onClick={handlePostClick}>등록</ContentButton>
                     </ContentButtonBox>
                 </ContentArea>
             </BoardArea>
@@ -152,6 +162,7 @@ const ContentButton = styled.button`
     height: 100%;
     border: none;
     padding: 0.3rem 0 0 0;
+    cursor: pointer;
     &:nth-child(2){
         background-color: #339af0;
         color: white;

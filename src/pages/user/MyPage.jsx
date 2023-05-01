@@ -12,12 +12,6 @@ const MyPage = () => {
   const [userData, setUserData] = useState("");
   const { bio, nickName, profileImg, loginId } = userData;
   
-  const LogOut = () => {
-    SessionStorage.clear();
-    cookiesOption.remove("refresh_token");
-    navigate("/login");
-  };
-
   useEffect(()=> {
     const loginId = SessionStorage.get("User_id");
     baseInstance.get(`/members/${loginId}`)
@@ -48,7 +42,6 @@ const MyPage = () => {
               </ProfileArea>
               <ProfileButtonBox>
                 <EditProfile>프로필 수정</EditProfile>
-                <EditProfile onClick={() => LogOut()}>로그아웃</EditProfile>
               </ProfileButtonBox>
             </UserPage>
             <HistoryArea>

@@ -1,34 +1,22 @@
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
 import instance from "../../apis/AxiosInterceptorSetup";
+import { useState } from "react";
 
 const MyProfile = ({
   nickName,
   bio,
-  profileImg,
   setUserData,
   studentId,
   major,
-  setProfileImg,
+  loginId,
 }) => {
+  const [editOn, setEditOn] = useState(false);
   const updateState = (event) => {
     const { name, value } = event.target;
     setUserData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
-  };
-
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      setProfileImg(reader.result);
-    };
-
-    reader.readAsDataURL(file);
   };
 
   const handleSave = async () => {
@@ -39,105 +27,125 @@ const MyProfile = ({
       studentId: studentId,
     };
     try {
-      const reponse1 = await instance.put("/members/avatar", data);
-      const reponse2 = await instance.post(
-        "/members/avatar/image",
-        profileImg,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log(reponse1);
-      console.log(reponse2);
+      await instance.put("/members/avatar", data);
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <>
-      <TitleBox>프로필 수정</TitleBox>
+    <EditPageBox>
+      <TitleBox className="profile-title">프로필 수정</TitleBox>
       <EditPage>
-        <ProfileImgBox>
-          <ProfileImg src={profileImg} />
-          <IdButtonBox>
-            <label htmlFor="file">
-              <FontAwesomeIcon icon={faPen} className="btn-upload">
-                프로필 사진 변경
-              </FontAwesomeIcon>
-            </label>
-            <ImgEditButton
-              type="file"
-              id="file"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-          </IdButtonBox>
-        </ProfileImgBox>
-        <ContentLabel>별명</ContentLabel>
-        <InfoBox>
-          <EditInputBox
-            type="text"
-            name="nickName"
-            value={nickName}
-            onChange={updateState}
-          />
-        </InfoBox>
-        <ContentLabel>전공</ContentLabel>
-        <InfoBox>
-          <EditInputBox
-            type="text"
-            name="major"
-            value={major}
-            onChange={updateState}
-          />
-        </InfoBox>
-        <ContentLabel>학번</ContentLabel>
-        <InfoBox>
-          <EditInputBox
-            type="text"
-            name="studentId"
-            value={studentId}
-            onChange={updateState}
-          />
-        </InfoBox>
-        <ContentLabel>자기소개</ContentLabel>
-        <InfoBox className="bio-box">
-          <IntroduceInputBox name="bio" value={bio} onChange={updateState} />
-        </InfoBox>
-        <ContentButtonBox>
-          <ContentButton>취소</ContentButton>
-          <ContentButton onClick={handleSave}>저장</ContentButton>
-        </ContentButtonBox>
+        {editOn && (
+          <>
+            <ContentLabel>별명</ContentLabel>
+            <InfoBox>
+              <EditInputBox
+                type="text"
+                name="nickName"
+                value={nickName}
+                onChange={updateState}
+              />
+            </InfoBox>
+            <ContentLabel>전공</ContentLabel>
+            <InfoBox>
+              <EditInputBox
+                type="text"
+                name="major"
+                value={major}
+                onChange={updateState}
+              />
+            </InfoBox>
+            <ContentLabel>학번</ContentLabel>
+            <InfoBox>
+              <EditInputBox
+                type="text"
+                name="studentId"
+                value={studentId}
+                onChange={updateState}
+              />
+            </InfoBox>
+            <ContentLabel>자기소개</ContentLabel>
+            <InfoBox className="bio-box">
+              <IntroduceInputBox name="bio" value={bio} onChange={updateState} />
+            </InfoBox>
+            <ContentButtonBox>
+              <ContentButton onClick={()=> setEditOn(false)}>취소</ContentButton>
+              <ContentButton onClick={handleSave}>저장</ContentButton>
+            </ContentButtonBox>
+          </>
+        )}
+
+        {!editOn && (
+          <EditBox>
+            <IdBox>
+              <span>아이디: </span>
+              <span>{loginId}</span>
+            </IdBox>
+            <ContentButton 
+              onClick={()=> setEditOn(true)}
+              className="edit-off"
+              >
+                수정
+            </ContentButton>
+          </EditBox>
+        )}
       </EditPage>
-    </>
+      <TitleBox>비밀번호 변경</TitleBox>
+      <EditPage className="box">
+        <IdBox>
+        <span>비밀번호</span>
+        </IdBox>
+        <ContentButton 
+          onClick={()=> setEditOn(true)}
+          className="edit-password"
+          >
+            비밀번호 변경
+        </ContentButton>
+      </EditPage>
+      <TitleBox>회원탈퇴</TitleBox>
+      <EditPage className="box">
+        <IdBox>
+          <span>회원탈퇴 시 프로필 및 모든 정보가 삭제 됩니다.</span>
+        </IdBox>
+        <ContentButton 
+          onClick={()=> setEditOn(true)}
+          className="edit-password"
+          >
+            탈퇴하기
+        </ContentButton>
+      </EditPage>
+    </EditPageBox>
   );
 };
 
 export default MyProfile;
 
-const EditPage = styled.div`
-  border: 1px solid #ced4da;
-  border-radius: 1rem;
-  display: flex;
-  flex-direction: column;
+const EditPageBox =styled.div`
   width: 100%;
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-
-  .bio-box {
-    height: 8rem;
+  height: 100%;
+  overflow: auto;
+  padding: 0 4rem;
+  .box{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.4rem 3rem;
+  }
+  .profile-title{
+    margin-top: 5.8rem;
   }
 `;
 
+
 const TitleBox = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 500;
   margin-top: 2rem;
   margin-bottom: 1.5rem;
-  padding-left: 2rem;
+  padding-left: 1.4rem;
 `;
 
 const ContentLabel = styled.label`
@@ -149,47 +157,12 @@ const ContentLabel = styled.label`
     margin-left: 0.4rem;
   }
   margin: 1rem 0;
-`;
-
-const ProfileImgBox = styled.div`
-  height: 9rem;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1.4rem;
-`;
-
-const ProfileImg = styled.img`
-  width: 25%;
-  border-radius: 50%;
-`;
-
-const IdButtonBox = styled.div`
-  #file {
-    display: none;
-  }
-  .btn-upload {
-    border-radius: 1rem;
-    background-color: black;
-    color: white;
-    display: flex;
-    align-items: center;
-    padding: 0.4rem;
-    position: relative;
-    top: 7rem;
-    right: 2.5rem;
-    cursor: pointer;
-  }
-`;
-
-const ImgEditButton = styled.input`
-  width: 100%;
-  height: 100%;
-`;
+  `;
 
 const InfoBox = styled.div`
   width: 100%;
   height: 4rem;
-`;
+  `;
 
 const IntroduceInputBox = styled.textarea`
   outline: none;
@@ -199,7 +172,7 @@ const IntroduceInputBox = styled.textarea`
   padding: 1rem 0.5rem;
   width: 100%;
   height: 80%;
-`;
+  `;
 
 const EditInputBox = styled.input`
   width: 50%;
@@ -209,6 +182,25 @@ const EditInputBox = styled.input`
   outline: none;
   border-radius: 10px;
   border: 1.8px solid #e9ecef;
+  `;
+
+const EditBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 3rem;
+  padding: 1rem 2rem;
+  .edit-off{
+    height: 2.2rem;
+    :hover{
+      background-color: #1c7ed6;
+    }
+  }
+  `;
+
+const IdBox = styled.div`
+  font-size: 0.9rem;
+  font-weight: 500;
 `;
 
 const ContentButtonBox = styled.div`
@@ -217,7 +209,10 @@ const ContentButtonBox = styled.div`
   justify-content: flex-end;
   gap: 1rem;
   margin-top: 1rem;
-`;
+  .edit-password{
+    background-color: none;
+  }
+  `;
 
 const ContentButton = styled.button`
   border-radius: 0.3rem;
@@ -230,5 +225,31 @@ const ContentButton = styled.button`
   &:nth-child(2) {
     background-color: #339af0;
     color: white;
+  }
+  cursor: pointer;
+  `;
+
+const EditPage = styled.div`
+  background-color: white;
+  border: 1px solid #ced4da;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  width: 100%;
+  .bio-box {
+    height: 8rem;
+  }
+  .edit-password{
+    background-color: white;
+    width: 8rem;
+    height: 2.3rem;
+    color: black;
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem;
+    :hover{
+      background-color: #ced4da;
+    }
   }
 `;

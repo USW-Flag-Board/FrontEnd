@@ -261,6 +261,7 @@ const UserButton = styled.button`
     height: 50%;
     font-size: 0.2rem;
   }
+  cursor: pointer;
 `;
 
 export default Header;

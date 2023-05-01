@@ -5,10 +5,10 @@ export const BAR_NAME = [
     },
     {
         id: 1,
-        name: "보안설정"
+        name: "나의활동"
     },
     {
         id: 2,
-        name: "나의활동"
+        name: "로그아웃"
     },
 ];
