@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import styled from "styled-components";
-import {getAllActivitiesAxios} from "../apis/activityAPI";
 import { Header } from "../components";
 
 const STUDY2022 = [
@@ -35,18 +34,6 @@ const Resume = () => {
       setYear(currentYear + 1);
     }
   };
-
-  useEffect(() => {
-    getAllActivitiesAxios().then((response) => {
-      console.log(response);
-    });
-
-    if (year === 2021) {
-      setResumeList(RESUME.map((resume, key) => <li key={key}>{resume}</li>));
-    } else if (year === 2022) {
-      setResumeList(RESUME2.map((resume, key) => <li key={key}>{resume}</li>));
-    }
-  }, [year]);
 
   return (
     <>

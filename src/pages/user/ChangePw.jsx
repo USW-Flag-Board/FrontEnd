@@ -1,218 +1,215 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { PatchChangePw } from "../../apis/user";
 import { Header } from "../../components";
+import { SessionStorage } from "../../utils/browserStorage";
+import { cookiesOption } from "../../utils/cookiesOption";
+import instance from "../../apis/AxiosInterceptorSetup";
+import { loginRegex } from "../../constants/signUp";
+import { baseInstance } from "../../apis/instance";
 
 const ChangePw = () => {
   const header = true;
   const navigate = useNavigate();
-  const location = useLocation();
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [passwordCheck, setPasswordCheck] = useState("");
-  const [passwordError, setPasswordError] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState({
+    currentPassword: "",
+    newPassword: "",
+    passwordConfirm: "",
+    newPasswordMessage: "",
+    passwordConfirmMessage: "",
+  });
+  const { currentPassword, newPassword, passwordConfirm } = password;
+  const { newPasswordMessage, passwordConfirmMessage } = password;
+  
+  useEffect(()=>{
+    if(SessionStorage.get("email")) {
+      const emailState = SessionStorage.get("email")
+      setEmail(emailState)
+    };
+  },[])
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    updatePassword("passwordConfirmMessage", newPassword.trim() !== "" && passwordConfirm.trim() !== "" && newPassword === passwordConfirm ? "입력한 비밀번호와 일치합니다." : (newPassword.trim() === "" && passwordConfirm.trim() === "" ? "" : "비밀번호와 비밀번호 확인이 일치하지 않습니다."));
+  }, [newPassword, passwordConfirm]);
 
-    if (newPassword !== passwordCheck) {
-      return setPasswordError(true);
+  const updatePassword = (key, value) => {
+    setPassword(prevState => ({
+      ...prevState,
+      [key]: value,
+    }))
+  }
+
+  const handleSave = async () => {
+    const data = {
+      currentPassword: currentPassword,
+      newPassword: newPassword 
+    };
+    try{
+      const response = await instance.put("/members/password", data)
+      if(response.status === 200){
+        SessionStorage.clear();
+        cookiesOption.remove("refresh_token");
+        navigate("/login");
+      }
+    }catch(error){
+      const status = error.response.status;
+      switch(status){
+        case 409:
+          alert("기존과 같은 비밀번호는 사용할 수 없습니다.");
+          break;
+        case 404:
+          alert("존재하지 않는 사용자입니다.");
+          break;
+        default:
+          break;
+      }
     }
-  };
-
-  const onChangeCurrentPassword = (e) => {
-    setCurrentPassword(e.target.value);
-  };
-
-  const onChangePassword = (e) => {
-    setNewPassword(e.target.value);
-  };
-
-  const onChangePasswordChk = (e) => {
-    //비밀번호를 입력할때마다 password 를 검증하는 함수
-    setPasswordError(e.target.value !== newPassword);
-    setPasswordCheck(e.target.value);
-  };
-
-  const ReplacePassword = () => {
-    if (!passwordError & (newPassword !== "") & (passwordCheck !== "")) {
-      PatchChangePw(currentPassword, newPassword)
-        .then(() => {
-          alert("비밀번호 변경 완료");
-          navigate("/edit");
-        })
-        .catch((error) => {
-          switch (error.response.status) {
-            case 404:
-              alert("존재하지 않는 사용자입니다.");
-              break;
-            case 409:
-              alert("기존과 같은 비밀번호는 사용할 수 없습니다.");
-              break;
-            case 422:
-              alert(
-                "사용할 수 없는 비밀번호 입니다. (8~20자 이내 영문, 숫자, 특수문자를 모두 포함)"
-              );
-              break;
-            default:
-              alert("서버 통신 오류.");
-          }
-        });
+  }
+  
+  const handlePasswordEdit = async () => {
+    try{
+      await baseInstance.put("/members/find/password", {
+        newPassword: newPassword,
+        email: email
+      })
+      alert("변경된 비밀번호로 로그인을 시도해주세요.")
+      SessionStorage.remove("email");
+      navigate("/login");
+    }catch(error){
+      const status = error.response.status;
+      if(status === 404) alert("존재하지 않는 사용자입니다.")
     }
-  };
+  }
 
+  const handleInputChange = (event) => {
+    const { value, name } = event.target;
+    updatePassword(name, value);
+    if(name === "newPassword") updatePassword("newPasswordMessage", loginRegex.password.test(value) ? "사용가능한 비밀번호입니다." : "최소 8자 이상 20자 이하의 비밀번호를 입력해주세요. 비밀번호는 알파벳, 숫자, 특수문자를 모두 포함해야 합니다.");
+  };
+  
   return (
     <>
       {header && <Header />}
-      <Mainbox>
-        <PwTitle>
-          새 비밀번호{" "}
-          <SaveButton onClick={() => ReplacePassword()}>저장하기</SaveButton>
-        </PwTitle>
-        <Pwbox>
-          <Pwfield>
-            <Box>
-              <TextBox>현재 비밀번호</TextBox>
-              <Box>
-                <PwChange
-                  name="user-current-password"
-                  type="password"
-                  value={currentPassword}
-                  required
-                  onChange={onChangeCurrentPassword}
-                ></PwChange>
-              </Box>
-              <ErrorBox></ErrorBox>
-            </Box>
-            <Box>
-              <TextBox>비밀번호</TextBox>
-              <Box>
-                <PwChange
-                  name="user-password"
-                  type="password"
-                  value={newPassword}
-                  required
-                  onChange={onChangePassword}
-                ></PwChange>
-              </Box>
-              <ErrorBox></ErrorBox>
-            </Box>
-            <Box>
-              <TextBox>비밀번호 확인</TextBox>
-              <Box>
-                <PwChange
-                  name="user-password-check"
-                  type="password"
-                  value={passwordCheck}
-                  required
-                  onChange={onChangePasswordChk}
-                ></PwChange>
-              </Box>
-              <ErrorBox>
-                {passwordError && <div>비밀번호가 일치하지 않습니다.</div>}
-              </ErrorBox>
-            </Box>
-          </Pwfield>
-        </Pwbox>
-      </Mainbox>
+      <EditPageArea>
+        <TitleArea>
+          {email ? <TitleBox>새 비밀번호 변경</TitleBox> : <TitleBox>비밀번호 변경</TitleBox>}
+          <EditButton 
+            type="button" 
+            onClick={email ? handlePasswordEdit: handleSave}>
+            저장하기
+          </EditButton>
+        </TitleArea>
+        <EditPageBox>
+          {email ? null : <InfoBox>
+            <InfoTitle 
+              htmlFor="currentPassword">현재 비밀번호</InfoTitle>
+            <EditInputBox 
+              type="password"
+              name="currentPassword"
+              value={currentPassword}
+              onChange={handleInputChange}
+              aria-label="현재 비밀번호"/>
+          </InfoBox>}
+          <InfoBox>
+            <InfoTitle htmlFor="newPassword">새 비밀번호</InfoTitle>
+            <EditInputBox 
+              type="password"
+              name="newPassword"
+              value={newPassword}
+              onChange={handleInputChange}
+              autoComplete="new-password"
+              aria-label="새 비밀번호"
+              />
+              <InfoState>{newPasswordMessage}</InfoState>
+          </InfoBox>
+          <InfoBox>
+            <InfoTitle htmlFor="passwordConfirm">새 비밀번호 확인</InfoTitle>
+            <EditInputBox
+              type="password"
+              name="passwordConfirm"
+              value={passwordConfirm}
+              onChange={handleInputChange}
+              aria-label="새 비밀번호 확인"
+            />
+            <InfoState>{passwordConfirmMessage}</InfoState>
+          </InfoBox>
+        </EditPageBox>
+      </EditPageArea>
     </>
   );
 };
 
-const Mainbox = styled.div`
-  display: flex;
+export default ChangePw;
+
+const EditPageArea = styled.div`
   width: 100%;
-  height: auto;
+  height: 89vh;
+  display: flex;
   justify-content: center;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
 `;
 
-const Pwbox = styled.div`
+const EditPageBox = styled.div`
+  border: 2px solid #9A9A9A;
+  border-radius: 2rem;
+  width: 60%;
+  height: 35%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const TitleArea = styled.div`
   display: flex;
   width: 60%;
-  height: 26vh;
-  margin-top: 3vh;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid gray;
-  border-radius: 2.5vh;
+  margin-bottom: 1rem;
 `;
 
-const Box = styled.div`
+const TitleBox = styled.div`
+  font-size: 2rem;
+  font-weight: 500;
+  width: 30%;
+  margin-right: 1rem;
+  padding-left: 2rem;
+`;
+
+const InfoBox = styled.form`
   display: flex;
-  margin: 4px;
-  justify-content: center;
   align-items: center;
-  text-align: left;
-  font-size: 1rem;
-  width: 80%;
-`;
-
-const TextBox = styled.div`
-  width: 110px;
-  align-items: center;
-  text-align: left;
-  font-size: 1rem;
-`;
-
-const PwChange = styled.input`
+  height: 33%;
   width: 100%;
-  height: 5vh;
-  margin-left: 3vw;
-  padding-left: 2vw;
-  background-color: transparent;
-  border: 2px solid gray;
-  border-radius: 2vh;
-  font-size: 1rem;
-  color: white;
-`;
-
-const Pwfield = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  width: 40vw;
-  height: 15vh;
-  font-size: 1rem;
-  margin-top: 5.5vh;
-`;
-
-const PwTitle = styled.div`
-  display: flex;
-  width: 500px;
-  height: 55px;
-  margin-top: 17vh;
-  margin-right: 15%;
-  font-size: 2.2rem;
-  font-weight: 800;
-  justify-content: flex-start;
-`;
-
-const ErrorBox = styled.div`
-  width: 200px;
-  margin-left: 2vw;
-  font-size: 0.8rem;
-  align-items: center;
-`;
-
-const SaveButton = styled.button`
-  width: 20%;
-  height: 50%;
-  background: #6c6c6c;
-  color: white;
-  border-radius: 1vh;
-  border: 0px;
-  outline: none;
-  margin-left: 5%;
-  margin-top: 1%;
-  transition: 0.2s;
-  :hover {
-    transition: 0.2s;
-    background-color: #575757;
+  
+  .introduce{
+    width: 80%;
+    height: 100%;
   }
 `;
 
-export default ChangePw;
+const InfoTitle = styled.label`
+  width: 20%;
+`;
+
+const EditInputBox = styled.input`
+  width: 35%;
+  height: 60%;
+  font-size: 1rem;
+  padding-left: 0.5rem;
+  display: flex;
+  justify-content: flex-start;
+  outline: none;
+  border-radius: 10px;
+  border: 1px solid #9A9A9A;
+  margin-right: 1rem;
+`;
+
+const EditButton = styled.button`
+`;
+
+const InfoState = styled.div`
+  width: 40%;
+  color: black;
+  font-size: 0.8rem;
+`;

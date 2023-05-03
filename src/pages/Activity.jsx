@@ -1,94 +1,104 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Header } from "../components";
+import {
+  Header,
+  ActivityCard,
+  WriteModal,
+  ContentModal,
+} from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
-import ActivityCard from "../components/activity/ActivityCard";
-import Toggle from "../components/Toggle";
-import WriteModal from "../components/activity/WriteModal";
-import ContentModal from "../components/activity/ContentModal";
-import activityData from "../constants/activity";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { ACTIVITY_CATEGORIE } from "../constants/activity";
+import { baseInstance } from "../apis/instance";
 
 const Activity = () => {
   const header = true;
   const [isOpen, setIsOpen] = useState(false);
   const [contentOpen, setContentOpen] = useState(false);
-  const [kategorie, setKategorie] =  useState("전체");
-  const dispatch = useDispatch();
-  const allActivities = useSelector((state)=> state.activitySlice.getAllActivitiesData);
-  console.log(allActivities);
-  // useEffect(()=>{
-  // }, [])
+  const [cardId, setCardId] = useState("");
+  const [kategorie, setKategorie] = useState("ALL");
+  const [activities, setActivities] = useState({
+    ALL: [],
+    PROJECT: [],
+    STUDY: [],
+    MENTORING: [],
+  });
 
-  const writeModal = () => {
-    setIsOpen(!isOpen);
-  };
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await baseInstance.get("/activities");
+        const allActivities = response.data.payload.allActivities;
 
+        const filteredActivities = {
+          ALL: allActivities,
+          PROJECT: filterActivities(allActivities, "PROJECT"),
+          STUDY: filterActivities(allActivities, "STUDY"),
+          MENTORING: filterActivities(allActivities, "MENTORING"),
+        };
 
-  const contentModal = () => {
+        setActivities(filteredActivities);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, [isOpen]);
+
+  function filterActivities(activities, type) {
+    return activities.filter((activity) => activity.type === type);
+  }
+
+  const handleCard = (id) => {
+    setCardId(id);
     setContentOpen(!contentOpen);
   };
 
-  const KategorieClick = (title) => {
-    setKategorie(title)
+  const handleWrite = () => {
+    setIsOpen(!isOpen);
   };
 
-  const ActivityCardClick = (id) => {
-    
-  }
-
+  const KategorieClick = (title) => {
+    setKategorie(title);
+  };
 
   return (
     <>
       {header && <Header />}
-      {isOpen && <WriteModal closeModal={writeModal} />}
-      {contentOpen && <ContentModal closeModal={contentModal} />}
+      {isOpen && <WriteModal closeModal={handleWrite} />}
+      {contentOpen && <ContentModal closeModal={handleCard} cardId={cardId} />}
       <ActivityArea>
         <ActivityBox>
           <KategorieBox>
-            {activityData.ACTIVITY_CATEGORIE.map(({ id, icon, title }) => (
-              <Kategorie 
-                key={id}
-                onClick={() => KategorieClick(title)}>
+            {ACTIVITY_CATEGORIE.map(({ id, icon, title, value }) => (
+              <Kategorie key={id} onClick={() => KategorieClick(value)}>
                 <KategorieIcon icon={icon} />
-                <KategorieContent>{title}</KategorieContent>
+                <span>{title}</span>
               </Kategorie>
             ))}
           </KategorieBox>
           <SwitchArea>
-            <SwitchBox>
-              <SwitchTitle>모집 중만 보기</SwitchTitle>
-              <Toggle />
-            </SwitchBox>
-            <ActivityWriteButton type="button">
+            <ActivityWriteButton onClick={handleWrite} type="button">
               <WriteButtonIcon icon={faPencil} />
-              <WriteButton type="button" onClick={writeModal}>
-                글쓰기
-              </WriteButton>
+              <WriteButton>글쓰기</WriteButton>
             </ActivityWriteButton>
           </SwitchArea>
         </ActivityBox>
         <CardArea>
-          {/* {allActivities && */}
-            <Card onClick={contentModal}>
-              {/* {Object.keys(allActivities).map(year => (
-                Object.keys(allActivities[year]).map((type) => (
-                  allActivities[year][type].map(({id, name, leader, activityType, createdAt}) => (                  
-                    <ActivityCard
-                      key={id} 
-                      title={name}
-                      name={leader}
-                      type={activityType}
-                      createAt={createdAt}
-                      onClick={()=> ActivityCardClick(id)}
-                    />
-                  ))
-                ))
-              ))} */}
-            </Card>
-          {/* } */}
+          {activities &&
+            activities[kategorie].map(
+              ({ id, name, leader, type, semester, status }) => (
+                <Card key={id} onClick={() => handleCard(id)}>
+                  <ActivityCard
+                    title={name}
+                    name={leader}
+                    type={type}
+                    semester={semester}
+                    status={status}
+                  />
+                </Card>
+              )
+            )}
         </CardArea>
       </ActivityArea>
     </>
@@ -98,9 +108,13 @@ const Activity = () => {
 export default Activity;
 
 const ActivityArea = styled.div`
-  width: calc(100vw - 16rem);
-  margin: 4rem 8rem 0 8rem;
+  width: 100%;
+  padding: 4rem 8rem 0 8rem;
   z-index: 0;
+  @media screen and (max-width: 1023px) {
+    width: 100%;
+    padding: 2rem 2rem;
+  }
 `;
 
 const ActivityBox = styled.div`
@@ -115,6 +129,9 @@ const KategorieBox = styled.div`
   height: 2rem;
   display: flex;
   align-items: center;
+  @media screen and (max-width: 1023px) {
+    width: 100%;
+  }
 `;
 
 const Kategorie = styled.div`
@@ -127,8 +144,6 @@ const Kategorie = styled.div`
   }
 `;
 
-const KategorieContent = styled.span``;
-
 const KategorieIcon = styled(FontAwesomeIcon)`
   margin-right: 0.5rem;
 `;
@@ -137,27 +152,15 @@ const SwitchArea = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: 30%;
+  width: 20%;
   font-size: 1.2rem;
   font-weight: bold;
 `;
 
-const SwitchBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 70%;
-  margin-right: 1rem;
-`;
-
-const SwitchTitle = styled.span`
-  margin-right: 0.7rem;
-`;
-
 const ActivityWriteButton = styled.button`
   box-sizing: border-box;
-  width: 20%;
-  height: 80%;
+  width: 40%;
+  height: 100%;
 `;
 
 const WriteButtonIcon = styled(FontAwesomeIcon)`
@@ -171,15 +174,18 @@ const CardArea = styled.div`
   box-sizing: border-box;
   padding: 3rem 0.5rem;
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
 `;
 
 const Card = styled.div`
-  gap: 30px;
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  /* width: 23%; */
+  width: 23%;
   height: 150px;
-  @media screen and (max-width: 767px){
+  @media (max-width: 1396px) {
+    width: 48%;
   }
-`
+  @media screen and (max-width: 829px) {
+    width: 100%;
+  }
+`;

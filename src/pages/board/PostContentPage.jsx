@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { SideBar, LikeButton, Reply, Header } from "../../components";
+import { LikeButton, Reply, Header } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
@@ -14,7 +14,6 @@ const PostContentPage = () => {
   const [input, setInput] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(getPost);
 
   const onChange = (e) => {
     setInput(e.target.value);
@@ -38,17 +37,6 @@ const PostContentPage = () => {
     <>
       {header && <Header/>}
       <BoardArea>
-        <SideBar
-          title="ACTIVITY"
-          mainColor="#4B4B4B"
-          subColor="#3C3C3C"
-          mainWidth="13%"
-          subWidth="90%"
-          items={sideBarData.POST_SIDEBAR_ITEMS}
-          paddingTop="0"
-          paddingTopMain="75px"
-          borderRadius="0 15px 15px 0"
-        />
         <ContentArea>
           <TitleBox>알고리즘(코테반)</TitleBox>
           <PostDatailBox>

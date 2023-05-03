@@ -1,37 +1,41 @@
 import { faFolder, faCopy } from "@fortawesome/free-regular-svg-icons";
 import { faPencil, faChalkboardUser } from "@fortawesome/free-solid-svg-icons";
 
-const ACTIVITY_CATEGORIE = [
+export const ACTIVITY_CATEGORIE = [
     {
         id: 1,
         icon: faCopy,
-        title: "전체"
+        title: "전체",
+        value: "ALL",
     },
     {
         id: 2,
         icon: faFolder,
-        title: "프로젝트"
+        title: "프로젝트",
+        value: "PROJECT",
     },
     {
         id: 3,
         icon: faPencil,
-        title: "스터디"
+        title: "스터디",
+        value: "STUDY",
     },
     {
         id: 4,
         icon: faChalkboardUser,
-        title: "멘토링"
+        title: "멘토링",
+        value: "MENTORING",
     },
 ];
 
-const SELECT_OPTION = [
+export const SELECT_OPTION = [
     {
         id: 0,
         title: "카테고리를 선택해주세요."
     },
     {
         id: 1,
-        title: "project"
+        title: "PROJECT"
     },
     {
         id: 2,
@@ -43,11 +47,11 @@ const SELECT_OPTION = [
     }
 ];
 
-const BOOK_RADIO_OPTION =  [
+export const BOOK_RADIO_OPTION =  [
     {
         id: 1,
         option: "Yes",
-        value: "use",
+        value: "USE",
     },
     {
         id: 2,
@@ -56,11 +60,11 @@ const BOOK_RADIO_OPTION =  [
     }
 ];
 
-const ONLINE_RADIO_OPTION =  [
+export const ONLINE_RADIO_OPTION =  [
     {
         id: 1,
         option: "온라인",
-        value: "online",
+        value: "ONLINE",
     },
     {
         id: 2,
@@ -70,15 +74,6 @@ const ONLINE_RADIO_OPTION =  [
     {
         id: 3,
         option: "혼합",
-        value: "혼합",
+        value: "BOTH",
     },
 ];
-
-const activityData = {
-    ACTIVITY_CATEGORIE,
-    SELECT_OPTION,
-    BOOK_RADIO_OPTION,
-    ONLINE_RADIO_OPTION,
-}
-
-export default activityData;

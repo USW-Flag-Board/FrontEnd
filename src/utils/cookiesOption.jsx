@@ -10,10 +10,7 @@ export const cookiesOption = {
     });
   },
   setRefresh(key, value) {
-    return cookies.set(key, value, {
-      path: "/",
-      expires: new Date(Date.now / 1000 + 60 * 5),
-    });
+    return cookies.set(key, value);
   },
   remove(key) {
     return cookies.remove(key);

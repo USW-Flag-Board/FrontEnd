@@ -38,7 +38,7 @@ const JoinTypeSelect = ({ setButtonState, signUpData, setJoinType }) => {
   }, [setButtonState, signUpData.joinType]);
   
   return (
-    <div>
+    <JoinTypeArea>
       <IntroduceArea>회원구분</IntroduceArea>
       {SORTBOX_DATA.map(({id, qualification, introduce, value})=> 
         <SortBox 
@@ -48,7 +48,7 @@ const JoinTypeSelect = ({ setButtonState, signUpData, setJoinType }) => {
           value={value}
           getJoinTypeValue={getJoinTypeValue}
         />)}
-    </div>
+    </JoinTypeArea>
   );
 };
 
@@ -72,6 +72,7 @@ const IntroduceJoinTypeArea = styled.div`
   color: black;
   line-height: 1.75rem;
   white-space: pre-wrap;
+  
 `;
 
 const SortArea = styled.div`
@@ -92,13 +93,23 @@ const CheckLabel = styled.label`
 `;
 
 const AgreeButton = styled.input`
-  width: 1.25rem;
+  width: 5%;
   height: 1.25rem;
   appearance: none;
   border: 1px solid #868e96;
   border-radius: 3.1rem;
   &:checked{
     background-color: #228be6;
+  }
+`;
+
+const JoinTypeArea = styled.div`
+  @media (min-width: 481px ) and (max-width: 1024px){
+    width: 80%;
+  }
+  
+  @media (max-width: 480px) {
+    width: 80%;
   }
 `;
 

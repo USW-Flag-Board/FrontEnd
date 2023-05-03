@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-const ActivityCard = ({ title, name, type, createAt }) => {
+const ActivityCard = ({ title, name, type, semester, status }) => {
     return (
         <Mainbox>
             <Type>{type}</Type>
             <Title>{title}</Title>
-            <Deadline>생성일: <span>{createAt.slice(0, 3).join('.')}</span></Deadline>
+            <Deadline>기간: <span>{semester}</span></Deadline>
             <Name>{name}</Name>
         </Mainbox>       
     );
@@ -16,8 +16,8 @@ const Mainbox = styled.div`
     width: 100%;
     height: 100%;
     border: 2px solid #d1d1d1;
-    border-radius: 30px;
-    cursor:pointer;
+    border-radius: 1rem;
+    cursor: pointer;
     padding: 1rem 1rem 1.5rem 1rem;
 `;
 
@@ -27,10 +27,11 @@ const Type = styled.div`
 
 const Title = styled.div`
     height: 40%;
-    font-size: 18px;
+    font-size: 1.1rem;
     font-weight: bold;
     display: flex;
     justify-content: flex-start;
+    align-items: center;
 `;
 
 const Deadline = styled.div`
@@ -42,7 +43,7 @@ const Deadline = styled.div`
 
 const Name = styled.div`
     width: 100%;
-    font-size: 14px;
+    font-size: 0.9rem;
     display: flex;    
 `;
 

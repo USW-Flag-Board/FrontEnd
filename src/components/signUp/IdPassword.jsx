@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { loginRegex } from "../../constants/signUp";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { baseInstance } from "../../apis/instance";
 
 const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
     const [state, setState] = useState({
@@ -12,11 +12,24 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
       passwordConfirm: "",
       idMessage: "",
       passwordMessage: "",
-      passwordConfirmMessage: ""
+      passwordConfirmMessage: "",
+      idCheck: false,
     });
     const { id, password, passwordConfirm } = state;
     const { idMessage, passwordMessage, passwordConfirmMessage} = state;
     
+    const handleIdCheck = async () => {
+      const value = id;
+      try{
+        const res = await baseInstance.post("/auth/check/id", {
+          loginId: value,
+        });
+        res.data.payload ? updateState("idMessage", "중복된 아이디입니다.") : updateState("idMessage", "사용가능한 아이디입니다.")
+      }catch(error){
+        console.log(error)
+      }
+    };
+
     const updateState = (key, value) => {
       setState(prevState => ({
         ...prevState,
@@ -27,7 +40,7 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
     useEffect(()=>{
       if(idMessage === "사용가능한 아이디입니다." &&
         passwordMessage === "사용가능한 비밀번호입니다." &&
-        passwordConfirmMessage === "입력한 비밀번호와 일치합니다."){
+        passwordConfirmMessage === "비밀번호와 일치합니다."){
           setButtonState(true);
           setIdPassword({
             ...signUpData,
@@ -38,9 +51,21 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
           setButtonState(false);
         }
     },[idMessage, passwordConfirmMessage, passwordMessage])
-
+    
     useEffect(() => {
-      updateState("passwordConfirmMessage", password === passwordConfirm ? "입력한 비밀번호와 일치합니다." : "비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+      if(password === ""){
+        updateState("passwordConfirmMessage", "");
+        updateState("passwordMessage", "");
+        if(passwordConfirm !== "") updateState("passwordConfirmMessage", "비밀번호와 일치하지 않습니다.");
+      }else if(password !== ""){
+        if(passwordConfirm === ""){
+          updateState("passwordConfirmMessage", "")
+        }else{
+          if(password === passwordConfirm) updateState("passwordConfirmMessage", "비밀번호와 일치합니다.");
+          else updateState("passwordConfirmMessage", "비밀번호와 일치하지 않습니다.");
+        }
+      }
+      
     }, [password, passwordConfirm]);
   
     const handleInputChange = (event) => {
@@ -49,10 +74,10 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
     
       switch (name) {
         case "id":
-          updateState("idMessage", loginRegex.id.test(value) ? "사용가능한 아이디입니다." : "아이디는 영문자와 숫자로 이루어져 있어야 하며, 최소 4자 이상, 최대 16자 이하여야 합니다.");
+          updateState("idMessage", value === "" ? "" : loginRegex.id.test(value) ? "" : "아이디는 영문자와 숫자로 이루어져 있어야 하며, 최소 4자 이상, 최대 16자 이하여야 합니다.");
           break;
         case "password":
-          updateState("passwordMessage", loginRegex.password.test(value) ? "사용가능한 비밀번호입니다." : "비밀번호는 영문자와 숫자, 특수문자 중 2가지 이상을 조합하여 최소 8자 이상, 최대 20자 이하여야 합니다.");
+          updateState("passwordMessage", loginRegex.password.test(value) ? "사용가능한 비밀번호입니다." : "숫자+영문자+특수문자(!@#$%^+=-) 조합으로 8자리 이상 입력해주세요!.");
           break;
         default:
           break;
@@ -68,13 +93,14 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData}) => {
         </IntroduceArea>
         <InputBox>
           <WriteArea
+            className="loginId"
             name="id"
             type="text"
             placeholder="아이디"
             value={id}
             onChange={handleInputChange}
           />
-          <Icon icon={faUser}/>
+          <IdCheckButton onClick={handleIdCheck}>중복체크</IdCheckButton>
         </InputBox>
         <InfoState>{idMessage}</InfoState>
         <InputBox>
@@ -126,7 +152,15 @@ const InputBox = styled.div`
   display: flex;
   align-items: center;
   width: 80%;
-`
+  .loginId{
+    width: 70%;
+  }
+`;
+
+const IdCheckButton = styled.button`
+  width: 30%;
+  height: 3.1rem;
+`;
 
 const Icon = styled(FontAwesomeIcon)``;
 
@@ -150,10 +184,10 @@ const WriteArea = styled.input`
 `;
 
 const InfoState = styled.div`
-  color: black;
-  display: flex;
   width: 75%;
+  color: black;
   font-size: 0.8rem;
+  display: flex;
   justify-content: end;
   height: 0.7rem;
   margin-bottom: 1.25rem;

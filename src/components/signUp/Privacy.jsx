@@ -10,18 +10,15 @@ const Privacy = ({
     const [state, setState] = useState({
       name: "",
       studentId: "",
-      phoneNumber: "",
-      nickName: "",
+      nickname: "",
       major: "",
       nameMessage: "",
       studentIdMessage: "",
-      phoneNumberMessage: "",
       nickNameMessage: "",
       majorMessage: "",
     });
-    const { name, major, nickName, studentId, phoneNumber } = state;
-    const { studentIdMessage, phoneNumberMessage, nickNameMessage, majorMessage, nameMessage } = state;
-    console.log(state)
+    const { name, major, nickname, studentId } = state;
+    const { studentIdMessage, nickNameMessage, majorMessage, nameMessage } = state;
     const updateState = (key, value) => {
       setState(prevState => ({
         ...prevState,
@@ -37,10 +34,7 @@ const Privacy = ({
         case "name":
           updateState("nameMessage", nameRegex.test(value) ? "O" : "이름은 한글, 영문 대소문자, 띄어쓰기, 특수문자(-, ')만 입력 가능하며, 최소 2자 이상, 최대 20자 이하로 입력해야 합니다.");
           break;
-        case "phoneNumber":
-          updateState("phoneNumberMessage", phoneRegex.test(value.replace(/-/g, "").replace(/ /g, "")) ? "O" : "핸드폰번호는 숫자 10자리 또는 11자리만 입력 가능합니다.");
-          break;
-        case "nickName":
+        case "nickname":
           updateState("nickNameMessage", value.length >= 3 ? "O" : "3글자 이상 입력해주세요.");
           break;
         case "major":
@@ -62,12 +56,11 @@ const Privacy = ({
           ...signUpData,
           major: major,
           name: name,
-          nickName: nickName,
+          nickname: nickname,
           studentId: studentId,
-          phoneNumber: phoneNumber
         })
       }
-    }, [setButtonState, state]);
+    }, [state]);
   
     return (
       <IdPasswordArea>
@@ -82,7 +75,7 @@ const Privacy = ({
         <WriteArea
           type="text"
           placeholder="닉네임"
-          name="nickName"
+          name="nickname"
           onChange={handleInputChange}
         />
         <InfoState>{nickNameMessage}</InfoState>
@@ -105,13 +98,6 @@ const Privacy = ({
           onChange={handleInputChange}
         />
         <InfoState>{studentIdMessage}</InfoState>
-        <WriteArea
-          type="text"
-          placeholder="ex) 01012345678"
-          name="phoneNumber"
-          onChange={handleInputChange}
-        />
-        <InfoState>{phoneNumberMessage}</InfoState>
       </IdPasswordArea>
     );
   };
@@ -122,7 +108,7 @@ const IdPasswordArea = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 100%
 `;
 
 const IntroduceArea = styled.div`

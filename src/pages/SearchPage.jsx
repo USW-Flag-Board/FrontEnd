@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Header, Footer } from "../components";
+import { Header } from "../components";
 
 const SearchPage = () => {
   const header = true;
@@ -25,7 +25,6 @@ const SearchPage = () => {
           </SearchUserBox>
         </SearchBox>
       </SearchPageArea>
-      <Footer/>
     </>
   );
 };
