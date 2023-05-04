@@ -1,48 +1,77 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Header, ListThem } from "../../components";
-import boardData from '../../constants/board';
+import boardData from "../../constants/board";
+import { baseInstance } from "../../apis/instance";
+import { SessionStorage } from "../../utils/browserStorage";
+import { useDispatch } from "react-redux";
+import { postActions } from "../../redux/slice/boardSlice";
 
 const BulletinBoard = () => {
   const header = true;
   const [board, setBoard] = useState("자유게시판");
+  const [posts, setPosts] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+
   const navigate = useNavigate();
-  
+  const dispatch = useDispatch();
   const handleWrite = () => {
     navigate("/board/write");
-  }
+  };
+
+  const handlePostClick = (id) => {
+    dispatch(postActions.setId(id));
+    navigate("/board/post");
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await baseInstance.get(
+          `/posts?board=${board}&pageNumber=${pageNumber}&pageSize=3&offset=2`
+        );
+        setPosts(response.data.payload.content);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, [board, pageNumber]);
 
   return (
     <>
-      {header && <Header/>}
+      {header && <Header />}
       <BoardArea>
         <ListArea>
           <ListBar>
             <BarItemBox>
-              {boardData.BOARD_NAMES.map(({id, krName})=>(
-                <BarItem key={id}>{krName}</BarItem>
+              {boardData.BOARD_NAMES.map(({ id, krName }) => (
+                <BarItem key={id} onClick={() => setBoard(krName)}>
+                  {krName}
+                </BarItem>
               ))}
             </BarItemBox>
-            <WriteButtonBox>
-              <WriteButton onClick={handleWrite}>
-                <FaPen icon={faPlus} />
-                <span>글쓰기</span> 
-              </WriteButton>
-            </WriteButtonBox>
+            {SessionStorage.get("UserToken") ? (
+              <WriteButtonBox>
+                <WriteButton onClick={handleWrite}>
+                  <FaPen icon={faPlus} />
+                  <span>글쓰기</span>
+                </WriteButton>
+              </WriteButtonBox>
+            ) : null}
           </ListBar>
           <ListBox>
-            <ListThem/>
-            <ListThem/>
-            <ListThem/>
-            <ListThem/>
-            <ListThem/>
-            <ListThem/>
+            {posts?.map((post) => (
+              <div key={post.id} onClick={() => handlePostClick(post.id)}>
+                <ListThem post={post} />
+              </div>
+            ))}
           </ListBox>
           <FilterAndSearchForm>
-          {/* {boardData.SEARCH_SELECT_ITEMS.map((item) => (
+            {/* {boardData.SEARCH_SELECT_ITEMS.map((item) => (
             <FilterSelect key={item}>
               <option>{item}</option>
             </FilterSelect>
@@ -92,7 +121,7 @@ const BarItem = styled.div`
 `;
 
 const ListBox = styled.div`
-  padding: 0 8rem;
+  padding: 0 13rem;
   margin-top: 1rem;
 `;
 

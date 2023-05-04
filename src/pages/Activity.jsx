@@ -1,15 +1,11 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import {
-  Header,
-  ActivityCard,
-  WriteModal,
-  ContentModal,
-} from "../components";
+import { Header, ActivityCard, WriteModal, ContentModal } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { ACTIVITY_CATEGORIE } from "../constants/activity";
 import { baseInstance } from "../apis/instance";
+import { SessionStorage } from "../utils/browserStorage";
 
 const Activity = () => {
   const header = true;
@@ -78,10 +74,12 @@ const Activity = () => {
             ))}
           </KategorieBox>
           <SwitchArea>
-            <ActivityWriteButton onClick={handleWrite} type="button">
-              <WriteButtonIcon icon={faPencil} />
-              <WriteButton>글쓰기</WriteButton>
-            </ActivityWriteButton>
+            {SessionStorage.get("UserToken") ? (
+              <ActivityWriteButton onClick={handleWrite} type="button">
+                <WriteButtonIcon icon={faPencil} />
+                <WriteButton>글쓰기</WriteButton>
+              </ActivityWriteButton>
+            ) : null}
           </SwitchArea>
         </ActivityBox>
         <CardArea>

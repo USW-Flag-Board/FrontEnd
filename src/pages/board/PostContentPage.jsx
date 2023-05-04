@@ -1,225 +1,197 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { LikeButton, Reply, Header } from "../../components";
-import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment } from "@fortawesome/free-solid-svg-icons";
-import boardsActions from "../../redux/thunkActions/boardsActions";
-import sideBarData from "../../constants/sideBar";
+import {
+  faEye,
+  faComment,
+  faThumbsUp,
+} from "@fortawesome/free-regular-svg-icons";
+import { Header } from "../../components";
+import { useDispatch, useSelector } from "react-redux";
+import { baseInstance } from "../../apis/instance";
+import { useElapsedTime } from "../../hooks/useElaspedTime";
 
 const PostContentPage = () => {
-  const getPost = useSelector((state) => state.toDo.getPostData);
   const header = true;
-  const [input, setInput] = useState('');
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const postId = useSelector((state) => state.boardSlice.postId);
+  const [postData, setPostData] = useState({});
+  const [newPost, setNewPost] = useState(false);
+  const {
+    author,
+    content,
+    createdAt,
+    edited,
+    id,
+    likeCount,
+    replyCount,
+    title,
+    viewCount,
+  } = postData;
 
-  const onChange = (e) => {
-    setInput(e.target.value);
-  };
-  
-  const editClick = (postId) => {
-    navigate("/board/edit");
-    dispatch(boardsActions.getPostAPI(postId));
-  }
-
-  const deleteClick = (postId) => {
-    if(window.confirm("정말 삭제하시겠습니까?") === true){
-      dispatch(boardsActions.deletePostAPI(postId)); 
-      navigate("/board");
-    }else{
-      console.log("취소되었습니다.");
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await baseInstance.get(`/posts/${postId}`);
+        setPostData(response.data.payload);
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }
+
+    fetchData();
+  }, [postId]);
 
   return (
     <>
-      {header && <Header/>}
-      <BoardArea>
-        <ContentArea>
-          <TitleBox>알고리즘(코테반)</TitleBox>
-          <PostDatailBox>
-            <PostHeader>
-              <PostHeaderLeft>
-                <PostAuthor>글쓴이</PostAuthor>
-                <AuthorName>{getPost.memberName}</AuthorName>
-                <PostTime>{getPost.createdAt.slice(0, 3).join('.')}</PostTime>
-              </PostHeaderLeft>
-              <PostHeaderRight>
-                <PostModify onClick={() => editClick(getPost.id)}>수정하기</PostModify>
-                <PostDelete onClick={() => deleteClick(getPost.id)}>삭제하기</PostDelete>
-              </PostHeaderRight>
-            </PostHeader>
-            <PostContentTitle>{getPost.title}</PostContentTitle>
-            <PostContent>{getPost.content}</PostContent>
-            <PostFooter>
-              <PostViewCount><PostView>View</PostView>{getPost.viewCount}</PostViewCount>
-              <PostLike><LikeButton/>{getPost.likeCount}</PostLike>
-              <CommentCount><FaComment icon={faComment}/>{getPost.replyList.length}</CommentCount>
-            </PostFooter>
-          </PostDatailBox>
-          <CommentInputBox>
-            <CommentInput placeholder="댓글을 입력하세요." value={input} onChange={onChange}></CommentInput>
-            <CommentAddButton type="submit">등록</CommentAddButton>
-          </CommentInputBox>
-          <CommentsArea>
-            <Reply />
-          </CommentsArea>
-        </ContentArea>
-      </BoardArea>
+      {header && <Header />}
+      <PostArea>
+        <PostBox>
+          <ContentArea>
+            <ContentInner>
+              {/* <NoticeBox>
+                {newPost ? <Notice>새로운 글</Notice> : null}
+              </NoticeBox> */}
+              <Title>{title}</Title>
+              <WriterInfoBox>
+                <WriterImg />
+                <Info>
+                  <WriterName>{author}</WriterName>
+                  <ElaspsedTime>1시간전</ElaspsedTime>
+                </Info>
+              </WriterInfoBox>
+              <ContentBox>
+                <LikeButtonBox>
+                  <LikeButton>
+                    <Icon icon={faThumbsUp} className="like" />
+                    <span className="like-count">{likeCount}</span>
+                  </LikeButton>
+                </LikeButtonBox>
+                <Content>{content}</Content>
+              </ContentBox>
+              <PostInfoBox>
+                <InfoBox>
+                  <Icon icon={faEye} className="view" />
+                  <span>{Math.ceil(viewCount / 2)}</span>
+                </InfoBox>
+                <InfoBox>
+                  <Icon icon={faComment} className="comment" />
+                  <span>{replyCount}</span>
+                </InfoBox>
+              </PostInfoBox>
+            </ContentInner>
+          </ContentArea>
+        </PostBox>
+      </PostArea>
     </>
   );
 };
 
-const BoardArea = styled.div`
-  display: flex;
-  width: 100vw;
-  height: 89vh;
+const PostArea = styled.div`
+  width: 100%;
 `;
 
-const TitleBox = styled.h2`
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  font-weight: 700;
-  height: 10%;
-  font-size: 35px;
-`;
+const PostBox = styled.div``;
 
 const ContentArea = styled.div`
-  box-sizing: border-box;
-  width: 87%;
-  padding: 1.2rem;
+  padding: 3rem 0;
+  border-bottom: 1px solid rgb(215, 226, 235);
 `;
 
-const PostDatailBox = styled.div`
-  box-sizing: border-box;
+const ContentInner = styled.div`
+  padding: 0 16rem;
+`;
+
+const NoticeBox = styled.div`
+  display: flex;
   width: 100%;
-  height: 30%;
-  border: 1px solid #9A9A9A;
-  border-radius: 20px;
-  padding: 1rem;
-  margin: 1rem 0 1rem 0;
-`;
-
-const PostHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  height: 10%;
-`;
-
-const PostHeaderLeft = styled.div``;
-
-const PostAuthor = styled.span`
-  margin-right: 8px;
-`;
-
-const AuthorName = styled.span`
-  margin-right: 30px;
-`;
-
-const PostTime = styled.span`
-  color: rgba(255, 255, 255, 0.5);
-`;
-
-const PostHeaderRight = styled.div``;
-
-const PostModify = styled.button`
-  cursor: pointer;
-  background-color: #2C2C2C;
-  border: none;
-  color: white;
-`;
-
-const PostDelete = styled.button`
-  margin-left: 10px;
-  cursor: pointer;
-  background-color: #2C2C2C;
-  border: none;
-  color: white;
-`;
-
-const PostContentTitle = styled.h2`
-  font-weight: 600;
-  font-size: 20px;
-  padding-top: 1rem;
-  height: 20%;
-`;
-
-const PostContent = styled.div`
-  height: 45%;
-`;
-
-const PostFooter = styled.div`
-  padding-top: 0.6rem;
-  height: 10%;
-`;
-
-const PostView = styled.span`
-  margin-right: 10px;
-`
-
-const PostViewCount = styled.span`
-  font-size: 15px;
-  margin-right: 20px;
-`;
-
-const PostLike = styled.span`
-  margin-right: 10px;
-`;
-
-const CommentCount = styled.span`
-  margin-left: 10px;
-`
-
-const FaComment = styled(FontAwesomeIcon)`
-  font-size: 15px;
-  margin-right: 10px;
-`;
-
-const CommentInputBox = styled.form`
-  box-sizing: border-box;
-  border: 1px solid #9A9A9A;
-  border-radius: 20px;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 1rem;
-  height: 8%;
+  padding-bottom: 0.75rem;
 `;
 
-const CommentInput = styled.input`
-  width: 95%;
-  height: 35%;
-  border: none;
-  background-color: #2C2C2C;
-  caret-color: white;
-  color: white;
-  &:focus {
-    outline: none;
-  }
-  ::placeholder {
-    color: #ffffffcc;
+const Notice = styled.div`
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 0.875rem;
+  margin-right: 0.5rem;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background-color: rgb(234, 244, 255);
+  color: rgb(0, 120, 255);
+`;
+
+const Title = styled.h1`
+  font-size: 1.5rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  margin: 1.25rem 0px 1.125rem;
+`;
+
+const WriterInfoBox = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 2rem;
+`;
+
+const WriterImg = styled.img``;
+const Info = styled.div``;
+const WriterName = styled.div``;
+const ElaspsedTime = styled.div``;
+
+const ContentBox = styled.div`
+  display: flex;
+  width: 100%;
+  height: 10rem;
+`;
+
+const Content = styled.div`
+  width: 90%;
+  padding: 0.3rem;
+`;
+
+const LikeButtonBox = styled.div`
+  width: 10%;
+  .like {
+    font-size: 1.3rem;
+    color: #adb5bd;
   }
 `;
 
-const CommentAddButton = styled.button`
-  height: 35%;
-  color: white;
-  background-color: #2C2C2C;
-  border: none;
+const LikeButton = styled.button`
+  width: 90%;
+  height: 25%;
+  background: none;
   cursor: pointer;
+  border: 0.0625rem solid rgb(215, 226, 235);
+  border-radius: 0.25rem;
+  .like-count {
+    font-size: 1rem;
+    font-weight: 400;
+  }
 `;
 
-const CommentsArea = styled.div`
-  box-sizing: border-box;
-  color: white;
-  border: 1px solid #9A9A9A;
-  border-radius: 20px;
-  margin-top: 1rem;
-  padding: 1.5rem  1.5rem 0 1.5rem;
+const PostInfoBox = styled.div`
+  padding-top: 1rem;
+  display: flex;
 `;
 
+const InfoBox = styled.div`
+  margin-right: 0.8rem;
+  .view {
+    color: #adb5bd;
+  }
+  .comment {
+    color: #339af0;
+  }
+`;
+
+const Icon = styled(FontAwesomeIcon)`
+  margin-right: 0.3rem;
+  padding: 0;
+`;
+
+const CommentArea = styled.div`
+  background-color: rgb(249, 250, 251);
+`;
 
 export default PostContentPage;
