@@ -37,7 +37,7 @@ const ListThem = ({ post }) => {
         <PostInfoBox>
           <InfoBox>
             <Icon icon={faEye} className="view" />
-            <span>{Math.ceil(viewCount / 2)}</span>
+            <span>{viewCount}</span>
           </InfoBox>
           <InfoBox>
             <Icon icon={faComment} className="comment" />

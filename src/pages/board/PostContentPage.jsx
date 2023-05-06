@@ -7,19 +7,24 @@ import {
   faThumbsUp,
 } from "@fortawesome/free-regular-svg-icons";
 import { Header } from "../../components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { baseInstance } from "../../apis/instance";
+import { SessionStorage } from "../../utils/browserStorage";
+import instance from "../../apis/AxiosInterceptorSetup";
+import PostComment from "./PostComment";
 import { useElapsedTime } from "../../hooks/useElaspedTime";
 
 const PostContentPage = () => {
   const header = true;
   const postId = useSelector((state) => state.boardSlice.postId);
+  const [comment, setComment] = useState("");
+  const login = SessionStorage.get("UserToken");
   const [postData, setPostData] = useState({});
-  const [newPost, setNewPost] = useState(false);
+  const [commentData, setCommentData] = useState("");
+  const [createdAt, setCreatedAt] = useState([]);
   const {
     author,
     content,
-    createdAt,
     edited,
     id,
     likeCount,
@@ -28,11 +33,20 @@ const PostContentPage = () => {
     viewCount,
   } = postData;
 
+  const timeAgo = useElapsedTime(
+    `${createdAt[0]}-${createdAt[1]}-${createdAt[2]} ${createdAt[3]}:${createdAt[4]}:${createdAt[5]}`
+  );
+
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await baseInstance.get(`/posts/${postId}`);
         setPostData(response.data.payload);
+        setCreatedAt(response.data.payload.createdAt);
+        const commentResponse = await baseInstance.get(
+          `/posts/${postId}/replies`
+        );
+        setCommentData(commentResponse.data.payload);
       } catch (error) {
         console.log(error);
       }
@@ -41,22 +55,29 @@ const PostContentPage = () => {
     fetchData();
   }, [postId]);
 
+  const handleRegistration = async () => {
+    try {
+      await instance.post(`/posts/${postId}/reply`, {
+        content: comment,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       {header && <Header />}
       <PostArea>
         <PostBox>
-          <ContentArea>
+          <ContentArea className="post-content">
             <ContentInner>
-              {/* <NoticeBox>
-                {newPost ? <Notice>새로운 글</Notice> : null}
-              </NoticeBox> */}
               <Title>{title}</Title>
               <WriterInfoBox>
                 <WriterImg />
                 <Info>
                   <WriterName>{author}</WriterName>
-                  <ElaspsedTime>1시간전</ElaspsedTime>
+                  <ElaspsedTime>{timeAgo}전</ElaspsedTime>
                 </Info>
               </WriterInfoBox>
               <ContentBox>
@@ -71,13 +92,40 @@ const PostContentPage = () => {
               <PostInfoBox>
                 <InfoBox>
                   <Icon icon={faEye} className="view" />
-                  <span>{Math.ceil(viewCount / 2)}</span>
+                  <span>{viewCount}</span>
                 </InfoBox>
                 <InfoBox>
                   <Icon icon={faComment} className="comment" />
                   <span>{replyCount}</span>
                 </InfoBox>
               </PostInfoBox>
+            </ContentInner>
+          </ContentArea>
+          <ContentArea className="comment-area">
+            <ContentInner>
+              <Title className="comment-title">댓글</Title>
+              {Array.isArray(commentData) &&
+                commentData.map((comment) => (
+                  <PostComment comment={comment} key={comment.id} />
+                ))}
+              {login && (
+                <>
+                  <CommentBox>
+                    <CommentInputBox>
+                      <CommentInput
+                        placeholder="댓글을 입력해보세요"
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                      />
+                    </CommentInputBox>
+                  </CommentBox>
+                  <ContentButtonBox>
+                    <ContentButton onClick={handleRegistration}>
+                      등록
+                    </ContentButton>
+                  </ContentButtonBox>
+                </>
+              )}
             </ContentInner>
           </ContentArea>
         </PostBox>
@@ -90,33 +138,25 @@ const PostArea = styled.div`
   width: 100%;
 `;
 
-const PostBox = styled.div``;
+const PostBox = styled.div`
+  .comment-area {
+    background-color: #f9fafb;
+    padding: 1rem 0;
+    border-top: 0.0625rem solid #e7e7e7;
+  }
+`;
 
 const ContentArea = styled.div`
   padding: 3rem 0;
-  border-bottom: 1px solid rgb(215, 226, 235);
 `;
 
 const ContentInner = styled.div`
-  padding: 0 16rem;
-`;
-
-const NoticeBox = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-  padding-bottom: 0.75rem;
-`;
-
-const Notice = styled.div`
-  font-size: 0.75rem;
-  font-weight: 700;
-  line-height: 0.875rem;
-  margin-right: 0.5rem;
-  border-radius: 0.25rem;
-  padding: 0.25rem 0.5rem;
-  background-color: rgb(234, 244, 255);
-  color: rgb(0, 120, 255);
+  margin: 0 10rem;
+  padding: 0 6rem;
+  .comment-title {
+    font-size: 1.2rem;
+    margin: 0.8rem 0px 1.125rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -190,8 +230,47 @@ const Icon = styled(FontAwesomeIcon)`
   padding: 0;
 `;
 
-const CommentArea = styled.div`
-  background-color: rgb(249, 250, 251);
+const CommentBox = styled.div`
+  border: 0.0625rem solid rgb(215, 226, 235);
+  border-radius: 0.25rem;
+  width: 100%;
+  background-color: white;
+  margin-bottom: 1rem;
+`;
+
+const CommentInputBox = styled.div`
+  height: 10rem;
+  padding: 1rem;
+`;
+
+const CommentInput = styled.textarea`
+  width: 100%;
+  height: 100%;
+  border: none;
+  :focus {
+    outline: none;
+  }
+  resize: none;
+`;
+
+const ContentButtonBox = styled.div`
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const ContentButton = styled.button`
+  border-radius: 0.3rem;
+  font-size: 1rem;
+  font-weight: bold;
+  width: 6rem;
+  height: 100%;
+  border: none;
+  padding: 0.3rem 0 0 0;
+  cursor: pointer;
+  background-color: #339af0;
+  color: white;
 `;
 
 export default PostContentPage;
