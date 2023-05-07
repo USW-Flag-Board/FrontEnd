@@ -13,30 +13,30 @@ const FindPw = () => {
   });
   const { email, loginId } = state;
   const navigate = useNavigate();
-  
+
   const updateState = (event) => {
     const { name, value } = event.target;
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleSave = async () => {
     const data = {
       email: email,
-      loginId: loginId 
+      loginId: loginId,
     };
-    try{
+    try {
       const response = await baseInstance.post("/members/find/password", data);
-      if(response.status === 201){
+      if (response.status === 201) {
         SessionStorage.set("email", email);
         SessionStorage.set("type", "password");
-        navigate("/login/certification")
+        navigate("/login/certification");
       }
-    }catch(error){
+    } catch (error) {
       const status = error.response.status;
-      switch(status){
+      switch (status) {
         case 409:
           alert("이메일과 아이디가 일치하지 않습니다.");
           break;
@@ -47,36 +47,35 @@ const FindPw = () => {
           break;
       }
     }
-  }
+  };
 
   return (
     <>
-      {header && <Header/>}
       <EditPageArea>
         <TitleArea>
           <TitleBox>비밀번호 찾기</TitleBox>
-          <EditButton 
-            type="button" 
-            onClick={handleSave}>
+          <EditButton type="button" onClick={handleSave}>
             저장하기
           </EditButton>
         </TitleArea>
         <EditPageBox>
           <InfoBox>
             <InfoTitle>아이디</InfoTitle>
-            <EditInputBox 
+            <EditInputBox
               type="text"
               name="loginId"
               value={loginId}
-              onChange={updateState}/>
+              onChange={updateState}
+            />
           </InfoBox>
           <InfoBox>
             <InfoTitle>이메일</InfoTitle>
-            <EditInputBox 
+            <EditInputBox
               type="text"
               name="email"
               value={email}
-              onChange={updateState}/>
+              onChange={updateState}
+            />
           </InfoBox>
         </EditPageBox>
       </EditPageArea>
@@ -96,7 +95,7 @@ const EditPageArea = styled.div`
 `;
 
 const EditPageBox = styled.div`
-  border: 2px solid #9A9A9A;
+  border: 2px solid #9a9a9a;
   border-radius: 2rem;
   width: 30%;
   height: 30%;
@@ -139,10 +138,8 @@ const EditInputBox = styled.input`
   justify-content: flex-start;
   outline: none;
   border-radius: 10px;
-  border: 1px solid #9A9A9A;
+  border: 1px solid #9a9a9a;
   margin-right: 1rem;
 `;
 
-const EditButton = styled.button`
-  
-`;
+const EditButton = styled.button``;

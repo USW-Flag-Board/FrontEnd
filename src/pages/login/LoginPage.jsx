@@ -6,34 +6,36 @@ import { faLock } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { SessionStorage } from "../../utils/browserStorage";
 import { cookiesOption } from "../../utils/cookiesOption";
-import logo from "../../assets/images/logo2.png"
+import logo from "../../assets/images/logo2.png";
 import { baseInstance } from "../../apis/instance";
 import instance from "../../apis/AxiosInterceptorSetup";
+import { FindId, FindPw } from "../../components";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const [idPassword, setIdPassword] = useState({
     loginId: "",
-    password: "", 
+    password: "",
   });
-  
+  const [findId, setFindId] = useState(false);
+  const [findPw, setFindPw] = useState(false);
+
   const updateIdPassword = (event) => {
     const { name, value } = event.target;
     setIdPassword({
       ...idPassword,
-      [name]: value
-    })
+      [name]: value,
+    });
   };
-  
+
   const handleLogin = async () => {
-    try{
+    try {
       const response = await baseInstance.post("/auth/login", {
         loginId: idPassword.loginId,
-        password: idPassword.password
+        password: idPassword.password,
       });
       const accessToken = response.data.payload.accessToken;
-      const accessTokenExpiresIn =
-        response.data.payload.accessTokenExpiresIn;
+      const accessTokenExpiresIn = response.data.payload.accessTokenExpiresIn;
       sessionStorage.setItem("expire", accessTokenExpiresIn);
       sessionStorage.setItem("UserToken", accessToken);
       sessionStorage.setItem("User_id", idPassword.loginId);
@@ -41,12 +43,12 @@ const LoginPage = () => {
         "refresh_token",
         response.data.payload.refreshToken
       );
-      const myInfo = await instance.get('/members')
-      SessionStorage.set("name", myInfo.data.payload.name)
-      navigate("/")
-    }catch(error){
+      const myInfo = await instance.get("/members");
+      SessionStorage.set("name", myInfo.data.payload.name);
+      navigate("/");
+    } catch (error) {
       const status = error.response.status;
-      switch(status){
+      switch (status) {
         case 400:
           alert("비밀번호가 틀립니다.");
           break;
@@ -57,11 +59,12 @@ const LoginPage = () => {
           break;
       }
     }
-  }
-
+  };
 
   return (
     <PageArea>
+      {findId && <FindId setFindId={setFindId} />}
+      {findPw && <FindPw setFindPw={setFindPw} />}
       <LoginArea>
         <img
           alt="Flag 로고"
@@ -91,15 +94,13 @@ const LoginPage = () => {
           로그인
         </LoginButton>
         <SortArea>
-          <LinkText href="/findid" variant="body2">
+          <LoginMenuButton type="button" onClick={() => setFindId(true)}>
             아이디 찾기
-          </LinkText>
-          <LinkText href="/findpw" variant="body2">
+          </LoginMenuButton>
+          <LoginMenuButton type="button" onClick={() => setFindPw(true)}>
             비밀번호 찾기
-          </LinkText>
-          <LinkText href="/signup" variant="body2">
-            회원가입
-          </LinkText>
+          </LoginMenuButton>
+          <LoginMenuButton type="button">회원가입</LoginMenuButton>
         </SortArea>
       </LoginArea>
     </PageArea>
@@ -153,20 +154,22 @@ const RelativeArea = styled.div`
   position: relative;
 `;
 
-
 const LoginButton = styled.button`
   background-color: #4dabf7;
   color: #ffffff;
-  margin-top: 1.9rem;
+  margin-top: 1.2rem;
   margin-bottom: 1.9rem;
   height: 60px;
   width: 350px;
   border: 0px;
   transition: 0.2s;
   font-size: 1rem;
+  cursor: pointer;
 `;
 
-const LinkText = styled.a`
+const LoginMenuButton = styled.button`
+  background: none;
+  border: none;
   color: black;
   :visited {
     color: black;

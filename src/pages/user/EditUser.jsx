@@ -4,7 +4,7 @@ import instance from "../../apis/AxiosInterceptorSetup";
 import { MyProfile } from "../../components";
 import { BAR_NAME } from "../../constants/user";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/images/logo2.png"
+import logo from "../../assets/images/logo2.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { SessionStorage } from "../../utils/browserStorage";
@@ -38,7 +38,7 @@ const EditUser = () => {
 
     try {
       await instance.post("/members/avatar/image", formData);
-      
+
       reader.onload = () => {
         setProfileImg(reader.result);
       };
@@ -58,7 +58,7 @@ const EditUser = () => {
         setBarName("나의활동");
         break;
       case "로그아웃":
-        if(window.confirm("로그아웃 하시겠습니까?")){
+        if (window.confirm("로그아웃 하시겠습니까?")) {
           handleLogOutClick();
         }
         break;
@@ -116,7 +116,7 @@ const EditUser = () => {
                     id="file"
                     accept="image/*"
                     onChange={handleImageChange}
-                    />
+                  />
                 </IdButtonBox>
               </ProfileImgBox>
               <NameBox>{name}</NameBox>
@@ -161,11 +161,11 @@ const EditPageArea = styled.div`
 
 const EditPageBox = styled.div`
   width: 70%;
-  &:nth-child(1){
+  &:nth-child(1) {
     width: 30%;
     z-index: 1;
   }
-  &:nth-child(2){
+  &:nth-child(2) {
     /* background-color: #f8f9fa; */
   }
 `;
@@ -187,8 +187,8 @@ const LogoBox = styled.div`
 `;
 
 const LogoImg = styled.img`
-  width: 100%; 
-  height: 100%; 
+  width: 100%;
+  height: 100%;
   cursor: pointer;
 `;
 
@@ -197,7 +197,7 @@ const ProfileBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 
 const ProfileImgBox = styled.div`
   width: 100%;
@@ -240,7 +240,7 @@ const NameBox = styled.p`
   font-size: 1.4rem;
   font-weight: bold;
   margin-bottom: 0.6rem;
-  `;
+`;
 
 const EmailBox = styled.p`
   font-size: 0.9rem;

@@ -10,23 +10,23 @@ const Certification = () => {
   const [certification, setCertification] = useState("");
   const navigate = useNavigate();
   const email = SessionStorage.get("email");
-  
+
   const handleSave = async () => {
-    try{
+    try {
       const res = await baseInstance.post("/members/certification", {
         certification: certification,
-        email: email
-      })
-      if(SessionStorage.get("type")){
-        SessionStorage.remove("type")
-        navigate("/changepw");
-      }else{
+        email: email,
+      });
+      if (SessionStorage.get("type")) {
+        SessionStorage.remove("type");
+        navigate("/blogined/changepw");
+      } else {
         alert(`회원님의 아이디는: ${res.data.payload.loginId}입니다.`);
         navigate("/login");
-      };
-    }catch(error){
+      }
+    } catch (error) {
       const status = error.response.status;
-      switch(status){
+      switch (status) {
         case 409:
           alert("인증번호가 일치하지 않습니다.");
           break;
@@ -37,16 +37,14 @@ const Certification = () => {
           break;
       }
     }
-  }
+  };
   return (
     <div>
-      {header && <Header/>}
+      {header && <Header />}
       <EditPageArea>
         <TitleArea>
           <TitleBox>이메일 인증</TitleBox>
-          <EditButton 
-            type="button" 
-            onClick={handleSave}>
+          <EditButton type="button" onClick={handleSave}>
             인증하기
           </EditButton>
         </TitleArea>
@@ -57,19 +55,20 @@ const Certification = () => {
           </InfoBox>
           <InfoBox>
             <InfoTitle>인증번호</InfoTitle>
-            <EditInputBox 
+            <EditInputBox
               type="text"
               name="certification"
               value={certification}
-              onChange={(e)=>setCertification(e.target.value)}/>
+              onChange={(e) => setCertification(e.target.value)}
+            />
           </InfoBox>
         </EditPageBox>
       </EditPageArea>
     </div>
-  )
-}
+  );
+};
 
-export default Certification
+export default Certification;
 
 const EditPageArea = styled.div`
   width: 100%;
@@ -81,7 +80,7 @@ const EditPageArea = styled.div`
 `;
 
 const EditPageBox = styled.div`
-  border: 2px solid #9A9A9A;
+  border: 2px solid #9a9a9a;
   border-radius: 2rem;
   width: 30%;
   height: 30%;
@@ -124,7 +123,7 @@ const EditInputBox = styled.input`
   justify-content: flex-start;
   outline: none;
   border-radius: 10px;
-  border: 1px solid #9A9A9A;
+  border: 1px solid #9a9a9a;
   margin-right: 1rem;
 `;
 
@@ -137,6 +136,4 @@ const FixBox = styled.div`
   padding-left: 0.5rem;
 `;
 
-const EditButton = styled.button`
-  
-`;
+const EditButton = styled.button``;

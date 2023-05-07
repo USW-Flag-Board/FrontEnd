@@ -57,7 +57,7 @@ const PostContentPage = () => {
 
   const handleRegistration = async () => {
     try {
-      await instance.post(`/posts/${postId}/reply`, {
+      await instance.post(`/posts/${id}/reply`, {
         content: comment,
       });
     } catch (error) {
