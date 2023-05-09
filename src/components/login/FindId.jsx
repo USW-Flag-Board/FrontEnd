@@ -8,6 +8,7 @@ const FindId = ({ setFindId }) => {
     name: "",
     certification: "",
   });
+  const [success, setSuccess] = useState(false);
   const { email, name, certification } = state;
 
   const updateState = (event) => {
@@ -28,6 +29,7 @@ const FindId = ({ setFindId }) => {
       if (response.status === 201) {
         document.getElementsByName("name")[0].disabled = true;
         document.getElementsByName("email")[0].disabled = true;
+        setSuccess(true);
       }
     } catch (error) {
       const status = error.response.status;
@@ -51,6 +53,7 @@ const FindId = ({ setFindId }) => {
         email: email,
       });
       alert(`회원님의 아이디는: ${res.data.payload.loginId}입니다.`);
+      setFindId(false);
     } catch (error) {
       const status = error.response.status;
       switch (status) {
@@ -95,14 +98,38 @@ const FindId = ({ setFindId }) => {
               />
             </InfoBox>
           </InputBox>
+          {!success && (
+            <InfoState>회원가입 당시 입력한 이메일을 입력해주세요.</InfoState>
+          )}
+          {success && (
+            <>
+              <InputBox>
+                <ContentLabel>인증번호</ContentLabel>
+                <InfoBox>
+                  <EditInputBox
+                    type="text"
+                    name="certification"
+                    value={state.certification}
+                    onChange={updateState}
+                  />
+                </InfoBox>
+              </InputBox>
+            </>
+          )}
         </InputArea>
         <ButtonBox>
           <Button type="button" onClick={() => setFindId(false)}>
             취소
           </Button>
-          <Button type="button" onClick={handleSave}>
-            이메일 인증
-          </Button>
+          {success ? (
+            <Button type="button" onClick={handleSubmit}>
+              전송하기
+            </Button>
+          ) : (
+            <Button type="button" onClick={handleSave}>
+              인증하기
+            </Button>
+          )}
         </ButtonBox>
       </ModalBox>
     </ModalArea>
@@ -184,7 +211,7 @@ const InfoState = styled.div`
   width: 100%;
   height: 1rem;
   color: #98a8b9;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   margin-top: 1rem;
 `;
 
@@ -200,7 +227,7 @@ const ButtonBox = styled.div`
 
 const Button = styled.button`
   border-radius: 0.3rem;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: bold;
   width: 20%;
   height: 100%;

@@ -67,7 +67,13 @@ const Activity = () => {
         <ActivityBox>
           <KategorieBox>
             {ACTIVITY_CATEGORIE.map(({ id, icon, title, value }) => (
-              <Kategorie key={id} onClick={() => KategorieClick(value)}>
+              <Kategorie
+                key={id}
+                onClick={() => KategorieClick(value)}
+                selected={
+                  kategorie === value || (kategorie === "" && value === "ALL")
+                }
+              >
                 <KategorieIcon icon={icon} />
                 <span>{title}</span>
               </Kategorie>
@@ -107,7 +113,7 @@ export default Activity;
 
 const ActivityArea = styled.div`
   width: 100%;
-  padding: 4rem 8rem 0 8rem;
+  padding: 2rem 8rem 0 8rem;
   z-index: 0;
   @media screen and (max-width: 1023px) {
     width: 100%;
@@ -137,9 +143,7 @@ const Kategorie = styled.div`
   font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;
-  &.active {
-    color: lightblue;
-  }
+  color: ${(props) => (props.selected ? "#212529" : "#adb5bd")};
 `;
 
 const KategorieIcon = styled(FontAwesomeIcon)`
@@ -157,8 +161,15 @@ const SwitchArea = styled.div`
 
 const ActivityWriteButton = styled.button`
   box-sizing: border-box;
-  width: 40%;
+  background-color: #339af0;
+  cursor: pointer;
+  color: white;
+  width: 50%;
   height: 100%;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 5px;
 `;
 
 const WriteButtonIcon = styled(FontAwesomeIcon)`
@@ -174,12 +185,12 @@ const CardArea = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 1rem;
 `;
 
 const Card = styled.div`
   width: 23%;
-  height: 150px;
+  height: 10rem;
   @media (max-width: 1396px) {
     width: 48%;
   }

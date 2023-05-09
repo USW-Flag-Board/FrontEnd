@@ -36,9 +36,9 @@ const LoginPage = () => {
       });
       const accessToken = response.data.payload.accessToken;
       const accessTokenExpiresIn = response.data.payload.accessTokenExpiresIn;
-      sessionStorage.setItem("expire", accessTokenExpiresIn);
-      sessionStorage.setItem("UserToken", accessToken);
-      sessionStorage.setItem("User_id", idPassword.loginId);
+      SessionStorage.set("expire", accessTokenExpiresIn);
+      SessionStorage.set("UserToken", accessToken);
+      SessionStorage.set("User_id", idPassword.loginId);
       cookiesOption.setRefresh(
         "refresh_token",
         response.data.payload.refreshToken
@@ -100,7 +100,9 @@ const LoginPage = () => {
           <LoginMenuButton type="button" onClick={() => setFindPw(true)}>
             비밀번호 찾기
           </LoginMenuButton>
-          <LoginMenuButton type="button">회원가입</LoginMenuButton>
+          <LoginMenuButton type="button" onClick={() => navigate("/signup")}>
+            회원가입
+          </LoginMenuButton>
         </SortArea>
       </LoginArea>
     </PageArea>
@@ -171,6 +173,7 @@ const LoginMenuButton = styled.button`
   background: none;
   border: none;
   color: black;
+  cursor: pointer;
   :visited {
     color: black;
   }

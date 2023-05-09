@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { SessionStorage } from "../../utils/browserStorage";
 import instance from "../../apis/AxiosInterceptorSetup";
-import { loginRegex } from "../../constants/signUp";
-import { baseInstance } from "../../apis/instance";
 import { cookiesOption } from "../../utils/cookiesOption";
+
 const ChangePwModal = ({ setPwModal }) => {
   const [password, setPassword] = useState({
     currentPassword: "",
@@ -14,7 +13,7 @@ const ChangePwModal = ({ setPwModal }) => {
     passwordConfirmMessage: "",
   });
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [buttonState, setButtonState] = useState(true);
   const {
     currentPassword,
     newPassword,
@@ -32,7 +31,9 @@ const ChangePwModal = ({ setPwModal }) => {
       if (response.status === 200) {
         SessionStorage.clear();
         cookiesOption.remove("refresh_token");
-        alert("변경된 비밀번호로 로그인을 시도해주세요.");
+        alert(
+          "비밀번호가 변경되었습니다. 변경된 비밀번호로 로그인을 시도해주세요."
+        );
         navigate("/login");
       }
     } catch (error) {
@@ -49,22 +50,6 @@ const ChangePwModal = ({ setPwModal }) => {
       }
     }
   };
-
-  const handlePasswordEdit = async () => {
-    try {
-      await baseInstance.put("/members/find/password", {
-        newPassword: newPassword,
-        email: email,
-      });
-      alert("변경된 비밀번호로 로그인을 시도해주세요.");
-      SessionStorage.remove("email");
-      navigate("/login");
-    } catch (error) {
-      const status = error.response.status;
-      if (status === 404) alert("존재하지 않는 사용자입니다.");
-    }
-  };
-
   const handleInputChange = (event) => {
     const { value, name } = event.target;
     updatePassword(name, value);
@@ -78,13 +63,6 @@ const ChangePwModal = ({ setPwModal }) => {
   };
 
   useEffect(() => {
-    if (SessionStorage.get("email")) {
-      const emailState = SessionStorage.get("email");
-      setEmail(emailState);
-    }
-  }, []);
-
-  useEffect(() => {
     if (newPassword === "") {
       updatePassword("passwordConfirmMessage", "");
       if (passwordConfirm !== "")
@@ -96,16 +74,20 @@ const ChangePwModal = ({ setPwModal }) => {
       if (passwordConfirm === "") {
         updatePassword("passwordConfirmMessage", "");
       } else {
-        if (newPassword === passwordConfirm)
+        if (newPassword === passwordConfirm) {
           updatePassword("passwordConfirmMessage", "비밀번호와 일치합니다.");
-        else
+          setButtonState(false);
+        } else {
           updatePassword(
             "passwordConfirmMessage",
             "비밀번호와 일치하지 않습니다."
           );
+          setButtonState(true);
+        }
       }
     }
   }, [newPassword, passwordConfirm]);
+
   return (
     <ModalArea>
       <ModalBox>
@@ -125,7 +107,7 @@ const ChangePwModal = ({ setPwModal }) => {
             </InfoBox>
           </InputBox>
           <InputBox>
-            <ContentLabel>비밀번호</ContentLabel>
+            <ContentLabel>새 비밀번호</ContentLabel>
             <InfoBox>
               <EditInputBox
                 type="password"
@@ -139,7 +121,7 @@ const ChangePwModal = ({ setPwModal }) => {
             </InfoState>
           </InputBox>
           <InputBox>
-            <ContentLabel>비밀번호 확인</ContentLabel>
+            <ContentLabel>새 비밀번호 확인</ContentLabel>
             <InfoBox>
               <EditInputBox
                 type="password"
@@ -155,7 +137,12 @@ const ChangePwModal = ({ setPwModal }) => {
           <Button type="button" onClick={() => setPwModal(false)}>
             취소
           </Button>
-          <Button type="button" onClick={handleSave}>
+          <Button
+            type="button"
+            id="change-pw"
+            onClick={handleSave}
+            disabled={buttonState}
+          >
             저장
           </Button>
         </ButtonBox>

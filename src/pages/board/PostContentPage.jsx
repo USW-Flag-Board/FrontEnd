@@ -6,30 +6,32 @@ import {
   faComment,
   faThumbsUp,
 } from "@fortawesome/free-regular-svg-icons";
-import { Header } from "../../components";
-import { useSelector } from "react-redux";
 import { baseInstance } from "../../apis/instance";
 import { SessionStorage } from "../../utils/browserStorage";
 import instance from "../../apis/AxiosInterceptorSetup";
-import PostComment from "./PostComment";
+import { PostComment, Header } from "../../components";
 import { useElapsedTime } from "../../hooks/useElaspedTime";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import EditPost from "./EditPost";
 
 const PostContentPage = () => {
   const header = true;
-  const postId = useSelector((state) => state.boardSlice.postId);
+  const { postId } = useParams();
+  const navigate = useNavigate();
   const [comment, setComment] = useState("");
-  const login = SessionStorage.get("UserToken");
+  const [newPost, setNewPost] = useState(false);
   const [postData, setPostData] = useState({});
-  const [commentData, setCommentData] = useState("");
+  const [replies, setReplies] = useState("");
   const [createdAt, setCreatedAt] = useState([]);
   const {
-    author,
     content,
+    like,
     edited,
     id,
-    likeCount,
-    replyCount,
+    loginId,
+    nickname,
     title,
+    profileImage,
     viewCount,
   } = postData;
 
@@ -41,12 +43,9 @@ const PostContentPage = () => {
     async function fetchData() {
       try {
         const response = await baseInstance.get(`/posts/${postId}`);
-        setPostData(response.data.payload);
-        setCreatedAt(response.data.payload.createdAt);
-        const commentResponse = await baseInstance.get(
-          `/posts/${postId}/replies`
-        );
-        setCommentData(commentResponse.data.payload);
+        setPostData(response.data.payload.postDetail);
+        setReplies(response.data.payload.replies);
+        setCreatedAt(response.data.payload.postDetail.createdAt);
       } catch (error) {
         console.log(error);
       }
@@ -54,6 +53,17 @@ const PostContentPage = () => {
 
     fetchData();
   }, [postId]);
+
+  useEffect(() => {
+    if (
+      timeAgo === "방금" ||
+      timeAgo.endsWith("시간") ||
+      timeAgo.endsWith("분") ||
+      timeAgo.endsWith("1일")
+    ) {
+      setNewPost(true);
+    }
+  }, [timeAgo]);
 
   const handleRegistration = async () => {
     try {
@@ -65,6 +75,17 @@ const PostContentPage = () => {
     }
   };
 
+  const handleDeleteClick = async () => {
+    if (window.confirm("게시글을 삭제하시겠습니까?")) {
+      try {
+        await instance.patch(`/posts/${id}`);
+        navigate("/board");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <>
       {header && <Header />}
@@ -72,11 +93,14 @@ const PostContentPage = () => {
         <PostBox>
           <ContentArea className="post-content">
             <ContentInner>
+              <NoticeBox>
+                {newPost ? <Notice>새로운 글</Notice> : null}
+              </NoticeBox>
               <Title>{title}</Title>
               <WriterInfoBox>
-                <WriterImg />
+                <WriterImg src={profileImage} />
                 <Info>
-                  <WriterName>{author}</WriterName>
+                  <WriterName>{nickname}</WriterName>
                   <ElaspsedTime>{timeAgo}전</ElaspsedTime>
                 </Info>
               </WriterInfoBox>
@@ -84,7 +108,9 @@ const PostContentPage = () => {
                 <LikeButtonBox>
                   <LikeButton>
                     <Icon icon={faThumbsUp} className="like" />
-                    <span className="like-count">{likeCount}</span>
+                    {like && like.likeCount !== undefined && (
+                      <span className="like-count">{like.likeCount}</span>
+                    )}
                   </LikeButton>
                 </LikeButtonBox>
                 <Content>{content}</Content>
@@ -96,19 +122,27 @@ const PostContentPage = () => {
                 </InfoBox>
                 <InfoBox>
                   <Icon icon={faComment} className="comment" />
-                  <span>{replyCount}</span>
+                  <span>{replies.length}</span>
                 </InfoBox>
+                {loginId === SessionStorage.get("User_id") && (
+                  <>
+                    <StyledLink to={`/board/post/${postId}/edit`}>
+                      <InfoBox>수정하기</InfoBox>
+                    </StyledLink>
+                    <InfoBox onClick={handleDeleteClick}>삭제하기</InfoBox>
+                  </>
+                )}
               </PostInfoBox>
             </ContentInner>
           </ContentArea>
           <ContentArea className="comment-area">
             <ContentInner>
               <Title className="comment-title">댓글</Title>
-              {Array.isArray(commentData) &&
-                commentData.map((comment) => (
+              {Array.isArray(replies) &&
+                replies.map((comment) => (
                   <PostComment comment={comment} key={comment.id} />
                 ))}
-              {login && (
+              {SessionStorage.get("User_id") && (
                 <>
                   <CommentBox>
                     <CommentInputBox>
@@ -139,6 +173,8 @@ const PostArea = styled.div`
 `;
 
 const PostBox = styled.div`
+  display: flex;
+  flex-direction: column;
   .comment-area {
     background-color: #f9fafb;
     padding: 1rem 0;
@@ -147,12 +183,14 @@ const PostBox = styled.div`
 `;
 
 const ContentArea = styled.div`
+  width: 100%;
   padding: 3rem 0;
+  display: flex;
+  justify-content: center;
 `;
 
 const ContentInner = styled.div`
-  margin: 0 10rem;
-  padding: 0 6rem;
+  width: 70%;
   .comment-title {
     font-size: 1.2rem;
     margin: 0.8rem 0px 1.125rem;
@@ -163,7 +201,7 @@ const Title = styled.h1`
   font-size: 1.5rem;
   line-height: 2.25rem;
   font-weight: 700;
-  margin: 1.25rem 0px 1.125rem;
+  margin: 0.5rem 0px 1.125rem;
 `;
 
 const WriterInfoBox = styled.div`
@@ -171,12 +209,25 @@ const WriterInfoBox = styled.div`
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 2rem;
+  height: 3rem;
 `;
 
-const WriterImg = styled.img``;
-const Info = styled.div``;
+const WriterImg = styled.img`
+  height: 100%;
+  border-radius: 50%;
+`;
+const Info = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-left: 0.4rem;
+`;
+
 const WriterName = styled.div``;
-const ElaspsedTime = styled.div``;
+const ElaspsedTime = styled.div`
+  color: #adb5bd;
+`;
 
 const ContentBox = styled.div`
   display: flex;
@@ -216,6 +267,8 @@ const PostInfoBox = styled.div`
 `;
 
 const InfoBox = styled.div`
+  cursor: pointer;
+  font-size: 1rem;
   margin-right: 0.8rem;
   .view {
     color: #adb5bd;
@@ -271,6 +324,28 @@ const ContentButton = styled.button`
   cursor: pointer;
   background-color: #339af0;
   color: white;
+`;
+
+const NoticeBox = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding-bottom: 0.75rem;
+`;
+
+const Notice = styled.div`
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 0.875rem;
+  margin-right: 0.5rem;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background-color: rgb(234, 244, 255);
+  color: rgb(0, 120, 255);
+`;
+
+const StyledLink = styled(Link)`
+  color: black;
 `;
 
 export default PostContentPage;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -7,24 +7,16 @@ import { Header, ListThem } from "../../components";
 import boardData from "../../constants/board";
 import { baseInstance } from "../../apis/instance";
 import { SessionStorage } from "../../utils/browserStorage";
-import { useDispatch } from "react-redux";
-import { postActions } from "../../redux/slice/boardSlice";
 
 const BulletinBoard = () => {
   const header = true;
+  const navigate = useNavigate();
   const [board, setBoard] = useState("자유게시판");
   const [posts, setPosts] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const handleWrite = () => {
+  const handleWriteClick = () => {
     navigate("/board/write");
-  };
-
-  const handlePostClick = (id) => {
-    dispatch(postActions.setId(id));
-    navigate("/board/post");
   };
 
   useEffect(() => {
@@ -49,38 +41,33 @@ const BulletinBoard = () => {
           <ListBar>
             <BarItemBox>
               {boardData.BOARD_NAMES.map(({ id, krName }) => (
-                <BarItem key={id} onClick={() => setBoard(krName)}>
+                <BarItem
+                  key={id}
+                  selected={board === krName}
+                  onClick={() => setBoard(krName)}
+                >
                   {krName}
                 </BarItem>
               ))}
             </BarItemBox>
             {SessionStorage.get("UserToken") ? (
               <WriteButtonBox>
-                <WriteButton onClick={handleWrite}>
+                <WriteButton onClick={handleWriteClick}>
                   <FaPen icon={faPlus} />
                   <span>글쓰기</span>
                 </WriteButton>
               </WriteButtonBox>
             ) : null}
           </ListBar>
-          <ListBox>
+          <PostListBox>
             {posts?.map((post) => (
-              <div key={post.id} onClick={() => handlePostClick(post.id)}>
-                <ListThem post={post} />
-              </div>
+              <PostList key={post.id}>
+                <StyledLink to={`/board/post/${post.id}`}>
+                  <ListThem post={post} />
+                </StyledLink>
+              </PostList>
             ))}
-          </ListBox>
-          <FilterAndSearchForm>
-            {/* {boardData.SEARCH_SELECT_ITEMS.map((item) => (
-            <FilterSelect key={item}>
-              <option>{item}</option>
-            </FilterSelect>
-            ))}
-            <SearchArea>
-              <FaMagnifyingGlass icon={faMagnifyingGlass}/>
-              <InputBase type="text" placeholder="게시글 + 작성자" />
-            </SearchArea> */}
-          </FilterAndSearchForm>
+          </PostListBox>
         </ListArea>
       </BoardArea>
     </>
@@ -93,13 +80,16 @@ const BoardArea = styled.div`
 
 const ListArea = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const ListBar = styled.div`
   width: 100%;
   height: 3.5rem;
   padding: 0 8rem;
-  background-color: #f8f9fa;
+  background-color: #f1f3f5;
   display: flex;
   justify-content: space-between;
 `;
@@ -118,46 +108,25 @@ const BarItem = styled.div`
   font-size: 0.8rem;
   cursor: pointer;
   margin-right: 1rem;
+  background-color: ${(props) => (props.selected ? "#FFFFFF" : "#f1f3f5")};
 `;
 
-const ListBox = styled.div`
-  padding: 0 13rem;
-  margin-top: 1rem;
+const PostListBox = styled.div`
+  width: 70%;
+  margin: 1rem 0;
 `;
 
-const PaginationArea = styled.div`
-  height: 10%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const PostList = styled.div`
+  text-decoration: none;
 `;
 
-const FilterAndSearchForm = styled.form`
-  height: 12%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const FilterSelect = styled.select`
-  box-sizing: border-box;
-  width: 10rem;
-  background-color: #535353cc;
-  border: 1px solid #535353;
-  border-radius: 16px;
-  padding: 0.6rem 0.4rem 0.6rem 1.5rem;
-  &:first-of-type {
-    padding: 0.6rem 0.4rem 0.6rem 2.7rem;
-  }
-  color: #9b9b9b;
-  margin-right: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const StyledLink = styled(Link)`
+  color: black;
 `;
 
 const WriteButtonBox = styled.div`
   width: 20%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -165,46 +134,19 @@ const WriteButtonBox = styled.div`
 
 const WriteButton = styled.button`
   background-color: #339af0;
+  cursor: pointer;
   color: white;
-  width: 60%;
+  width: 70%;
   height: 60%;
   font-size: 0.9rem;
   font-weight: 700;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
-`;
-
-const SearchArea = styled.div`
-  border: 2px solid #535353;
-  border-radius: 15px;
-  padding-left: 0.6rem;
-  background-color: #535353cc;
-  height: 50%;
-  display: flex;
-  align-items: center;
-`;
-
-const InputBase = styled.input`
-  box-sizing: border-box;
-  font-size: 15px;
-  color: white;
-  height: 70%;
-  width: 85%;
-  border: none;
-  background-color: #535353cc;
-  &:focus {
-    outline: none;
-  }
 `;
 
 const FaPen = styled(FontAwesomeIcon)`
   text-decoration: none;
   margin-right: 0.5rem;
-`;
-
-const FaMagnifyingGlass = styled(FontAwesomeIcon)`
-  padding-right: 0.5rem;
 `;
 
 export default BulletinBoard;

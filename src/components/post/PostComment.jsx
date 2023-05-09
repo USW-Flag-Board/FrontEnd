@@ -5,8 +5,7 @@ import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { SessionStorage } from "../../utils/browserStorage";
 
 const PostComment = ({ comment }) => {
-  const { content, createdAt, likeCount, nickname, profileImage, edited } =
-    comment;
+  const { content, createdAt, like, nickname, profileImage, edited } = comment;
   const timeAgo = useElapsedTime(
     `${createdAt[0]}-${createdAt[1]}-${createdAt[2]} ${createdAt[3]}:${createdAt[4]}:${createdAt[5]}`
   );
@@ -38,7 +37,7 @@ const PostComment = ({ comment }) => {
           </Button>
           <Button type="button" className="like">
             <FontAwesomeIcon icon={faThumbsUp} className="thum" />
-            <span>{likeCount}</span>
+            <span>{like.likeCount}</span>
           </Button>
         </ButtonBox>
       </CommentHeader>

@@ -2,7 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo2 from "../../assets/images/logo2.png";
-import { ServiceAgree, JoinTypeSelect, IdPassword, Privacy, EmailAuth } from "../../components/signUp";
+import {
+  ServiceAgree,
+  JoinTypeSelect,
+  IdPassword,
+  Privacy,
+  EmailAuth,
+} from "../../components/signUp";
 import { baseInstance } from "../../apis/instance";
 
 const SignUpPage = () => {
@@ -17,9 +23,9 @@ const SignUpPage = () => {
     nickname: "",
     password: "",
     studentId: "",
-  })
+  });
   const [certification, setCertification] = useState("");
-  
+
   const NextIndex = async () => {
     setSignUpIndex((signUpIndex) => signUpIndex + 1);
     if (signUpIndex + 1 === 5) {
@@ -45,13 +51,13 @@ const SignUpPage = () => {
   return (
     <PageArea>
       <PageBox>
+        <Logo
+          alt="Flag 로고"
+          className="Logo"
+          src={logo2}
+          onClick={() => navigate("/")}
+        />
         <SignUpArea>
-          <Logo
-            alt="Flag 로고"
-            className="Logo"
-            src={logo2}
-            onClick={() => navigate("/")}
-          />
           {signUpIndex === 0 && (
             <ServiceAgree setButtonState={setButtonState} />
           )}
@@ -95,7 +101,7 @@ const SignUpPage = () => {
             disabled={!buttonState}
             onClick={() => NextIndex()}
           >
-          {signUpIndex === 4 ? "회원가입 완료" : "Next"}
+            {signUpIndex === 4 ? "회원가입 완료" : "Next"}
           </AccountButton>
           <RadioArea>
             <Radio className={signUpIndex === 0 && "current"} />
@@ -122,8 +128,10 @@ const PageBox = styled.div`
   width: 40%;
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
-  @media (min-width: 481px ) and (max-width: 1024px){
+  cursor: pointer;
+  @media (min-width: 481px) and (max-width: 1024px) {
     width: 80%;
   }
 
@@ -139,13 +147,11 @@ const SignUpArea = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
-  border: 2px solid #9a9a9a;
-  border-radius: 1.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
 `;
 
 const Logo = styled.img`
-  width: 50%;
-  height: 30;
+  width: 35%;
   margin-bottom: 1rem;
   margin-top: 2rem;
 `;

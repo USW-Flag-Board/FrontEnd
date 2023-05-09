@@ -9,7 +9,8 @@ import { useEffect, useState } from "react";
 import { useElapsedTime } from "../../hooks/useElaspedTime";
 
 const ListThem = ({ post }) => {
-  const { author, createdAt, likeCount, replyCount, title, viewCount } = post;
+  const { author, createdAt, likeCount, replyCount, title, viewCount, edited } =
+    post;
   const [newPost, setNewPost] = useState(false);
   const timeAgo = useElapsedTime(
     `${createdAt[0]}-${createdAt[1]}-${createdAt[2]} ${createdAt[3]}:${createdAt[4]}:${createdAt[5]}`
@@ -31,7 +32,7 @@ const ListThem = ({ post }) => {
       <NoticeBox>{newPost ? <Notice>새로운 글</Notice> : null}</NoticeBox>
       <Title>{title}</Title>
       <EditedNoticeBox className="edited-post">
-        <EditedNotice>수정됨</EditedNotice>
+        <EditedNotice>{edited ? "수정됨" : ""}</EditedNotice>
       </EditedNoticeBox>
       <PostInfoArea>
         <PostInfoBox>
@@ -96,6 +97,7 @@ const EditedNoticeBox = styled.div`
 
 const EditedNotice = styled.div`
   width: fit-content;
+  height: 1rem;
 `;
 
 const Title = styled.div`
