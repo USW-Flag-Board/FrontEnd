@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { baseInstance } from "../../apis/instance";
+import instance from "../../apis/AxiosInterceptorSetup";
 
 const FindId = ({ setFindId }) => {
   const [state, setState] = useState({
@@ -25,7 +25,7 @@ const FindId = ({ setFindId }) => {
       name: name,
     };
     try {
-      const response = await baseInstance.post("/members/find/id", data);
+      const response = await instance.post("/members/find/id", data);
       if (response.status === 201) {
         document.getElementsByName("name")[0].disabled = true;
         document.getElementsByName("email")[0].disabled = true;
@@ -48,7 +48,7 @@ const FindId = ({ setFindId }) => {
 
   const handleSubmit = async () => {
     try {
-      const res = await baseInstance.post("/members/certification", {
+      const res = await instance.post("/members/certification", {
         certification: certification,
         email: email,
       });

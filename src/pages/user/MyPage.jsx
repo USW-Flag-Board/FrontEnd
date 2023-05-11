@@ -4,28 +4,29 @@ import styled from "styled-components";
 import { cookiesOption } from "../../utils/cookiesOption";
 import { SessionStorage } from "../../utils/browserStorage";
 import { Header } from "../../components";
-import { baseInstance } from "../../apis/instance";
+import instance from "../../apis/AxiosInterceptorSetup";
 
 const MyPage = () => {
   const header = true;
   const navigate = useNavigate();
   const [userData, setUserData] = useState("");
   const { bio, nickName, profileImg, loginId } = userData;
-  
-  useEffect(()=> {
+
+  useEffect(() => {
     const loginId = SessionStorage.get("User_id");
-    baseInstance.get(`/members/${loginId}`)
-      .then(response => {
+    instance
+      .get(`/members/${loginId}`)
+      .then((response) => {
         setUserData(response.data.payload);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
-  }, [])
+  }, []);
 
   return (
     <>
-      {header && <Header/>}
+      {header && <Header />}
       <PageArea>
         <PageBox>
           <TopPage>
@@ -44,9 +45,7 @@ const MyPage = () => {
                 <EditProfile>프로필 수정</EditProfile>
               </ProfileButtonBox>
             </UserPage>
-            <HistoryArea>
-
-            </HistoryArea>
+            <HistoryArea></HistoryArea>
           </TopPage>
           <BottomPage>내가 쓴 글</BottomPage>
         </PageBox>
@@ -72,7 +71,7 @@ const PageArea = styled.div`
 const PageBox = styled.div`
   width: calc(100vw - 16rem);
   box-sizing: border-box;
-`
+`;
 
 const TopPage = styled.div`
   width: 100%;

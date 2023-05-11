@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from 'react';
-import { baseInstance } from "../../apis/instance";
+import { useEffect, useState } from "react";
 import { SessionStorage } from "../../utils/browserStorage";
 import instance from "../../apis/AxiosInterceptorSetup";
 import ApplyCheckModal from "./ApplyCheckModal";
@@ -8,107 +7,121 @@ import SelectedCheckModal from "./SelectedCheckModal";
 import EditModal from "./EditModal";
 
 const ContentModal = ({ closeModal, cardId }) => {
-    const [apply, setApply] = useState(null);
-    const [edit, setEdit] = useState(false);
-    const [isLeader, setIsLeader] = useState(null);
-    const [modalContent, setModalContent] = useState("");
-    const [applyMembersCheck, setApplyMembersCheck] = useState(false);
-    const [selectedMembersCheck, setSelectedMembersCheck] = useState(false);
-    const { type, id, leader, name, semester, status, description, githubURL, proceed, bookUsage, bookName } = modalContent;
-    const writerName = SessionStorage.get("name");
-    
-    const hadleApplyClick = async () => {
-      try{
-        await instance.post(`activities/${id}/apply`)
-        setApply(true)
-      }catch(error){
+  const [apply, setApply] = useState(null);
+  const [edit, setEdit] = useState(false);
+  const [isLeader, setIsLeader] = useState(null);
+  const [modalContent, setModalContent] = useState("");
+  const [applyMembersCheck, setApplyMembersCheck] = useState(false);
+  const [selectedMembersCheck, setSelectedMembersCheck] = useState(false);
+  const {
+    type,
+    id,
+    leader,
+    name,
+    semester,
+    status,
+    description,
+    githubURL,
+    proceed,
+    bookUsage,
+    bookName,
+  } = modalContent;
+  const writerName = SessionStorage.get("name");
+
+  const hadleApplyClick = async () => {
+    try {
+      await instance.post(`activities/${id}/apply`);
+      setApply(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handledDelteClick = async () => {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      try {
+        await instance.delete(`activities/${id}`);
+        alert("삭제되었습니다.");
+        closeModal();
+      } catch (error) {
         console.log(error);
       }
-    };
+    }
+  };
 
-    const handledDelteClick = async () => {
-      if(window.confirm("정말 삭제하시겠습니까?")){
-        try{
-          await instance.delete(`activities/${id}`)
-          alert("삭제되었습니다.")
-          closeModal();
-        }catch(error){
-          console.log(error)
-        }
+  const handleFinishClick = async () => {
+    if (window.confirm("활동을 종료하시겠습니까?")) {
+      try {
+        await instance.patch(`activities/${id}/finish`);
+        alert("활동이 종료되었습니다.");
+        closeModal();
+      } catch (error) {
+        console.log(error);
       }
     }
+  };
 
-    const handleFinishClick = async () => {
-      if(window.confirm("활동을 종료하시겠습니까?")){
-        try{
-          await instance.patch(`activities/${id}/finish`)
-          alert("활동이 종료되었습니다.")
-          closeModal();
-        }catch(error){
-          console.log(error);
-        }
+  const handleCancelClick = async () => {
+    if (window.confirm("신청을 취소하시겠습니까?")) {
+      try {
+        await instance.delete(`activities/${id}/apply`);
+        alert("신청이 취소되었습니다.");
+        closeModal();
+      } catch (error) {
+        console.log(error);
       }
     }
+  };
 
-    const handleCancelClick = async () => {
-      if(window.confirm("신청을 취소하시겠습니까?")){
-        try{
-          await instance.delete(`activities/${id}/apply`)
-          alert("신청이 취소되었습니다.")
-          closeModal();
-        }catch(error){
-          console.log(error)
-        }
+  useEffect(() => {
+    if (leader === writerName) setIsLeader(true);
+    else setIsLeader(false);
+  }, [writerName, leader]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await instance.get(`/activities/${cardId}`);
+        setModalContent(response.data.payload);
+      } catch (error) {
+        console.log(error);
       }
     }
+    fetchData();
+  }, [edit]);
 
-    useEffect(()=>{
-      if(leader === writerName)setIsLeader(true);
-      else setIsLeader(false);
-    }, [writerName, leader])
-
-    useEffect(()=>{
-      async function fetchData(){
-        try{
-          const response = await baseInstance.get(`/activities/${cardId}`)
-          setModalContent(response.data.payload);
-        }catch(error){
+  useEffect(() => {
+    if (sessionStorage.getItem("name")) {
+      async function fetchData() {
+        try {
+          const response = await instance.post(`/activities/${cardId}/check`);
+          if (response.data.payload) setApply(true);
+          else setApply(false);
+        } catch (error) {
           console.log(error);
         }
       }
       fetchData();
-    }, [edit])
-    
-    useEffect(()=>{
-      if(sessionStorage.getItem("name")){
-        async function fetchData(){
-          try{
-            const response = await instance.post(`/activities/${cardId}/check`)
-            if(response.data.payload) setApply(true)
-            else setApply(false)
-          }catch(error){
-            console.log(error);
-          }
-          }
-          fetchData();
-      }
-    }, [])
+    }
+  }, []);
 
-    return(
-      <ModalArea>
-        <ModalBox>
-          {!applyMembersCheck && !selectedMembersCheck && !edit && (
+  return (
+    <ModalArea>
+      <ModalBox>
+        {!applyMembersCheck && !selectedMembersCheck && !edit && (
           <>
             <SelectAndTitle>
               <Select>{type}</Select>
-              <TitleArea><Title>{name}</Title></TitleArea>
+              <TitleArea>
+                <Title>{name}</Title>
+              </TitleArea>
             </SelectAndTitle>
             <Master>활동장: {leader}</Master>
             <ContentBox>
               <Content>{description}</Content>
             </ContentBox>
             <CheckBox>
-              {type === 'PROJECT' ? (
+              {type === "PROJECT" ? (
                 <>
                   <RadioBox>
                     <Span>깃허브 링크: {githubURL}</Span>
@@ -117,119 +130,119 @@ const ContentModal = ({ closeModal, cardId }) => {
                     <Span>온/오프라인: {proceed}</Span>
                   </RadioBox>
                 </>
-              ) :
+              ) : (
                 <>
                   <RadioBox>
                     <Span>책 사용 여부: {bookUsage}</Span>
                   </RadioBox>
-                  {bookUsage === 'USE' ? 
+                  {bookUsage === "USE" ? (
                     <RadioBox>
                       <Span>책 이름: {bookName}</Span>
                     </RadioBox>
-                  : null }
+                  ) : null}
                   <RadioBox>
                     <Span>온/오프라인: {proceed}</Span>
                   </RadioBox>
-                </>}
+                </>
+              )}
             </CheckBox>
             <ButtonArea>
               <ButtonBox>
                 {isLeader && writerName && (
-                  <ModalButton 
+                  <ModalButton
                     className="delete-button"
                     type="button"
-                    onClick={handledDelteClick}>
+                    onClick={handledDelteClick}
+                  >
                     활동삭제
                   </ModalButton>
                 )}
 
-                {isLeader && status === 'RECRUIT' && writerName && (
-                <>
-                  <ModalButton 
-                    type="button"
-                    className="delete-button"
-                    onClick={()=>setEdit(true)}>
-                    수정
-                  </ModalButton>
-                  <ModalButton 
-                    type="button"
-                    className="check-members"
-                    onClick={()=>setApplyMembersCheck(true)}
+                {isLeader && status === "RECRUIT" && writerName && (
+                  <>
+                    <ModalButton
+                      type="button"
+                      className="delete-button"
+                      onClick={() => setEdit(true)}
+                    >
+                      수정
+                    </ModalButton>
+                    <ModalButton
+                      type="button"
+                      className="check-members"
+                      onClick={() => setApplyMembersCheck(true)}
                     >
                       신청자 정보 확인
-                  </ModalButton>
-                </>
+                    </ModalButton>
+                  </>
                 )}
 
-                {isLeader && status === 'ON' && writerName && (
-                <>
-                  <ModalButton 
-                    className="delete-button"
-                    type="button"
-                    onClick={handleFinishClick}
+                {isLeader && status === "ON" && writerName && (
+                  <>
+                    <ModalButton
+                      className="delete-button"
+                      type="button"
+                      onClick={handleFinishClick}
                     >
-                    활동종료
-                  </ModalButton>
-                  <ModalButton 
-                    type="button"
-                    className="check-members"
-                    onClick={()=>setSelectedMembersCheck(true)}
+                      활동종료
+                    </ModalButton>
+                    <ModalButton
+                      type="button"
+                      className="check-members"
+                      onClick={() => setSelectedMembersCheck(true)}
                     >
                       참여자 정보 확인
-                  </ModalButton>
-                </>
+                    </ModalButton>
+                  </>
                 )}
 
-                {!isLeader && status !== 'ON' && !apply && writerName && (
-                  <ModalButton 
+                {!isLeader && status !== "ON" && !apply && writerName && (
+                  <ModalButton
                     type="button"
                     className="onApply"
                     onClick={hadleApplyClick}
-                    >
-                      신청하기
+                  >
+                    신청하기
                   </ModalButton>
                 )}
-                
-                {!isLeader && status !== 'ON' && apply && writerName && (
+
+                {!isLeader && status !== "ON" && apply && writerName && (
                   <ModalButton
                     type="button"
                     className="offApply"
                     onClick={handleCancelClick}
-                    >
-                      취소하기
+                  >
+                    취소하기
                   </ModalButton>
                 )}
-                <ModalButton 
-                  type="button"
-                  onClick={closeModal}
-                  >
-                    닫기
+                <ModalButton type="button" onClick={closeModal}>
+                  닫기
                 </ModalButton>
               </ButtonBox>
             </ButtonArea>
           </>
         )}
-        {leader && status !== 'ON' && applyMembersCheck && writerName && (
-          <ApplyCheckModal 
+        {leader && status !== "ON" && applyMembersCheck && writerName && (
+          <ApplyCheckModal
             setApplyMembersCheck={setApplyMembersCheck}
             id={id}
             closeModal={closeModal}
           />
         )}
 
-        {leader && status === 'ON' && selectedMembersCheck && writerName && (
-          <SelectedCheckModal id={id}
-          setSelectedMembersCheck={setSelectedMembersCheck}
+        {leader && status === "ON" && selectedMembersCheck && writerName && (
+          <SelectedCheckModal
+            id={id}
+            setSelectedMembersCheck={setSelectedMembersCheck}
           />
         )}
-        {edit ? <EditModal 
-          setEdit={setEdit}
-          modalContent={modalContent}
-          /> : null}
-        </ModalBox>
-      </ModalArea>
-    )
-  }
+        {edit ? (
+          <EditModal setEdit={setEdit} modalContent={modalContent} />
+        ) : null}
+      </ModalBox>
+    </ModalArea>
+  );
+};
 
 export default ContentModal;
 
@@ -334,20 +347,20 @@ const ButtonArea = styled.div`
   display: flex;
   justify-content: space-between;
 
-  .on-writer{
+  .on-writer {
     width: 25%;
   }
 
-  .no-writer{
+  .no-writer {
     width: 100%;
   }
-  
-  .offApply{
-    background-color: #CD5E5E;
+
+  .offApply {
+    background-color: #cd5e5e;
     border: none;
     color: black;
   }
-  .delete-button{
+  .delete-button {
     background: none;
     width: fit-content;
     color: black;
@@ -355,7 +368,7 @@ const ButtonArea = styled.div`
     margin-right: 0.5rem;
   }
 
-  .check-members{
+  .check-members {
     float: right;
   }
 `;
@@ -377,5 +390,5 @@ const ModalButton = styled.button`
 `;
 
 const Span = styled.span`
-    margin-right: 1rem;
+  margin-right: 1rem;
 `;

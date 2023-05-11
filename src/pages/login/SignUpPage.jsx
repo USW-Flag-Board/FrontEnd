@@ -9,7 +9,7 @@ import {
   Privacy,
   EmailAuth,
 } from "../../components/signUp";
-import { baseInstance } from "../../apis/instance";
+import instance from "../../apis/AxiosInterceptorSetup";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const SignUpPage = () => {
     if (signUpIndex + 1 === 5) {
       setButtonState(false);
       try {
-        await baseInstance.post("/auth/sign-up", {
+        await instance.post("/auth/sign-up", {
           certification: certification,
           email: signUpData.email,
         });

@@ -6,13 +6,11 @@ import {
   faComment,
   faThumbsUp,
 } from "@fortawesome/free-regular-svg-icons";
-import { baseInstance } from "../../apis/instance";
 import { SessionStorage } from "../../utils/browserStorage";
 import instance from "../../apis/AxiosInterceptorSetup";
 import { PostComment, Header } from "../../components";
 import { useElapsedTime } from "../../hooks/useElaspedTime";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import EditPost from "./EditPost";
 
 const PostContentPage = () => {
   const header = true;
@@ -22,6 +20,7 @@ const PostContentPage = () => {
   const [newPost, setNewPost] = useState(false);
   const [postData, setPostData] = useState({});
   const [replies, setReplies] = useState("");
+  const [liked, setLiked] = useState("");
   const [createdAt, setCreatedAt] = useState([]);
   const {
     content,
@@ -34,7 +33,6 @@ const PostContentPage = () => {
     profileImage,
     viewCount,
   } = postData;
-
   const timeAgo = useElapsedTime(
     `${createdAt[0]}-${createdAt[1]}-${createdAt[2]} ${createdAt[3]}:${createdAt[4]}:${createdAt[5]}`
   );
@@ -42,10 +40,12 @@ const PostContentPage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await baseInstance.get(`/posts/${postId}`);
-        setPostData(response.data.payload.postDetail);
-        setReplies(response.data.payload.replies);
-        setCreatedAt(response.data.payload.postDetail.createdAt);
+        const response = await instance.get(`/posts/${postId}`);
+        const { postDetail, replies } = response.data.payload;
+        setPostData(postDetail);
+        setReplies(replies);
+        setCreatedAt(postDetail.createdAt);
+        setLiked(postDetail.like.liked);
       } catch (error) {
         console.log(error);
       }
@@ -65,11 +65,14 @@ const PostContentPage = () => {
     }
   }, [timeAgo]);
 
-  const handleRegistration = async () => {
+  const handleCommentRegistration = async () => {
     try {
-      await instance.post(`/posts/${id}/reply`, {
+      const response = await instance.post(`/posts/${id}/reply`, {
         content: comment,
       });
+      if (response.status === 201) {
+        window.location.href = `/board/post/${id}`;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -80,6 +83,47 @@ const PostContentPage = () => {
       try {
         await instance.patch(`/posts/${id}`);
         navigate("/board");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const handleLikeClick = async () => {
+    try {
+      if (!liked) {
+        await instance.post(`/posts/${id}/like`);
+        setLiked(true);
+        setPostData((prevPost) => ({
+          ...prevPost,
+          like: {
+            ...prevPost.like,
+            likeCount: prevPost.like.likeCount + 1,
+          },
+        }));
+      } else {
+        await instance.delete(`/posts/${id}/like`);
+        setLiked(false);
+        setPostData((prevPost) => ({
+          ...prevPost,
+          like: {
+            ...prevPost.like,
+            likeCount: prevPost.like.likeCount - 1,
+          },
+        }));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeleteComment = async (url) => {
+    if (window.confirm("댓글을 삭제하시겠습니까?")) {
+      try {
+        const response = await instance.delete(url);
+        if (response.status === 200) {
+          window.location.href = `/board/post/${id}`;
+        }
       } catch (error) {
         console.log(error);
       }
@@ -101,18 +145,25 @@ const PostContentPage = () => {
                 <WriterImg src={profileImage} />
                 <Info>
                   <WriterName>{nickname}</WriterName>
-                  <ElaspsedTime>{timeAgo}전</ElaspsedTime>
+                  <ElaspsedTime>
+                    <span>{timeAgo}전</span>
+                    {edited ? <span>(수정됨)</span> : null}
+                  </ElaspsedTime>
                 </Info>
               </WriterInfoBox>
               <ContentBox>
-                <LikeButtonBox>
-                  <LikeButton>
-                    <Icon icon={faThumbsUp} className="like" />
-                    {like && like.likeCount !== undefined && (
+                {like && like.likeCount !== undefined && (
+                  <LikeButtonBox liked={liked}>
+                    <LikeButton
+                      type="button"
+                      onClick={handleLikeClick}
+                      liked={liked}
+                    >
+                      <Icon icon={faThumbsUp} className="like" />
                       <span className="like-count">{like.likeCount}</span>
-                    )}
-                  </LikeButton>
-                </LikeButtonBox>
+                    </LikeButton>
+                  </LikeButtonBox>
+                )}
                 <Content>{content}</Content>
               </ContentBox>
               <PostInfoBox>
@@ -140,7 +191,12 @@ const PostContentPage = () => {
               <Title className="comment-title">댓글</Title>
               {Array.isArray(replies) &&
                 replies.map((comment) => (
-                  <PostComment comment={comment} key={comment.id} />
+                  <PostComment
+                    comment={comment}
+                    key={comment.id}
+                    postId={id}
+                    handleDeleteComment={handleDeleteComment}
+                  />
                 ))}
               {SessionStorage.get("User_id") && (
                 <>
@@ -154,7 +210,7 @@ const PostContentPage = () => {
                     </CommentInputBox>
                   </CommentBox>
                   <ContentButtonBox>
-                    <ContentButton onClick={handleRegistration}>
+                    <ContentButton onClick={handleCommentRegistration}>
                       등록
                     </ContentButton>
                   </ContentButtonBox>
@@ -242,9 +298,10 @@ const Content = styled.div`
 
 const LikeButtonBox = styled.div`
   width: 10%;
+  color: ${(props) => (props.liked ? "#339af0" : "rgb(215, 226, 235)")};
   .like {
     font-size: 1.3rem;
-    color: #adb5bd;
+    color: ${(props) => (props.liked ? "#339af0" : "rgb(215, 226, 235)")};
   }
 `;
 
@@ -254,6 +311,7 @@ const LikeButton = styled.button`
   background: none;
   cursor: pointer;
   border: 0.0625rem solid rgb(215, 226, 235);
+  color: ${(props) => (props.liked ? "#339af0" : "rgb(215, 226, 235)")};
   border-radius: 0.25rem;
   .like-count {
     font-size: 1rem;

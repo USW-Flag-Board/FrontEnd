@@ -4,8 +4,8 @@ import { Header, ActivityCard, WriteModal, ContentModal } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { ACTIVITY_CATEGORIE } from "../constants/activity";
-import { baseInstance } from "../apis/instance";
 import { SessionStorage } from "../utils/browserStorage";
+import instance from "../apis/AxiosInterceptorSetup";
 
 const Activity = () => {
   const header = true;
@@ -23,7 +23,7 @@ const Activity = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await baseInstance.get("/activities");
+        const response = await instance.get("/activities");
         const allActivities = response.data.payload.allActivities;
 
         const filteredActivities = {

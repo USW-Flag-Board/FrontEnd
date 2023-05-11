@@ -7,7 +7,6 @@ import styled from "styled-components";
 import { SessionStorage } from "../../utils/browserStorage";
 import { cookiesOption } from "../../utils/cookiesOption";
 import logo from "../../assets/images/logo2.png";
-import { baseInstance } from "../../apis/instance";
 import instance from "../../apis/AxiosInterceptorSetup";
 import { FindId, FindPw } from "../../components";
 
@@ -30,7 +29,7 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await baseInstance.post("/auth/login", {
+      const response = await instance.post("/auth/login", {
         loginId: idPassword.loginId,
         password: idPassword.password,
       });

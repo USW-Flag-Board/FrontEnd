@@ -10,12 +10,18 @@ const EditPost = () => {
   const navigate = useNavigate();
   const { postId } = useParams();
   const [postData, setPostData] = useState({});
-  const [title, setTitle] = useState(postData.title);
-  const [content, setContent] = useState(postData.content);
-  const [board, setBoard] = useState(postData.board);
-  console.log(title, content, board);
-  const handleBoardChange = (e) => {
-    setBoard(e.target.value);
+  const [post, setPost] = useState({
+    title: postData.title,
+    content: postData.content,
+    board: postData.board,
+  });
+  console.log(postData);
+  const handleContentChange = (e) => {
+    const { name, value } = e.target;
+    setPost({
+      ...post,
+      [name]: value,
+    });
   };
 
   const handleCancelClick = () => {
@@ -24,13 +30,13 @@ const EditPost = () => {
 
   const handlePostClick = async () => {
     const data = {
-      boardName: board,
-      content: content,
-      title: title,
+      boardName: post.board,
+      content: post.content,
+      title: post.title,
     };
     try {
-      const reponse = await instance.put("/posts", data);
-      if (reponse.status === 201) {
+      const reponse = await instance.put(`/posts/${postId}`, data);
+      if (reponse.status === 200) {
         alert("게시글이 수정되었습니다.");
         navigate(`/board/post/${postId}`);
       }
@@ -52,16 +58,28 @@ const EditPost = () => {
     fetchData();
   }, [postId]);
 
+  useEffect(() => {
+    setPost({
+      title: postData.title,
+      content: postData.content,
+      board: postData.board,
+    });
+  }, [postData]);
+
   return (
     <>
       {header && <Header />}
       <BoardArea>
         <ContentArea>
           <ContentLabel>게시판</ContentLabel>
-          <BoardSelect onChange={handleBoardChange}>
+          <BoardSelect
+            onChange={handleContentChange}
+            name="board"
+            value={post.board}
+          >
             <option>게시판을 선택해주세요</option>
             {boardData.BOARD_NAMES.map(({ id, krName }) => (
-              <option key={id} value={board}>
+              <option key={id} value={krName}>
                 {krName}
               </option>
             ))}
@@ -70,21 +88,20 @@ const EditPost = () => {
           <TitleInputBox>
             <TitleInput
               type="text"
-              value={title}
+              name="title"
+              value={post.title}
               placeholder="제목을 입력해주세요."
-              onChange={(e) => {
-                setTitle(e.target.value);
-              }}
+              onChange={handleContentChange}
             />
           </TitleInputBox>
           <ContentLabel>내용</ContentLabel>
           <ContentInputBox>
             <ContentInput
-              value={content}
+              value={post.content}
+              type="text"
+              name="content"
               placeholder="내용을 입력해주세요."
-              onChange={(e) => {
-                setContent(e.target.value);
-              }}
+              onChange={handleContentChange}
             />
           </ContentInputBox>
           <ContentButtonBox>

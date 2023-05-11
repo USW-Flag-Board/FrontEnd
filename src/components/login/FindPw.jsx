@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { baseInstance } from "../../apis/instance";
+import instance from "../../apis/AxiosInterceptorSetup";
 
 const FindPw = ({ setFindPw }) => {
   const [state, setState] = useState({
@@ -45,7 +45,7 @@ const FindPw = ({ setFindPw }) => {
       loginId: loginId,
     };
     try {
-      const response = await baseInstance.post("/members/find/password", data);
+      const response = await instance.post("/members/find/password", data);
       if (response.status === 201) {
         document.getElementsByName("loginId")[0].disabled = true;
         document.getElementsByName("email")[0].disabled = true;
@@ -68,7 +68,7 @@ const FindPw = ({ setFindPw }) => {
 
   const handleSubmit = async () => {
     try {
-      await baseInstance.post("/members/certification", {
+      await instance.post("/members/certification", {
         certification: certification,
         email: email,
       });
@@ -90,7 +90,7 @@ const FindPw = ({ setFindPw }) => {
 
   const handlePasswordEdit = async () => {
     try {
-      await baseInstance.put("/members/find/password", {
+      await instance.put("/members/find/password", {
         newPassword: newPassword,
         email: email,
       });

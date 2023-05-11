@@ -4,15 +4,15 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Header, ListThem } from "../../components";
-import boardData from "../../constants/board";
-import { baseInstance } from "../../apis/instance";
 import { SessionStorage } from "../../utils/browserStorage";
+import instance from "../../apis/AxiosInterceptorSetup";
 
 const BulletinBoard = () => {
   const header = true;
   const navigate = useNavigate();
   const [board, setBoard] = useState("자유게시판");
   const [posts, setPosts] = useState([]);
+  const [boardItems, setBoardItems] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
 
   const handleWriteClick = () => {
@@ -22,9 +22,12 @@ const BulletinBoard = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await baseInstance.get(
+        const response = await instance.get(
           `/posts?board=${board}&pageNumber=${pageNumber}&pageSize=3&offset=2`
         );
+        const boardResponse = await instance.get("/boards?type=main");
+        setBoardItems(boardResponse.data.payload.boards);
+        console.log(boardResponse);
         setPosts(response.data.payload.content);
       } catch (error) {
         console.log(error);
@@ -40,13 +43,13 @@ const BulletinBoard = () => {
         <ListArea>
           <ListBar>
             <BarItemBox>
-              {boardData.BOARD_NAMES.map(({ id, krName }) => (
+              {boardItems.map(({ id, boardName }) => (
                 <BarItem
                   key={id}
-                  selected={board === krName}
-                  onClick={() => setBoard(krName)}
+                  selected={board === boardName}
+                  onClick={() => setBoard(boardName)}
                 >
-                  {krName}
+                  {boardName}
                 </BarItem>
               ))}
             </BarItemBox>

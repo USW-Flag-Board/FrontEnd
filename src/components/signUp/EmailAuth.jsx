@@ -1,58 +1,60 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { emailRegex } from "../../constants/signUp";
-import { baseInstance } from "../../apis/instance";
-
+import instance from "../../apis/AxiosInterceptorSetup";
 const EmailAuth = ({
-    setButtonState,
-    setEmailAuth,
-    signUpData,
-    setCertification,
-    certification
-  }) => {
+  setButtonState,
+  setEmailAuth,
+  signUpData,
+  setCertification,
+  certification,
+}) => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [repost, setRepost] = useState(false);
   const handleEmailInput = (event) => {
     const { value } = event.target;
     setEmail(value);
-    emailRegex.test(value) ? setMessage("") : setMessage("이메일을 형식에 맞게 정확히 입력해주세요.")
+    emailRegex.test(value)
+      ? setMessage("")
+      : setMessage("이메일을 형식에 맞게 정확히 입력해주세요.");
   };
 
   const handleAuthNumInput = (event) => {
     const { value } = event.target;
     setCertification(value);
-  }
+  };
 
   const handleEmailCheck = async () => {
     try {
-      const response = await baseInstance.post("/auth/check/email", {
-        email: email
-      })
-      if(response.data.payload === false){
-        setEmailAuth({...signUpData, email: email});
+      const response = await instance.post("/auth/check/email", {
+        email: email,
+      });
+      if (response.data.payload === false) {
+        setEmailAuth({ ...signUpData, email: email });
         handleAuthNumSend();
         setRepost(true);
       }
-    }catch(error){
-      if(error.response.status === 400){
+    } catch (error) {
+      if (error.response.status === 400) {
         alert("이메일 형식이 아닙니다.");
         setRepost(false);
       }
     }
-  }
+  };
 
   const handleAuthNumSend = async () => {
     try {
-      const response = await baseInstance.post("/auth/join",{
+      const response = await instance.post("/auth/join", {
         ...signUpData,
-        email: email
+        email: email,
       });
-      if(response.status === 200) setButtonState(true)
-    }catch(error){
-      if(error.response.status === 500) alert("서버 에러입니다. 관리자에게 문의해주세요.");
+      if (response.status === 200) setButtonState(true);
+    } catch (error) {
+      if (error.response.status === 500)
+        alert("서버 에러입니다. 관리자에게 문의해주세요.");
     }
-  }
+  };
 
   return (
     <IdPasswordArea>
@@ -65,8 +67,7 @@ const EmailAuth = ({
             value={email}
             onChange={handleEmailInput}
           />
-          <AuthButton 
-            onClick={handleEmailCheck}>
+          <AuthButton onClick={handleEmailCheck}>
             {repost ? "재전송" : "인증번호 발송"}
           </AuthButton>
         </EmailInputBox>
@@ -82,10 +83,8 @@ const EmailAuth = ({
           />
         </EmailInputBox>
       </EmailInputArea>
-      <RowLine/>
-      <IntroduceArea>
-        FLAGround 가입을 환영합니다.
-      </IntroduceArea>
+      <RowLine />
+      <IntroduceArea>FLAGround 가입을 환영합니다.</IntroduceArea>
     </IdPasswordArea>
   );
 };
@@ -171,7 +170,7 @@ const WriteArea = styled.input`
   border: 2px solid gainsboro;
   outline: none;
   transition: 0.2s;
-  &:nth-child(1){
+  &:nth-child(1) {
     width: 70%;
   }
   :focus {
