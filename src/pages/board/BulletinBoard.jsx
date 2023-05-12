@@ -27,7 +27,6 @@ const BulletinBoard = () => {
         );
         const boardResponse = await instance.get("/boards?type=main");
         setBoardItems(boardResponse.data.payload.boards);
-        console.log(boardResponse);
         setPosts(response.data.payload.content);
       } catch (error) {
         console.log(error);

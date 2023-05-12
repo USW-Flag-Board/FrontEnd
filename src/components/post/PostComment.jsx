@@ -7,16 +7,8 @@ import { useState } from "react";
 import instance from "../../apis/AxiosInterceptorSetup";
 
 const PostComment = ({ comment, postId, handleDeleteComment }) => {
-  const {
-    content,
-    createdAt,
-    like,
-    nickname,
-    profileImage,
-    edited,
-    loginId,
-    id,
-  } = comment;
+  const { content, createdAt, nickname, profileImage, edited, loginId, id } =
+    comment;
   const timeAgo = useElapsedTime(
     `${createdAt[0]}-${createdAt[1]}-${createdAt[2]} ${createdAt[3]}:${createdAt[4]}:${createdAt[5]}`
   );
@@ -24,8 +16,11 @@ const PostComment = ({ comment, postId, handleDeleteComment }) => {
   const [edit, setEdit] = useState(false);
   const [editedStatus, setEditedStatus] = useState(edited);
   const [editComment, setEditComment] = useState(content);
-  const [liked, setLiked] = useState(like.liked);
-  let likeCount = like.likeCount;
+  const [like, setLike] = useState({
+    liked: comment.like.liked,
+    likeCount: comment.like.likeCount,
+  });
+  console.log(like.liked);
   const handleEditClick = async () => {
     try {
       await instance.put(`/posts/replies/${id}`, {
@@ -41,14 +36,18 @@ const PostComment = ({ comment, postId, handleDeleteComment }) => {
 
   const handleLikeClick = async () => {
     try {
-      if (!liked) {
+      if (!like.liked) {
         await instance.post(`/posts/replies/${id}/like`);
-        setLiked(true);
-        likeCount += 1;
+        setLike((prevPost) => ({
+          liked: true,
+          likeCount: prevPost.likeCount + 1,
+        }));
       } else {
         await instance.delete(`/posts/replies/${id}/like`);
-        setLiked(false);
-        likeCount -= 1;
+        setLike((prevPost) => ({
+          liked: false,
+          likeCount: prevPost.likeCount - 1,
+        }));
       }
     } catch (error) {
       console.log(error);
@@ -96,10 +95,10 @@ const PostComment = ({ comment, postId, handleDeleteComment }) => {
             type="button"
             className="like"
             onClick={handleLikeClick}
-            liked={liked}
+            liked={like.liked}
           >
             <FontAwesomeIcon icon={faThumbsUp} className="thum" />
-            <span>{likeCount}</span>
+            <span>{like.likeCount}</span>
           </Button>
         </ButtonBox>
       </CommentHeader>
@@ -179,10 +178,10 @@ const ButtonBox = styled.div`
     border: none;
   }
   .like {
+    color: ${(props) => (props.liked ? "#339af0" : "rgb(215, 226, 235)")};
     width: 30%;
     font-size: 1.1rem;
     height: 80%;
-    color: ${(props) => (props.liked ? "#339af0" : "rgb(215, 226, 235)")};
   }
 `;
 

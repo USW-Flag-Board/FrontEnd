@@ -22,6 +22,7 @@ const PostContentPage = () => {
   const [replies, setReplies] = useState("");
   const [liked, setLiked] = useState("");
   const [createdAt, setCreatedAt] = useState([]);
+  console.log(postData);
   const {
     content,
     like,
@@ -192,6 +193,7 @@ const PostContentPage = () => {
               {Array.isArray(replies) &&
                 replies.map((comment) => (
                   <PostComment
+                    replies={replies}
                     comment={comment}
                     key={comment.id}
                     postId={id}
@@ -280,7 +282,9 @@ const Info = styled.div`
   margin-left: 0.4rem;
 `;
 
-const WriterName = styled.div``;
+const WriterName = styled.div`
+  font-weight: bold;
+`;
 const ElaspsedTime = styled.div`
   color: #adb5bd;
 `;
