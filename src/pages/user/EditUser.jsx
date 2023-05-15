@@ -6,7 +6,7 @@ import { BAR_NAME } from "../../constants/user";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo2.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faTrashArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { SessionStorage } from "../../utils/browserStorage";
 import { cookiesOption } from "../../utils/cookiesOption";
 
@@ -37,7 +37,7 @@ const EditUser = () => {
     formData.append("image", file);
 
     try {
-      await instance.post("/members/avatar/image", formData);
+      await instance.put("/members/avatar/image", formData);
 
       reader.onload = () => {
         setProfileImg(reader.result);
@@ -64,6 +64,15 @@ const EditUser = () => {
         break;
       default:
         break;
+    }
+  };
+
+  const handleImgReset = async () => {
+    try {
+      const response = await instance.put(`/members/avatar/reset`);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -104,6 +113,21 @@ const EditUser = () => {
             </LogoBox>
             <ProfileBox>
               <ProfileImgBox>
+                <IdButtonBox>
+                  <label htmlFor="img-reset">
+                    <FontAwesomeIcon
+                      icon={faTrashArrowUp}
+                      className="btn-reset"
+                    >
+                      프로필 사진 변경
+                    </FontAwesomeIcon>
+                  </label>
+                  <ImgResetButton
+                    type="button"
+                    id="img-reset"
+                    onClick={handleImgReset}
+                  />
+                </IdButtonBox>
                 <ProfileImg src={profileImg} />
                 <IdButtonBox>
                   <label htmlFor="file">
@@ -217,6 +241,9 @@ const IdButtonBox = styled.div`
   #file {
     display: none;
   }
+  #img-reset {
+    display: none;
+  }
   .btn-upload {
     border-radius: 1rem;
     background-color: black;
@@ -225,13 +252,30 @@ const IdButtonBox = styled.div`
     align-items: center;
     padding: 0.4rem;
     position: relative;
-    top: 7rem;
+    top: 7.5rem;
     right: 2.5rem;
+    cursor: pointer;
+  }
+  .btn-reset {
+    border-radius: 1rem;
+    background-color: #adb5bd;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0.4rem;
+    position: relative;
+    top: 7.5rem;
+    left: 2.5rem;
     cursor: pointer;
   }
 `;
 
 const ImgEditButton = styled.input`
+  width: 100%;
+  height: 100%;
+`;
+
+const ImgResetButton = styled.button`
   width: 100%;
   height: 100%;
 `;

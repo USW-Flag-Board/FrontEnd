@@ -47,7 +47,7 @@ const BulletinBoard = () => {
       const response = await instance.get(
         `/posts/search?board=${board}&keyword=${keyword}&option=${option}&period=${period}`
       );
-      console.log(response);
+      console.log(response.data.payload);
     } catch (error) {
       console.lop(error);
     }
@@ -230,10 +230,8 @@ const FaPen = styled(FontAwesomeIcon)`
 
 const SelectBox = styled.form`
   display: flex;
-  position: fixed;
-  bottom: 0;
   gap: 0.6rem;
-  margin-bottom: 1rem;
+  margin: 1rem 0;
 `;
 
 const Select = styled.select`

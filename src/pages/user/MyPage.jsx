@@ -4,7 +4,7 @@ import { SessionStorage } from "../../utils/browserStorage";
 import { Header } from "../../components";
 import instance from "../../apis/AxiosInterceptorSetup";
 
-const MyPage = () => {
+const UserPage = () => {
   const header = true;
   const [userData, setUserData] = useState("");
   const { bio, nickName, profileImg, loginId } = userData;
@@ -27,7 +27,7 @@ const MyPage = () => {
       <PageArea>
         <PageBox>
           <TopPage>
-            <UserPage>
+            <UserPageBox>
               <ProfileArea>
                 <ProfileBox>
                   <ProfileImg src={profileImg} />
@@ -41,7 +41,7 @@ const MyPage = () => {
               <ProfileButtonBox>
                 <EditProfile>프로필 수정</EditProfile>
               </ProfileButtonBox>
-            </UserPage>
+            </UserPageBox>
             <HistoryArea></HistoryArea>
           </TopPage>
           <BottomPage>내가 쓴 글</BottomPage>
@@ -86,7 +86,7 @@ const BottomPage = styled.div`
   font-weight: bold;
 `;
 
-const UserPage = styled.div`
+const UserPageBox = styled.div`
   width: 40%;
   height: 100%;
   background-color: #e7f5ff;
@@ -168,4 +168,4 @@ const HistoryArea = styled.div`
   height: 100%;
 `;
 
-export default MyPage;
+export default UserPage;

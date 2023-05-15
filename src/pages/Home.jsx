@@ -1,7 +1,23 @@
 import styled from "styled-components";
 import { Header, ImageSlider } from "../components";
+import { useEffect } from "react";
+import instance from "../apis/AxiosInterceptorSetup";
 
 const Home = () => {
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const likeResponse = await instance.get("posts/top/like");
+        const latestResponse = await instance.get("posts/top/latest");
+        console.log(likeResponse);
+        console.log(latestResponse);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <>
       <Header />
