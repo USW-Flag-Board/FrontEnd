@@ -17,12 +17,10 @@ const PostContentPage = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
   const [comment, setComment] = useState("");
-  const [newPost, setNewPost] = useState(false);
   const [postData, setPostData] = useState({});
   const [replies, setReplies] = useState("");
   const [liked, setLiked] = useState("");
   const [createdAt, setCreatedAt] = useState([]);
-  console.log(postData);
   const {
     content,
     like,
@@ -54,17 +52,6 @@ const PostContentPage = () => {
 
     fetchData();
   }, [postId]);
-
-  useEffect(() => {
-    if (
-      timeAgo === "방금" ||
-      timeAgo.endsWith("시간") ||
-      timeAgo.endsWith("분") ||
-      timeAgo.endsWith("1일")
-    ) {
-      setNewPost(true);
-    }
-  }, [timeAgo]);
 
   const handleCommentRegistration = async () => {
     try {
@@ -138,9 +125,6 @@ const PostContentPage = () => {
         <PostBox>
           <ContentArea className="post-content">
             <ContentInner>
-              <NoticeBox>
-                {newPost ? <Notice>새로운 글</Notice> : null}
-              </NoticeBox>
               <Title>{title}</Title>
               <WriterInfoBox>
                 <WriterImg src={profileImage} />
@@ -386,24 +370,6 @@ const ContentButton = styled.button`
   cursor: pointer;
   background-color: #339af0;
   color: white;
-`;
-
-const NoticeBox = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-  padding-bottom: 0.75rem;
-`;
-
-const Notice = styled.div`
-  font-size: 0.75rem;
-  font-weight: 700;
-  line-height: 0.875rem;
-  margin-right: 0.5rem;
-  border-radius: 0.25rem;
-  padding: 0.25rem 0.5rem;
-  background-color: rgb(234, 244, 255);
-  color: rgb(0, 120, 255);
 `;
 
 const StyledLink = styled(Link)`

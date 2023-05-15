@@ -1,32 +1,32 @@
-import { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import { useState, useEffect } from "react";
+import styled from "styled-components";
 
-const ServiceAgree = ({setButtonState}) => {
+const ServiceAgree = ({ setButtonState }) => {
   const [checkItems, setCheckitems] = useState([]);
-  
+
   const checkAll = (checked) => {
     checked
-    ? setCheckitems(["personalAgree", "accountAgree"])
-    : setCheckitems([]);
-  }
+      ? setCheckitems(["personalAgree", "accountAgree"])
+      : setCheckitems([]);
+  };
 
   const check = (checked, name) => {
-    console.log(checked)
+    console.log(checked);
     checked
       ? setCheckitems([...checkItems, name])
-      : setCheckitems(checkItems.filter((choice)=> choice !== name));
-  }
+      : setCheckitems(checkItems.filter((choice) => choice !== name));
+  };
 
   useEffect(() => {
-    if(
+    if (
       checkItems.includes("personalAgree") &&
       checkItems.includes("accountAgree")
-    ){
+    ) {
       setButtonState(true);
-    } else{
+    } else {
       setButtonState(false);
     }
-  }, [checkItems, setButtonState])
+  }, [checkItems, setButtonState]);
 
   return (
     <IdPasswordArea>
@@ -37,8 +37,8 @@ const ServiceAgree = ({setButtonState}) => {
       </IntroduceArea>
       <ServiceAgreeArea>
         <RelativeArea>
-          <AgreeButton 
-            type='checkbox'
+          <AgreeButton
+            type="checkbox"
             checked={checkItems.length === 2}
             onChange={(e) => checkAll(e.target.checked)}
           />
@@ -52,16 +52,16 @@ const ServiceAgree = ({setButtonState}) => {
         <RowLine />
         <RelativeArea>
           <AgreeButton
-            type='checkbox'
+            type="checkbox"
             name="accountAgree"
             checked={checkItems.includes("accountAgree")}
             onChange={(e) => check(e.target.checked, "accountAgree")}
-            />
+          />
           <AgreeMessage>[필수] FLAG 계정 약관</AgreeMessage>
         </RelativeArea>
         <RelativeArea>
-          <AgreeButton 
-            type='checkbox'
+          <AgreeButton
+            type="checkbox"
             name="personalAgree"
             checked={checkItems.includes("personalAgree")}
             onChange={(e) => check(e.target.checked, "personalAgree")}
@@ -109,7 +109,7 @@ const AgreeButton = styled.input`
   appearance: none;
   border: 1px solid #868e96;
   border-radius: 3.1rem;
-  &:checked{
+  &:checked {
     background-color: #228be6;
   }
 `;

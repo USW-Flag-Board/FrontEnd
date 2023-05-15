@@ -2,34 +2,53 @@ import styled from "styled-components";
 import { Header, ImageSlider } from "../components";
 
 const Home = () => {
-  const header = true;
-
   return (
     <>
-      {header && <Header/>}
+      <Header />
       <HomeArea>
         <BookImgBox>
-          <ImageSlider/>
+          <ImageSlider />
         </BookImgBox>
         <HomeContents>
           <FlagInfo>
             <FlagCountArea>
-              <FlagCountBox>현재 Flag의 동아리원은<br/><FlagCount>174</FlagCount> 명 입니다.</FlagCountBox>
-              <FlagContent>Flag는 수원대생에게 더 큰 소통의 장을 <br/>마련하기위해 만들어진 개발동아리입니다.</FlagContent>
+              <FlagCountBox>
+                현재 Flag의 동아리원은
+                <br />
+                <FlagCount>174</FlagCount> 명 입니다.
+              </FlagCountBox>
+              <FlagContent>
+                Flag는 수원대생에게 더 큰 소통의 장을 <br />
+                마련하기위해 만들어진 개발동아리입니다.
+              </FlagContent>
               <FlagButtonBox>
                 <FlagButton>동아리 가입하기</FlagButton>
               </FlagButtonBox>
             </FlagCountArea>
             <FlagCountArea>
-              <FlagCountBox>모집중인 Activity는<br/><FlagCount>30</FlagCount> 개 입니다.</FlagCountBox>
-              <FlagContent>Flag는 수원대생에게 더 큰 소통의 장을 <br/>마련하기위해 만든 개발동아리입니다.</FlagContent>
+              <FlagCountBox>
+                모집중인 Activity는
+                <br />
+                <FlagCount>30</FlagCount> 개 입니다.
+              </FlagCountBox>
+              <FlagContent>
+                Flag는 수원대생에게 더 큰 소통의 장을 <br />
+                마련하기위해 만든 개발동아리입니다.
+              </FlagContent>
               <FlagButtonBox>
                 <FlagButton>Activity 참여하기</FlagButton>
-              </FlagButtonBox> 
+              </FlagButtonBox>
             </FlagCountArea>
             <FlagCountArea>
-              <FlagCountBox>현재까지 작성된 게시글은<br/><FlagCount>174</FlagCount> 개 입니다.</FlagCountBox>
-              <FlagContent>Flag는 수원대생에게 더 큰 소통의 장을 <br/>마련하기위해 만든 개발동아리입니다.</FlagContent>
+              <FlagCountBox>
+                현재까지 작성된 게시글은
+                <br />
+                <FlagCount>174</FlagCount> 개 입니다.
+              </FlagCountBox>
+              <FlagContent>
+                Flag는 수원대생에게 더 큰 소통의 장을 <br />
+                마련하기위해 만든 개발동아리입니다.
+              </FlagContent>
               <FlagButtonBox>
                 <FlagButton>게시글 작성하기</FlagButton>
               </FlagButtonBox>
@@ -55,18 +74,18 @@ const Home = () => {
   );
 };
 
-
 const HomeArea = styled.div`
   width: 100%;
 `;
 
 const HomeContents = styled.div`
   padding: 0 8rem;
+  margin: 0 auto;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
   /* 스마트폰 */
   @media (max-width: 480px) {
     padding: 0;
@@ -165,7 +184,7 @@ const FlagButtonBox = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-`
+`;
 
 const FeedBox = styled.div`
   box-sizing: border-box;
@@ -180,7 +199,7 @@ const FeedTitle = styled.h3`
   color: black;
   border-bottom: 2px solid black;
   height: 15%;
-  
+
   @media (max-width: 480px) {
     font-size: 1rem;
   }

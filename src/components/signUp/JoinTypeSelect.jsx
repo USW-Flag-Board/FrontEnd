@@ -1,33 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { SORTBOX_DATA } from "../../constants/signUp";
 
-const SortBox = ({qualification, introduce, value, getJoinTypeValue}) => {
-  const handleRadioClick = (checked) =>{
+const SortBox = ({ qualification, introduce, value, getJoinTypeValue }) => {
+  const handleRadioClick = (checked) => {
     getJoinTypeValue(checked);
-  }
+  };
 
-  return(
+  return (
     <SortArea>
       <CheckArea>
-        <AgreeButton 
+        <AgreeButton
           type="radio"
           value={value}
           name="check"
-          onClick={(e)=> handleRadioClick(e.target.value)}
+          onClick={(e) => handleRadioClick(e.target.value)}
         />
         <CheckLabel>{qualification}</CheckLabel>
       </CheckArea>
-      <IntroduceJoinTypeArea>
-        {introduce}
-      </IntroduceJoinTypeArea>
+      <IntroduceJoinTypeArea>{introduce}</IntroduceJoinTypeArea>
     </SortArea>
-  )
-}
+  );
+};
 
 const JoinTypeSelect = ({ setButtonState, signUpData, setJoinType }) => {
   const getJoinTypeValue = (text) => {
-    setJoinType({...signUpData, joinType: text});
+    setJoinType({ ...signUpData, joinType: text });
   };
 
   useEffect(() => {
@@ -36,18 +34,19 @@ const JoinTypeSelect = ({ setButtonState, signUpData, setJoinType }) => {
     }
     return setButtonState(false);
   }, [setButtonState, signUpData.joinType]);
-  
+
   return (
     <JoinTypeArea>
       <IntroduceArea>회원구분</IntroduceArea>
-      {SORTBOX_DATA.map(({id, qualification, introduce, value})=> 
-        <SortBox 
-          key={id} 
+      {SORTBOX_DATA.map(({ id, qualification, introduce, value }) => (
+        <SortBox
+          key={id}
           qualification={qualification}
           introduce={introduce}
           value={value}
           getJoinTypeValue={getJoinTypeValue}
-        />)}
+        />
+      ))}
     </JoinTypeArea>
   );
 };
@@ -60,7 +59,7 @@ const IntroduceArea = styled.div`
   line-height: 2rem;
   width: 80%;
   color: black;
-  margin-bottom: 1.25rem;
+  margin: 1.25rem 0;
 `;
 
 const IntroduceJoinTypeArea = styled.div`
@@ -72,7 +71,6 @@ const IntroduceJoinTypeArea = styled.div`
   color: black;
   line-height: 1.75rem;
   white-space: pre-wrap;
-  
 `;
 
 const SortArea = styled.div`
@@ -98,18 +96,17 @@ const AgreeButton = styled.input`
   appearance: none;
   border: 1px solid #868e96;
   border-radius: 3.1rem;
-  &:checked{
+  &:checked {
     background-color: #228be6;
   }
 `;
 
 const JoinTypeArea = styled.div`
-  @media (min-width: 481px ) and (max-width: 1024px){
+  @media (min-width: 481px) and (max-width: 1024px) {
     width: 80%;
   }
-  
+
   @media (max-width: 480px) {
     width: 80%;
   }
 `;
-

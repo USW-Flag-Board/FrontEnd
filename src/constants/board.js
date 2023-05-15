@@ -19,7 +19,66 @@ const BOARD_NAMES = [
   },
 ];
 
-const SEARCH_SELECT_ITEMS = ["전체기간", "게시물 + 작성자"];
+export const SEARCH_SELECT_ITEMS_PERIOD = [
+  {
+    id: 0,
+    option: "전체기간",
+    value: "all",
+  },
+  {
+    id: 1,
+    option: "1일",
+    value: "one_day",
+  },
+  {
+    id: 2,
+    option: "1주",
+    value: "one_week",
+  },
+  {
+    id: 3,
+    option: "1개월",
+    value: "one_month",
+  },
+  {
+    id: 4,
+    option: "6개월",
+    value: "half_year",
+  },
+  {
+    id: 5,
+    option: "1년",
+    value: "one_year",
+  },
+];
+
+export const SEARCH_SELECT_ITEMS_OPTION = [
+  {
+    id: 0,
+    option: "게시글 내용 + 댓글",
+    value: "content_and_reply",
+  },
+  {
+    id: 1,
+    option: "제목만",
+    value: "title",
+  },
+  {
+    id: 2,
+    option: "글작성자",
+    value: "author",
+  },
+  {
+    id: 3,
+    option: "댓글내용",
+    value: "reply",
+  },
+  {
+    id: 4,
+    option: "게시글 내용",
+    value: "content",
+  },
+];
 
 const FILE_IMAGE_BUTTON = [
   {
@@ -36,7 +95,6 @@ const FILE_IMAGE_BUTTON = [
 
 const boardData = {
   BOARD_NAMES,
-  SEARCH_SELECT_ITEMS,
   FILE_IMAGE_BUTTON,
 };
 

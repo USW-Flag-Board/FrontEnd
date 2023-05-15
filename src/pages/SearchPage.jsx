@@ -2,17 +2,13 @@ import styled from "styled-components";
 import { Header } from "../components";
 
 const SearchPage = () => {
-  const header = true;
-  
   return (
     <>
-      {header && <Header/>}
+      <Header />
       <SearchPageArea>
         <SearchBox>
           <SearchResultBox>
-            <SearchResult>
-              '강지은' 검색결과
-            </SearchResult>
+            <SearchResult>{`'강지은' 검색결과`}</SearchResult>
           </SearchResultBox>
           <SearchUserBox>
             <UserResultCount>유저 (4)</UserResultCount>
@@ -52,8 +48,7 @@ const SearchResult = styled.h3`
   margin: 2rem 0;
 `;
 
-const SearchUserBox = styled.div`
-`;
+const SearchUserBox = styled.div``;
 
 const UserResultCount = styled.h3`
   font-size: 1rem;
@@ -62,7 +57,7 @@ const UserResultCount = styled.h3`
 `;
 
 const SearchUser = styled.div`
-  border: 1px solid #9A9A9A;
+  border: 1px solid #9a9a9a;
   border-radius: 1.4rem;
   display: flex;
   flex-wrap: wrap;
@@ -80,7 +75,3 @@ const UserBox = styled.div`
   border-radius: 0.6rem;
   padding: 0 0.5rem;
 `;
-
-
-
-

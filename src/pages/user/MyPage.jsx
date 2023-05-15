@@ -1,14 +1,11 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { cookiesOption } from "../../utils/cookiesOption";
 import { SessionStorage } from "../../utils/browserStorage";
 import { Header } from "../../components";
 import instance from "../../apis/AxiosInterceptorSetup";
 
 const MyPage = () => {
   const header = true;
-  const navigate = useNavigate();
   const [userData, setUserData] = useState("");
   const { bio, nickName, profileImg, loginId } = userData;
 

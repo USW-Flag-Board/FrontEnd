@@ -13,14 +13,14 @@ const PostComment = ({ comment, postId, handleDeleteComment }) => {
     `${createdAt[0]}-${createdAt[1]}-${createdAt[2]} ${createdAt[3]}:${createdAt[4]}:${createdAt[5]}`
   );
   const [postComment, setPostComment] = useState(content);
+  const [editComment, setEditComment] = useState(content);
   const [edit, setEdit] = useState(false);
   const [editedStatus, setEditedStatus] = useState(edited);
-  const [editComment, setEditComment] = useState(content);
   const [like, setLike] = useState({
     liked: comment.like.liked,
     likeCount: comment.like.likeCount,
   });
-  console.log(like.liked);
+
   const handleEditClick = async () => {
     try {
       await instance.put(`/posts/replies/${id}`, {
@@ -91,7 +91,7 @@ const PostComment = ({ comment, postId, handleDeleteComment }) => {
           <Button type="button" className="edit-delete">
             신고하기
           </Button>
-          <Button
+          <LikeButton
             type="button"
             className="like"
             onClick={handleLikeClick}
@@ -99,7 +99,7 @@ const PostComment = ({ comment, postId, handleDeleteComment }) => {
           >
             <FontAwesomeIcon icon={faThumbsUp} className="thum" />
             <span>{like.likeCount}</span>
-          </Button>
+          </LikeButton>
         </ButtonBox>
       </CommentHeader>
       {!edit && <CommentContent>{postComment}</CommentContent>}
@@ -177,12 +177,6 @@ const ButtonBox = styled.div`
   .edit-delete {
     border: none;
   }
-  .like {
-    color: ${(props) => (props.liked ? "#339af0" : "rgb(215, 226, 235)")};
-    width: 30%;
-    font-size: 1.1rem;
-    height: 80%;
-  }
 `;
 
 const Button = styled.button`
@@ -193,6 +187,17 @@ const Button = styled.button`
   border-radius: 0.25rem;
   border: 1px solid #adb5bd;
   margin: 0 0.2rem;
+`;
+
+const LikeButton = styled.button`
+  color: ${(props) => (props.liked ? "#339af0" : "rgb(215, 226, 235)")};
+  width: 30%;
+  font-size: 1.1rem;
+  height: 80%;
+  border-radius: 0.25rem;
+  border: 1px solid #adb5bd;
+  background: none;
+  cursor: pointer;
   .thum {
     padding-right: 0.5rem;
   }

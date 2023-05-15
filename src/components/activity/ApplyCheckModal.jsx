@@ -1,91 +1,103 @@
 import styled from "styled-components";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import instance from "../../apis/AxiosInterceptorSetup";
 
-const ApplyCheckModal = ({setApplyMembersCheck, id, closeModal}) => {
-    const [applyMember, setApplyMembers] = useState("");
-    const [selectedMember, setSelectedMember] = useState([]);
-    
-    const handleMemberClick = (name, major, id, loginId) => {
-      if(!selectedMember.some(member => member.loginId === loginId)){
+const ApplyCheckModal = ({ setApplyMembersCheck, id, closeModal }) => {
+  const [applyMember, setApplyMembers] = useState("");
+  const [selectedMember, setSelectedMember] = useState([]);
+
+  const handleMemberClick = (name, major, id, loginId) => {
+    if (!selectedMember.some((member) => member.loginId === loginId)) {
       const newMember = {
         name: name,
         major: major,
         id: id,
-        loginId: loginId
+        loginId: loginId,
       };
-      setSelectedMember([...selectedMember, newMember])
+      setSelectedMember([...selectedMember, newMember]);
+    }
+  };
+
+  const handleDeleteMember = (id) => {
+    const deletedMeber = selectedMember.filter((member) => member.id !== id);
+    setSelectedMember(deletedMeber);
+  };
+
+  const handleCloseRecruit = async () => {
+    const members = selectedMember.map((member) => member.loginId);
+    try {
+      await instance.patch(`/activities/${id}/close`, {
+        loginIdList: members,
+      });
+      closeModal();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await instance.get(`/activities/${id}/apply`);
+        setApplyMembers(response.data.payload);
+      } catch (error) {
+        console.log(error);
       }
     }
+    fetchData();
+  }, [id]);
 
-    const handleDeleteMember = (id) => {
-      const deletedMeber = selectedMember.filter(member => member.id !== id);
-      setSelectedMember(deletedMeber);
-    }
-
-    const handleCloseRecruit = async () => {
-      const members = selectedMember.map(member => member.loginId);
-      try{
-        await instance.patch(`/activities/${id}/close`,{
-          loginIdList: members
-        });
-        closeModal();
-      }catch(error){
-        console.log(error)
-      }
-    }
-    
-    useEffect(()=>{
-        async function fetchData(){
-          try{
-            const response = await instance.get(`/activities/${id}/apply`)
-            setApplyMembers(response.data.payload)
-          }catch(error){
-            console.log(error);
-          }
-        }
-        fetchData();
-      }, [id])
-    
-    return(
-      <>
-        <ContentBox>
-          <Content className="content-area">
-            <MembersTitle>신청자 정보 확인</MembersTitle>
-            {applyMember && applyMember.map(({name, major, id, loginId})=> (
-              <MembersBox key={id} onClick={()=>handleMemberClick(name, major, id, loginId)}>
-                <MemberIcon icon={faUser}/>
+  return (
+    <>
+      <ContentBox>
+        <Content className="content-area">
+          <MembersTitle>신청자 정보 확인</MembersTitle>
+          {applyMember &&
+            applyMember.map(({ name, major, id, loginId }) => (
+              <MembersBox
+                key={id}
+                onClick={() => handleMemberClick(name, major, id, loginId)}
+              >
+                <MemberIcon icon={faUser} />
                 <span>{name}</span>
                 <span>({major})</span>
               </MembersBox>
             ))}
-          </Content>
-        </ContentBox>
-        <ContentBox className="selected-member">
+        </Content>
+      </ContentBox>
+      <ContentBox className="selected-member">
         <Content>
           <MembersTitle>선택한 멤버</MembersTitle>
-          {selectedMember && selectedMember.map(({name, major, id})=>(
-            <MembersBox key={id} onClick={()=>handleDeleteMember(id)}>
-              <MemberIcon icon={faUser}/>
-              <span>{name}</span>
-              <span>({major})</span>
-            </MembersBox>
-          ))}
+          {selectedMember &&
+            selectedMember.map(({ name, major, id }) => (
+              <MembersBox key={id} onClick={() => handleDeleteMember(id)}>
+                <MemberIcon icon={faUser} />
+                <span>{name}</span>
+                <span>({major})</span>
+              </MembersBox>
+            ))}
         </Content>
-        </ContentBox>
-        <ButtonArea>
-          <ButtonBox>
-            <ModalButton type="button" onClick={()=>setApplyMembersCheck(false)}>뒤로가기</ModalButton>
-          </ButtonBox>
-          <ButtonBox>
-            <ModalButton type="button" onClick={handleCloseRecruit}>마감하기</ModalButton>
-          </ButtonBox>
-        </ButtonArea>
-      </>
-    )
-}
+      </ContentBox>
+      <ButtonArea>
+        <ButtonBox>
+          <ModalButton
+            type="button"
+            onClick={() => setApplyMembersCheck(false)}
+          >
+            뒤로가기
+          </ModalButton>
+        </ButtonBox>
+        <ButtonBox>
+          <ModalButton type="button" onClick={handleCloseRecruit}>
+            마감하기
+          </ModalButton>
+        </ButtonBox>
+      </ButtonArea>
+    </>
+  );
+};
 
 export default ApplyCheckModal;
 
@@ -100,7 +112,7 @@ const ContentBox = styled.div`
   border: 1px solid #8e8e8e;
   border-radius: 20px;
 
-  :nth-child(2){
+  :nth-child(2) {
     height: 30%;
   }
 `;
@@ -113,17 +125,17 @@ const Content = styled.div`
   resize: none;
   overflow-y: auto;
 
-    /* 스크롤바 전체 */
+  /* 스크롤바 전체 */
   ::-webkit-scrollbar {
     width: 1rem;
   }
-  
+
   /* 스크롤바의 슬라이더 */
   ::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: #555;
   }
-  
+
   /* 스크롤바의 트랙 */
   ::-webkit-scrollbar-track {
     border: 1px solid #8e8e8e;
@@ -142,7 +154,7 @@ const MembersBox = styled.div`
   cursor: pointer;
   margin-bottom: 0.6rem;
   width: fit-content;
-`
+`;
 
 const MemberIcon = styled(FontAwesomeIcon)`
   margin-right: 0.5rem;

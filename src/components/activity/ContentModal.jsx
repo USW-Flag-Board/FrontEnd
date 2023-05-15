@@ -1,10 +1,10 @@
-import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { SessionStorage } from "../../utils/browserStorage";
+import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
+import { SessionStorage } from "../../utils/browserStorage";
 import ApplyCheckModal from "./ApplyCheckModal";
-import SelectedCheckModal from "./SelectedCheckModal";
 import EditModal from "./EditModal";
+import SelectedCheckModal from "./SelectedCheckModal";
 
 const ContentModal = ({ closeModal, cardId }) => {
   const [apply, setApply] = useState(null);
@@ -18,7 +18,6 @@ const ContentModal = ({ closeModal, cardId }) => {
     id,
     leader,
     name,
-    semester,
     status,
     description,
     githubURL,
@@ -91,19 +90,20 @@ const ContentModal = ({ closeModal, cardId }) => {
   }, [edit]);
 
   useEffect(() => {
-    if (sessionStorage.getItem("name")) {
-      async function fetchData() {
-        try {
-          const response = await instance.post(`/activities/${cardId}/check`);
-          if (response.data.payload) setApply(true);
-          else setApply(false);
-        } catch (error) {
-          console.log(error);
-        }
+    async function fetchData() {
+      try {
+        const response = await instance.post(`/activities/${cardId}/check`);
+        if (response.data.payload) setApply(true);
+        else setApply(false);
+      } catch (error) {
+        console.log(error);
       }
+    }
+
+    if (sessionStorage.getItem("name")) {
       fetchData();
     }
-  }, []);
+  }, [cardId]);
 
   return (
     <ModalArea>

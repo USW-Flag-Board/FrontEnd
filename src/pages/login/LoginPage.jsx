@@ -27,6 +27,11 @@ const LoginPage = () => {
     });
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    handleLogin();
+  };
+
   const handleLogin = async () => {
     try {
       const response = await instance.post("/auth/login", {
@@ -64,8 +69,8 @@ const LoginPage = () => {
     <PageArea>
       {findId && <FindId setFindId={setFindId} />}
       {findPw && <FindPw setFindPw={setFindPw} />}
-      <LoginArea>
-        <img
+      <LoginArea onSubmit={handleSubmit}>
+        <LogoImg
           alt="Flag 로고"
           className="Logo"
           src={logo}
@@ -89,7 +94,7 @@ const LoginPage = () => {
           />
           <Icon icon={faLock} />
         </RelativeArea>
-        <LoginButton onClick={handleLogin} fullWidth variant="contained">
+        <LoginButton type="submit" fullWidth variant="contained">
           로그인
         </LoginButton>
         <SortArea>
@@ -123,12 +128,16 @@ const PageArea = styled.div`
   justify-content: center;
 `;
 
-const LoginArea = styled.div`
+const LoginArea = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
   display: flex;
   width: 400px;
+`;
+
+const LogoImg = styled.img`
+  cursor: pointer;
 `;
 
 const WriteArea = styled.input`

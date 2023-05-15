@@ -130,7 +130,6 @@ const PageBox = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  cursor: pointer;
   @media (min-width: 481px) and (max-width: 1024px) {
     width: 80%;
   }
@@ -152,8 +151,7 @@ const SignUpArea = styled.div`
 
 const Logo = styled.img`
   width: 35%;
-  margin-bottom: 1rem;
-  margin-top: 2rem;
+  cursor: pointer;
 `;
 
 const RadioArea = styled.div`

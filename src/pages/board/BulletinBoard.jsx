@@ -6,6 +6,10 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Header, ListThem } from "../../components";
 import { SessionStorage } from "../../utils/browserStorage";
 import instance from "../../apis/AxiosInterceptorSetup";
+import {
+  SEARCH_SELECT_ITEMS_OPTION,
+  SEARCH_SELECT_ITEMS_PERIOD,
+} from "../../constants/board";
 
 const BulletinBoard = () => {
   const header = true;
@@ -13,10 +17,40 @@ const BulletinBoard = () => {
   const [board, setBoard] = useState("자유게시판");
   const [posts, setPosts] = useState([]);
   const [boardItems, setBoardItems] = useState([]);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber] = useState(1);
+  const [searchQuery, setSearchQuery] = useState({
+    keyword: "",
+    option: "content_and_reply",
+    period: "all",
+  });
 
   const handleWriteClick = () => {
     navigate("/board/write");
+  };
+
+  const upDateSearchQuery = (e) => {
+    const { name, value } = e.target;
+    setSearchQuery((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleSerchClick();
+  };
+
+  const handleSerchClick = async () => {
+    const { keyword, option, period } = searchQuery;
+    try {
+      const response = await instance.get(
+        `/posts/search?board=${board}&keyword=${keyword}&option=${option}&period=${period}`
+      );
+      console.log(response);
+    } catch (error) {
+      console.lop(error);
+    }
   };
 
   useEffect(() => {
@@ -40,27 +74,29 @@ const BulletinBoard = () => {
       {header && <Header />}
       <BoardArea>
         <ListArea>
-          <ListBar>
-            <BarItemBox>
-              {boardItems.map(({ id, boardName }) => (
-                <BarItem
-                  key={id}
-                  selected={board === boardName}
-                  onClick={() => setBoard(boardName)}
-                >
-                  {boardName}
-                </BarItem>
-              ))}
-            </BarItemBox>
-            {SessionStorage.get("UserToken") ? (
-              <WriteButtonBox>
-                <WriteButton onClick={handleWriteClick}>
-                  <FaPen icon={faPlus} />
-                  <span>글쓰기</span>
-                </WriteButton>
-              </WriteButtonBox>
-            ) : null}
-          </ListBar>
+          <BarArea>
+            <ListBar>
+              <BarItemBox>
+                {boardItems.map(({ id, boardName }) => (
+                  <BarItem
+                    key={id}
+                    selected={board === boardName}
+                    onClick={() => setBoard(boardName)}
+                  >
+                    {boardName}
+                  </BarItem>
+                ))}
+              </BarItemBox>
+              {SessionStorage.get("UserToken") ? (
+                <WriteButtonBox>
+                  <WriteButton onClick={handleWriteClick}>
+                    <FaPen icon={faPlus} />
+                    <span>글쓰기</span>
+                  </WriteButton>
+                </WriteButtonBox>
+              ) : null}
+            </ListBar>
+          </BarArea>
           <PostListBox>
             {posts?.map((post) => (
               <PostList key={post.id}>
@@ -70,6 +106,42 @@ const BulletinBoard = () => {
               </PostList>
             ))}
           </PostListBox>
+          <SelectBox onSubmit={handleSubmit}>
+            <Select
+              name="period"
+              onChange={upDateSearchQuery}
+              value={searchQuery.period}
+            >
+              {SEARCH_SELECT_ITEMS_PERIOD.map(({ id, option, value }) => (
+                <option key={id} value={value}>
+                  {option}
+                </option>
+              ))}
+            </Select>
+            <Select
+              name="option"
+              onChange={upDateSearchQuery}
+              value={searchQuery.option}
+            >
+              {SEARCH_SELECT_ITEMS_OPTION.map(({ id, option, value }) => (
+                <option key={id} value={value}>
+                  {option}
+                </option>
+              ))}
+            </Select>
+            <PostSearchBox>
+              <PostSearch
+                type="text"
+                placeholder="검색어를 입력해주세요"
+                name="keyword"
+                onChange={upDateSearchQuery}
+                value={searchQuery.keyword}
+              />
+              <SearchButton type="submit" onClick={handleSerchClick}>
+                검색
+              </SearchButton>
+            </PostSearchBox>
+          </SelectBox>
         </ListArea>
       </BoardArea>
     </>
@@ -88,12 +160,17 @@ const ListArea = styled.div`
 `;
 
 const ListBar = styled.div`
-  width: 100%;
-  height: 3.5rem;
-  padding: 0 8rem;
-  background-color: #f1f3f5;
+  width: 80%;
   display: flex;
   justify-content: space-between;
+  height: 3.5rem;
+`;
+
+const BarArea = styled.div`
+  width: 100%;
+  background-color: #f1f3f5;
+  display: flex;
+  justify-content: center;
 `;
 
 const BarItemBox = styled.div`
@@ -149,6 +226,34 @@ const WriteButton = styled.button`
 const FaPen = styled(FontAwesomeIcon)`
   text-decoration: none;
   margin-right: 0.5rem;
+`;
+
+const SelectBox = styled.form`
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+`;
+
+const Select = styled.select`
+  padding: 0.7rem;
+`;
+
+const PostSearchBox = styled.div`
+  display: flex;
+`;
+
+const PostSearch = styled.input`
+  padding: 0.7rem;
+`;
+
+const SearchButton = styled.button`
+  width: 4rem;
+  background-color: #339af0;
+  border: none;
+  cursor: pointer;
+  color: #fff;
 `;
 
 export default BulletinBoard;
