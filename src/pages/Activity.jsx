@@ -8,7 +8,6 @@ import { SessionStorage } from "../utils/browserStorage";
 import instance from "../apis/AxiosInterceptorSetup";
 
 const Activity = () => {
-  const header = true;
   const [isOpen, setIsOpen] = useState(false);
   const [contentOpen, setContentOpen] = useState(false);
   const [cardId, setCardId] = useState("");
@@ -60,7 +59,7 @@ const Activity = () => {
 
   return (
     <>
-      {header && <Header />}
+      <Header />
       {isOpen && <WriteModal closeModal={handleWrite} />}
       {contentOpen && <ContentModal closeModal={handleCard} cardId={cardId} />}
       <ActivityArea>

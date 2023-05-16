@@ -12,7 +12,6 @@ import {
 } from "../../constants/board";
 
 const BulletinBoard = () => {
-  const header = true;
   const navigate = useNavigate();
   const [board, setBoard] = useState("자유게시판");
   const [posts, setPosts] = useState([]);
@@ -71,7 +70,7 @@ const BulletinBoard = () => {
 
   return (
     <>
-      {header && <Header />}
+      <Header />
       <BoardArea>
         <ListArea>
           <BarArea>

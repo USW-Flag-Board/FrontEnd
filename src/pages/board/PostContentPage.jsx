@@ -13,7 +13,6 @@ import { useElapsedTime } from "../../hooks/useElaspedTime";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
 const PostContentPage = () => {
-  const header = true;
   const { postId } = useParams();
   const navigate = useNavigate();
   const [comment, setComment] = useState("");
@@ -120,7 +119,7 @@ const PostContentPage = () => {
 
   return (
     <>
-      {header && <Header />}
+      <Header />
       <PostArea>
         <PostBox>
           <ContentArea className="post-content">

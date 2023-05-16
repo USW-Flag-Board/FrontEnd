@@ -127,6 +127,7 @@ const HeaderBox = styled.div`
     display: flex;
     justify-content: center;
     padding: 0;
+    width: 90%;
   }
 `;
 
@@ -161,6 +162,7 @@ const MenuItemBox = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
+  margin-left: 1rem;
   @media (max-width: 480px) {
     display: none;
   }
@@ -230,7 +232,7 @@ const UserBox = styled.div`
   width: ${(props) => (props.login ? "10%" : "15%")};
   height: 60%;
   color: #bababa;
-  gap: 1rem;
+  gap: 0.7rem;
   justify-content: flex-end;
   @media (max-width: 480px) {
     width: 35%;
@@ -240,11 +242,13 @@ const UserBox = styled.div`
 `;
 
 const UserButton = styled.button`
-  width: ${(props) => (props.login ? "70%" : "45%")};
+  width: ${(props) => (props.login ? "80%" : "45%")};
   height: 90%;
   border: none;
+  background-color: #339af0;
+  color: white;
   &:nth-child(2) {
-    background-color: #ff922b;
+    background-color: #748ffc;
   }
   @media (max-width: 480px) {
     width: 40%;
