@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import instance from "../../apis/AxiosInterceptorSetup";
 
 const EditPost = () => {
-  const header = true;
   const navigate = useNavigate();
   const { postId } = useParams();
   const [postData, setPostData] = useState({});
@@ -15,7 +14,6 @@ const EditPost = () => {
     content: postData.content,
     board: postData.board,
   });
-  console.log(postData);
   const handleContentChange = (e) => {
     const { name, value } = e.target;
     setPost({
@@ -68,7 +66,7 @@ const EditPost = () => {
 
   return (
     <>
-      {header && <Header />}
+      <Header />
       <BoardArea>
         <ContentArea>
           <ContentLabel>게시판</ContentLabel>

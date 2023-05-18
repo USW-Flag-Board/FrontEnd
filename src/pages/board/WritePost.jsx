@@ -1,19 +1,22 @@
 import { useState } from "react";
-import styled from "styled-components";
-import boardData from "../../constants/board";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
+import { WritePostEditor } from "../../components";
 import Header from "../../components/Header";
+import boardData from "../../constants/board";
 
 const WritePost = () => {
-  const header = true;
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [board, setBoard] = useState("");
-
   const handleBoardChange = (e) => {
     setBoard(e.target.value);
+  };
+
+  const handleContent = (value) => {
+    setContent(value);
   };
 
   const handleCancelClick = () => {
@@ -39,7 +42,7 @@ const WritePost = () => {
 
   return (
     <>
-      {header && <Header />}
+      <Header />
       <BoardArea>
         <ContentArea>
           <ContentLabel>게시판</ContentLabel>
@@ -64,13 +67,7 @@ const WritePost = () => {
           </TitleInputBox>
           <ContentLabel>내용</ContentLabel>
           <ContentInputBox>
-            <ContentInput
-              value={content}
-              placeholder="내용을 입력해주세요."
-              onChange={(e) => {
-                setContent(e.target.value);
-              }}
-            />
+            <WritePostEditor value={content} onChange={handleContent} />
           </ContentInputBox>
           <ContentButtonBox>
             <ContentButton onClick={handleCancelClick}>취소</ContentButton>
@@ -110,27 +107,19 @@ const BoardSelect = styled.select`
   width: 20%;
   height: 2.5rem;
   border: 1px solid #ced4da;
-  border-radius: 7px;
   box-sizing: border-box;
   padding: 0 1rem;
   font-weight: 600;
   margin-bottom: 2rem;
-  &:hover {
-    border: 1px solid #339af0;
-  }
 `;
 
 const TitleInputBox = styled.div`
   width: 100%;
   height: 2.5rem;
-  border-radius: 5px;
   box-sizing: border-box;
   border: 1px solid #ced4da;
   padding: 0.5rem 1rem;
   margin-bottom: 2rem;
-  &:hover {
-    border: 1px solid #339af0;
-  }
 `;
 
 const TitleInput = styled.input`
@@ -147,14 +136,7 @@ const TitleInput = styled.input`
 const ContentInputBox = styled.div`
   box-sizing: border-box;
   width: 100%;
-  height: 60%;
-  border: 1px solid #ced4da;
-  border-radius: 7px;
-  padding: 1rem 1rem;
   margin-bottom: 2rem;
-  &:hover {
-    border: 1px solid #339af0;
-  }
 `;
 
 const ContentButtonBox = styled.div`
@@ -162,6 +144,7 @@ const ContentButtonBox = styled.div`
   height: 3rem;
   display: flex;
   gap: 1rem;
+  margin-top: 1.5rem;
 `;
 
 const ContentButton = styled.button`
@@ -176,20 +159,6 @@ const ContentButton = styled.button`
   &:nth-child(2) {
     background-color: #339af0;
     color: white;
-  }
-`;
-
-const ContentInput = styled.textarea`
-  width: 100%;
-  height: 24rem;
-  resize: none;
-  caret-color: black;
-  border: none;
-  &:focus {
-    outline: none;
-  }
-  ::placeholder {
-    font-size: 1rem;
   }
 `;
 

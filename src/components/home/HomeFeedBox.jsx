@@ -1,21 +1,18 @@
-import styled from "styled-components";
-import { useState } from "react";
-import { useElapsedTime } from "../../hooks/useElaspedTime";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { useElapsedTime } from "../../hooks/useElaspedTime";
 
 const HomePosts = ({ post }) => {
-  const { author, createdAt, likeCount, replyCount, title, viewCount } = post;
+  const { author, createdAt, replyCount, title } = post;
   const timeAgo = useElapsedTime(
     `${createdAt[0]}-${createdAt[1]}-${createdAt[2]} ${createdAt[3]}:${createdAt[4]}:${createdAt[5]}`
   );
   return (
     <PostBox>
       <PostInfoItem>{title}</PostInfoItem>
-      <PostInfoItem>{viewCount}</PostInfoItem>
-      <PostInfoItem>{likeCount}</PostInfoItem>
+      <PostInfoItem>{author}</PostInfoItem>
       <PostInfoItem>{replyCount}</PostInfoItem>
       <PostInfoItem>{`${timeAgo}전`}</PostInfoItem>
-      <PostInfoItem>{author}</PostInfoItem>
     </PostBox>
   );
 };
@@ -24,11 +21,9 @@ const HomePostsBar = () => {
   return (
     <PostInfoBox>
       <PostInfo>제목</PostInfo>
-      <PostInfo>조회</PostInfo>
-      <PostInfo>추천</PostInfo>
+      <PostInfo>작성자</PostInfo>
       <PostInfo>댓글</PostInfo>
       <PostInfo>작성일</PostInfo>
-      <PostInfo>작성자</PostInfo>
     </PostInfoBox>
   );
 };
@@ -100,9 +95,9 @@ const PostInfo = styled.div`
   display: flex;
   justify-content: center;
   font-size: 0.8rem;
-  width: 14%;
+  width: 15%;
   :nth-child(1) {
-    width: 40%;
+    width: 65%;
   }
 `;
 
@@ -118,9 +113,9 @@ const PostInfoItem = styled.div`
   font-size: 0.8rem;
   display: flex;
   justify-content: center;
-  width: 14%;
+  width: 15%;
   :nth-child(1) {
-    width: 40%;
+    width: 65%;
     padding: 0 0.5rem;
     &:hover {
       color: #4dabf7;

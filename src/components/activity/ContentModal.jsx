@@ -87,7 +87,7 @@ const ContentModal = ({ closeModal, cardId }) => {
       }
     }
     fetchData();
-  }, [edit]);
+  }, [edit, cardId]);
 
   useEffect(() => {
     async function fetchData() {

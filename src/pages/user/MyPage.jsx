@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { SessionStorage } from "../../utils/browserStorage";
-import { Header } from "../../components";
 import instance from "../../apis/AxiosInterceptorSetup";
+import { Header } from "../../components";
+import { SessionStorage } from "../../utils/browserStorage";
 
 const UserPage = () => {
-  const header = true;
   const [userData, setUserData] = useState("");
   const { bio, nickName, profileImg, loginId } = userData;
 
@@ -23,7 +22,7 @@ const UserPage = () => {
 
   return (
     <>
-      {header && <Header />}
+      <Header />
       <PageArea>
         <PageBox>
           <TopPage>

@@ -207,7 +207,7 @@ const SearchPaper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  height: 80%;
+  height: 100%;
   border: 1px solid #dee2e6;
 `;
 
@@ -230,7 +230,7 @@ const UserBox = styled.div`
   display: flex;
   align-items: center;
   width: ${(props) => (props.login ? "10%" : "15%")};
-  height: 60%;
+  height: 70%;
   color: #bababa;
   gap: 0.7rem;
   justify-content: flex-end;

@@ -1,18 +1,18 @@
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChangePwModal from "./ChangePwModal";
 
-const MyProfile = ({
-  nickName,
-  bio,
-  setUserData,
-  studentId,
-  major,
-  loginId,
-}) => {
+const MyProfile = ({ nickname, bio, studentId, major, loginId }) => {
   const [editOn, setEditOn] = useState(false);
   const [pwModal, setPwModal] = useState(false);
+  const [userData, setUserData] = useState({
+    nickname: "",
+    bio: "",
+    studentId: "",
+    major: "",
+    loginId: "",
+  });
   const updateState = (event) => {
     const { name, value } = event.target;
     setUserData((prevState) => ({
@@ -23,17 +23,28 @@ const MyProfile = ({
 
   const handleSave = async () => {
     const data = {
-      bio: bio,
-      major: major,
-      nickName: nickName,
-      studentId: studentId,
+      bio: userData.bio,
+      major: userData.major,
+      nickname: userData.nickname,
+      studentId: userData.studentId,
     };
     try {
-      await instance.put("/members/avatar", data);
+      const response = await instance.put("/members/avatar", data);
+      if (response.status === 200) setEditOn(false);
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    setUserData({
+      nickname: nickname,
+      bio: bio,
+      studentId: studentId,
+      major: major,
+      loginId: loginId,
+    });
+  }, [bio, loginId, major, nickname, studentId]);
 
   return (
     <EditPageBox>
@@ -46,8 +57,8 @@ const MyProfile = ({
             <InfoBox>
               <EditInputBox
                 type="text"
-                name="nickName"
-                value={nickName}
+                name="nickname"
+                value={userData.nickname}
                 onChange={updateState}
               />
             </InfoBox>
@@ -56,7 +67,7 @@ const MyProfile = ({
               <EditInputBox
                 type="text"
                 name="major"
-                value={major}
+                value={userData.major}
                 onChange={updateState}
               />
             </InfoBox>
@@ -65,7 +76,7 @@ const MyProfile = ({
               <EditInputBox
                 type="text"
                 name="studentId"
-                value={studentId}
+                value={userData.studentId}
                 onChange={updateState}
               />
             </InfoBox>
@@ -73,7 +84,7 @@ const MyProfile = ({
             <InfoBox className="bio-box">
               <IntroduceInputBox
                 name="bio"
-                value={bio}
+                value={userData.bio}
                 onChange={updateState}
               />
             </InfoBox>

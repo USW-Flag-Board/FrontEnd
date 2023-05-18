@@ -122,7 +122,7 @@ const PostContentPage = () => {
       <Header />
       <PostArea>
         <PostBox>
-          <ContentArea className="post-content">
+          <ContentArea>
             <ContentInner>
               <Title>{title}</Title>
               <WriterInfoBox>
@@ -214,12 +214,11 @@ const PostArea = styled.div`
 `;
 
 const PostBox = styled.div`
-  display: flex;
-  flex-direction: column;
   .comment-area {
     background-color: #f9fafb;
     padding: 1rem 0;
     border-top: 0.0625rem solid #e7e7e7;
+    height: auto;
   }
 `;
 
@@ -232,6 +231,7 @@ const ContentArea = styled.div`
 
 const ContentInner = styled.div`
   width: 70%;
+
   .comment-title {
     font-size: 1.2rem;
     margin: 0.8rem 0px 1.125rem;

@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
+import { faPen, faTrashArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
+import logo from "../../assets/images/logo2.png";
 import { MyProfile } from "../../components";
 import { BAR_NAME } from "../../constants/user";
-import { useNavigate } from "react-router-dom";
-import logo from "../../assets/images/logo2.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faTrashArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { SessionStorage } from "../../utils/browserStorage";
 import { cookiesOption } from "../../utils/cookiesOption";
 
@@ -17,11 +17,11 @@ const EditUser = () => {
     bio: "",
     email: "",
     major: "",
-    nickName: "",
+    nickname: "",
     studentId: "",
   });
   const [profileImg, setProfileImg] = useState(null);
-  const { bio, email, major, name, nickName, studentId, loginId } = userData;
+  const { bio, email, major, name, nickname, studentId, loginId } = userData;
   const navigate = useNavigate();
 
   const handleLogOutClick = () => {
@@ -88,7 +88,7 @@ const EditUser = () => {
           name: data.name,
           email: data.email,
           major: data.major,
-          nickName: data.nickName,
+          nickname: data.nickname,
           studentId: data.studentId,
           loginId: data.loginId,
         }));
@@ -158,14 +158,12 @@ const EditUser = () => {
         <EditPageBox>
           {barName === "내프로필" && (
             <MyProfile
-              profileImg={profileImg}
-              nickName={nickName}
+              nickname={nickname}
               bio={bio}
               major={major}
               studentId={studentId}
               loginId={loginId}
               setUserData={setUserData}
-              setProfileImg={setProfileImg}
             />
           )}
         </EditPageBox>

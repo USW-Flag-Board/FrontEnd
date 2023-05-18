@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useLayoutEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -52,7 +52,7 @@ const BulletinBoard = () => {
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     async function fetchData() {
       try {
         const response = await instance.get(
@@ -158,22 +158,21 @@ const ListArea = styled.div`
   align-items: center;
 `;
 
+const BarArea = styled.div`
+  width: 100%;
+  justify-content: center;
+  background-color: #f1f3f5;
+  display: flex;
+  height: 3.5rem;
+`;
 const ListBar = styled.div`
   width: 80%;
   display: flex;
   justify-content: space-between;
-  height: 3.5rem;
-`;
-
-const BarArea = styled.div`
-  width: 100%;
-  background-color: #f1f3f5;
-  display: flex;
-  justify-content: center;
 `;
 
 const BarItemBox = styled.div`
-  width: 100%;
+  width: 40%;
   height: 100%;
   display: flex;
 `;
@@ -192,6 +191,7 @@ const BarItem = styled.div`
 const PostListBox = styled.div`
   width: 70%;
   margin: 1rem 0;
+  min-height: 50rem;
 `;
 
 const PostList = styled.div`
@@ -215,7 +215,7 @@ const WriteButton = styled.button`
   cursor: pointer;
   color: white;
   width: 70%;
-  height: 60%;
+  height: 2rem;
   font-size: 0.9rem;
   font-weight: 700;
   border: none;

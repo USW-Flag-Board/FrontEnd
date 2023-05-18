@@ -112,8 +112,10 @@ export default Activity;
 
 const ActivityArea = styled.div`
   width: 100%;
-  padding: 2rem 8rem 0 8rem;
   z-index: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   @media screen and (max-width: 1023px) {
     width: 100%;
     padding: 2rem 2rem;
@@ -121,14 +123,15 @@ const ActivityArea = styled.div`
 `;
 
 const ActivityBox = styled.div`
-  width: 100%;
+  width: 80%;
   height: 5%;
   display: flex;
   justify-content: space-between;
+  margin-top: 2rem;
 `;
 
 const KategorieBox = styled.div`
-  width: 60%;
+  width: 100%;
   height: 2rem;
   display: flex;
   align-items: center;
@@ -180,8 +183,8 @@ const WriteButton = styled.span``;
 
 const CardArea = styled.div`
   box-sizing: border-box;
-  padding: 3rem 0.5rem;
-  width: 100%;
+  width: 80%;
+  margin-top: 2rem;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
