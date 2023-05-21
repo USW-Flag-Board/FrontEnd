@@ -9,6 +9,8 @@ const FindId = ({ setFindId }) => {
     certification: "",
   });
   const [success, setSuccess] = useState(false);
+  const [emailSuccess, setEmailSuccess] = useState(false);
+  const [loginId, setLoginId] = useState("");
   const { email, name, certification } = state;
 
   const updateState = (event) => {
@@ -27,9 +29,9 @@ const FindId = ({ setFindId }) => {
     try {
       const response = await instance.post("/members/find/id", data);
       if (response.status === 201) {
+        setSuccess(true);
         document.getElementsByName("name")[0].disabled = true;
         document.getElementsByName("email")[0].disabled = true;
-        setSuccess(true);
       }
     } catch (error) {
       const status = error.response.status;
@@ -52,8 +54,8 @@ const FindId = ({ setFindId }) => {
         certification: certification,
         email: email,
       });
-      alert(`회원님의 아이디는: ${res.data.payload.loginId}입니다.`);
-      setFindId(false);
+      setEmailSuccess(true);
+      setLoginId(res.data.payload.loginId);
     } catch (error) {
       const status = error.response.status;
       switch (status) {
@@ -75,62 +77,83 @@ const FindId = ({ setFindId }) => {
         <TitleBox>
           <Title>아이디 찾기</Title>
         </TitleBox>
-        <InputArea>
-          <InputBox>
-            <ContentLabel>이름</ContentLabel>
-            <InfoBox>
-              <EditInputBox
-                type="text"
-                name="name"
-                value={state.name}
-                onChange={updateState}
-              />
-            </InfoBox>
-          </InputBox>
-          <InputBox>
-            <ContentLabel>이메일</ContentLabel>
-            <InfoBox>
-              <EditInputBox
-                type="text"
-                name="email"
-                value={state.email}
-                onChange={updateState}
-              />
-            </InfoBox>
-          </InputBox>
-          {!success && (
-            <InfoState>회원가입 당시 입력한 이메일을 입력해주세요.</InfoState>
-          )}
-          {success && (
-            <>
+        {!emailSuccess && (
+          <>
+            <InputArea>
               <InputBox>
-                <ContentLabel>인증번호</ContentLabel>
+                <ContentLabel>이름</ContentLabel>
                 <InfoBox>
                   <EditInputBox
                     type="text"
-                    name="certification"
-                    value={state.certification}
+                    name="name"
+                    value={state.name}
                     onChange={updateState}
                   />
                 </InfoBox>
               </InputBox>
-            </>
-          )}
-        </InputArea>
-        <ButtonBox>
-          <Button type="button" onClick={() => setFindId(false)}>
-            취소
-          </Button>
-          {success ? (
-            <Button type="button" onClick={handleSubmit}>
-              전송하기
-            </Button>
-          ) : (
-            <Button type="button" onClick={handleSave}>
-              인증하기
-            </Button>
-          )}
-        </ButtonBox>
+              <InputBox>
+                <ContentLabel>이메일</ContentLabel>
+                <InfoBox>
+                  <EditInputBox
+                    type="text"
+                    name="email"
+                    value={state.email}
+                    onChange={updateState}
+                  />
+                </InfoBox>
+              </InputBox>
+              {!success && (
+                <InfoState>
+                  회원가입 당시 입력한 이메일을 입력해주세요.
+                </InfoState>
+              )}
+              {success && (
+                <>
+                  <InputBox>
+                    <ContentLabel>인증번호</ContentLabel>
+                    <InfoBox>
+                      <EditInputBox
+                        type="text"
+                        name="certification"
+                        value={state.certification}
+                        onChange={updateState}
+                      />
+                    </InfoBox>
+                  </InputBox>
+                </>
+              )}
+            </InputArea>
+            <ButtonBox>
+              <Button type="button" onClick={() => setFindId(false)}>
+                취소
+              </Button>
+              {success ? (
+                <Button type="button" onClick={handleSubmit}>
+                  전송하기
+                </Button>
+              ) : (
+                <Button type="button" onClick={handleSave}>
+                  인증하기
+                </Button>
+              )}
+            </ButtonBox>
+          </>
+        )}
+        {emailSuccess && (
+          <>
+            <InputArea>
+              <InputBox>
+                <ContentLabel>회원님의 아이디</ContentLabel>
+                <InfoBox className="id-box">{loginId}</InfoBox>
+              </InputBox>
+            </InputArea>
+            <ButtonBox>
+              <Button type="button" onClick={() => setFindId(false)}>
+                닫기
+              </Button>
+            </ButtonBox>
+          </>
+        )}
       </ModalBox>
     </ModalArea>
   );
@@ -179,6 +202,14 @@ const InputBox = styled.div`
   &:nth-child(3) {
     margin-bottom: 0;
   }
+  .id-box {
+    font-size: 0.9rem;
+    border-radius: 10px;
+    border: 1.8px solid #e9ecef;
+    padding-left: 1rem;
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const ContentLabel = styled.label`
@@ -201,10 +232,10 @@ const EditInputBox = styled.input`
   width: 100%;
   height: 100%;
   font-size: 0.9rem;
-  padding-left: 0.5rem;
-  outline: none;
   border-radius: 10px;
   border: 1.8px solid #e9ecef;
+  padding-left: 0.5rem;
+  outline: none;
 `;
 
 const InfoState = styled.div`

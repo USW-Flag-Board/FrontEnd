@@ -70,7 +70,7 @@ const EditUser = () => {
   const handleImgReset = async () => {
     try {
       const response = await instance.put(`/members/avatar/reset`);
-      console.log(response);
+      setProfileImg(response.data.payload);
     } catch (error) {
       console.log(error);
     }

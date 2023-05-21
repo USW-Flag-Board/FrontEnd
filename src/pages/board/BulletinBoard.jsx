@@ -19,8 +19,8 @@ const BulletinBoard = () => {
   const [pageNumber] = useState(1);
   const [searchQuery, setSearchQuery] = useState({
     keyword: "",
-    option: "content_and_reply",
-    period: "all",
+    option: "CONTENT_AND_REPLY",
+    period: "ALL",
   });
 
   const handleWriteClick = () => {
@@ -56,7 +56,7 @@ const BulletinBoard = () => {
     async function fetchData() {
       try {
         const response = await instance.get(
-          `/posts?board=${board}&pageNumber=${pageNumber}&pageSize=3&offset=2`
+          `/posts?board=${board}&offset=0&size=10`
         );
         const boardResponse = await instance.get("/boards?type=main");
         setBoardItems(boardResponse.data.payload.boards);
@@ -66,7 +66,7 @@ const BulletinBoard = () => {
       }
     }
     fetchData();
-  }, [board, pageNumber]);
+  }, [board]);
 
   return (
     <>

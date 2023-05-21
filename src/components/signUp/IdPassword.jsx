@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import instance from "../../apis/AxiosInterceptorSetup";
 
-const IdPassword = ({ setButtonState, setIdPassword, signUpData }) => {
+const IdPassword = ({ setIdPassword, setButtonState }) => {
   const [state, setState] = useState({
     id: "",
     password: "",
@@ -24,7 +24,7 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData }) => {
       const res = await instance.post("/auth/check/id", {
         loginId: value,
       });
-      res.data.payload
+      res.data.payload.exist
         ? updateState("idMessage", "중복된 아이디입니다.")
         : updateState("idMessage", "사용가능한 아이디입니다.");
     } catch (error) {
@@ -47,7 +47,6 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData }) => {
     ) {
       setButtonState(true);
       setIdPassword({
-        ...signUpData,
         loginId: id,
         password: password,
       });
@@ -112,7 +111,7 @@ const IdPassword = ({ setButtonState, setIdPassword, signUpData }) => {
         <br />
         아이디, 비밀번호를 입력해주세요
       </IntroduceArea>
-      <InputBox>
+      <InputBox className="loginId-box">
         <WriteArea
           className="loginId"
           name="id"
@@ -157,6 +156,10 @@ const IdPasswordArea = styled.div`
   flex-direction: column;
   width: 100%;
   align-items: center;
+  .loginId-box {
+    justify-content: space-between;
+    border: none;
+  }
 `;
 
 const IntroduceArea = styled.div`
@@ -173,14 +176,21 @@ const InputBox = styled.div`
   display: flex;
   align-items: center;
   width: 80%;
+  border: 1px solid #9a9a9a;
   .loginId {
-    width: 70%;
+    width: 75%;
+    border: 1px solid #9a9a9a;
   }
 `;
 
 const IdCheckButton = styled.button`
-  width: 30%;
+  width: 20%;
   height: 3.1rem;
+  background-color: #228be6;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-weight: 500;
 `;
 
 const Icon = styled(FontAwesomeIcon)``;
@@ -188,17 +198,11 @@ const Icon = styled(FontAwesomeIcon)``;
 const WriteArea = styled.input`
   font-size: 1rem;
   color: black;
-  padding: 0 1.9rem 0 1.25rem;
   height: 3.1rem;
-  width: 100%;
-  background: transparent;
-  border-radius: 1.9rem;
-  border: 2px solid gainsboro;
+  width: 93%;
   outline: none;
-  margin: 0.6rem 1rem 0.6rem 0;
-  :focus {
-    border-color: black;
-  }
+  border: none;
+  padding: 0 1rem;
   ::placeholder {
     color: gainsboro;
   }
@@ -211,5 +215,6 @@ const InfoState = styled.div`
   display: flex;
   justify-content: end;
   height: 0.7rem;
+  margin-top: 1rem;
   margin-bottom: 1.25rem;
 `;

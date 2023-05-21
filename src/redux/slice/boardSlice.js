@@ -1,19 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  postId: 0,
-  postData: {},
+  signUpData: {
+    joinType: "",
+    loginId: "",
+    major: "",
+    name: "",
+    nickname: "",
+    password: "",
+    studentId: "",
+  },
 };
 
 const boardSlice = createSlice({
   name: "boardSlice",
   initialState,
   reducers: {
-    setId: (state, action) => {
-      state.postId = action.payload;
-    },
-    getPost: (state, action) => {
-      state.postData = action.payload;
+    setUserData: (state, action) => {
+      state.signUpData = action.payload;
     },
   },
 });

@@ -5,7 +5,6 @@ import instance from "../../apis/AxiosInterceptorSetup";
 const EmailAuth = ({
   setButtonState,
   setEmailAuth,
-  signUpData,
   setCertification,
   certification,
 }) => {
@@ -31,7 +30,7 @@ const EmailAuth = ({
         email: email,
       });
       if (response.data.payload === false) {
-        setEmailAuth({ ...signUpData, email: email });
+        setEmailAuth({ email: email });
         handleAuthNumSend();
         setRepost(true);
       }
@@ -46,7 +45,6 @@ const EmailAuth = ({
   const handleAuthNumSend = async () => {
     try {
       const response = await instance.post("/auth/join", {
-        ...signUpData,
         email: email,
       });
       if (response.status === 200) setButtonState(true);
@@ -118,7 +116,6 @@ const AuthButton = styled.div`
   color: black;
   font-size: 0.8rem;
   border: 2px solid gainsboro;
-  border-radius: 1.9rem;
   width: 25%;
   height: 3.1rem;
   padding: 0 0.8rem 0 0.8rem;
@@ -166,8 +163,7 @@ const WriteArea = styled.input`
   padding: 0 1.9rem 0 1.25rem;
   height: 3.1rem;
   width: 80%;
-  border-radius: 1.9rem;
-  border: 2px solid gainsboro;
+  border: 1px solid #495057;
   outline: none;
   transition: 0.2s;
   &:nth-child(1) {
@@ -178,6 +174,6 @@ const WriteArea = styled.input`
     border-color: black;
   }
   ::placeholder {
-    color: black;
+    color: #9a9a9a;
   }
 `;

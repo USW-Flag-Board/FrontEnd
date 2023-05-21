@@ -9,6 +9,7 @@ import {
   Privacy,
   EmailAuth,
 } from "../../components/signUp";
+
 import instance from "../../apis/AxiosInterceptorSetup";
 
 const SignUpPage = () => {
@@ -25,11 +26,20 @@ const SignUpPage = () => {
     studentId: "",
   });
   const [certification, setCertification] = useState("");
+  console.log(signUpData);
+  const handleUpdateUserData = (updateData) => {
+    setSignUpData((prev) => ({
+      ...prev,
+      ...updateData,
+    }));
+  };
+
+  const handleButtonState = (state) => {
+    setButtonState(state);
+  };
 
   const NextIndex = async () => {
-    setSignUpIndex((signUpIndex) => signUpIndex + 1);
-    if (signUpIndex + 1 === 5) {
-      setButtonState(false);
+    if (signUpIndex === 4) {
       try {
         await instance.post("/auth/sign-up", {
           certification: certification,
@@ -46,6 +56,9 @@ const SignUpPage = () => {
         }
       }
     }
+    if (signUpIndex !== 4) {
+      setSignUpIndex((signUpIndex) => signUpIndex + 1);
+    }
   };
 
   return (
@@ -59,38 +72,34 @@ const SignUpPage = () => {
         />
         <SignUpArea>
           {signUpIndex === 0 && (
-            <ServiceAgree setButtonState={setButtonState} />
+            <ServiceAgree setButtonState={handleButtonState} />
           )}
 
           {signUpIndex === 1 && (
             <JoinTypeSelect
-              setButtonState={setButtonState}
-              signUpData={signUpData}
-              setJoinType={setSignUpData}
+              setButtonState={handleButtonState}
+              setJoinType={handleUpdateUserData}
             />
           )}
 
           {signUpIndex === 2 && (
             <IdPassword
-              setButtonState={setButtonState}
-              signUpData={signUpData}
-              setIdPassword={setSignUpData}
+              setButtonState={handleButtonState}
+              setIdPassword={handleUpdateUserData}
             />
           )}
 
           {signUpIndex === 3 && (
             <Privacy
-              setButtonState={setButtonState}
-              setPrivacy={setSignUpData}
-              signUpData={signUpData}
+              setButtonState={handleButtonState}
+              setPrivacy={handleUpdateUserData}
             />
           )}
 
           {signUpIndex === 4 && (
             <EmailAuth
-              setButtonState={setButtonState}
-              setEmailAuth={setSignUpData}
-              signUpData={signUpData}
+              setButtonState={handleButtonState}
+              setEmailAuth={handleUpdateUserData}
               certification={certification}
               setCertification={setCertification}
             />
@@ -125,18 +134,11 @@ const PageArea = styled.div`
 `;
 
 const PageBox = styled.div`
-  width: 40%;
+  width: 30rem;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  @media (min-width: 481px) and (max-width: 1024px) {
-    width: 80%;
-  }
-
-  @media (max-width: 480px) {
-    width: 80%;
-  }
 `;
 
 const SignUpArea = styled.div`
@@ -146,7 +148,7 @@ const SignUpArea = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid #495057;
 `;
 
 const Logo = styled.img`
@@ -168,30 +170,29 @@ const Radio = styled.div`
   margin: 0 0.3rem 1rem 0.3rem;
   transition: 0.2s;
   background: none;
-  border: 2px solid #4dabf7;
+  border: 2px solid #228be6;
   border-radius: 20px;
 
   &.current {
     transition: 0.2s;
-    background: #4dabf7;
+    background: #228be6;
   }
 `;
 
 const AccountButton = styled.button`
   color: black;
-  margin-top: 0.6rem;
   margin-bottom: 1.9rem;
-  height: 60px;
+  height: 4rem;
   width: 80%;
   transition: 0.2s;
   border: none;
-
+  cursor: pointer;
   &.close {
     background: #a5d8ff;
   }
 
   &.open {
-    background: #4dabf7;
+    background: #228be6;
   }
 `;
 

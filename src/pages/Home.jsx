@@ -7,6 +7,7 @@ const Home = () => {
   const [postsData, setPostData] = useState({
     likePostData: "",
     latestPostData: "",
+    activityPostData: "",
   });
 
   useEffect(() => {
@@ -14,9 +15,11 @@ const Home = () => {
       try {
         const likeResponse = await instance.get("posts/top/like");
         const latestResponse = await instance.get("posts/top/latest");
+        const activityResponse = await instance.get("activities/recruit");
         setPostData({
           likePostData: likeResponse.data.payload,
           latestPostData: latestResponse.data.payload,
+          activityPostData: activityResponse.data.payload,
         });
       } catch (error) {
         console.log(error);
@@ -39,13 +42,16 @@ const Home = () => {
             </RecruitImgBox>
           </SideArea>
           <PostsArea>
-            <HomeFeedBox post={postsData.latestPostData} title={"인기글"} />
             <HomeFeedBox
-              post={postsData.latestPostData}
+              post={postsData.activityPostData}
               title={"모집중인 활동"}
             />
+            <HomeFeedBox
+              post={postsData.activityPostData}
+              title={"모집중인 활동"}
+            />
+            <HomeFeedBox post={postsData.likePostData} title={"인기글"} />
             <HomeFeedBox post={postsData.latestPostData} title={"최신글"} />
-            <HomeFeedBox post={postsData.latestPostData} title={"공지사항"} />
           </PostsArea>
         </HomeContents>
       </HomeArea>

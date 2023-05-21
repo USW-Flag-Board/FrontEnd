@@ -30,7 +30,7 @@ const SelectedCheckModal = ({ setSelectedMembersCheck, id }) => {
               <MembersBox key={loginId}>
                 <MemberIcon icon={faUser} />
                 <span>{name}</span>
-                <span>({major})</span>
+                <span>{major}</span>
               </MembersBox>
             ))}
         </Content>

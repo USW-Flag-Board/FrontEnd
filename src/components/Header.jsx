@@ -49,9 +49,9 @@ const Header = () => {
         <MenuItemBox>
           <MenuItems>
             {HEADER_ITEMS.map((item) => (
-              <MenuButton key={item} onClick={() => handleItemClick(item)}>
+              <MenuItem key={item} onClick={() => handleItemClick(item)}>
                 {item}
-              </MenuButton>
+              </MenuItem>
             ))}
           </MenuItems>
         </MenuItemBox>
@@ -175,7 +175,7 @@ const MenuItems = styled.div`
   height: 100%;
 `;
 
-const MenuButton = styled.div`
+const MenuItem = styled.div`
   width: 20%;
   height: 100%;
   display: flex;

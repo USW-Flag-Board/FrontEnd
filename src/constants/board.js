@@ -23,32 +23,32 @@ export const SEARCH_SELECT_ITEMS_PERIOD = [
   {
     id: 0,
     option: "전체기간",
-    value: "all",
+    value: "ALL",
   },
   {
     id: 1,
     option: "1일",
-    value: "one_day",
+    value: "ONE_DAY",
   },
   {
     id: 2,
     option: "1주",
-    value: "one_week",
+    value: "ONE_WEEK",
   },
   {
     id: 3,
     option: "1개월",
-    value: "one_month",
+    value: "ONE_MONTH",
   },
   {
     id: 4,
     option: "6개월",
-    value: "half_year",
+    value: "HALF_YEAR",
   },
   {
     id: 5,
     option: "1년",
-    value: "one_year",
+    value: "ONE_YEAR",
   },
 ];
 
@@ -56,27 +56,27 @@ export const SEARCH_SELECT_ITEMS_OPTION = [
   {
     id: 0,
     option: "게시글 내용 + 댓글",
-    value: "content_and_reply",
+    value: "CONTENT_AND_REPLY",
   },
   {
     id: 1,
     option: "제목만",
-    value: "title",
+    value: "TITLE",
   },
   {
     id: 2,
     option: "글작성자",
-    value: "author",
+    value: "AUTHOR",
   },
   {
     id: 3,
     option: "댓글내용",
-    value: "reply",
+    value: "REPLY",
   },
   {
     id: 4,
     option: "게시글 내용",
-    value: "content",
+    value: "CONTENT",
   },
 ];
 

@@ -1,47 +1,90 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useElapsedTime } from "../../hooks/useElaspedTime";
 
-const HomePosts = ({ post }) => {
-  const { author, createdAt, replyCount, title } = post;
-  const timeAgo = useElapsedTime(
-    `${createdAt[0]}-${createdAt[1]}-${createdAt[2]} ${createdAt[3]}:${createdAt[4]}:${createdAt[5]}`
-  );
+const HomePosts = ({ post, headerTitle }) => {
+  const { author, replyCount, title, leader, name, type } = post;
+
   return (
     <PostBox>
-      <PostInfoItem>{title}</PostInfoItem>
-      <PostInfoItem>{author}</PostInfoItem>
-      <PostInfoItem>{replyCount}</PostInfoItem>
-      <PostInfoItem>{`${timeAgo}전`}</PostInfoItem>
+      {headerTitle === "모집중인 활동" ? (
+        <>
+          <PostInfoItem>{name}</PostInfoItem>
+          <PostInfoItem>{leader}</PostInfoItem>
+          <PostInfoItem>{type}</PostInfoItem>
+        </>
+      ) : (
+        <>
+          <PostInfoItem>{title}</PostInfoItem>
+          <PostInfoItem>{author}</PostInfoItem>
+          <PostInfoItem>{replyCount}</PostInfoItem>
+        </>
+      )}
     </PostBox>
   );
 };
 
-const HomePostsBar = () => {
+const HomePostsBar = ({ headerTitle }) => {
   return (
     <PostInfoBox>
       <PostInfo>제목</PostInfo>
-      <PostInfo>작성자</PostInfo>
-      <PostInfo>댓글</PostInfo>
-      <PostInfo>작성일</PostInfo>
+      {headerTitle === "모집중인 활동" ? (
+        <>
+          <PostInfo>활동장</PostInfo>
+          <PostInfo>모집구분</PostInfo>
+        </>
+      ) : (
+        <>
+          <PostInfo>작성자</PostInfo>
+          <PostInfo>댓글</PostInfo>
+        </>
+      )}
     </PostInfoBox>
   );
 };
 
 const HomeFeedBox = ({ post, title }) => {
+  const navigate = useNavigate();
   const handlePostClick = (id) => {
     navigate(`/board/post/${id}`);
   };
-  const navigate = useNavigate();
+
+  const handleMoreButtonClick = (title) => {
+    switch (title) {
+      case "모집중인 활동":
+        navigate("/activity");
+        break;
+      case "인기글" || "최신글":
+        navigate("/board");
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <FeedBox>
-      <FeedTitle>{title}</FeedTitle>
+      <FeedBoxHeader>
+        <FeedTitle>{title}</FeedTitle>
+        <MoreContentButton
+          type="button"
+          onClick={() => handleMoreButtonClick(title)}
+        >
+          더보기
+        </MoreContentButton>
+      </FeedBoxHeader>
       <div>
-        <HomePostsBar />
+        <HomePostsBar headerTitle={title} />
         {Array.isArray(post) &&
           post.map((item) => (
-            <PostsBox key={item.id} onClick={() => handlePostClick(item.id)}>
-              <HomePosts post={item} />
+            <PostsBox
+              key={item.id}
+              onClick={
+                title !== "모집중인 활동"
+                  ? () => handlePostClick(item.id)
+                  : undefined
+              }
+            >
+              <HomePosts post={item} headerTitle={title} />
             </PostsBox>
           ))}
       </div>
@@ -61,16 +104,30 @@ const FeedBox = styled.div`
   }
 `;
 
-const FeedTitle = styled.h3`
+const FeedBoxHeader = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding-left: 1rem;
-  font-size: 1.3rem;
-  font-weight: bold;
+  background-color: #339af0;
   color: white;
   border-radius: 0.5rem 0.5rem 0 0;
   height: 3rem;
-  background-color: #339af0;
+  padding: 0 1rem;
+`;
+
+const MoreContentButton = styled.button`
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: white;
+`;
+
+const FeedTitle = styled.h3`
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: white;
   @media (max-width: 480px) {
     font-size: 1rem;
   }
@@ -94,10 +151,10 @@ const PostInfoBox = styled.div`
 const PostInfo = styled.div`
   display: flex;
   justify-content: center;
-  font-size: 0.8rem;
-  width: 15%;
+  font-size: 1rem;
+  width: 20%;
   :nth-child(1) {
-    width: 65%;
+    width: 55%;
   }
 `;
 
@@ -113,12 +170,9 @@ const PostInfoItem = styled.div`
   font-size: 0.8rem;
   display: flex;
   justify-content: center;
-  width: 15%;
+  width: 20%;
   :nth-child(1) {
-    width: 65%;
+    width: 56%;
     padding: 0 0.5rem;
-    &:hover {
-      color: #4dabf7;
-    }
   }
 `;

@@ -2,20 +2,19 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { SPECIALIZED, nameRegex, studentIdRegex } from "../../constants/signUp";
 
-const Privacy = ({ setButtonState, setPrivacy, signUpData }) => {
+const Privacy = ({ setButtonState, setPrivacy }) => {
   const [state, setState] = useState({
     name: "",
     studentId: "",
     nickname: "",
     major: "",
     nameMessage: "",
-    studentIdMessage: "",
     nickNameMessage: "",
-    majorMessage: "",
+    studentIdMessage: "",
   });
   const { name, major, nickname, studentId } = state;
-  const { studentIdMessage, nickNameMessage, majorMessage, nameMessage } =
-    state;
+  const { studentIdMessage, nickNameMessage, nameMessage } = state;
+  console.log(state);
   const updateState = (key, value) => {
     setState((prevState) => ({
       ...prevState,
@@ -32,24 +31,23 @@ const Privacy = ({ setButtonState, setPrivacy, signUpData }) => {
         updateState(
           "nameMessage",
           nameRegex.test(value)
-            ? "O"
+            ? true
             : "이름은 한글, 영문 대소문자, 띄어쓰기, 특수문자(-, ')만 입력 가능하며, 최소 2자 이상, 최대 20자 이하로 입력해야 합니다."
         );
         break;
       case "nickname":
         updateState(
           "nickNameMessage",
-          value.length >= 3 ? "O" : "3글자 이상 입력해주세요."
+          value.length >= 3
+            ? "사용가능한 닉네임입니다."
+            : "3글자 이상 입력해주세요."
         );
-        break;
-      case "major":
-        updateState("majorMessage", value === "전공을 선택해주세요" ? "" : "O");
         break;
       case "studentId":
         updateState(
           "studentIdMessage",
           studentIdRegex.test(value)
-            ? "O"
+            ? true
             : "학번은 숫자 8자리로 입력해야 합니다."
         );
         break;
@@ -60,23 +58,20 @@ const Privacy = ({ setButtonState, setPrivacy, signUpData }) => {
 
   useEffect(() => {
     const isAllValid =
-      Object.values(state)
-        .slice(0, 5)
-        .every((value) => value !== "" && value !== undefined) &&
-      Object.values(state)
-        .slice(5)
-        .every((message) => message === "O");
+      nameMessage === true &&
+      major !== "전공을 선택해주세요." &&
+      studentIdMessage === true &&
+      nickNameMessage === "사용가능한 닉네임입니다.";
     setButtonState(isAllValid);
     if (isAllValid) {
       setPrivacy({
-        ...signUpData,
         major: major,
         name: name,
         nickname: nickname,
         studentId: studentId,
       });
     }
-  }, [state]);
+  }, [nameMessage, nickNameMessage, major, studentIdMessage]);
 
   return (
     <IdPasswordArea>
@@ -98,12 +93,12 @@ const Privacy = ({ setButtonState, setPrivacy, signUpData }) => {
       <SelectSpecialize name="major" onChange={handleInputChange}>
         <option value="전공을 선택해주세요">전공을 선택해주세요.</option>
         {SPECIALIZED.map((special, index) => (
-          <option value={special.value} key={index}>
+          <option className="major-option" value={special.value} key={index}>
             {special.label}
           </option>
         ))}
       </SelectSpecialize>
-      <InfoState>{majorMessage}</InfoState>
+      <InfoState>{major}</InfoState>
       <WriteArea
         type="text"
         placeholder="학번"
@@ -131,7 +126,7 @@ const IntroduceArea = styled.div`
   width: 80%;
   color: black;
   margin-top: 1.25rem;
-  margin-bottom: 2.8rem;
+  margin-bottom: 2rem;
 `;
 
 const WriteArea = styled.input`
@@ -140,15 +135,14 @@ const WriteArea = styled.input`
   padding: 0 1.9rem 0 1.25rem;
   height: 3.1rem;
   width: 80%;
-  border-radius: 1.9rem;
-  border: 2px solid gainsboro;
+  border: 1px solid #495057;
   outline: none;
   margin: 0.6rem 1.25rem;
   :focus {
     border-color: black;
   }
   ::placeholder {
-    color: black;
+    color: #9a9a9a;
   }
 `;
 
@@ -164,17 +158,16 @@ const InfoState = styled.div`
 
 const SelectSpecialize = styled.select`
   font-size: 1rem;
-  color: black;
+  color: #9a9a9a;
   padding-left: 1.25rem;
   height: 3.4rem;
   width: 80%;
-  border-radius: 1.9rem;
-  border: 2px solid gainsboro;
+  border: 1px solid #495057;
   outline: none;
   margin: 1.25rem;
   margin-top: 0.6rem;
   margin-bottom: 0.6rem;
-  :focus {
-    border-color: black;
+  .major-option {
+    color: black;
   }
 `;
