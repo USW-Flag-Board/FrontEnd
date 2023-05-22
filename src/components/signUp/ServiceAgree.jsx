@@ -109,6 +109,7 @@ const ServiceAgreeArea = styled.div`
   display: flex;
   width: 80%;
   flex-direction: column;
+  margin-bottom: 1rem;
 `;
 
 const AllAgreeMessage = styled.div`
@@ -144,7 +145,7 @@ const AgreeButton = styled.input`
 const AgreeMessage = styled.label`
   font-size: 1.6rem;
   font-weight: 100;
-  line-height: 2rem;
+  line-height: 1.5rem;
   color: black;
   > a {
     text-decoration: underline;

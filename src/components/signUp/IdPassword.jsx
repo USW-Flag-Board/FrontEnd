@@ -96,7 +96,7 @@ const IdPassword = ({ setIdPassword, setButtonState }) => {
           "passwordMessage",
           loginRegex.password.test(value)
             ? "사용가능한 비밀번호입니다."
-            : "숫자+영문자+특수문자(!@#$%^+=-) 조합으로 8자리 이상 입력해주세요!."
+            : "숫자+영문자+특수문자(!@#$%^+=-) 조합으로 8자리 이상 입력해주세요!"
         );
         break;
       default:
@@ -204,7 +204,7 @@ const WriteArea = styled.input`
   border: none;
   padding: 0 1rem;
   ::placeholder {
-    color: gainsboro;
+    color: #9a9a9a;
   }
 `;
 
@@ -216,5 +216,5 @@ const InfoState = styled.div`
   justify-content: end;
   height: 0.7rem;
   margin-top: 1rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.3rem;
 `;

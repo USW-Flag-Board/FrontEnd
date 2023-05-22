@@ -14,7 +14,6 @@ const Privacy = ({ setButtonState, setPrivacy }) => {
   });
   const { name, major, nickname, studentId } = state;
   const { studentIdMessage, nickNameMessage, nameMessage } = state;
-  console.log(state);
   const updateState = (key, value) => {
     setState((prevState) => ({
       ...prevState,
@@ -59,7 +58,7 @@ const Privacy = ({ setButtonState, setPrivacy }) => {
   useEffect(() => {
     const isAllValid =
       nameMessage === true &&
-      major !== "전공을 선택해주세요." &&
+      major !== "전공을 선택해주세요" &&
       studentIdMessage === true &&
       nickNameMessage === "사용가능한 닉네임입니다.";
     setButtonState(isAllValid);
@@ -98,7 +97,7 @@ const Privacy = ({ setButtonState, setPrivacy }) => {
           </option>
         ))}
       </SelectSpecialize>
-      <InfoState>{major}</InfoState>
+      <InfoState />
       <WriteArea
         type="text"
         placeholder="학번"

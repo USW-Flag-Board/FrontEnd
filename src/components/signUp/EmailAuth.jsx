@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { emailRegex } from "../../constants/signUp";
 import instance from "../../apis/AxiosInterceptorSetup";
@@ -7,6 +7,7 @@ const EmailAuth = ({
   setEmailAuth,
   setCertification,
   certification,
+  signUpData,
 }) => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -45,6 +46,7 @@ const EmailAuth = ({
   const handleAuthNumSend = async () => {
     try {
       const response = await instance.post("/auth/join", {
+        ...signUpData,
         email: email,
       });
       if (response.status === 200) setButtonState(true);
@@ -53,6 +55,10 @@ const EmailAuth = ({
         alert("서버 에러입니다. 관리자에게 문의해주세요.");
     }
   };
+
+  useEffect(() => {
+    setButtonState(false);
+  }, []);
 
   return (
     <IdPasswordArea>
@@ -110,17 +116,17 @@ const EmailInputBox = styled.div`
 
 const AuthButton = styled.div`
   display: flex;
-  text-align: center;
   align-items: center;
   justify-content: center;
   color: black;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   border: 2px solid gainsboro;
   width: 25%;
   height: 3.1rem;
   padding: 0 0.8rem 0 0.8rem;
   transition: 0.2s;
   white-space: pre-line;
+  cursor: pointer;
   &:hover {
     transition: 0.2s;
     border-color: #228be6;
@@ -147,7 +153,6 @@ const InfoState = styled.div`
 
 const IntroduceArea = styled.div`
   font-size: 1.5rem;
-  font-weight: 100;
   line-height: 2rem;
   width: 80%;
   color: black;

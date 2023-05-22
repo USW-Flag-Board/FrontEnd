@@ -10,6 +10,7 @@ import {
   PostContentPage,
   EditPost,
   WritePost,
+  MyPage,
 } from "./pages";
 import GlobalStyle from "./styles/GlobalStyle";
 
@@ -24,10 +25,11 @@ const App = () => {
         <Route path="/edit" element={<EditUser />} />
         <Route path="/board" element={<BulletinBoard />} />
         <Route path="/board/write" element={<WritePost />} />
-        <Route path="/search" element={<SearchPage />} />
+        <Route path="/search/:something" element={<SearchPage />} />
         <Route path="/activity" element={<Activity />} />
         <Route path="/board/post/:postId" element={<PostContentPage />} />
         <Route path="/board/post/:postId/edit" element={<EditPost />} />
+        <Route path="/userInfo" element={<MyPage />} />
       </Routes>
     </BrowserRouter>
   );

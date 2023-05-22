@@ -9,7 +9,13 @@ import { SessionStorage } from "../utils/browserStorage";
 
 const Header = () => {
   const [login, setLogin] = useState(false);
+  const [searchContent, setSearchContent] = useState("");
   const navigate = useNavigate();
+
+  const handleSearchCotent = (e) => {
+    e.preventDefault();
+    navigate(`/search/${searchContent}`);
+  };
 
   const handleItemClick = (item) => {
     switch (item) {
@@ -55,10 +61,14 @@ const Header = () => {
             ))}
           </MenuItems>
         </MenuItemBox>
-        <SearchBox login={login}>
+        <SearchBox onSubmit={handleSearchCotent} login={login}>
           <SearchPaper>
             <FaMagnifyingGlass icon={faMagnifyingGlass} />
-            <InputBase type="text" />
+            <InputBase
+              type="text"
+              value={searchContent}
+              onChange={(e) => setSearchContent(e.target.value)}
+            />
           </SearchPaper>
         </SearchBox>
         <UserBox loging={login}>
@@ -91,6 +101,7 @@ const HeaderArea = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
+  margin: 0 auto;
   height: 11vh;
   border-bottom: 1px solid #e9ecef;
 
@@ -191,7 +202,7 @@ const MenuItem = styled.div`
   }
 `;
 
-const SearchBox = styled.div`
+const SearchBox = styled.form`
   box-sizing: border-box;
   width: ${(props) => (props.login ? "25%" : "20%")};
   height: 60%;

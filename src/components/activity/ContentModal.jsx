@@ -82,6 +82,7 @@ const ContentModal = ({ closeModal, cardId }) => {
       try {
         const response = await instance.get(`/activities/${cardId}`);
         setModalContent(response.data.payload);
+        console.log(modalContent);
       } catch (error) {
         console.log(error);
       }
