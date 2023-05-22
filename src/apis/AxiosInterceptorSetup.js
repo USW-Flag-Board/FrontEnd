@@ -11,10 +11,11 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     const accessToken = sessionStorage.getItem("UserToken");
-    if(accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
-    
+    if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
+
     return config;
-  },(error) => {
+  },
+  (error) => {
     return Promise.reject(error);
   }
 );
@@ -27,17 +28,15 @@ instance.interceptors.response.use(
     const originalRequest = error.config;
     try {
       await handleUnauthorizedError(error, originalRequest);
-
     } catch (error) {
       return Promise.reject(error);
     }
   }
 );
 
-
 async function handleUnauthorizedError(error, originalRequest) {
   const status = error.response.status;
-  console.log(status)
+  console.log(status);
   if (status === 401) {
     const { accessToken, refreshToken } = await refreshTokens();
     updateTokens(accessToken, refreshToken);
@@ -45,7 +44,7 @@ async function handleUnauthorizedError(error, originalRequest) {
 
     return await axios(originalRequest);
   }
-  return Promise.reject(error); 
+  return Promise.reject(error);
 }
 
 function updateTokens(accessToken, refreshToken) {
@@ -57,11 +56,12 @@ async function refreshTokens() {
   try {
     const accessToken = sessionStorage.getItem("UserToken");
     const refreshToken = await cookiesOption.get("refresh_token");
-    const response = await instance.post('/auth/reissue', {
+    const response = await instance.post("/auth/reissue", {
       accessToken: accessToken,
       refreshToken: refreshToken,
     });
-    const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data.payload;
+    const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
+      response.data.payload;
     const expiresIn = response.data.payload.accessTokenExpiresIn;
     sessionStorage.setItem("expire", expiresIn);
 

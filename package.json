@@ -13,11 +13,9 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.2.3",
     "cross-env": "^7.0.3",
-    "http-proxy-middleware": "^2.0.6",
-    "query-string": "^8.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-paginate": "^8.1.4",
+    "react-quill": "^2.0.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
@@ -31,10 +29,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "cross-env REACT_APP_API_URL=localhost react-scripts start",
-    "build": "cross-env REACT_APP_API_URL=25.4.194.100 react-scripts build",
+    "start": "react-scripts start",
+    "build": "eslint && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "eslint": "eslint"
   },
   "eslintConfig": {
     "extends": [
@@ -55,6 +54,13 @@
     ]
   },
   "devDependencies": {
-    "axios": "^1.2.1"
+    "axios": "^1.2.1",
+    "eslint": "^8.31.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.7.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^2.8.2"
   }
 }

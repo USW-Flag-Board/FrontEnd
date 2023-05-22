@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
+import { faPen, faTrashArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
+import logo from "../../assets/images/logo2.png";
 import { MyProfile } from "../../components";
 import { BAR_NAME } from "../../constants/user";
-import { useNavigate } from "react-router-dom";
-import logo from "../../assets/images/logo2.png"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { SessionStorage } from "../../utils/browserStorage";
 import { cookiesOption } from "../../utils/cookiesOption";
 
@@ -17,11 +17,11 @@ const EditUser = () => {
     bio: "",
     email: "",
     major: "",
-    nickName: "",
+    nickname: "",
     studentId: "",
   });
   const [profileImg, setProfileImg] = useState(null);
-  const { bio, email, major, name, nickName, studentId, loginId } = userData;
+  const { bio, email, major, name, nickname, studentId, loginId } = userData;
   const navigate = useNavigate();
 
   const handleLogOutClick = () => {
@@ -37,8 +37,8 @@ const EditUser = () => {
     formData.append("image", file);
 
     try {
-      await instance.post("/members/avatar/image", formData);
-      
+      await instance.put("/members/avatar/image", formData);
+
       reader.onload = () => {
         setProfileImg(reader.result);
       };
@@ -58,12 +58,21 @@ const EditUser = () => {
         setBarName("나의활동");
         break;
       case "로그아웃":
-        if(window.confirm("로그아웃 하시겠습니까?")){
+        if (window.confirm("로그아웃 하시겠습니까?")) {
           handleLogOutClick();
         }
         break;
       default:
         break;
+    }
+  };
+
+  const handleImgReset = async () => {
+    try {
+      const response = await instance.put(`/members/avatar/reset`);
+      setProfileImg(response.data.payload);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -79,7 +88,7 @@ const EditUser = () => {
           name: data.name,
           email: data.email,
           major: data.major,
-          nickName: data.nickName,
+          nickname: data.nickname,
           studentId: data.studentId,
           loginId: data.loginId,
         }));
@@ -104,6 +113,21 @@ const EditUser = () => {
             </LogoBox>
             <ProfileBox>
               <ProfileImgBox>
+                <IdButtonBox>
+                  <label htmlFor="img-reset">
+                    <FontAwesomeIcon
+                      icon={faTrashArrowUp}
+                      className="btn-reset"
+                    >
+                      프로필 사진 변경
+                    </FontAwesomeIcon>
+                  </label>
+                  <ImgResetButton
+                    type="button"
+                    id="img-reset"
+                    onClick={handleImgReset}
+                  />
+                </IdButtonBox>
                 <ProfileImg src={profileImg} />
                 <IdButtonBox>
                   <label htmlFor="file">
@@ -116,7 +140,7 @@ const EditUser = () => {
                     id="file"
                     accept="image/*"
                     onChange={handleImageChange}
-                    />
+                  />
                 </IdButtonBox>
               </ProfileImgBox>
               <NameBox>{name}</NameBox>
@@ -134,14 +158,12 @@ const EditUser = () => {
         <EditPageBox>
           {barName === "내프로필" && (
             <MyProfile
-              profileImg={profileImg}
-              nickName={nickName}
+              nickname={nickname}
               bio={bio}
               major={major}
               studentId={studentId}
               loginId={loginId}
               setUserData={setUserData}
-              setProfileImg={setProfileImg}
             />
           )}
         </EditPageBox>
@@ -161,11 +183,11 @@ const EditPageArea = styled.div`
 
 const EditPageBox = styled.div`
   width: 70%;
-  &:nth-child(1){
+  &:nth-child(1) {
     width: 30%;
     z-index: 1;
   }
-  &:nth-child(2){
+  &:nth-child(2) {
     /* background-color: #f8f9fa; */
   }
 `;
@@ -187,8 +209,8 @@ const LogoBox = styled.div`
 `;
 
 const LogoImg = styled.img`
-  width: 100%; 
-  height: 100%; 
+  width: 100%;
+  height: 100%;
   cursor: pointer;
 `;
 
@@ -197,7 +219,7 @@ const ProfileBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 
 const ProfileImgBox = styled.div`
   width: 100%;
@@ -217,6 +239,9 @@ const IdButtonBox = styled.div`
   #file {
     display: none;
   }
+  #img-reset {
+    display: none;
+  }
   .btn-upload {
     border-radius: 1rem;
     background-color: black;
@@ -225,8 +250,20 @@ const IdButtonBox = styled.div`
     align-items: center;
     padding: 0.4rem;
     position: relative;
-    top: 7rem;
+    top: 7.5rem;
     right: 2.5rem;
+    cursor: pointer;
+  }
+  .btn-reset {
+    border-radius: 1rem;
+    background-color: #adb5bd;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0.4rem;
+    position: relative;
+    top: 7.5rem;
+    left: 2.5rem;
     cursor: pointer;
   }
 `;
@@ -236,11 +273,16 @@ const ImgEditButton = styled.input`
   height: 100%;
 `;
 
+const ImgResetButton = styled.button`
+  width: 100%;
+  height: 100%;
+`;
+
 const NameBox = styled.p`
   font-size: 1.4rem;
   font-weight: bold;
   margin-bottom: 0.6rem;
-  `;
+`;
 
 const EmailBox = styled.p`
   font-size: 0.9rem;

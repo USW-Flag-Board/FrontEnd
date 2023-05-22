@@ -1,18 +1,13 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import {
-  Header,
-  ActivityCard,
-  WriteModal,
-  ContentModal,
-} from "../components";
+import { Header, ActivityCard, WriteModal, ContentModal } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { ACTIVITY_CATEGORIE } from "../constants/activity";
-import { baseInstance } from "../apis/instance";
+import { SessionStorage } from "../utils/browserStorage";
+import instance from "../apis/AxiosInterceptorSetup";
 
 const Activity = () => {
-  const header = true;
   const [isOpen, setIsOpen] = useState(false);
   const [contentOpen, setContentOpen] = useState(false);
   const [cardId, setCardId] = useState("");
@@ -27,7 +22,7 @@ const Activity = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await baseInstance.get("/activities");
+        const response = await instance.get("/activities");
         const allActivities = response.data.payload.allActivities;
 
         const filteredActivities = {
@@ -64,24 +59,32 @@ const Activity = () => {
 
   return (
     <>
-      {header && <Header />}
+      <Header />
       {isOpen && <WriteModal closeModal={handleWrite} />}
       {contentOpen && <ContentModal closeModal={handleCard} cardId={cardId} />}
       <ActivityArea>
         <ActivityBox>
           <KategorieBox>
             {ACTIVITY_CATEGORIE.map(({ id, icon, title, value }) => (
-              <Kategorie key={id} onClick={() => KategorieClick(value)}>
+              <Kategorie
+                key={id}
+                onClick={() => KategorieClick(value)}
+                selected={
+                  kategorie === value || (kategorie === "" && value === "ALL")
+                }
+              >
                 <KategorieIcon icon={icon} />
                 <span>{title}</span>
               </Kategorie>
             ))}
           </KategorieBox>
           <SwitchArea>
-            <ActivityWriteButton onClick={handleWrite} type="button">
-              <WriteButtonIcon icon={faPencil} />
-              <WriteButton>글쓰기</WriteButton>
-            </ActivityWriteButton>
+            {SessionStorage.get("UserToken") ? (
+              <ActivityWriteButton onClick={handleWrite} type="button">
+                <WriteButtonIcon icon={faPencil} />
+                <WriteButton>글쓰기</WriteButton>
+              </ActivityWriteButton>
+            ) : null}
           </SwitchArea>
         </ActivityBox>
         <CardArea>
@@ -109,8 +112,10 @@ export default Activity;
 
 const ActivityArea = styled.div`
   width: 100%;
-  padding: 4rem 8rem 0 8rem;
   z-index: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   @media screen and (max-width: 1023px) {
     width: 100%;
     padding: 2rem 2rem;
@@ -118,14 +123,15 @@ const ActivityArea = styled.div`
 `;
 
 const ActivityBox = styled.div`
-  width: 100%;
+  width: 80%;
   height: 5%;
   display: flex;
   justify-content: space-between;
+  margin-top: 2rem;
 `;
 
 const KategorieBox = styled.div`
-  width: 60%;
+  width: 100%;
   height: 2rem;
   display: flex;
   align-items: center;
@@ -139,9 +145,7 @@ const Kategorie = styled.div`
   font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;
-  &.active {
-    color: lightblue;
-  }
+  color: ${(props) => (props.selected ? "#212529" : "#adb5bd")};
 `;
 
 const KategorieIcon = styled(FontAwesomeIcon)`
@@ -159,8 +163,15 @@ const SwitchArea = styled.div`
 
 const ActivityWriteButton = styled.button`
   box-sizing: border-box;
-  width: 40%;
+  background-color: #339af0;
+  cursor: pointer;
+  color: white;
+  width: 50%;
   height: 100%;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 5px;
 `;
 
 const WriteButtonIcon = styled(FontAwesomeIcon)`
@@ -172,16 +183,16 @@ const WriteButton = styled.span``;
 
 const CardArea = styled.div`
   box-sizing: border-box;
-  padding: 3rem 0.5rem;
-  width: 100%;
+  width: 80%;
+  margin-top: 2rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 1rem;
 `;
 
 const Card = styled.div`
   width: 23%;
-  height: 150px;
+  height: 10rem;
   @media (max-width: 1396px) {
     width: 48%;
   }

@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { SELECT_OPTION, BOOK_RADIO_OPTION, ONLINE_RADIO_OPTION } from "../../constants/activity";
+import {
+  SELECT_OPTION,
+  BOOK_RADIO_OPTION,
+  ONLINE_RADIO_OPTION,
+} from "../../constants/activity";
 import instance from "../../apis/AxiosInterceptorSetup";
-
 
 const ActivityWriteModal = ({ closeModal }) => {
   const [type, setType] = useState("");
@@ -12,19 +15,18 @@ const ActivityWriteModal = ({ closeModal }) => {
   const [bookName, setbookName] = useState("");
   const [proceed, setProceed] = useState("");
   const [githubLink, setGithubLink] = useState("");
-  
-  useEffect(()=>{
-    if (type === 'PROJECT') setBookUsage('NOT_USE');
-    else setBookUsage("")
+
+  useEffect(() => {
+    if (type === "PROJECT") setBookUsage("NOT_USE");
+    else setBookUsage("");
     setbookName("");
     setGithubLink("");
-  }, [type])
-  
+  }, [type]);
 
   const handleType = (event) => {
     setType(event.target.value);
   };
-  
+
   const submit = async () => {
     const data = {
       type: type,
@@ -34,14 +36,14 @@ const ActivityWriteModal = ({ closeModal }) => {
       githubURL: githubLink,
       proceed: proceed,
       name: title,
-    }
-    try{
-      const response = await instance.post("/activities", data)
-      if(response.status === 201) closeModal();
-    }catch(error){
+    };
+    try {
+      const response = await instance.post("/activities", data);
+      if (response.status === 201) closeModal();
+    } catch (error) {
       console.log(error);
     }
-  }  
+  };
 
   return (
     <ModalArea>
@@ -68,53 +70,57 @@ const ActivityWriteModal = ({ closeModal }) => {
             onChange={(e) => setContent(e.target.value)}
           />
         </ContentBox>
-        {type === "MENTORING" || type === "STUDY" ?
-        <CheckBox>
-          <RadioBox>
-            <Label>책 사용 여부</Label>
-            {BOOK_RADIO_OPTION.map(({ id, option, value }) => (
-              <Radio key={id}>
-                <span>{option}</span>
+        {type === "MENTORING" || type === "STUDY" ? (
+          <CheckBox>
+            <RadioBox>
+              <Label>책 사용 여부</Label>
+              {BOOK_RADIO_OPTION.map(({ id, option, value }) => (
+                <Radio key={id}>
+                  <span>{option}</span>
+                  <RadioInput
+                    type="radio"
+                    value={value}
+                    name="bookUsage"
+                    onClick={() => setBookUsage(value)}
+                  />
+                </Radio>
+              ))}
+              {bookUsage === "USE" ? (
                 <RadioInput
-                  type="radio"
-                  value={value}
-                  name="bookUsage"
-                  onClick={() => setBookUsage(value)}
+                  type="text"
+                  placeholder="책 이름을 입력해주세요"
+                  value={bookName}
+                  onChange={(e) => setbookName(e.target.value)}
                 />
-              </Radio>
-            ))}
-            {bookUsage === "USE" ? 
-              <RadioInput 
-                type="text"
-                placeholder="책 이름을 입력해주세요"
-                value={bookName}
-                onChange={(e) => setbookName(e.target.value)}/> : null}
-          </RadioBox> 
+              ) : null}
+            </RadioBox>
+            <RadioBox>
+              <Label>온/오프라인</Label>
+              {ONLINE_RADIO_OPTION.map(({ id, option, value }) => (
+                <Radio key={id}>
+                  <span>{option}</span>
+                  <RadioInput
+                    type="radio"
+                    value={value}
+                    name="online"
+                    onClick={() => setProceed(value)}
+                  />
+                </Radio>
+              ))}
+            </RadioBox>
+          </CheckBox>
+        ) : null}
+        {type === "PROJECT" ? (
           <RadioBox>
-            <Label>온/오프라인</Label>
-            {ONLINE_RADIO_OPTION.map(({ id, option, value }) => (
-              <Radio key={id}>
-                <span>{option}</span>
-                <RadioInput
-                  type="radio"
-                  value={value}
-                  name="online"
-                  onClick={() => setProceed(value)}
-                />
-              </Radio>
-            ))}
-          </RadioBox>
-        </CheckBox> : null}
-        {type === "PROJECT" ? 
-          (<RadioBox>
             <CheckBox>
               <RadioBox>
                 <Label>깃허브 링크:</Label>
-                <RadioInput 
+                <RadioInput
                   type="text"
                   placeholder="링크를 입력해주세요."
                   value={githubLink}
-                  onChange={(e) => setGithubLink(e.target.value)}/>
+                  onChange={(e) => setGithubLink(e.target.value)}
+                />
               </RadioBox>
               <RadioBox>
                 <Label>온/오프라인</Label>
@@ -131,7 +137,8 @@ const ActivityWriteModal = ({ closeModal }) => {
                 ))}
               </RadioBox>
             </CheckBox>
-          </RadioBox>): null}
+          </RadioBox>
+        ) : null}
         <ButtonBox>
           <ModalButton onClick={submit}>작성완료</ModalButton>
           <ModalButton onClick={closeModal}>작성취소</ModalButton>

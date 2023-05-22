@@ -1,35 +1,32 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { cookiesOption } from "../../utils/cookiesOption";
-import { SessionStorage } from "../../utils/browserStorage";
+import instance from "../../apis/AxiosInterceptorSetup";
 import { Header } from "../../components";
-import { baseInstance } from "../../apis/instance";
+import { SessionStorage } from "../../utils/browserStorage";
 
-const MyPage = () => {
-  const header = true;
-  const navigate = useNavigate();
+const UserPage = () => {
   const [userData, setUserData] = useState("");
   const { bio, nickName, profileImg, loginId } = userData;
-  
-  useEffect(()=> {
+
+  useEffect(() => {
     const loginId = SessionStorage.get("User_id");
-    baseInstance.get(`/members/${loginId}`)
-      .then(response => {
+    instance
+      .get(`/members/${loginId}`)
+      .then((response) => {
         setUserData(response.data.payload);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
-  }, [])
+  }, []);
 
   return (
     <>
-      {header && <Header/>}
+      <Header />
       <PageArea>
         <PageBox>
           <TopPage>
-            <UserPage>
+            <UserPageBox>
               <ProfileArea>
                 <ProfileBox>
                   <ProfileImg src={profileImg} />
@@ -43,10 +40,8 @@ const MyPage = () => {
               <ProfileButtonBox>
                 <EditProfile>프로필 수정</EditProfile>
               </ProfileButtonBox>
-            </UserPage>
-            <HistoryArea>
-
-            </HistoryArea>
+            </UserPageBox>
+            <HistoryArea></HistoryArea>
           </TopPage>
           <BottomPage>내가 쓴 글</BottomPage>
         </PageBox>
@@ -72,7 +67,7 @@ const PageArea = styled.div`
 const PageBox = styled.div`
   width: calc(100vw - 16rem);
   box-sizing: border-box;
-`
+`;
 
 const TopPage = styled.div`
   width: 100%;
@@ -90,7 +85,7 @@ const BottomPage = styled.div`
   font-weight: bold;
 `;
 
-const UserPage = styled.div`
+const UserPageBox = styled.div`
   width: 40%;
   height: 100%;
   background-color: #e7f5ff;
@@ -172,4 +167,4 @@ const HistoryArea = styled.div`
   height: 100%;
 `;
 
-export default MyPage;
+export default UserPage;

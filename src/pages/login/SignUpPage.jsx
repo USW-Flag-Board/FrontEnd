@@ -2,8 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo2 from "../../assets/images/logo2.png";
-import { ServiceAgree, JoinTypeSelect, IdPassword, Privacy, EmailAuth } from "../../components/signUp";
-import { baseInstance } from "../../apis/instance";
+import {
+  EmailAuth,
+  IdPassword,
+  JoinTypeSelect,
+  Privacy,
+  ServiceAgree,
+} from "../../components/signUp";
+
+import instance from "../../apis/AxiosInterceptorSetup";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -17,93 +24,104 @@ const SignUpPage = () => {
     nickname: "",
     password: "",
     studentId: "",
-  })
+  });
   const [certification, setCertification] = useState("");
-  
-  const NextIndex = async () => {
-    setSignUpIndex((signUpIndex) => signUpIndex + 1);
-    if (signUpIndex + 1 === 5) {
-      setButtonState(false);
-      try {
-        await baseInstance.post("/auth/sign-up", {
-          certification: certification,
-          email: signUpData.email,
-        });
-        navigate("/login");
-      } catch (error) {
-        if (error.response.status === 400) {
-          navigate("/signup");
-        } else if (error.response.status === 404) {
-          alert("존재하지 않는 가입정보입니다.");
-        } else if (error.response.status === 409) {
-          alert("인증번호가 일치하지 않습니다.");
-        }
+  const [progressValue, setProgressValue] = useState(20);
+  const handleUpdateUserData = (updateData) => {
+    setSignUpData((prev) => ({
+      ...prev,
+      ...updateData,
+    }));
+  };
+  const handleButtonState = (state) => {
+    setButtonState(state);
+  };
+
+  const NextIndex = () => {
+    if (signUpIndex !== 4) {
+      setProgressValue((prev) => (prev += 20));
+      setSignUpIndex((signUpIndex) => signUpIndex + 1);
+    }
+  };
+
+  const finishSignUp = async () => {
+    try {
+      await instance.post("/auth/sign-up", {
+        certification: certification,
+        email: signUpData.email,
+      });
+      navigate("/login");
+    } catch (error) {
+      if (error.response.status === 400) {
+        navigate("/signup");
+      } else if (error.response.status === 404) {
+        alert("존재하지 않는 가입정보입니다.");
+      } else if (error.response.status === 409) {
+        alert("인증번호가 일치하지 않습니다.");
       }
     }
   };
 
+  const handleCertification = (value) => {
+    setCertification(value);
+  };
   return (
     <PageArea>
       <PageBox>
+        <Logo
+          alt="Flag 로고"
+          className="Logo"
+          src={logo2}
+          onClick={() => navigate("/")}
+        />
         <SignUpArea>
-          <Logo
-            alt="Flag 로고"
-            className="Logo"
-            src={logo2}
-            onClick={() => navigate("/")}
-          />
+          <ProgressBox>
+            <Progress value={progressValue} max={100} />
+          </ProgressBox>
           {signUpIndex === 0 && (
-            <ServiceAgree setButtonState={setButtonState} />
+            <ServiceAgree setButtonState={handleButtonState} />
           )}
 
           {signUpIndex === 1 && (
             <JoinTypeSelect
-              setButtonState={setButtonState}
-              signUpData={signUpData}
-              setJoinType={setSignUpData}
+              setButtonState={handleButtonState}
+              setJoinType={handleUpdateUserData}
             />
           )}
 
           {signUpIndex === 2 && (
             <IdPassword
-              setButtonState={setButtonState}
-              signUpData={signUpData}
-              setIdPassword={setSignUpData}
+              setButtonState={handleButtonState}
+              setIdPassword={handleUpdateUserData}
             />
           )}
 
           {signUpIndex === 3 && (
             <Privacy
-              setButtonState={setButtonState}
-              setPrivacy={setSignUpData}
-              signUpData={signUpData}
+              setButtonState={handleButtonState}
+              setPrivacy={handleUpdateUserData}
             />
           )}
 
           {signUpIndex === 4 && (
             <EmailAuth
-              setButtonState={setButtonState}
-              setEmailAuth={setSignUpData}
               signUpData={signUpData}
+              setButtonState={handleButtonState}
+              setEmailAuth={handleUpdateUserData}
               certification={certification}
-              setCertification={setCertification}
+              setCertification={handleCertification}
             />
           )}
 
           <AccountButton
             className={buttonState ? "open" : "close"}
             disabled={!buttonState}
-            onClick={() => NextIndex()}
+            onClick={
+              signUpIndex !== 4 ? () => NextIndex() : () => finishSignUp()
+            }
           >
-          {signUpIndex === 4 ? "회원가입 완료" : "Next"}
+            {signUpIndex === 4 ? "회원가입 완료" : "다음 단계로 이동"}
           </AccountButton>
-          <RadioArea>
-            <Radio className={signUpIndex === 0 && "current"} />
-            <Radio className={signUpIndex === 1 && "current"} />
-            <Radio className={signUpIndex === 2 && "current"} />
-            <Radio className={signUpIndex === 3 && "current"} />
-            <Radio className={signUpIndex === 4 && "current"} />
-          </RadioArea>
         </SignUpArea>
       </PageBox>
     </PageArea>
@@ -119,17 +137,11 @@ const PageArea = styled.div`
 `;
 
 const PageBox = styled.div`
-  width: 40%;
+  width: 30rem;
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
-  @media (min-width: 481px ) and (max-width: 1024px){
-    width: 80%;
-  }
-
-  @media (max-width: 480px) {
-    width: 80%;
-  }
 `;
 
 const SignUpArea = styled.div`
@@ -139,56 +151,40 @@ const SignUpArea = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
-  border: 2px solid #9a9a9a;
-  border-radius: 1.25rem;
+  border: 1px solid #495057;
 `;
 
 const Logo = styled.img`
-  width: 50%;
-  height: 30;
-  margin-bottom: 1rem;
-  margin-top: 2rem;
-`;
-
-const RadioArea = styled.div`
-  width: 50%;
-  margin-top: 0.6rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Radio = styled.div`
-  width: 1.25rem;
-  height: 1.25rem;
-  margin: 0 0.3rem 1rem 0.3rem;
-  transition: 0.2s;
-  background: none;
-  border: 2px solid #4dabf7;
-  border-radius: 20px;
-
-  &.current {
-    transition: 0.2s;
-    background: #4dabf7;
-  }
+  width: 35%;
+  cursor: pointer;
 `;
 
 const AccountButton = styled.button`
-  color: black;
-  margin-top: 0.6rem;
+  color: white;
   margin-bottom: 1.9rem;
-  height: 60px;
+  height: 4rem;
   width: 80%;
-  transition: 0.2s;
+  font-size: 1.2rem;
   border: none;
-
+  cursor: pointer;
   &.close {
     background: #a5d8ff;
   }
 
   &.open {
-    background: #4dabf7;
+    background: #228be6;
   }
+`;
+
+const ProgressBox = styled.div`
+  display: flex;
+  width: 80%;
+  justify-content: flex-start;
+  margin-top: 1rem;
+`;
+
+const Progress = styled.progress`
+  width: 60%;
 `;
 
 export default SignUpPage;

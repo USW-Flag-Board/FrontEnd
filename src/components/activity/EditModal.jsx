@@ -1,8 +1,10 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { BOOK_RADIO_OPTION, ONLINE_RADIO_OPTION } from "../../constants/activity";
+import {
+  BOOK_RADIO_OPTION,
+  ONLINE_RADIO_OPTION,
+} from "../../constants/activity";
 import instance from "../../apis/AxiosInterceptorSetup";
-
 
 const EditModal = ({ modalContent, setEdit }) => {
   const type = modalContent.type;
@@ -12,7 +14,7 @@ const EditModal = ({ modalContent, setEdit }) => {
   const [bookName, setbookName] = useState(modalContent.bookName);
   const [proceed, setProceed] = useState(modalContent.proceed);
   const [githubLink, setGithubLink] = useState(modalContent.githubURL || "");
-  
+
   const submit = async () => {
     const data = {
       bookName: bookName,
@@ -21,34 +23,34 @@ const EditModal = ({ modalContent, setEdit }) => {
       githubURL: githubLink,
       proceed: proceed,
       name: title,
-    }
-    try{
-      await instance.put(`/activities/${modalContent.id}`, data)
+    };
+    try {
+      await instance.put(`/activities/${modalContent.id}`, data);
       setEdit(false);
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
-  } 
+  };
 
   return (
-      <>
-        <SelectAndTitle>
-          <Select>{type}</Select>
-          <Title
-            type="text"
-            placeholder="활동의 이름을 입력해주세요."
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </SelectAndTitle>
-        <ContentBox>
-          <ContentInput
-            placeholder="내용을 입력해주세요."
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-        </ContentBox>
-        {type === "MENTORING" || type === "STUDY" ?
+    <>
+      <SelectAndTitle>
+        <Select>{type}</Select>
+        <Title
+          type="text"
+          placeholder="활동의 이름을 입력해주세요."
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </SelectAndTitle>
+      <ContentBox>
+        <ContentInput
+          placeholder="내용을 입력해주세요."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
+      </ContentBox>
+      {type === "MENTORING" || type === "STUDY" ? (
         <CheckBox>
           <RadioBox>
             <Label>책 사용 여부</Label>
@@ -64,17 +66,15 @@ const EditModal = ({ modalContent, setEdit }) => {
                 />
               </Radio>
             ))}
-            {bookUsage === "USE" ? 
-              <RadioInput 
+            {bookUsage === "USE" ? (
+              <RadioInput
                 type="text"
                 placeholder="책 이름을 입력해주세요"
                 value={bookName}
                 onChange={(e) => setbookName(e.target.value)}
-                /> 
-            : 
-                null
-            }
-          </RadioBox> 
+              />
+            ) : null}
+          </RadioBox>
           <RadioBox>
             <Label>온/오프라인</Label>
             {ONLINE_RADIO_OPTION.map(({ id, option, value }) => (
@@ -90,45 +90,47 @@ const EditModal = ({ modalContent, setEdit }) => {
               </Radio>
             ))}
           </RadioBox>
-        </CheckBox> : null}
-        {type === "PROJECT" ? 
-          (<RadioBox>
-            <CheckBox>
-              <RadioBox>
-                <Label>깃허브 링크:</Label>
-                <RadioInput 
-                  type="text"
-                  placeholder="링크를 입력해주세요."
-                  value={githubLink}
-                  onChange={(e) => setGithubLink(e.target.value)}/>
-              </RadioBox>
-              <RadioBox>
-                <Label>온/오프라인</Label>
-                {ONLINE_RADIO_OPTION.map(({ id, option, value }) => (
-                  <Radio key={id}>
-                    <span>{option}</span>
-                    <RadioInput
-                      type="radio"
-                      value={value}
-                      name="online"
-                      checked={proceed === value}
-                      onChange={() => setProceed(value)}
-                    />
-                  </Radio>
-                ))}
-              </RadioBox>
-            </CheckBox>
-          </RadioBox>): null}
-        <ButtonBox>
-          <ModalButton onClick={()=>setEdit(false)}>취소</ModalButton>
-          <ModalButton onClick={submit}>완료</ModalButton>
-        </ButtonBox>
-      </>
+        </CheckBox>
+      ) : null}
+      {type === "PROJECT" ? (
+        <RadioBox>
+          <CheckBox>
+            <RadioBox>
+              <Label>깃허브 링크:</Label>
+              <RadioInput
+                type="text"
+                placeholder="링크를 입력해주세요."
+                value={githubLink}
+                onChange={(e) => setGithubLink(e.target.value)}
+              />
+            </RadioBox>
+            <RadioBox>
+              <Label>온/오프라인</Label>
+              {ONLINE_RADIO_OPTION.map(({ id, option, value }) => (
+                <Radio key={id}>
+                  <span>{option}</span>
+                  <RadioInput
+                    type="radio"
+                    value={value}
+                    name="online"
+                    checked={proceed === value}
+                    onChange={() => setProceed(value)}
+                  />
+                </Radio>
+              ))}
+            </RadioBox>
+          </CheckBox>
+        </RadioBox>
+      ) : null}
+      <ButtonBox>
+        <ModalButton onClick={() => setEdit(false)}>취소</ModalButton>
+        <ModalButton onClick={submit}>완료</ModalButton>
+      </ButtonBox>
+    </>
   );
 };
 
 export default EditModal;
-
 
 const SelectAndTitle = styled.div`
   display: flex;

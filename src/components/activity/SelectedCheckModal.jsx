@@ -1,47 +1,53 @@
 import styled from "styled-components";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import instance from "../../apis/AxiosInterceptorSetup";
 
-const SelectedCheckModal = ({setSelectedMembersCheck, id}) => {
-    const [selectedMember, setSelectedMember] = useState([]);
-    
-    useEffect(()=>{
-        async function fetchData(){
-            try{
-                const response = await instance.get(`activities/${id}/participant`)
-                setSelectedMember(response.data.payload);
-                console.log(response.data.payload)
-            }catch(error){
-                console.log(error)
-            }
-        }
-        fetchData();
-    }, [id])
-    
-    return(
-      <>
-        <ContentBox>
-          <Content className="content-area">
-            <MembersTitle>참여자 정보 확인</MembersTitle>
-            {selectedMember && selectedMember.map(({name, major, loginId})=> (
+const SelectedCheckModal = ({ setSelectedMembersCheck, id }) => {
+  const [selectedMember, setSelectedMember] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await instance.get(`activities/${id}/participant`);
+        setSelectedMember(response.data.payload);
+        console.log(response.data.payload);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, [id]);
+
+  return (
+    <>
+      <ContentBox>
+        <Content className="content-area">
+          <MembersTitle>참여자 정보 확인</MembersTitle>
+          {selectedMember &&
+            selectedMember.map(({ name, major, loginId }) => (
               <MembersBox key={loginId}>
-                <MemberIcon icon={faUser}/>
+                <MemberIcon icon={faUser} />
                 <span>{name}</span>
-                <span>({major})</span>
+                <span>{major}</span>
               </MembersBox>
             ))}
-          </Content>
-        </ContentBox>
-        <ButtonArea>
-          <ButtonBox>
-            <ModalButton type="button" onClick={()=>setSelectedMembersCheck(false)}>뒤로가기</ModalButton>
-          </ButtonBox>
-        </ButtonArea>
-      </>
-    )
-}
+        </Content>
+      </ContentBox>
+      <ButtonArea>
+        <ButtonBox>
+          <ModalButton
+            type="button"
+            onClick={() => setSelectedMembersCheck(false)}
+          >
+            뒤로가기
+          </ModalButton>
+        </ButtonBox>
+      </ButtonArea>
+    </>
+  );
+};
 
 export default SelectedCheckModal;
 
@@ -56,7 +62,7 @@ const ContentBox = styled.div`
   border: 1px solid #8e8e8e;
   border-radius: 20px;
 
-  :nth-child(2){
+  :nth-child(2) {
     height: 30%;
   }
 `;
@@ -69,17 +75,17 @@ const Content = styled.div`
   resize: none;
   overflow-y: auto;
 
-    /* 스크롤바 전체 */
+  /* 스크롤바 전체 */
   ::-webkit-scrollbar {
     width: 1rem;
   }
-  
+
   /* 스크롤바의 슬라이더 */
   ::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: #555;
   }
-  
+
   /* 스크롤바의 트랙 */
   ::-webkit-scrollbar-track {
     border: 1px solid #8e8e8e;
@@ -98,7 +104,7 @@ const MembersBox = styled.div`
   cursor: pointer;
   margin-bottom: 0.6rem;
   width: fit-content;
-`
+`;
 
 const MemberIcon = styled(FontAwesomeIcon)`
   margin-right: 0.5rem;

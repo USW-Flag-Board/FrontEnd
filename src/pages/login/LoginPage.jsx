@@ -6,47 +6,53 @@ import { faLock } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { SessionStorage } from "../../utils/browserStorage";
 import { cookiesOption } from "../../utils/cookiesOption";
-import logo from "../../assets/images/logo2.png"
-import { baseInstance } from "../../apis/instance";
+import logo from "../../assets/images/logo2.png";
 import instance from "../../apis/AxiosInterceptorSetup";
+import { FindId, FindPw } from "../../components";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const [idPassword, setIdPassword] = useState({
     loginId: "",
-    password: "", 
+    password: "",
   });
-  
+  const [findId, setFindId] = useState(false);
+  const [findPw, setFindPw] = useState(false);
+
   const updateIdPassword = (event) => {
     const { name, value } = event.target;
     setIdPassword({
       ...idPassword,
-      [name]: value
-    })
+      [name]: value,
+    });
   };
-  
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    handleLogin();
+  };
+
   const handleLogin = async () => {
-    try{
-      const response = await baseInstance.post("/auth/login", {
+    try {
+      const response = await instance.post("/auth/login", {
         loginId: idPassword.loginId,
-        password: idPassword.password
+        password: idPassword.password,
       });
       const accessToken = response.data.payload.accessToken;
-      const accessTokenExpiresIn =
-        response.data.payload.accessTokenExpiresIn;
-      sessionStorage.setItem("expire", accessTokenExpiresIn);
-      sessionStorage.setItem("UserToken", accessToken);
-      sessionStorage.setItem("User_id", idPassword.loginId);
+      const accessTokenExpiresIn = response.data.payload.accessTokenExpiresIn;
+      SessionStorage.set("expire", accessTokenExpiresIn);
+      SessionStorage.set("UserToken", accessToken);
+      SessionStorage.set("User_id", idPassword.loginId);
       cookiesOption.setRefresh(
         "refresh_token",
         response.data.payload.refreshToken
       );
-      const myInfo = await instance.get('/members')
-      SessionStorage.set("name", myInfo.data.payload.name)
-      navigate("/")
-    }catch(error){
+      const myInfo = await instance.get("/members");
+      SessionStorage.set("name", myInfo.data.payload.name);
+      navigate("/");
+    } catch (error) {
       const status = error.response.status;
-      switch(status){
+      switch (status) {
         case 400:
           alert("비밀번호가 틀립니다.");
           break;
@@ -57,13 +63,14 @@ const LoginPage = () => {
           break;
       }
     }
-  }
-
+  };
 
   return (
     <PageArea>
-      <LoginArea>
-        <img
+      {findId && <FindId setFindId={setFindId} />}
+      {findPw && <FindPw setFindPw={setFindPw} />}
+      <LoginArea onSubmit={handleSubmit}>
+        <LogoImg
           alt="Flag 로고"
           className="Logo"
           src={logo}
@@ -87,19 +94,19 @@ const LoginPage = () => {
           />
           <Icon icon={faLock} />
         </RelativeArea>
-        <LoginButton onClick={handleLogin} fullWidth variant="contained">
+        <LoginButton type="submit" fullWidth variant="contained">
           로그인
         </LoginButton>
         <SortArea>
-          <LinkText href="/findid" variant="body2">
+          <LoginMenuButton type="button" onClick={() => setFindId(true)}>
             아이디 찾기
-          </LinkText>
-          <LinkText href="/findpw" variant="body2">
+          </LoginMenuButton>
+          <LoginMenuButton type="button" onClick={() => setFindPw(true)}>
             비밀번호 찾기
-          </LinkText>
-          <LinkText href="/signup" variant="body2">
+          </LoginMenuButton>
+          <LoginMenuButton type="button" onClick={() => navigate("/signup")}>
             회원가입
-          </LinkText>
+          </LoginMenuButton>
         </SortArea>
       </LoginArea>
     </PageArea>
@@ -121,12 +128,16 @@ const PageArea = styled.div`
   justify-content: center;
 `;
 
-const LoginArea = styled.div`
+const LoginArea = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
   display: flex;
   width: 400px;
+`;
+
+const LogoImg = styled.img`
+  cursor: pointer;
 `;
 
 const WriteArea = styled.input`
@@ -153,21 +164,24 @@ const RelativeArea = styled.div`
   position: relative;
 `;
 
-
 const LoginButton = styled.button`
   background-color: #4dabf7;
   color: #ffffff;
-  margin-top: 1.9rem;
+  margin-top: 1.2rem;
   margin-bottom: 1.9rem;
   height: 60px;
   width: 350px;
   border: 0px;
   transition: 0.2s;
   font-size: 1rem;
+  cursor: pointer;
 `;
 
-const LinkText = styled.a`
+const LoginMenuButton = styled.button`
+  background: none;
+  border: none;
   color: black;
+  cursor: pointer;
   :visited {
     color: black;
   }
