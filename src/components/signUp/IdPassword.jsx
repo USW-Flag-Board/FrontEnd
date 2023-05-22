@@ -164,12 +164,14 @@ const IdPasswordArea = styled.div`
 
 const IntroduceArea = styled.div`
   font-size: 1.5rem;
-  font-weight: 100;
   line-height: 2rem;
   width: 80%;
   color: black;
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+  }
 `;
 
 const InputBox = styled.div`
@@ -191,6 +193,9 @@ const IdCheckButton = styled.button`
   cursor: pointer;
   color: white;
   font-weight: 500;
+  @media (max-width: 480px) {
+    width: 23%;
+  }
 `;
 
 const Icon = styled(FontAwesomeIcon)``;
@@ -215,6 +220,6 @@ const InfoState = styled.div`
   display: flex;
   justify-content: end;
   height: 0.7rem;
-  margin-top: 1rem;
-  margin-bottom: 1.3rem;
+  margin-top: 0.6rem;
+  margin-bottom: 1.2rem;
 `;

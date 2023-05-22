@@ -140,7 +140,11 @@ const PostContentPage = () => {
                   <LikeButtonBox liked={liked}>
                     <LikeButton
                       type="button"
-                      onClick={handleLikeClick}
+                      onClick={
+                        SessionStorage.get("User_id")
+                          ? handleLikeClick
+                          : undefined
+                      }
                       liked={liked}
                     >
                       <Icon icon={faThumbsUp} className="like" />
@@ -236,6 +240,9 @@ const ContentInner = styled.div`
     font-size: 1.2rem;
     margin: 0.8rem 0px 1.125rem;
   }
+  @media (max-width: 480px) {
+    width: 90%;
+  }
 `;
 
 const Title = styled.h1`
@@ -284,7 +291,7 @@ const Content = styled.div`
 `;
 
 const LikeButtonBox = styled.div`
-  width: 10%;
+  width: 5rem;
   color: ${(props) => (props.liked ? "#339af0" : "rgb(215, 226, 235)")};
   .like {
     font-size: 1.3rem;

@@ -142,6 +142,9 @@ const PageBox = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  @media (max-width: 480px) {
+    width: 25rem;
+  }
 `;
 
 const SignUpArea = styled.div`
@@ -152,10 +155,13 @@ const SignUpArea = styled.div`
   width: 100%;
   height: 100%;
   border: 1px solid #495057;
+  @media (max-width: 480px) {
+    border: none;
+  }
 `;
 
 const Logo = styled.img`
-  width: 35%;
+  width: 13rem;
   cursor: pointer;
 `;
 

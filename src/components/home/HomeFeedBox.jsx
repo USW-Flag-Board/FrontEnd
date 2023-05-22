@@ -156,6 +156,18 @@ const PostInfo = styled.div`
   :nth-child(1) {
     width: 55%;
   }
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+    :nth-child(1) {
+      width: 50%;
+    }
+    :nth-child(2) {
+      width: 20%;
+    }
+    :nth-child(3) {
+      width: 30%;
+    }
+  }
 `;
 
 const PostBox = styled.div`
@@ -174,5 +186,17 @@ const PostInfoItem = styled.div`
   :nth-child(1) {
     width: 56%;
     padding: 0 0.5rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+    :nth-child(1) {
+      width: 50%;
+    }
+    :nth-child(2) {
+      width: 20%;
+    }
+    :nth-child(3) {
+      width: 30%;
+    }
   }
 `;

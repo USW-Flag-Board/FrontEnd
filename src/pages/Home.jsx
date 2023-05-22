@@ -72,6 +72,7 @@ const HomeContents = styled.div`
   /* 스마트폰 */
   @media (max-width: 480px) {
     padding: 0;
+    margin-top: 1rem;
   }
 
   /* 태블릿 */
@@ -96,6 +97,9 @@ const SideArea = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 2rem;
+  @media (max-width: 480px) {
+    display: none;
+  }
 `;
 
 const RecruitImgBox = styled.div`
@@ -118,7 +122,7 @@ const PostsArea = styled.div`
   gap: 1rem;
   @media (max-width: 480px) {
     width: 100%;
-    padding: 0 1rem;
+    padding: 0;
   }
 `;
 

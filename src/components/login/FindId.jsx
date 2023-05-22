@@ -178,6 +178,9 @@ const ModalBox = styled.div`
   background-color: white;
   border-radius: 10px;
   width: 500px;
+  @media (max-width: 480px) {
+    width: 20rem;
+  }
 `;
 
 const TitleBox = styled.div`
@@ -254,6 +257,10 @@ const ButtonBox = styled.div`
   justify-content: flex-end;
   margin-bottom: 1.5rem;
   gap: 1rem;
+  @media (max-width: 480px) {
+    height: 2.3rem;
+    font-size: 0.4rem;
+  }
 `;
 
 const Button = styled.button`
@@ -263,11 +270,15 @@ const Button = styled.button`
   width: 20%;
   height: 100%;
   border: none;
-  padding: 0.3rem 0 0 0;
+  padding: 0.3rem 0.2rem;
   cursor: pointer;
   &:nth-child(2) {
     background-color: #339af0;
     color: white;
+  }
+  @media (max-width: 480px) {
+    font-size: 0.2rem;
+    width: 25%;
   }
 `;
 

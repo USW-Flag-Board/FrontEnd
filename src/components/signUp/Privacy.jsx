@@ -120,7 +120,6 @@ const IdPasswordArea = styled.div`
 
 const IntroduceArea = styled.div`
   font-size: 1.5rem;
-  font-weight: 100;
   line-height: 2rem;
   width: 80%;
   color: black;
@@ -152,7 +151,7 @@ const InfoState = styled.div`
   font-size: 0.75rem;
   justify-content: end;
   height: 0.7rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.2rem;
 `;
 
 const SelectSpecialize = styled.select`

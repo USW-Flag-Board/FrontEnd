@@ -1,10 +1,10 @@
+import { faBars, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faBars } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import { LOGOUT_USER_ITEMS, HEADER_ITEMS } from "../constants/header";
 import logo from "../assets/images/logo2.png";
+import { HEADER_ITEMS, LOGOUT_USER_ITEMS } from "../constants/header";
 import { SessionStorage } from "../utils/browserStorage";
 
 const Header = () => {
@@ -46,12 +46,14 @@ const Header = () => {
   return (
     <HeaderArea>
       <HeaderBox>
-        <BarsBox>
-          <FontAwesomeIcon icon={faBars} />
-        </BarsBox>
         <LogoBox>
           <LogoImg src={logo} alt="blog-logo" onClick={() => navigate("/")} />
         </LogoBox>
+        <BarsBox>
+          <Bars>
+            <BarIcon icon={faBars} />
+          </Bars>
+        </BarsBox>
         <MenuItemBox>
           <MenuItems>
             {HEADER_ITEMS.map((item) => (
@@ -107,6 +109,7 @@ const HeaderArea = styled.div`
 
   @media (max-width: 480px) {
     height: 9vh;
+    padding: 0 1rem;
   }
 
   /* 태블릿 */
@@ -133,12 +136,13 @@ const HeaderBox = styled.div`
   padding-top: 2rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   background-color: white;
   @media (max-width: 480px) {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     padding: 0;
-    width: 90%;
+    width: 100%;
   }
 `;
 
@@ -146,10 +150,20 @@ const BarsBox = styled.div`
   display: none;
   @media (max-width: 480px) {
     display: block;
-    width: 35%;
-    height: 40%;
+    width: 20%;
     font-size: 1.5rem;
+    color: #339af0;
   }
+`;
+
+const Bars = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+`;
+
+const BarIcon = styled(FontAwesomeIcon)`
+  cursor: pointer;
 `;
 
 const LogoBox = styled.div`
@@ -187,7 +201,7 @@ const MenuItems = styled.div`
 `;
 
 const MenuItem = styled.div`
-  width: 20%;
+  width: 8rem;
   height: 100%;
   display: flex;
   align-items: center;
@@ -223,7 +237,7 @@ const SearchPaper = styled.div`
 `;
 
 const InputBase = styled.input`
-  width: 75%;
+  width: 100%;
   border: none;
   &:focus {
     outline: none;
@@ -231,7 +245,7 @@ const InputBase = styled.input`
 `;
 
 const FaMagnifyingGlass = styled(FontAwesomeIcon)`
-  width: 14%;
+  width: 3rem;
   color: #bababa;
   display: flex;
   align-items: center;
@@ -246,9 +260,10 @@ const UserBox = styled.div`
   gap: 0.7rem;
   justify-content: flex-end;
   @media (max-width: 480px) {
-    width: 35%;
+    /* width: 35%;
     height: 80%;
-    font-size: 0.4rem;
+    font-size: 0.4rem; */
+    display: none;
   }
 `;
 
@@ -262,7 +277,7 @@ const UserButton = styled.button`
     background-color: #748ffc;
   }
   @media (max-width: 480px) {
-    width: 40%;
+    width: 50%;
     height: 50%;
     font-size: 0.2rem;
   }

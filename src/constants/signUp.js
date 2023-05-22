@@ -3,7 +3,7 @@ export const SORTBOX_DATA = [
     id: 1,
     qualification: "일반회원",
     introduce:
-      "FLAGROUND의 일반 회원입니다. \n 동아리 활동을 제외하고 모든 활동이 가능합니다.",
+      "FLAGROUND의 일반 회원입니다. \n동아리 활동을 제외하고 모든 활동이 가능합니다.",
     value: "NORMAL",
   },
   {

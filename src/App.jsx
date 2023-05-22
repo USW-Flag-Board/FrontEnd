@@ -1,16 +1,16 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
-  BulletinBoard,
-  SignUpPage,
-  LoginPage,
-  Home,
-  EditUser,
-  SearchPage,
   Activity,
-  PostContentPage,
+  BulletinBoard,
   EditPost,
-  WritePost,
+  EditUser,
+  Home,
+  LoginPage,
   MyPage,
+  PostContentPage,
+  SearchPage,
+  SignUpPage,
+  WritePost,
 } from "./pages";
 import GlobalStyle from "./styles/GlobalStyle";
 

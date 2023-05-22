@@ -46,9 +46,8 @@ const ServiceAgree = ({ setButtonState }) => {
           </CheckBox>
         </CheckBoxArea>
         <AllAgreeMessage>
-          전체 동의는 필수/선택 정보에 대한 동의가 포함되어 있으며
-          <br />
-          개별적으로도 동의하실 수 있습니다.
+          전체 동의는 필수/선택 정보에 대한 동의가 포함되어 있으며 개별적으로도
+          동의하실 수 있습니다.
         </AllAgreeMessage>
         <RowLine />
         <CheckBoxArea>

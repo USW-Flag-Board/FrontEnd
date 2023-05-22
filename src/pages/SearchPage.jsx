@@ -1,8 +1,8 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { Header, ListThem } from "../components";
-import { useEffect, useState } from "react";
 import instance from "../apis/AxiosInterceptorSetup";
+import { Header, ListThem } from "../components";
 
 const SearchPage = () => {
   const params = useParams();
