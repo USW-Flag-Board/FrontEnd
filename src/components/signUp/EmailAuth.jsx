@@ -30,7 +30,7 @@ const EmailAuth = ({
       const response = await instance.post("/auth/check/email", {
         email: email,
       });
-      if (response.data.payload === false) {
+      if (response.data.payload.exist === false) {
         setEmailAuth({ email: email });
         handleAuthNumSend();
         setRepost(true);

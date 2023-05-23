@@ -1,14 +1,24 @@
-import styled from "styled-components";
-import { Header, ImageSlider, HomeFeedBox } from "../components";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import instance from "../apis/AxiosInterceptorSetup";
-import recruit from "../assets/images/recruit.png";
+import { Header, HomeFeedBox, ImageSlider } from "../components";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Home = () => {
+  const navigate = useNavigate();
   const [postsData, setPostData] = useState({
     likePostData: "",
     latestPostData: "",
     activityPostData: "",
   });
+
+  const [searchContent, setSearchContent] = useState("");
+
+  const handleSearchCotent = (e) => {
+    e.preventDefault();
+    navigate(`/search/${searchContent}`);
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -36,11 +46,17 @@ const Home = () => {
           <ImageSlider />
         </BookImgBox>
         <HomeContents>
-          <SideArea>
-            <RecruitImgBox>
-              <RecruitImg src={recruit} />
-            </RecruitImgBox>
-          </SideArea>
+          <HomeSearchBox onSubmit={handleSearchCotent}>
+            <SearchInputBox>
+              <FaMagnifyingGlass icon={faMagnifyingGlass} />
+              <SearchInput
+                placeholder="유저, 게시글, 활동을 검색해보세요"
+                type="text"
+                value={searchContent}
+                onChange={(e) => setSearchContent(e.target.value)}
+              />
+            </SearchInputBox>
+          </HomeSearchBox>
           <PostsArea>
             <HomeFeedBox
               post={postsData.activityPostData}
@@ -65,9 +81,10 @@ const HomeArea = styled.div`
 
 const HomeContents = styled.div`
   margin: 0 auto;
-  width: 80%;
+  width: 65%;
   margin-top: 3rem;
   display: flex;
+  flex-direction: column;
   gap: 2rem;
   /* 스마트폰 */
   @media (max-width: 480px) {
@@ -75,41 +92,6 @@ const HomeContents = styled.div`
     padding: 0;
     margin-top: 1rem;
   }
-
-  /* 태블릿 */
-  @media (min-width: 481px) and (max-width: 1024px) {
-    width: 100%;
-    padding: 0 2rem;
-  }
-
-  /* 노트북 */
-  @media (min-width: 1025px) and (max-width: 1366px) {
-  }
-
-  /* 데스크탑 */
-  @media (min-width: 1367px) {
-    /* 데스크탑에서 적용할 스타일 */
-  }
-`;
-
-const SideArea = styled.div`
-  width: 16rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2rem;
-  @media (max-width: 480px) {
-    display: none;
-  }
-`;
-
-const RecruitImgBox = styled.div`
-  width: 100%;
-`;
-
-const RecruitImg = styled.img`
-  border-radius: 0.5rem;
-  max-width: 100%;
 `;
 
 const BookImgBox = styled.div`
@@ -117,14 +99,52 @@ const BookImgBox = styled.div`
 `;
 
 const PostsArea = styled.div`
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  column-gap: 4.5rem;
+  row-gap: 2rem;
   @media (max-width: 480px) {
     width: 100%;
     padding: 0;
   }
+`;
+
+const HomeSearchBox = styled.form`
+  display: none;
+  @media (max-width: 480px) {
+    display: block;
+    padding: 0;
+    width: 100%;
+  }
+`;
+
+const SearchInputBox = styled.div`
+  width: 100%;
+  display: flex;
+  height: 3rem;
+  border: 2px solid #74c0fc;
+  border-radius: 1.4rem;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  margin-top: 0.4rem;
+`;
+
+const FaMagnifyingGlass = styled(FontAwesomeIcon)`
+  width: 3rem;
+  font-size: 1.5rem;
+  color: #bababa;
+  display: flex;
+  align-items: center;
+`;
+
+const SearchInput = styled.input`
+  width: calc(100% - 3rem);
+  height: 80%;
+  padding-right: 0.6rem;
+  outline: none;
+  border: none;
 `;
 
 export default Home;

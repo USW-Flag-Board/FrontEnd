@@ -55,9 +55,7 @@ const BulletinBoard = () => {
   useLayoutEffect(() => {
     async function fetchData() {
       try {
-        const response = await instance.get(
-          `/posts?board=${board}&page=0&size=10&sort=desc`
-        );
+        const response = await instance.get(`/posts?board=${board}&page=0`);
         const boardResponse = await instance.get("/boards?type=main");
         setBoardItems(boardResponse.data.payload.boards);
         setPosts(response.data.payload.content);
@@ -152,8 +150,8 @@ const BoardArea = styled.div`
 `;
 
 const ListArea = styled.div`
-  width: 100%;
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
 `;
@@ -165,26 +163,32 @@ const BarArea = styled.div`
   display: flex;
   height: 3.5rem;
 `;
+
 const ListBar = styled.div`
   width: 80%;
   display: flex;
   justify-content: space-between;
+  @media (max-width: 480px) {
+    width: 100%;
+    padding: 0 1rem;
+  }
 `;
 
 const BarItemBox = styled.div`
   width: 40%;
   height: 100%;
   display: flex;
+  gap: 0.3rem;
 `;
 
 const BarItem = styled.div`
-  width: fit-content;
   height: 100%;
+  width: 4rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   font-size: 0.8rem;
   cursor: pointer;
-  margin-right: 1rem;
   background-color: ${(props) => (props.selected ? "#FFFFFF" : "#f1f3f5")};
 `;
 
@@ -214,12 +218,16 @@ const WriteButton = styled.button`
   background-color: #339af0;
   cursor: pointer;
   color: white;
-  width: 70%;
+  width: 7rem;
   height: 2rem;
   font-size: 0.9rem;
   font-weight: 700;
   border: none;
   border-radius: 5px;
+  @media (max-width: 480px) {
+    width: 4rem;
+    font-size: 0.7rem;
+  }
 `;
 
 const FaPen = styled(FontAwesomeIcon)`

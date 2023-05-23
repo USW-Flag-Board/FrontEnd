@@ -63,6 +63,9 @@ const Type = styled.div`
         break;
     }
   }};
+  @media (max-width: 480px) {
+    font-size: 0.5rem;
+  }
 `;
 
 const Title = styled.div`
@@ -73,7 +76,7 @@ const Title = styled.div`
   justify-content: flex-start;
   align-items: center;
   @media (max-width: 480px) {
-    font-size: 1.1rem;
+    font-size: 0.8rem;
   }
 `;
 
@@ -83,12 +86,17 @@ const Deadline = styled.div`
   font-weight: 500;
   @media (max-width: 480px) {
     height: 1.5rem;
+    font-size: 0.3rem;
+    margin: 0.3rem 0;
   }
 `;
 
 const Name = styled.div`
   font-size: 0.9rem;
   display: flex;
+  @media (max-width: 480px) {
+    font-size: 0.3rem;
+  }
 `;
 
 export default ActivityCard;

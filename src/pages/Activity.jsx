@@ -150,7 +150,7 @@ const Kategorie = styled.div`
   cursor: pointer;
   color: ${(props) => (props.selected ? "#212529" : "#adb5bd")};
   @media (max-width: 480px) {
-    font-size: 1.2rem;
+    font-size: 1rem;
     display: flex;
     justify-content: center;
   }
@@ -178,7 +178,7 @@ const ActivityWriteButton = styled.button`
   background-color: #339af0;
   cursor: pointer;
   color: white;
-  width: 50%;
+  width: 7rem;
   height: 100%;
   font-size: 0.9rem;
   font-weight: 700;
@@ -212,6 +212,9 @@ const CardArea = styled.div`
 const Card = styled.div`
   width: 23%;
   height: 10rem;
+  @media (max-width: 480px) {
+    height: 9rem;
+  }
   @media (max-width: 1396px) {
     width: 48%;
   }
