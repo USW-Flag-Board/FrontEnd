@@ -116,8 +116,7 @@ const ActivityArea = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  @media screen and (max-width: 1023px) {
-    width: 100%;
+  @media screen and (max-width: 480px) {
     padding: 2rem 2rem;
   }
 `;
@@ -128,6 +127,10 @@ const ActivityBox = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 2rem;
+  @media (max-width: 480px) {
+    width: 90%;
+    margin: 0;
+  }
 `;
 
 const KategorieBox = styled.div`
@@ -146,10 +149,19 @@ const Kategorie = styled.div`
   font-weight: bold;
   cursor: pointer;
   color: ${(props) => (props.selected ? "#212529" : "#adb5bd")};
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 const KategorieIcon = styled(FontAwesomeIcon)`
   margin-right: 0.5rem;
+  @media (max-width: 480px) {
+    display: none;
+    margin-right: 0;
+  }
 `;
 
 const SwitchArea = styled.div`
@@ -172,6 +184,10 @@ const ActivityWriteButton = styled.button`
   font-weight: 700;
   border: none;
   border-radius: 5px;
+  @media (max-width: 480px) {
+    width: 100%;
+    font-size: 0.5rem;
+  }
 `;
 
 const WriteButtonIcon = styled(FontAwesomeIcon)`
@@ -188,6 +204,9 @@ const CardArea = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  @media (max-width: 480px) {
+    width: 100%;
+  }
 `;
 
 const Card = styled.div`

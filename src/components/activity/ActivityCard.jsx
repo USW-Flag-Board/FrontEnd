@@ -50,7 +50,6 @@ const Mainbox = styled.div`
 `;
 
 const Type = styled.div`
-  height: 10%;
   font-weight: bold;
   color: ${(props) => {
     switch (props.type) {
@@ -67,23 +66,27 @@ const Type = styled.div`
 `;
 
 const Title = styled.div`
-  height: 40%;
+  height: 3rem;
   font-size: 1rem;
   font-weight: bold;
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  @media (max-width: 480px) {
+    font-size: 1.1rem;
+  }
 `;
 
 const Deadline = styled.div`
-  height: 20%;
   margin: 0.7rem 0;
   font-size: 0.8rem;
   font-weight: 500;
+  @media (max-width: 480px) {
+    height: 1.5rem;
+  }
 `;
 
 const Name = styled.div`
-  width: 100%;
   font-size: 0.9rem;
   display: flex;
 `;

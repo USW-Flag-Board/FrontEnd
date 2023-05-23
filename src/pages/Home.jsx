@@ -71,6 +71,7 @@ const HomeContents = styled.div`
   gap: 2rem;
   /* 스마트폰 */
   @media (max-width: 480px) {
+    width: 95%;
     padding: 0;
     margin-top: 1rem;
   }

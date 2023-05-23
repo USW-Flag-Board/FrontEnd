@@ -56,7 +56,7 @@ const BulletinBoard = () => {
     async function fetchData() {
       try {
         const response = await instance.get(
-          `/posts?board=${board}&offset=0&size=10`
+          `/posts?board=${board}&page=0&size=10&sort=desc`
         );
         const boardResponse = await instance.get("/boards?type=main");
         setBoardItems(boardResponse.data.payload.boards);

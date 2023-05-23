@@ -6,12 +6,17 @@ import styled from "styled-components";
 import logo from "../assets/images/logo2.png";
 import { HEADER_ITEMS, LOGOUT_USER_ITEMS } from "../constants/header";
 import { SessionStorage } from "../utils/browserStorage";
+import MenuModal from "./home/MenuModal";
 
 const Header = () => {
   const [login, setLogin] = useState(false);
   const [searchContent, setSearchContent] = useState("");
-  const navigate = useNavigate();
+  const [menuBarOpen, setMenuBarOpen] = useState(false);
 
+  const handleModalOpen = (state) => {
+    setMenuBarOpen(state);
+  };
+  const navigate = useNavigate();
   const handleSearchCotent = (e) => {
     e.preventDefault();
     navigate(`/search/${searchContent}`);
@@ -44,58 +49,61 @@ const Header = () => {
   }, []);
 
   return (
-    <HeaderArea>
-      <HeaderBox>
-        <LogoBox>
-          <LogoImg src={logo} alt="blog-logo" onClick={() => navigate("/")} />
-        </LogoBox>
-        <BarsBox>
-          <Bars>
-            <BarIcon icon={faBars} />
-          </Bars>
-        </BarsBox>
-        <MenuItemBox>
-          <MenuItems>
-            {HEADER_ITEMS.map((item) => (
-              <MenuItem key={item} onClick={() => handleItemClick(item)}>
-                {item}
-              </MenuItem>
-            ))}
-          </MenuItems>
-        </MenuItemBox>
-        <SearchBox onSubmit={handleSearchCotent} login={login}>
-          <SearchPaper>
-            <FaMagnifyingGlass icon={faMagnifyingGlass} />
-            <InputBase
-              type="text"
-              value={searchContent}
-              onChange={(e) => setSearchContent(e.target.value)}
-            />
-          </SearchPaper>
-        </SearchBox>
-        <UserBox loging={login}>
-          {login ? (
-            <UserButton
-              login={login}
-              type="button"
-              onClick={() => navigate("/edit")}
-            >
-              마이페이지
-            </UserButton>
-          ) : (
-            LOGOUT_USER_ITEMS.map((item) => (
+    <>
+      {menuBarOpen && <MenuModal handleModalOpen={handleModalOpen} />}
+      <HeaderArea>
+        <HeaderBox>
+          <LogoBox>
+            <LogoImg src={logo} alt="blog-logo" onClick={() => navigate("/")} />
+          </LogoBox>
+          <BarsBox>
+            <Bars>
+              <BarIcon icon={faBars} onClick={() => handleModalOpen(true)} />
+            </Bars>
+          </BarsBox>
+          <MenuItemBox>
+            <MenuItems>
+              {HEADER_ITEMS.map((item) => (
+                <MenuItem key={item} onClick={() => handleItemClick(item)}>
+                  {item}
+                </MenuItem>
+              ))}
+            </MenuItems>
+          </MenuItemBox>
+          <SearchBox onSubmit={handleSearchCotent} login={login}>
+            <SearchPaper>
+              <FaMagnifyingGlass icon={faMagnifyingGlass} />
+              <InputBase
+                type="text"
+                value={searchContent}
+                onChange={(e) => setSearchContent(e.target.value)}
+              />
+            </SearchPaper>
+          </SearchBox>
+          <UserBox loging={login}>
+            {login ? (
               <UserButton
+                login={login}
                 type="button"
-                key={item}
-                onClick={() => handleItemClick(item)}
+                onClick={() => navigate("/edit")}
               >
-                {item}
+                마이페이지
               </UserButton>
-            ))
-          )}
-        </UserBox>
-      </HeaderBox>
-    </HeaderArea>
+            ) : (
+              LOGOUT_USER_ITEMS.map((item) => (
+                <UserButton
+                  type="button"
+                  key={item}
+                  onClick={() => handleItemClick(item)}
+                >
+                  {item}
+                </UserButton>
+              ))
+            )}
+          </UserBox>
+        </HeaderBox>
+      </HeaderArea>
+    </>
   );
 };
 

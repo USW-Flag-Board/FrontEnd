@@ -231,6 +231,9 @@ const ContentArea = styled.div`
   padding: 3rem 0;
   display: flex;
   justify-content: center;
+  @media (max-width: 480px) {
+    padding-top: 1rem;
+  }
 `;
 
 const ContentInner = styled.div`
@@ -239,6 +242,9 @@ const ContentInner = styled.div`
   .comment-title {
     font-size: 1.2rem;
     margin: 0.8rem 0px 1.125rem;
+    @media (max-width: 480px) {
+      font-size: 1rem;
+    }
   }
   @media (max-width: 480px) {
     width: 90%;
@@ -250,6 +256,9 @@ const Title = styled.h1`
   line-height: 2.25rem;
   font-weight: 700;
   margin: 0.5rem 0px 1.125rem;
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+  }
 `;
 
 const WriterInfoBox = styled.div`
@@ -264,6 +273,7 @@ const WriterImg = styled.img`
   height: 100%;
   border-radius: 50%;
 `;
+
 const Info = styled.div`
   height: 100%;
   display: flex;

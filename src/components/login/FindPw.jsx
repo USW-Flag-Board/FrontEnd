@@ -270,7 +270,7 @@ const ModalBox = styled.div`
   border-radius: 10px;
   width: 500px;
   @media (max-width: 480px) {
-    width: 20rem;
+    width: 25rem;
   }
 `;
 
