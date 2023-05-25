@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from "react";
+import { useState, useLayoutEffect, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,17 +16,16 @@ const BulletinBoard = () => {
   const [board, setBoard] = useState("자유게시판");
   const [posts, setPosts] = useState([]);
   const [boardItems, setBoardItems] = useState([]);
-  const [pageNumber] = useState(1);
+  const [page, setPage] = useState({
+    pageNumber: 1,
+    totalPages: 0,
+    pagination: [],
+  });
   const [searchQuery, setSearchQuery] = useState({
     keyword: "",
-    option: "CONTENT_AND_REPLY",
+    option: "TITLE",
     period: "ALL",
   });
-
-  const handleWriteClick = () => {
-    navigate("/board/write");
-  };
-
   const upDateSearchQuery = (e) => {
     const { name, value } = e.target;
     setSearchQuery((prev) => ({
@@ -46,28 +45,45 @@ const BulletinBoard = () => {
       const response = await instance.get(
         `/posts/search?board=${board}&keyword=${keyword}&option=${option}&period=${period}`
       );
-      console.log(response.data.payload);
+      setPosts(response.data.payload.searchResults);
+      console.log(response.data.payload.searchResults);
     } catch (error) {
       console.lop(error);
     }
   };
 
+  useEffect(() => {
+    setPage((prevPage) => ({
+      ...prevPage,
+      pageNumber: 1,
+    }));
+  }, [board]);
+
   useLayoutEffect(() => {
     async function fetchData() {
       try {
-        const response = await instance.get(`/posts?board=${board}&page=0`);
+        const response = await instance.get(
+          `/posts?board=${board}&page=${page.pageNumber - 1}`
+        );
         const boardResponse = await instance.get("/boards?type=main");
         setBoardItems(boardResponse.data.payload.boards);
         setPosts(response.data.payload.content);
+        setPage((prevPage) => ({
+          ...prevPage,
+          totalPages: response.data.payload.totalPages,
+          pagination: [...Array(response.data.payload.totalPages).keys()].map(
+            (num) => num + 1
+          ),
+        }));
       } catch (error) {
         console.log(error);
       }
     }
     fetchData();
-  }, [board]);
+  }, [board, page.pageNumber]);
 
   return (
-    <>
+    <div>
       <Header />
       <BoardArea>
         <ListArea>
@@ -86,7 +102,7 @@ const BulletinBoard = () => {
               </BarItemBox>
               {SessionStorage.get("UserToken") ? (
                 <WriteButtonBox>
-                  <WriteButton onClick={handleWriteClick}>
+                  <WriteButton onClick={() => navigate("/board/write")}>
                     <FaPen icon={faPlus} />
                     <span>글쓰기</span>
                   </WriteButton>
@@ -103,6 +119,21 @@ const BulletinBoard = () => {
               </PostList>
             ))}
           </PostListBox>
+          <PaginationArea>
+            <PaginationBox>
+              {/* {page.pagination.map((num) => (
+                  <PagenitionNum key={num}>{num}</PagenitionNum>
+                ))} */}
+              <PagenitionNum>1</PagenitionNum>
+              <PagenitionNum>2</PagenitionNum>
+              <PagenitionNum>3</PagenitionNum>
+              <PagenitionNum>4</PagenitionNum>
+              <PagenitionNum>5</PagenitionNum>
+              <PagenitionNum>6</PagenitionNum>
+              <PagenitionNum>7</PagenitionNum>
+              <PagenitionNum>8</PagenitionNum>
+            </PaginationBox>
+          </PaginationArea>
           <SelectBox onSubmit={handleSubmit}>
             <Select
               name="period"
@@ -141,12 +172,13 @@ const BulletinBoard = () => {
           </SelectBox>
         </ListArea>
       </BoardArea>
-    </>
+    </div>
   );
 };
 
 const BoardArea = styled.div`
   width: 100%;
+  height: 80rem;
 `;
 
 const ListArea = styled.div`
@@ -159,7 +191,6 @@ const ListArea = styled.div`
 const BarArea = styled.div`
   width: 100%;
   justify-content: center;
-  background-color: #f1f3f5;
   display: flex;
   height: 3.5rem;
 `;
@@ -168,7 +199,7 @@ const ListBar = styled.div`
   width: 80%;
   display: flex;
   justify-content: space-between;
-  @media (max-width: 480px) {
+  @media screen and (max-width: 480px) {
     width: 100%;
     padding: 0 1rem;
   }
@@ -188,14 +219,20 @@ const BarItem = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 0.8rem;
+  font-weight: 700;
+  padding-top: 0.7rem;
   cursor: pointer;
-  background-color: ${(props) => (props.selected ? "#FFFFFF" : "#f1f3f5")};
+  border-bottom: ${(props) =>
+    props.selected ? "2px solid black" : "2px solid white"};
 `;
 
 const PostListBox = styled.div`
   width: 70%;
   margin: 1rem 0;
-  min-height: 50rem;
+  min-height: 47rem;
+  @media screen and (max-width: 480px) {
+    width: 80%;
+  }
 `;
 
 const PostList = styled.div`
@@ -224,7 +261,7 @@ const WriteButton = styled.button`
   font-weight: 700;
   border: none;
   border-radius: 5px;
-  @media (max-width: 480px) {
+  @media screen and (max-width: 480px) {
     width: 4rem;
     font-size: 0.7rem;
   }
@@ -238,11 +275,20 @@ const FaPen = styled(FontAwesomeIcon)`
 const SelectBox = styled.form`
   display: flex;
   gap: 0.6rem;
-  margin: 1rem 0;
+  margin-bottom: 1rem;
+  width: 70%;
+  justify-content: center;
+  @media screen and (max-width: 480px) {
+    width: 80%;
+  }
 `;
 
 const Select = styled.select`
   padding: 0.7rem;
+  @media screen and (max-width: 480px) {
+    width: 6rem;
+    font-size: 0.5rem;
+  }
 `;
 
 const PostSearchBox = styled.div`
@@ -251,6 +297,10 @@ const PostSearchBox = styled.div`
 
 const PostSearch = styled.input`
   padding: 0.7rem;
+  @media screen and (max-width: 480px) {
+    width: 8rem;
+    font-size: 0.6rem;
+  }
 `;
 
 const SearchButton = styled.button`
@@ -259,6 +309,36 @@ const SearchButton = styled.button`
   border: none;
   cursor: pointer;
   color: #fff;
+  @media screen and (max-width: 480px) {
+    display: none;
+  }
+`;
+
+const PaginationArea = styled.div`
+  margin-bottom: 1rem;
+  height: 3rem;
+  width: 70%;
+  display: flex;
+  align-items: center;
+`;
+
+const PaginationBox = styled.ul`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+`;
+
+const PagenitionNum = styled.li`
+  font-size: 1rem;
+  padding: 0.4rem;
+  cursor: pointer;
+  font-weight: 700;
+  @media screen and (max-width: 480px) {
+    font-size: 0.8rem;
+  }
 `;
 
 export default BulletinBoard;

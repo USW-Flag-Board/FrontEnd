@@ -28,17 +28,17 @@ export const SEARCH_SELECT_ITEMS_PERIOD = [
   {
     id: 1,
     option: "1일",
-    value: "ONE_DAY",
+    value: "DAY",
   },
   {
     id: 2,
     option: "1주",
-    value: "ONE_WEEK",
+    value: "WEEK",
   },
   {
     id: 3,
     option: "1개월",
-    value: "ONE_MONTH",
+    value: "MONTH",
   },
   {
     id: 4,
@@ -48,20 +48,20 @@ export const SEARCH_SELECT_ITEMS_PERIOD = [
   {
     id: 5,
     option: "1년",
-    value: "ONE_YEAR",
+    value: "YEAR",
   },
 ];
 
 export const SEARCH_SELECT_ITEMS_OPTION = [
   {
     id: 0,
-    option: "게시글 내용 + 댓글",
-    value: "CONTENT_AND_REPLY",
+    option: "제목",
+    value: "TITLE",
   },
   {
     id: 1,
-    option: "제목만",
-    value: "TITLE",
+    option: "게시글 내용 + 댓글",
+    value: "CONTENT_AND_REPLY",
   },
   {
     id: 2,

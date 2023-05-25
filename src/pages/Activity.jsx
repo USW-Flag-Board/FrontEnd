@@ -117,7 +117,7 @@ const ActivityArea = styled.div`
   flex-direction: column;
   align-items: center;
   @media screen and (max-width: 480px) {
-    padding: 2rem 2rem;
+    padding: 1.5rem 2rem;
   }
 `;
 
@@ -138,13 +138,13 @@ const KategorieBox = styled.div`
   height: 2rem;
   display: flex;
   align-items: center;
+  gap: 1rem;
   @media screen and (max-width: 1023px) {
     width: 100%;
   }
 `;
 
 const Kategorie = styled.div`
-  margin-right: 1rem;
   font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;

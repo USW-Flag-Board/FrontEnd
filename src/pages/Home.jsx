@@ -86,8 +86,8 @@ const HomeContents = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  /* 스마트폰 */
-  @media (max-width: 480px) {
+
+  @media screen and (max-width: 480px) {
     width: 95%;
     padding: 0;
     margin-top: 1rem;
@@ -104,7 +104,7 @@ const PostsArea = styled.div`
   flex-wrap: wrap;
   column-gap: 4.5rem;
   row-gap: 2rem;
-  @media (max-width: 480px) {
+  @media screen and (max-width: 480px) {
     width: 100%;
     padding: 0;
   }
@@ -112,7 +112,7 @@ const PostsArea = styled.div`
 
 const HomeSearchBox = styled.form`
   display: none;
-  @media (max-width: 480px) {
+  @media screen and (max-width: 480px) {
     display: block;
     padding: 0;
     width: 100%;

@@ -97,7 +97,7 @@ const FindPw = ({ setFindPw }) => {
       alert(
         "비밀번호가 변경되었습니다. 변경된 비밀번호로 로그인을 시도해주세요."
       );
-      setFindPw(false);
+      setFindPw("findPw", false);
     } catch (error) {
       const status = error.response.status;
       if (status === 404) alert("존재하지 않는 사용자입니다.");
@@ -183,7 +183,7 @@ const FindPw = ({ setFindPw }) => {
               )}
             </InputArea>
             <ButtonBox>
-              <Button type="button" onClick={() => setFindPw(false)}>
+              <Button type="button" onClick={() => setFindPw("findPw", false)}>
                 취소
               </Button>
               {success ? (
@@ -229,7 +229,7 @@ const FindPw = ({ setFindPw }) => {
               </InputBox>
             </InputArea>
             <ButtonBox>
-              <Button type="button" onClick={() => setFindPw(false)}>
+              <Button type="button" onClick={() => setFindPw("findPw", false)}>
                 취소
               </Button>
               <Button

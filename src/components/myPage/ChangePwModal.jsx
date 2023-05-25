@@ -169,7 +169,10 @@ const ModalBox = styled.div`
   transform: translate(-50%, -50%);
   background-color: white;
   border-radius: 10px;
-  width: 500px;
+  width: 40%;
+  @media screen and (max-width: 480px) {
+    width: 85%;
+  }
 `;
 
 const TitleBox = styled.div`

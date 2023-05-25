@@ -1,53 +1,49 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../apis/AxiosInterceptorSetup";
 import { ActivityCard, Header, ListThem } from "../components";
 
 const SearchPage = () => {
   const params = useParams();
-  const [users, setUsers] = useState({
-    resultCount: 0,
-    searchResults: [],
-  });
-  const [posts, setPosts] = useState({
-    resultCount: 0,
-    searchResults: [],
-  });
-  const [activities, setActivities] = useState({});
+  const navigate = useNavigate();
+  const [users, setUsers] = useState({ resultCount: 0, searchResults: [] });
+  const [posts, setPosts] = useState({ resultCount: 0, searchResults: [] });
+  const [activities, setActivities] = useState([]);
+
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const userSearchResponse = await instance.get(
-          `/members/search?name=${params.something}`
-        );
-        setUsers({
-          resultCount: userSearchResponse.data.payload.resultCount,
-          searchResults: userSearchResponse.data.payload.searchResults,
-        });
-        const postSearchResponse = await instance.get(
-          `/posts/integration-search?keyword=${params.something}`
-        );
-        setPosts({
-          resultCount: postSearchResponse.data.payload.resultCount,
-          searchResults: postSearchResponse.data.payload.searchResults.slice(
-            0,
-            5
-          ),
-        });
-        const activitySearchResponse = await instance.get(
-          `/activities/search?keyword=${params.something}`
-        );
-        setActivities({
-          resultCount: activitySearchResponse.data.payload.resultCount,
-          searchResults: activitySearchResponse.data.payload.searchResults,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
     fetchData();
   }, [params]);
+
+  async function fetchData() {
+    try {
+      const [userSearchResponse, postSearchResponse, activitySearchResponse] =
+        await Promise.all([
+          instance.get(`/members/search?name=${params.something}`),
+          instance.get(`/posts/integration-search?keyword=${params.something}`),
+          instance.get(`/activities/search?keyword=${params.something}`),
+        ]);
+
+      setUsers({
+        resultCount: userSearchResponse.data.payload.resultCount,
+        searchResults: userSearchResponse.data.payload.searchResults,
+      });
+
+      setPosts({
+        resultCount: postSearchResponse.data.payload.resultCount,
+        searchResults: postSearchResponse.data.payload.searchResults,
+      });
+
+      setActivities({
+        resultCount: activitySearchResponse.data.payload.resultCount,
+        searchResults: activitySearchResponse.data.payload.searchResults,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handlePostClick = (id) => {};
 
   return (
     <>
@@ -73,10 +69,13 @@ const SearchPage = () => {
             <SearchListBox>
               <ResultCount>{`게시글 (${posts.resultCount})`}</ResultCount>
               <PostsResultBox>
-                {posts.searchResults.map((post) => (
-                  <div key={post.id}>
+                {posts.searchResults.slice(0, 5).map((post) => (
+                  <PostBox
+                    key={post.id}
+                    onClick={() => navigate(`/board/post/${post.id}`)}
+                  >
                     <ListThem post={post} />
-                  </div>
+                  </PostBox>
                 ))}
               </PostsResultBox>
             </SearchListBox>
@@ -94,7 +93,6 @@ const SearchPage = () => {
                         name={leader}
                         type={type}
                         semester={semester}
-                        status={status}
                       />
                     </Card>
                   )
@@ -111,7 +109,7 @@ const SearchPage = () => {
 export default SearchPage;
 
 const SearchPageArea = styled.div`
-  width: 100vw;
+  width: 100%;
   display: flex;
   justify-content: center;
 `;
@@ -123,8 +121,8 @@ const SearchBox = styled.div`
 const SearchResult = styled.h3`
   font-weight: bold;
   font-size: 2rem;
-  margin: 2rem 0;
-  @media (max-width: 480px) {
+  margin: 2rem 0 3rem 0;
+  @media screen and (max-width: 480px) {
     font-size: 1.2rem;
   }
 `;
@@ -139,7 +137,7 @@ const ActivitiesResultBox = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  @media (max-width: 480px) {
+  @media screen and (max-width: 480px) {
     margin-top: 1rem;
   }
 `;
@@ -147,7 +145,7 @@ const ActivitiesResultBox = styled.div`
 const Card = styled.div`
   width: 23%;
   height: 10rem;
-  @media (max-width: 480px) {
+  @media screen and (max-width: 480px) {
     width: 30%;
     height: 8rem;
   }
@@ -158,7 +156,7 @@ const ResultCount = styled.h3`
   font-weight: bold;
   padding-bottom: 1rem;
   border-bottom: 2px solid #9a9a9a;
-  @media (max-width: 480px) {
+  @media screen and (max-width: 480px) {
     font-size: 1rem;
   }
 `;
@@ -183,5 +181,9 @@ const UserBox = styled.div`
 `;
 
 const SearchListBox = styled.div`
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
+`;
+
+const PostBox = styled.div`
+  cursor: pointer;
 `;

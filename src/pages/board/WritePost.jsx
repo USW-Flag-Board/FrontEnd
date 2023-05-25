@@ -106,11 +106,13 @@ const ContentLabel = styled.label`
 const BoardSelect = styled.select`
   width: 20%;
   height: 2.5rem;
+  margin-bottom: 2rem;
   border: 1px solid #ced4da;
-  box-sizing: border-box;
   padding: 0 1rem;
   font-weight: 600;
-  margin-bottom: 2rem;
+  @media screen and (max-width: 480px) {
+    width: 60%;
+  }
 `;
 
 const TitleInputBox = styled.div`

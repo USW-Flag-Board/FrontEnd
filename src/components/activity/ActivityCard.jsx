@@ -18,6 +18,7 @@ const Mainbox = styled.div`
   width: 100%;
   height: 100%;
   border-radius: 1rem;
+  border: 1px solid white;
   cursor: pointer;
   padding: 1rem 1rem 1.5rem 1rem;
   background-color: ${(props) => {
@@ -46,6 +47,9 @@ const Mainbox = styled.div`
           break;
       }
     }};
+  }
+  @media (max-width: 480px) {
+    padding: 0.8rem 1rem 0.8rem 1rem;
   }
 `;
 

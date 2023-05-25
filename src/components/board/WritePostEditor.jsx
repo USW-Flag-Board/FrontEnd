@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const WritePostEditor = ({ value, onChange, ref }) => {
+const WritePostEditor = ({ value, onChange }) => {
   console.log(value);
   const toolbarOptions = [
     [{ size: ["small", false, "large", "huge"] }],
@@ -55,7 +55,6 @@ const WritePostEditor = ({ value, onChange, ref }) => {
         formats={formats}
         value={value}
         onChange={onChange}
-        ref={ref}
         placeholder="내용을 입력해주세요"
       />
     </div>

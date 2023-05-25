@@ -102,71 +102,77 @@ const EditUser = () => {
   return (
     <div>
       <EditPageArea>
-        <EditPageBox>
-          <Aside>
-            <LogoBox>
-              <LogoImg
-                src={logo}
-                alt="blog-logo"
-                onClick={() => navigate("/")}
+        <EditPage>
+          <EditPageBox>
+            <Aside>
+              <LogoBox>
+                <LogoImg
+                  src={logo}
+                  alt="blog-logo"
+                  onClick={() => navigate("/")}
+                />
+              </LogoBox>
+              <ProfileBox>
+                <ProfileImgBox>
+                  <IdButtonBox>
+                    <label htmlFor="img-reset">
+                      <FontAwesomeIcon
+                        icon={faTrashArrowUp}
+                        className="btn-reset"
+                      >
+                        프로필 사진 변경
+                      </FontAwesomeIcon>
+                    </label>
+                    <ImgResetButton
+                      type="button"
+                      id="img-reset"
+                      onClick={handleImgReset}
+                    />
+                  </IdButtonBox>
+                  <ProfileImg src={profileImg} />
+                  <IdButtonBox>
+                    <label htmlFor="file">
+                      <FontAwesomeIcon icon={faPen} className="btn-upload">
+                        프로필 사진 변경
+                      </FontAwesomeIcon>
+                    </label>
+                    <ImgEditButton
+                      type="file"
+                      id="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                    />
+                  </IdButtonBox>
+                </ProfileImgBox>
+                <NameBox>{name}</NameBox>
+                <EmailBox>{email}</EmailBox>
+              </ProfileBox>
+              <BarItemBox>
+                {BAR_NAME.map(({ id, name }) => (
+                  <BarItem
+                    key={id}
+                    onClick={() => handleBarNameClick(name)}
+                    selected={barName === name}
+                  >
+                    {name}
+                  </BarItem>
+                ))}
+              </BarItemBox>
+            </Aside>
+          </EditPageBox>
+          <EditPageBox>
+            {barName === "내프로필" && (
+              <MyProfile
+                nickname={nickname}
+                bio={bio}
+                major={major}
+                studentId={studentId}
+                loginId={loginId}
+                setUserData={setUserData}
               />
-            </LogoBox>
-            <ProfileBox>
-              <ProfileImgBox>
-                <IdButtonBox>
-                  <label htmlFor="img-reset">
-                    <FontAwesomeIcon
-                      icon={faTrashArrowUp}
-                      className="btn-reset"
-                    >
-                      프로필 사진 변경
-                    </FontAwesomeIcon>
-                  </label>
-                  <ImgResetButton
-                    type="button"
-                    id="img-reset"
-                    onClick={handleImgReset}
-                  />
-                </IdButtonBox>
-                <ProfileImg src={profileImg} />
-                <IdButtonBox>
-                  <label htmlFor="file">
-                    <FontAwesomeIcon icon={faPen} className="btn-upload">
-                      프로필 사진 변경
-                    </FontAwesomeIcon>
-                  </label>
-                  <ImgEditButton
-                    type="file"
-                    id="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                  />
-                </IdButtonBox>
-              </ProfileImgBox>
-              <NameBox>{name}</NameBox>
-              <EmailBox>{email}</EmailBox>
-            </ProfileBox>
-            <BarItemBox>
-              {BAR_NAME.map(({ id, name }) => (
-                <BarItem key={id} onClick={() => handleBarNameClick(name)}>
-                  {name}
-                </BarItem>
-              ))}
-            </BarItemBox>
-          </Aside>
-        </EditPageBox>
-        <EditPageBox>
-          {barName === "내프로필" && (
-            <MyProfile
-              nickname={nickname}
-              bio={bio}
-              major={major}
-              studentId={studentId}
-              loginId={loginId}
-              setUserData={setUserData}
-            />
-          )}
-        </EditPageBox>
+            )}
+          </EditPageBox>
+        </EditPage>
       </EditPageArea>
     </div>
   );
@@ -177,18 +183,36 @@ export default EditUser;
 const EditPageArea = styled.div`
   width: 100%;
   height: 100vh;
-  padding: 0 0 0 8rem;
   display: flex;
+  justify-content: center;
+  @media screen and (max-width: 480px) {
+    height: auto;
+  }
+`;
+
+const EditPage = styled.div`
+  width: 80%;
+  display: flex;
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+  }
 `;
 
 const EditPageBox = styled.div`
-  width: 70%;
   &:nth-child(1) {
     width: 30%;
     z-index: 1;
+    @media screen and (max-width: 480px) {
+      width: 100%;
+    }
   }
   &:nth-child(2) {
-    /* background-color: #f8f9fa; */
+    width: 70%;
+    @media screen and (max-width: 480px) {
+      width: 100%;
+      border: none;
+      box-shadow: none;
+    }
   }
 `;
 
@@ -198,6 +222,11 @@ const Aside = styled.div`
   border-left: 1px solid #ced4da;
   border-right: 1px solid #ced4da;
   box-shadow: 5px 1px 8px 0 rgba(0, 0, 0, 0.126);
+  @media screen and (max-width: 480px) {
+    width: 100%;
+    border: none;
+    box-shadow: none;
+  }
 `;
 
 const LogoBox = styled.div`
@@ -219,6 +248,9 @@ const ProfileBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media screen and (max-width: 480px) {
+    margin-bottom: 3rem;
+  }
 `;
 
 const ProfileImgBox = styled.div`
@@ -230,7 +262,7 @@ const ProfileImgBox = styled.div`
 `;
 
 const ProfileImg = styled.img`
-  width: 40%;
+  width: 9rem;
   height: 100%;
   border-radius: 50%;
 `;
@@ -293,9 +325,15 @@ const BarItemBox = styled.div`
   width: 100%;
   padding: 0 2rem;
   margin-top: 3rem;
+  @media screen and (max-width: 480px) {
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    margin-top: 0;
+  }
 `;
 
-const BarItem = styled.p`
+const BarItem = styled.div`
   width: fit-content;
   display: flex;
   align-items: center;
@@ -304,4 +342,10 @@ const BarItem = styled.p`
   cursor: pointer;
   height: 3rem;
   margin-bottom: 1rem;
+  border-bottom: ${(props) =>
+    props.selected ? "2px solid black" : "2px solid white"};
+  @media screen and (max-width: 480px) {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+  }
 `;

@@ -124,7 +124,7 @@ const FindId = ({ setFindId }) => {
               )}
             </InputArea>
             <ButtonBox>
-              <Button type="button" onClick={() => setFindId(false)}>
+              <Button type="button" onClick={() => setFindId("findId", false)}>
                 취소
               </Button>
               {success ? (
@@ -148,7 +148,7 @@ const FindId = ({ setFindId }) => {
               </InputBox>
             </InputArea>
             <ButtonBox>
-              <Button type="button" onClick={() => setFindId(false)}>
+              <Button type="button" onClick={() => setFindId("findId", false)}>
                 닫기
               </Button>
             </ButtonBox>
