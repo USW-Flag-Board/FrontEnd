@@ -1,61 +1,18 @@
-import { useMemo } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import { Editor } from "@toast-ui/react-editor";
+import "@toast-ui/editor-plugin-color-syntax";
+import "@toast-ui/editor/dist/toastui-editor.css";
 
-const WritePostEditor = ({ value, onChange }) => {
-  console.log(value);
-  const toolbarOptions = [
-    [{ size: ["small", false, "large", "huge"] }],
-    [{ font: [] }],
-    ["blockquote", "code-block"],
-
-    [{ list: "ordered" }, { list: "bullet" }],
-    [{ indent: "-1" }, { indent: "+1" }],
-    [{ direction: "rtl" }],
-
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-    ["link", "image"],
-  ];
-
-  const formats = [
-    "header",
-    "font",
-    "size",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "blockquote",
-    "code-block",
-    "list",
-    "bullet",
-    "indent",
-    "direction",
-    "color",
-    "background",
-    "align",
-    "link",
-    "image",
-  ];
-
-  const modules = useMemo(() => {
-    return {
-      toolbar: {
-        container: toolbarOptions,
-      },
-    };
-  }, []);
-
+const WritePostEditor = ({ ref, onChange }) => {
   return (
     <div>
-      <ReactQuill
-        style={{ height: "20rem" }}
-        modules={modules}
-        formats={formats}
-        value={value}
+      <Editor
+        ref={ref}
+        height="35rem"
+        placeholder="내용을 입력해 주세요"
+        previewStyle="vertical"
+        initialEditType="markdown"
+        language="ko-KR"
         onChange={onChange}
-        placeholder="내용을 입력해주세요"
       />
     </div>
   );

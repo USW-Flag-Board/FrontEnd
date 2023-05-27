@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
@@ -11,6 +11,7 @@ const WritePost = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [board, setBoard] = useState("");
+  const editorRef = useRef();
   const handleBoardChange = (e) => {
     setBoard(e.target.value);
   };
@@ -30,7 +31,6 @@ const WritePost = () => {
     };
     try {
       const reponse = await instance.post("/posts", data);
-      console.log(reponse);
       if (reponse.status === 201) {
         alert("게시글이 작성되었습니다.");
         navigate("/board");
@@ -67,7 +67,7 @@ const WritePost = () => {
           </TitleInputBox>
           <ContentLabel>내용</ContentLabel>
           <ContentInputBox>
-            <WritePostEditor value={content} onChange={handleContent} />
+            <WritePostEditor ref={editorRef} onChange={handleContent} />
           </ContentInputBox>
           <ContentButtonBox>
             <ContentButton onClick={handleCancelClick}>취소</ContentButton>
