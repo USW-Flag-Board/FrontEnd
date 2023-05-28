@@ -1,11 +1,13 @@
+import "@toast-ui/editor/dist/toastui-editor.css";
+import { Editor } from "@toast-ui/react-editor";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
-import { WritePostEditor } from "../../components";
 import Header from "../../components/Header";
 import boardData from "../../constants/board";
-
+import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
+import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
 const WritePost = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
@@ -15,29 +17,32 @@ const WritePost = () => {
   const handleBoardChange = (e) => {
     setBoard(e.target.value);
   };
-
-  const handleContent = (value) => {
-    setContent(value);
+  const onUploadImage = async (blob, callback) => {
+    console.log(blob);
+  };
+  const handleContent = () => {
+    setContent(editorRef.current?.getInstance().getMarkdown());
+    console.log(content);
   };
 
   const handleCancelClick = () => {
     navigate("/board");
   };
   const handlePostClick = async () => {
-    const data = {
-      boardName: board,
-      content: content,
-      title: title,
-    };
-    try {
-      const reponse = await instance.post("/posts", data);
-      if (reponse.status === 201) {
-        alert("게시글이 작성되었습니다.");
-        navigate("/board");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    // const data = {
+    //   boardName: board,
+    //   content: content,
+    //   title: title,
+    // };
+    // try {
+    //   const reponse = await instance.post("/posts", data);
+    //   if (reponse.status === 201) {
+    //     alert("게시글이 작성되었습니다.");
+    //     navigate("/board");
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   return (
@@ -67,7 +72,26 @@ const WritePost = () => {
           </TitleInputBox>
           <ContentLabel>내용</ContentLabel>
           <ContentInputBox>
-            <WritePostEditor ref={editorRef} onChange={handleContent} />
+            <Editor
+              height="35rem"
+              placeholder="내용을 입력해 주세요"
+              previewStyle="vertical"
+              initialEditType="wysiwyg"
+              ref={editorRef}
+              onChange={handleContent}
+              toolbarItems={[
+                ["heading", "bold", "italic", "strike"],
+                ["hr", "quote"],
+                ["ul", "ol", "task", "indent", "outdent"],
+                ["table", "image", "link"],
+                ["code", "codeblock"],
+              ]}
+              useCommandShortcut={false}
+              plugins={[colorSyntax]}
+              hooks={{
+                addImageBlobHook: onUploadImage,
+              }}
+            />
           </ContentInputBox>
           <ContentButtonBox>
             <ContentButton onClick={handleCancelClick}>취소</ContentButton>
