@@ -5,7 +5,7 @@ import { SessionStorage } from "../../utils/browserStorage";
 import instance from "../../apis/AxiosInterceptorSetup";
 import { cookiesOption } from "../../utils/cookiesOption";
 
-const ChangePwModal = ({ setPwModal }) => {
+const ChangePwModal = ({ setModal }) => {
   const [password, setPassword] = useState({
     currentPassword: "",
     newPassword: "",
@@ -134,7 +134,7 @@ const ChangePwModal = ({ setPwModal }) => {
           </InputBox>
         </InputArea>
         <ButtonBox>
-          <Button type="button" onClick={() => setPwModal(false)}>
+          <Button type="button" onClick={() => setModal("pw", false)}>
             취소
           </Button>
           <Button

@@ -1,15 +1,16 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
   Activity,
+  Admin,
   BulletinBoard,
   EditPost,
   EditUser,
   Home,
   LoginPage,
-  MyPage,
   PostContentPage,
   SearchPage,
   SignUpPage,
+  UserInfoPage,
   WritePost,
 } from "./pages";
 import GlobalStyle from "./styles/GlobalStyle";
@@ -29,7 +30,8 @@ const App = () => {
         <Route path="/activity" element={<Activity />} />
         <Route path="/board/post/:postId" element={<PostContentPage />} />
         <Route path="/board/post/:postId/edit" element={<EditPost />} />
-        <Route path="/userInfo" element={<MyPage />} />
+        <Route path="/userInfo/:userId" element={<UserInfoPage />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </BrowserRouter>
   );

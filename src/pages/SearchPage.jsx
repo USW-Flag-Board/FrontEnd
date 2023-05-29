@@ -43,8 +43,6 @@ const SearchPage = () => {
     }
   }
 
-  const handlePostClick = (id) => {};
-
   return (
     <>
       <Header />
@@ -57,7 +55,10 @@ const SearchPage = () => {
               <ResultCount>{`유저 (${users.resultCount})`}</ResultCount>
               <SearchUser>
                 {users.searchResults.map(({ name, major, loginId }) => (
-                  <UserBox key={loginId}>
+                  <UserBox
+                    key={loginId}
+                    onClick={() => navigate(`/userInfo/${loginId}`)}
+                  >
                     {name} ({major})
                   </UserBox>
                 ))}

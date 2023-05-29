@@ -1,13 +1,13 @@
+import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
+import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/react-editor";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
 import Header from "../../components/Header";
-import boardData from "../../constants/board";
-import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
-import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
+
 const WritePost = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
@@ -45,6 +45,18 @@ const WritePost = () => {
     // }
   };
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const boardResponse = await instance.get("/boards?type=main");
+        setBoard(boardResponse.data.payload.boards);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <>
       <Header />
@@ -53,11 +65,12 @@ const WritePost = () => {
           <ContentLabel>게시판</ContentLabel>
           <BoardSelect onChange={handleBoardChange}>
             <option>게시판을 선택해주세요</option>
-            {boardData.BOARD_NAMES.map(({ id, krName }) => (
-              <option key={id} value={krName}>
-                {krName}
-              </option>
-            ))}
+            {Array.isArray(board) &&
+              board.map(({ id, boardName }) => (
+                <option key={id} value={boardName}>
+                  {boardName}
+                </option>
+              ))}
           </BoardSelect>
           <ContentLabel>제목</ContentLabel>
           <TitleInputBox>

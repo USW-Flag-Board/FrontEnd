@@ -2,23 +2,26 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
 import { Header } from "../../components";
-import { SessionStorage } from "../../utils/browserStorage";
+import { useParams } from "react-router-dom";
 
-const UserPage = () => {
+const UserInfoPage = () => {
   const [userData, setUserData] = useState("");
-  const { bio, nickName, profileImg, loginId } = userData;
-
+  const { bio, nickname, profileImg, loginId } = userData;
+  const { userId } = useParams();
+  console.log(userId);
   useEffect(() => {
-    const loginId = SessionStorage.get("User_id");
-    instance
-      .get(`/members/${loginId}`)
-      .then((response) => {
+    async function fetchData() {
+      try {
+        const response = await instance.get(`/members/${userId}`);
+        console.log(response);
         setUserData(response.data.payload);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.log(error);
-      });
-  }, []);
+      }
+    }
+
+    fetchData();
+  }, [userId]);
 
   return (
     <>
@@ -32,14 +35,11 @@ const UserPage = () => {
                   <ProfileImg src={profileImg} />
                 </ProfileBox>
                 <NickNameArea>
-                  <NickName>{nickName}</NickName>
+                  <NickName>{nickname}</NickName>
                   <UserId>{loginId}</UserId>
                   <Introduce>{bio}</Introduce>
                 </NickNameArea>
               </ProfileArea>
-              <ProfileButtonBox>
-                <EditProfile>프로필 수정</EditProfile>
-              </ProfileButtonBox>
             </UserPageBox>
             <HistoryArea></HistoryArea>
           </TopPage>
@@ -53,7 +53,6 @@ const UserPage = () => {
 const ProfileImg = styled.img`
   width: 6rem;
   height: 6rem;
-  border: 3px solid gray;
   border-radius: 50%;
 `;
 
@@ -66,7 +65,6 @@ const PageArea = styled.div`
 
 const PageBox = styled.div`
   width: calc(100vw - 16rem);
-  box-sizing: border-box;
 `;
 
 const TopPage = styled.div`
@@ -89,20 +87,13 @@ const UserPageBox = styled.div`
   width: 40%;
   height: 100%;
   background-color: #e7f5ff;
+  display: flex;
 `;
 
 const ProfileArea = styled.div`
   width: 100%;
-  height: 80%;
+  height: 100%;
   display: flex;
-`;
-
-const ProfileButtonBox = styled.div`
-  width: 100%;
-  height: 20%;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
 `;
 
 const ProfileBox = styled.div`
@@ -113,22 +104,6 @@ const ProfileBox = styled.div`
   align-items: center;
 `;
 
-const EditProfile = styled.button`
-  font-size: 1rem;
-  width: 30%;
-  height: 50%;
-  color: white;
-  background-color: #434343;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 0px;
-  border-radius: 10px;
-  :hover {
-    background-color: #4d4d4d;
-  }
-`;
-
 const NickNameArea = styled.div`
   display: flex;
   width: 65%;
@@ -136,7 +111,6 @@ const NickNameArea = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-sizing: border-box;
 `;
 
 const NickName = styled.div`
@@ -146,6 +120,7 @@ const NickName = styled.div`
   font-weight: bold;
   display: flex;
   align-items: flex-end;
+  padding-bottom: 0.5rem;
 `;
 
 const Introduce = styled.div`
@@ -159,6 +134,8 @@ const UserId = styled.div`
   font-size: 1rem;
   width: 100%;
   height: 10%;
+  display: flex;
+  align-items: center;
 `;
 
 const HistoryArea = styled.div`
@@ -167,4 +144,4 @@ const HistoryArea = styled.div`
   height: 100%;
 `;
 
-export default UserPage;
+export default UserInfoPage;

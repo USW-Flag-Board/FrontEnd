@@ -2,10 +2,14 @@ import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
 import { useEffect, useState } from "react";
 import ChangePwModal from "./ChangePwModal";
+import WithdrawalModal from "./WithdrawalModal";
 
 const MyProfile = ({ nickname, bio, studentId, major, loginId }) => {
   const [editOn, setEditOn] = useState(false);
-  const [pwModal, setPwModal] = useState(false);
+  const [ModalOpen, setModalOpen] = useState({
+    pw: false,
+    withdraw: false,
+  });
   const [userData, setUserData] = useState({
     nickname: "",
     bio: "",
@@ -36,8 +40,11 @@ const MyProfile = ({ nickname, bio, studentId, major, loginId }) => {
     }
   };
 
-  const handleModal = (state) => {
-    setPwModal(state);
+  const handleModal = (name, value) => {
+    setModalOpen((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   useEffect(() => {
@@ -52,7 +59,8 @@ const MyProfile = ({ nickname, bio, studentId, major, loginId }) => {
 
   return (
     <EditPageBox>
-      {pwModal && <ChangePwModal setPwModal={handleModal} />}
+      {ModalOpen.pw && <ChangePwModal setModal={handleModal} />}
+      {ModalOpen.withdraw && <WithdrawalModal setModal={handleModal} />}
       <TitleBox className="profile-title">프로필 수정</TitleBox>
       <EditPage>
         {editOn && (
@@ -119,7 +127,7 @@ const MyProfile = ({ nickname, bio, studentId, major, loginId }) => {
           <span>비밀번호</span>
         </IdBox>
         <ContentButton
-          onClick={() => setPwModal(true)}
+          onClick={() => handleModal("pw", true)}
           className="edit-password"
         >
           비밀번호 변경
@@ -130,7 +138,12 @@ const MyProfile = ({ nickname, bio, studentId, major, loginId }) => {
         <IdBox>
           <span>회원탈퇴 시 프로필 및 모든 정보가 삭제 됩니다.</span>
         </IdBox>
-        <ContentButton className="edit-password">탈퇴하기</ContentButton>
+        <ContentButton
+          className="edit-password"
+          onClick={() => handleModal("withdraw", true)}
+        >
+          탈퇴하기
+        </ContentButton>
       </EditPage>
     </EditPageBox>
   );
