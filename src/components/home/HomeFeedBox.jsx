@@ -108,7 +108,7 @@ const FeedBoxHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #339af0;
+  background-color: #74c0fc;
   color: white;
   border-radius: 0.5rem 0.5rem 0 0;
   height: 3rem;
@@ -120,6 +120,9 @@ const MoreContentButton = styled.button`
   background: none;
   border: none;
   color: white;
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const FeedTitle = styled.h3`
@@ -129,7 +132,7 @@ const FeedTitle = styled.h3`
   font-weight: bold;
   color: white;
   @media (max-width: 480px) {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   @media (min-width: 481px) and (max-width: 1024px) {
@@ -144,7 +147,7 @@ const PostsBox = styled.div`
 const PostInfoBox = styled.div`
   display: flex;
   align-items: center;
-  height: 3rem;
+  height: 2rem;
   background-color: #f8f9fa;
 `;
 
@@ -156,6 +159,18 @@ const PostInfo = styled.div`
   :nth-child(1) {
     width: 55%;
   }
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+    :nth-child(1) {
+      width: 50%;
+    }
+    :nth-child(2) {
+      width: 20%;
+    }
+    :nth-child(3) {
+      width: 30%;
+    }
+  }
 `;
 
 const PostBox = styled.div`
@@ -163,7 +178,7 @@ const PostBox = styled.div`
   align-items: center;
   height: 3.5rem;
   cursor: pointer;
-  border-bottom: 1px solid #ced4da;
+  border-bottom: 1px solid #e9ecef;
 `;
 
 const PostInfoItem = styled.div`
@@ -174,5 +189,17 @@ const PostInfoItem = styled.div`
   :nth-child(1) {
     width: 56%;
     padding: 0 0.5rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+    :nth-child(1) {
+      width: 50%;
+    }
+    :nth-child(2) {
+      width: 20%;
+    }
+    :nth-child(3) {
+      width: 30%;
+    }
   }
 `;

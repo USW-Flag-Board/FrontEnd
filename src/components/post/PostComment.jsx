@@ -68,7 +68,7 @@ const PostComment = ({ comment, postId, handleDeleteComment }) => {
           </WriterInfo>
         </WriterInfoBox>
         <ButtonBox>
-          {loginId === SessionStorage.get("User_id") && (
+          {loginId === SessionStorage.get("User_id") ? (
             <>
               <Button
                 type="button"
@@ -87,14 +87,19 @@ const PostComment = ({ comment, postId, handleDeleteComment }) => {
                 삭제
               </Button>
             </>
+          ) : (
+            <>
+              <Button type="button" className="edit-delete">
+                신고
+              </Button>
+            </>
           )}
-          <Button type="button" className="edit-delete">
-            신고하기
-          </Button>
           <LikeButton
             type="button"
             className="like"
-            onClick={handleLikeClick}
+            onClick={
+              SessionStorage.get("User_id") ? handleLikeClick : undefined
+            }
             liked={like.liked}
           >
             <FontAwesomeIcon icon={faThumbsUp} className="thum" />
@@ -140,11 +145,15 @@ const CommentHeader = styled.header`
 
 const WriterInfoBox = styled.div`
   display: flex;
-  width: 70%;
+  width: 40%;
+  @media (max-width: 480px) {
+    width: 50%;
+  }
 `;
 
 const WriterImg = styled.img`
   width: 3rem;
+  height: 3rem;
   border-radius: 50%;
 `;
 
@@ -169,7 +178,7 @@ const ElaspedTime = styled.div`
 const CommentContent = styled.div``;
 
 const ButtonBox = styled.div`
-  width: 30%;
+  width: 40%;
   height: 3rem;
   display: flex;
   align-items: center;
@@ -177,21 +186,27 @@ const ButtonBox = styled.div`
   .edit-delete {
     border: none;
   }
+  @media (max-width: 480px) {
+    width: 50%;
+  }
 `;
 
 const Button = styled.button`
   background: none;
   cursor: pointer;
-  width: fit-content;
   height: 100%;
+  width: auto;
   border-radius: 0.25rem;
   border: 1px solid #adb5bd;
   margin: 0 0.2rem;
+  @media (max-width: 480px) {
+    width: 3rem;
+  }
 `;
 
 const LikeButton = styled.button`
   color: ${(props) => (props.liked ? "#339af0" : "rgb(215, 226, 235)")};
-  width: 30%;
+  width: 5rem;
   font-size: 1.1rem;
   height: 80%;
   border-radius: 0.25rem;

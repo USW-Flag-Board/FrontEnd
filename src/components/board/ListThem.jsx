@@ -66,6 +66,10 @@ const ListThemBox = styled.div`
   border-bottom: 1px solid #dee2e6;
   cursor: pointer;
   box-sizing: border-box;
+  @media screen and (max-width: 480px) {
+    padding: 0.6rem 0 0.9rem 0;
+    font-size: 0.8rem;
+  }
 `;
 
 const NoticeBox = styled.div`
@@ -103,17 +107,26 @@ const EditedNotice = styled.div`
 const Title = styled.div`
   font-weight: bold;
   padding-bottom: 1.5rem;
+  @media screen and (max-width: 480px) {
+    padding-bottom: 0.4rem;
+  }
 `;
 
 const WriterName = styled.div`
   font-size: 1rem;
   padding-left: 1rem;
+  @media screen and (max-width: 480px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const CreatedAt = styled.div`
   padding-top: 0.1rem;
   font-size: 0.9rem;
   color: #868e96;
+  @media screen and (max-width: 480px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const PostInfoArea = styled.div`

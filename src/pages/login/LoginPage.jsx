@@ -16,9 +16,10 @@ const LoginPage = () => {
     loginId: "",
     password: "",
   });
-  const [findId, setFindId] = useState(false);
-  const [findPw, setFindPw] = useState(false);
-
+  const [findModal, setFindModal] = useState({
+    findId: false,
+    findPw: false,
+  });
   const updateIdPassword = (event) => {
     const { name, value } = event.target;
     setIdPassword({
@@ -65,10 +66,17 @@ const LoginPage = () => {
     }
   };
 
+  const handleModalState = (name, value) => {
+    setFindModal((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   return (
     <PageArea>
-      {findId && <FindId setFindId={setFindId} />}
-      {findPw && <FindPw setFindPw={setFindPw} />}
+      {findModal.findId && <FindId setFindId={handleModalState} />}
+      {findModal.findPw && <FindPw setFindPw={handleModalState} />}
       <LoginArea onSubmit={handleSubmit}>
         <LogoImg
           alt="Flag 로고"
@@ -98,10 +106,16 @@ const LoginPage = () => {
           로그인
         </LoginButton>
         <SortArea>
-          <LoginMenuButton type="button" onClick={() => setFindId(true)}>
+          <LoginMenuButton
+            type="button"
+            onClick={() => handleModalState("findId", true)}
+          >
             아이디 찾기
           </LoginMenuButton>
-          <LoginMenuButton type="button" onClick={() => setFindPw(true)}>
+          <LoginMenuButton
+            type="button"
+            onClick={() => handleModalState("findPw", true)}
+          >
             비밀번호 찾기
           </LoginMenuButton>
           <LoginMenuButton type="button" onClick={() => navigate("/signup")}>

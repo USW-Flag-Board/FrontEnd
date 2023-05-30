@@ -5,7 +5,7 @@ import { SessionStorage } from "../../utils/browserStorage";
 import instance from "../../apis/AxiosInterceptorSetup";
 import { cookiesOption } from "../../utils/cookiesOption";
 
-const ChangePwModal = ({ setPwModal }) => {
+const ChangePwModal = ({ setModal }) => {
   const [password, setPassword] = useState({
     currentPassword: "",
     newPassword: "",
@@ -134,7 +134,7 @@ const ChangePwModal = ({ setPwModal }) => {
           </InputBox>
         </InputArea>
         <ButtonBox>
-          <Button type="button" onClick={() => setPwModal(false)}>
+          <Button type="button" onClick={() => setModal("pw", false)}>
             취소
           </Button>
           <Button
@@ -169,7 +169,10 @@ const ModalBox = styled.div`
   transform: translate(-50%, -50%);
   background-color: white;
   border-radius: 10px;
-  width: 500px;
+  width: 40%;
+  @media screen and (max-width: 480px) {
+    width: 85%;
+  }
 `;
 
 const TitleBox = styled.div`

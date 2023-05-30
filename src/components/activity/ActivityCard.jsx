@@ -18,6 +18,7 @@ const Mainbox = styled.div`
   width: 100%;
   height: 100%;
   border-radius: 1rem;
+  border: 1px solid white;
   cursor: pointer;
   padding: 1rem 1rem 1.5rem 1rem;
   background-color: ${(props) => {
@@ -47,10 +48,12 @@ const Mainbox = styled.div`
       }
     }};
   }
+  @media (max-width: 480px) {
+    padding: 0.8rem 1rem 0.8rem 1rem;
+  }
 `;
 
 const Type = styled.div`
-  height: 10%;
   font-weight: bold;
   color: ${(props) => {
     switch (props.type) {
@@ -64,28 +67,40 @@ const Type = styled.div`
         break;
     }
   }};
+  @media (max-width: 480px) {
+    font-size: 0.5rem;
+  }
 `;
 
 const Title = styled.div`
-  height: 40%;
+  height: 3rem;
   font-size: 1rem;
   font-weight: bold;
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const Deadline = styled.div`
-  height: 20%;
   margin: 0.7rem 0;
   font-size: 0.8rem;
   font-weight: 500;
+  @media (max-width: 480px) {
+    height: 1.5rem;
+    font-size: 0.3rem;
+    margin: 0.3rem 0;
+  }
 `;
 
 const Name = styled.div`
-  width: 100%;
   font-size: 0.9rem;
   display: flex;
+  @media (max-width: 480px) {
+    font-size: 0.3rem;
+  }
 `;
 
 export default ActivityCard;

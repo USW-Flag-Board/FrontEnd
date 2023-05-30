@@ -2,10 +2,14 @@ import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
 import { useEffect, useState } from "react";
 import ChangePwModal from "./ChangePwModal";
+import WithdrawalModal from "./WithdrawalModal";
 
 const MyProfile = ({ nickname, bio, studentId, major, loginId }) => {
   const [editOn, setEditOn] = useState(false);
-  const [pwModal, setPwModal] = useState(false);
+  const [ModalOpen, setModalOpen] = useState({
+    pw: false,
+    withdraw: false,
+  });
   const [userData, setUserData] = useState({
     nickname: "",
     bio: "",
@@ -36,6 +40,13 @@ const MyProfile = ({ nickname, bio, studentId, major, loginId }) => {
     }
   };
 
+  const handleModal = (name, value) => {
+    setModalOpen((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   useEffect(() => {
     setUserData({
       nickname: nickname,
@@ -48,7 +59,8 @@ const MyProfile = ({ nickname, bio, studentId, major, loginId }) => {
 
   return (
     <EditPageBox>
-      {pwModal && <ChangePwModal setPwModal={setPwModal} />}
+      {ModalOpen.pw && <ChangePwModal setModal={handleModal} />}
+      {ModalOpen.withdraw && <WithdrawalModal setModal={handleModal} />}
       <TitleBox className="profile-title">프로필 수정</TitleBox>
       <EditPage>
         {editOn && (
@@ -115,7 +127,7 @@ const MyProfile = ({ nickname, bio, studentId, major, loginId }) => {
           <span>비밀번호</span>
         </IdBox>
         <ContentButton
-          onClick={() => setPwModal(true)}
+          onClick={() => handleModal("pw", true)}
           className="edit-password"
         >
           비밀번호 변경
@@ -126,7 +138,12 @@ const MyProfile = ({ nickname, bio, studentId, major, loginId }) => {
         <IdBox>
           <span>회원탈퇴 시 프로필 및 모든 정보가 삭제 됩니다.</span>
         </IdBox>
-        <ContentButton className="edit-password">탈퇴하기</ContentButton>
+        <ContentButton
+          className="edit-password"
+          onClick={() => handleModal("withdraw", true)}
+        >
+          탈퇴하기
+        </ContentButton>
       </EditPage>
     </EditPageBox>
   );
@@ -145,9 +162,18 @@ const EditPageBox = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 1.4rem 3rem;
+    @media screen and (max-width: 480px) {
+      padding: 1.4rem 2rem;
+    }
   }
   .profile-title {
     margin-top: 5.8rem;
+    @media screen and (max-width: 480px) {
+      margin-top: 3rem;
+    }
+  }
+  @media screen and (max-width: 480px) {
+    padding: 0;
   }
 `;
 
@@ -157,6 +183,9 @@ const TitleBox = styled.div`
   margin-top: 2rem;
   margin-bottom: 1.5rem;
   padding-left: 1.4rem;
+  @media screen and (max-width: 480px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const ContentLabel = styled.label`
@@ -183,6 +212,9 @@ const IntroduceInputBox = styled.textarea`
   padding: 1rem 0.5rem;
   width: 100%;
   height: 80%;
+  @media screen and (max-width: 480px) {
+    font-size: 0.7rem;
+  }
 `;
 
 const EditInputBox = styled.input`
@@ -193,6 +225,9 @@ const EditInputBox = styled.input`
   outline: none;
   border-radius: 10px;
   border: 1.8px solid #e9ecef;
+  @media screen and (max-width: 480px) {
+    font-size: 0.7rem;
+  }
 `;
 
 const EditBox = styled.div`
@@ -207,17 +242,25 @@ const EditBox = styled.div`
       background-color: #1c7ed6;
     }
   }
+  @media screen and (max-width: 480px) {
+    padding: 0.5rem 1rem;
+  }
 `;
 
 const IdBox = styled.div`
   font-size: 0.9rem;
   font-weight: 500;
+  @media screen and (max-width: 480px) {
+    font-size: 0.7rem;
+    margin-right: 0.4rem;
+  }
 `;
 
 const ContentButtonBox = styled.div`
   height: 3rem;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   gap: 1rem;
   margin-top: 1rem;
   .edit-password {
@@ -238,6 +281,11 @@ const ContentButton = styled.button`
     color: white;
   }
   cursor: pointer;
+  @media screen and (max-width: 480px) {
+    width: 4rem;
+    height: 80%;
+    font-size: 0.8rem;
+  }
 `;
 
 const EditPage = styled.div`

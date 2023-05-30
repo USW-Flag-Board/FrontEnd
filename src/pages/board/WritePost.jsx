@@ -1,44 +1,61 @@
-import { useState } from "react";
+import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
+import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import { Editor } from "@toast-ui/react-editor";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
-import { WritePostEditor } from "../../components";
 import Header from "../../components/Header";
-import boardData from "../../constants/board";
 
 const WritePost = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [board, setBoard] = useState("");
+  const editorRef = useRef();
   const handleBoardChange = (e) => {
     setBoard(e.target.value);
   };
-
-  const handleContent = (value) => {
-    setContent(value);
+  const onUploadImage = async (blob, callback) => {
+    console.log(blob);
+  };
+  const handleContent = () => {
+    setContent(editorRef.current?.getInstance().getMarkdown());
+    console.log(content);
   };
 
   const handleCancelClick = () => {
     navigate("/board");
   };
   const handlePostClick = async () => {
-    const data = {
-      boardName: board,
-      content: content,
-      title: title,
-    };
-    try {
-      const reponse = await instance.post("/posts", data);
-      console.log(reponse);
-      if (reponse.status === 201) {
-        alert("게시글이 작성되었습니다.");
-        navigate("/board");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    // const data = {
+    //   boardName: board,
+    //   content: content,
+    //   title: title,
+    // };
+    // try {
+    //   const reponse = await instance.post("/posts", data);
+    //   if (reponse.status === 201) {
+    //     alert("게시글이 작성되었습니다.");
+    //     navigate("/board");
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const boardResponse = await instance.get("/boards?type=main");
+        setBoard(boardResponse.data.payload.boards);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -48,11 +65,12 @@ const WritePost = () => {
           <ContentLabel>게시판</ContentLabel>
           <BoardSelect onChange={handleBoardChange}>
             <option>게시판을 선택해주세요</option>
-            {boardData.BOARD_NAMES.map(({ id, krName }) => (
-              <option key={id} value={krName}>
-                {krName}
-              </option>
-            ))}
+            {Array.isArray(board) &&
+              board.map(({ id, boardName }) => (
+                <option key={id} value={boardName}>
+                  {boardName}
+                </option>
+              ))}
           </BoardSelect>
           <ContentLabel>제목</ContentLabel>
           <TitleInputBox>
@@ -67,7 +85,26 @@ const WritePost = () => {
           </TitleInputBox>
           <ContentLabel>내용</ContentLabel>
           <ContentInputBox>
-            <WritePostEditor value={content} onChange={handleContent} />
+            <Editor
+              height="35rem"
+              placeholder="내용을 입력해 주세요"
+              previewStyle="vertical"
+              initialEditType="wysiwyg"
+              ref={editorRef}
+              onChange={handleContent}
+              toolbarItems={[
+                ["heading", "bold", "italic", "strike"],
+                ["hr", "quote"],
+                ["ul", "ol", "task", "indent", "outdent"],
+                ["table", "image", "link"],
+                ["code", "codeblock"],
+              ]}
+              useCommandShortcut={false}
+              plugins={[colorSyntax]}
+              hooks={{
+                addImageBlobHook: onUploadImage,
+              }}
+            />
           </ContentInputBox>
           <ContentButtonBox>
             <ContentButton onClick={handleCancelClick}>취소</ContentButton>
@@ -106,11 +143,13 @@ const ContentLabel = styled.label`
 const BoardSelect = styled.select`
   width: 20%;
   height: 2.5rem;
+  margin-bottom: 2rem;
   border: 1px solid #ced4da;
-  box-sizing: border-box;
   padding: 0 1rem;
   font-weight: 600;
-  margin-bottom: 2rem;
+  @media screen and (max-width: 480px) {
+    width: 60%;
+  }
 `;
 
 const TitleInputBox = styled.div`

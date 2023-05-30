@@ -97,7 +97,7 @@ const FindPw = ({ setFindPw }) => {
       alert(
         "비밀번호가 변경되었습니다. 변경된 비밀번호로 로그인을 시도해주세요."
       );
-      setFindPw(false);
+      setFindPw("findPw", false);
     } catch (error) {
       const status = error.response.status;
       if (status === 404) alert("존재하지 않는 사용자입니다.");
@@ -183,7 +183,7 @@ const FindPw = ({ setFindPw }) => {
               )}
             </InputArea>
             <ButtonBox>
-              <Button type="button" onClick={() => setFindPw(false)}>
+              <Button type="button" onClick={() => setFindPw("findPw", false)}>
                 취소
               </Button>
               {success ? (
@@ -229,7 +229,7 @@ const FindPw = ({ setFindPw }) => {
               </InputBox>
             </InputArea>
             <ButtonBox>
-              <Button type="button" onClick={() => setFindPw(false)}>
+              <Button type="button" onClick={() => setFindPw("findPw", false)}>
                 취소
               </Button>
               <Button
@@ -269,6 +269,9 @@ const ModalBox = styled.div`
   background-color: white;
   border-radius: 10px;
   width: 500px;
+  @media (max-width: 480px) {
+    width: 25rem;
+  }
 `;
 
 const TitleBox = styled.div`
@@ -337,6 +340,10 @@ const ButtonBox = styled.div`
   justify-content: flex-end;
   margin-bottom: 1.5rem;
   gap: 1rem;
+  @media (max-width: 480px) {
+    height: 2.3rem;
+    font-size: 0.4rem;
+  }
 `;
 
 const Button = styled.button`
@@ -351,5 +358,9 @@ const Button = styled.button`
   &:nth-child(2) {
     background-color: #339af0;
     color: white;
+  }
+  @media (max-width: 480px) {
+    font-size: 0.2rem;
+    width: 25%;
   }
 `;

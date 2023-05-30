@@ -30,11 +30,11 @@ const EmailAuth = ({
       const response = await instance.post("/auth/check/email", {
         email: email,
       });
-      if (response.data.payload === false) {
+      if (response.data.payload.exist === false) {
         setEmailAuth({ email: email });
         handleAuthNumSend();
         setRepost(true);
-      }
+      } else alert("이미 가입된 이메일입니다.");
     } catch (error) {
       if (error.response.status === 400) {
         alert("이메일 형식이 아닙니다.");

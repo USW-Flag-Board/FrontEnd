@@ -1,6 +1,6 @@
 import Slider from "react-slick";
 import home from "../../assets/images/home.png";
-import home2 from "../../assets/images/home2.png";
+import recruit from "../../assets/images/recruit(가로).png";
 import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -18,11 +18,11 @@ const ImageSlider = () => {
 
   return (
     <Slider {...settings}>
-      <ImageBox>
+      {/* <ImageBox>
         <Image src={home} alt="" />
-      </ImageBox>
+      </ImageBox> */}
       <ImageBox>
-        <Image src={home2} alt="" />
+        <Image src={recruit} alt="" />
       </ImageBox>
     </Slider>
   );
@@ -33,6 +33,9 @@ export default ImageSlider;
 const ImageBox = styled.div`
   outline: none;
   height: 250px;
+  @media (max-width: 480px) {
+    height: 14rem;
+  }
 `;
 
 const Image = styled.img`
