@@ -20,7 +20,6 @@
     "react-slick": "^0.29.0",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
-    "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.6",
     "styled-reset": "^4.4.2",
     "universal-cookie": "^4.0.4",

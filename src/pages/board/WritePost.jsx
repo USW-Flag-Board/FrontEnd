@@ -131,7 +131,7 @@ const ContentArea = styled.div`
 
 const ContentLabel = styled.label`
   font-weight: bold;
-  font-size: 0.8rem;
+  font-size: 1rem;
   ::after {
     content: "*";
     color: rgb(240, 61, 12);

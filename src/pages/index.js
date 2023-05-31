@@ -1,6 +1,8 @@
 export { default as Home } from "./Home";
 export { default as SearchPage } from "./SearchPage";
-export { default as Activity } from "./Activity";
+export { default as Activity } from "./activity/Activity";
+export { default as ActivityContent } from "./activity/ActivityContent";
+export { default as ActivityWrite } from "./activity/ActivityWrite";
 export { default as EditUser } from "./user/EditUser";
 export { default as UserInfoPage } from "./user/UserInfoPage";
 export { default as LoginPage } from "./login/LoginPage";

@@ -1,16 +1,17 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
-import { Header, ActivityCard, WriteModal, ContentModal } from "../components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
-import { ACTIVITY_CATEGORIE } from "../constants/activity";
-import { SessionStorage } from "../utils/browserStorage";
-import instance from "../apis/AxiosInterceptorSetup";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import instance from "../../apis/AxiosInterceptorSetup";
+import { ActivityCard, Header, WriteModal } from "../../components";
+import { ACTIVITY_CATEGORIE } from "../../constants/activity";
+import { SessionStorage } from "../../utils/browserStorage";
 
 const Activity = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [contentOpen, setContentOpen] = useState(false);
-  const [cardId, setCardId] = useState("");
+
   const [kategorie, setKategorie] = useState("ALL");
   const [activities, setActivities] = useState({
     ALL: [],
@@ -44,15 +45,6 @@ const Activity = () => {
     return activities.filter((activity) => activity.type === type);
   }
 
-  const handleCard = (id) => {
-    setCardId(id);
-    setContentOpen(!contentOpen);
-  };
-
-  const handleWrite = () => {
-    setIsOpen(!isOpen);
-  };
-
   const KategorieClick = (title) => {
     setKategorie(title);
   };
@@ -60,8 +52,6 @@ const Activity = () => {
   return (
     <>
       <Header />
-      {isOpen && <WriteModal closeModal={handleWrite} />}
-      {contentOpen && <ContentModal closeModal={handleCard} cardId={cardId} />}
       <ActivityArea>
         <ActivityBox>
           <KategorieBox>
@@ -80,7 +70,10 @@ const Activity = () => {
           </KategorieBox>
           <SwitchArea>
             {SessionStorage.get("UserToken") ? (
-              <ActivityWriteButton onClick={handleWrite} type="button">
+              <ActivityWriteButton
+                onClick={() => navigate("/activity/write")}
+                type="button"
+              >
                 <WriteButtonIcon icon={faPencil} />
                 <WriteButton>글쓰기</WriteButton>
               </ActivityWriteButton>
@@ -91,7 +84,10 @@ const Activity = () => {
           {activities &&
             activities[kategorie].map(
               ({ id, name, leader, type, semester, status }) => (
-                <Card key={id} onClick={() => handleCard(id)}>
+                <Card
+                  key={id}
+                  onClick={() => navigate(`/activity/content/${id}`)}
+                >
                   <ActivityCard
                     title={name}
                     name={leader}

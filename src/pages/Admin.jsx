@@ -18,9 +18,32 @@ const Admin = () => {
     }));
   };
 
-  const fetchBoard = async () => {
+  const addBoard = async () => {
     try {
-      await instance.post("/admin/board");
+      const response = await instance.post("/admin/board", {
+        boardType: "main",
+        name: board.create,
+      });
+      if (response.status === 200) alert("게시판 생성 완료");
+    } catch (error) {
+      if (error.response.status === 409)
+        alert("이미 같은 게시판이 존재합니다.");
+    }
+  };
+  const putBoard = async () => {
+    try {
+      await instance.put(`/admin/board/${board.delete}`, {
+        boardType: "main",
+        name: board.update,
+      });
+    } catch (error) {
+      if (error.response.status === 409)
+        alert("이미 같은 게시판이 존재합니다.");
+    }
+  };
+  const deleteBoard = async () => {
+    try {
+      await instance.delete(`/admin/board/${board.delete}`);
     } catch (error) {
       console.log(error);
     }
@@ -70,7 +93,7 @@ const Admin = () => {
                 name="create"
                 onChange={updateBoard}
               />
-              <BoardButton onClick={fetchBoard}>추가</BoardButton>
+              <BoardButton onClick={addBoard}>추가</BoardButton>
             </FunctionItem>
             <FunctionItem>
               <BoardInput
@@ -79,7 +102,7 @@ const Admin = () => {
                 name="update"
                 onChange={updateBoard}
               />
-              <BoardButton>수정</BoardButton>
+              <BoardButton onClick={putBoard}>수정</BoardButton>
             </FunctionItem>
             <FunctionItem>
               <BoardInput
@@ -89,7 +112,7 @@ const Admin = () => {
                 disabled={true}
                 onChange={updateBoard}
               />
-              <BoardButton>삭제</BoardButton>
+              <BoardButton onClick={deleteBoard}>삭제</BoardButton>
             </FunctionItem>
           </FunctionBox>
         </BoardArea>
