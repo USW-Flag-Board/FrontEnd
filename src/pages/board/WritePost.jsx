@@ -10,15 +10,30 @@ import Header from "../../components/Header";
 
 const WritePost = () => {
   const navigate = useNavigate();
+  const imgUrl = process.env.REACT_APP_IMAGE_BASE_URL;
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [board, setBoard] = useState("");
+  const [selectedBoard, setSelectedBoard] = useState("");
+  const [totalImages, setTotalImages] = useState([]);
+  const [deleteImages, setDeleteImages] = useState([]);
+  const [saveImages, setSaveImages] = useState([]);
   const editorRef = useRef();
+  console.log(totalImages);
   const handleBoardChange = (e) => {
-    setBoard(e.target.value);
+    setSelectedBoard(e.target.value);
   };
+
   const onUploadImage = async (blob, callback) => {
-    console.log(blob);
+    const formData = new FormData();
+    formData.append("image", blob);
+    try {
+      const response = await instance.post("/images/post", formData);
+      setTotalImages((prev) => [...prev, imgUrl + response.data.message]);
+      callback(imgUrl + response.data.message, "image");
+    } catch (error) {
+      console.log(error);
+    }
   };
   const handleContent = () => {
     setContent(editorRef.current?.getInstance().getMarkdown());
@@ -29,26 +44,30 @@ const WritePost = () => {
     navigate("/board");
   };
   const handlePostClick = async () => {
-    // const data = {
-    //   boardName: board,
-    //   content: content,
-    //   title: title,
-    // };
-    // try {
-    //   const reponse = await instance.post("/posts", data);
-    //   if (reponse.status === 201) {
-    //     alert("게시글이 작성되었습니다.");
-    //     navigate("/board");
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    setSaveImages(totalImages.filter((img) => content?.includes(img)));
+    setDeleteImages(totalImages.filter((img) => !content?.includes(img)));
+    const data = {
+      boardName: selectedBoard,
+      content: content,
+      title: title,
+      deleteImages: deleteImages,
+      saveImages: saveImages,
+    };
+    try {
+      const reponse = await instance.post("/posts", data);
+      if (reponse.status === 201) {
+        alert("게시글이 작성되었습니다.");
+        navigate("/board");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const boardResponse = await instance.get("/boards?type=main");
+        const boardResponse = await instance.get("/boards?type=MAIN");
         setBoard(boardResponse.data.payload.boards);
       } catch (error) {
         console.log(error);

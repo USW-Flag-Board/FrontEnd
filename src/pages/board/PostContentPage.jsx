@@ -1,19 +1,22 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faEye,
   faComment,
+  faEye,
   faThumbsUp,
 } from "@fortawesome/free-regular-svg-icons";
-import { SessionStorage } from "../../utils/browserStorage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+import { Viewer } from "@toast-ui/react-editor";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
-import { PostComment, Header } from "../../components";
+import { Header, PostComment } from "../../components";
 import { useElapsedTime } from "../../hooks/useElaspedTime";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { SessionStorage } from "../../utils/browserStorage";
 
 const PostContentPage = () => {
   const { postId } = useParams();
+  const imgUrl = process.env.REACT_APP_IMAGE_BASE_URL;
   const navigate = useNavigate();
   const [comment, setComment] = useState("");
   const [postData, setPostData] = useState({});
@@ -126,7 +129,7 @@ const PostContentPage = () => {
             <ContentInner>
               <Title>{title}</Title>
               <WriterInfoBox>
-                <WriterImg src={profileImage} />
+                <WriterImg src={imgUrl + profileImage} />
                 <Info>
                   <WriterName>{nickname}</WriterName>
                   <ElaspsedTime>
@@ -152,7 +155,9 @@ const PostContentPage = () => {
                     </LikeButton>
                   </LikeButtonBox>
                 )}
-                <Content>{content}</Content>
+                <Content className="viewer">
+                  {content && <Viewer initialValue={content || ""} />}
+                </Content>
               </ContentBox>
               <PostInfoBox>
                 <InfoBox>
@@ -292,7 +297,11 @@ const ElaspsedTime = styled.div`
 const ContentBox = styled.div`
   display: flex;
   width: 100%;
-  height: 10rem;
+  min-height: 10rem;
+  .viewer {
+    width: 100%;
+    z-index: 0;
+  }
 `;
 
 const Content = styled.div`
@@ -311,7 +320,7 @@ const LikeButtonBox = styled.div`
 
 const LikeButton = styled.button`
   width: 90%;
-  height: 25%;
+  height: 3rem;
   background: none;
   cursor: pointer;
   border: 0.0625rem solid rgb(215, 226, 235);

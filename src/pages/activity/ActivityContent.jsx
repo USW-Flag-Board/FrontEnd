@@ -29,6 +29,9 @@ const Title = styled.div`
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 1rem;
+  @media screen and (max-width: 480px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const WriterAndTime = styled.div`

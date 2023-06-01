@@ -1,15 +1,15 @@
-import { useState, useLayoutEffect, useEffect } from "react";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { Header, ListThem } from "../../components";
-import { SessionStorage } from "../../utils/browserStorage";
 import instance from "../../apis/AxiosInterceptorSetup";
+import { Header, ListThem } from "../../components";
 import {
   SEARCH_SELECT_ITEMS_OPTION,
   SEARCH_SELECT_ITEMS_PERIOD,
 } from "../../constants/board";
+import { SessionStorage } from "../../utils/browserStorage";
 
 const BulletinBoard = () => {
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ const BulletinBoard = () => {
         const response = await instance.get(
           `/posts?board=${board}&page=${page.pageNumber - 1}`
         );
-        const boardResponse = await instance.get("/boards?type=main");
+        const boardResponse = await instance.get("/boards?type=MAIN");
         setBoardItems(boardResponse.data.payload.boards);
         setPosts(response.data.payload.content);
         setPage((prevPage) => ({

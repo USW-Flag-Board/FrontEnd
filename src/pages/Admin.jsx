@@ -21,7 +21,7 @@ const Admin = () => {
   const addBoard = async () => {
     try {
       const response = await instance.post("/admin/board", {
-        boardType: "main",
+        boardType: "MAIN",
         name: board.create,
       });
       if (response.status === 200) alert("게시판 생성 완료");
@@ -33,7 +33,7 @@ const Admin = () => {
   const putBoard = async () => {
     try {
       await instance.put(`/admin/board/${board.delete}`, {
-        boardType: "main",
+        boardType: "MAIN",
         name: board.update,
       });
     } catch (error) {
