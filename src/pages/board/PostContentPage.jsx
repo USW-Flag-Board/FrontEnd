@@ -2,6 +2,7 @@ import {
   faComment,
   faEye,
   faThumbsUp,
+  faFlag,
 } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
@@ -156,7 +157,9 @@ const PostContentPage = () => {
                   </LikeButtonBox>
                 )}
                 <Content className="viewer">
-                  {content && <Viewer initialValue={content || ""} />}
+                  <ViewerBox>
+                    {content && <Viewer initialValue={content || ""} />}
+                  </ViewerBox>
                 </Content>
               </ContentBox>
               <PostInfoBox>
@@ -301,12 +304,18 @@ const ContentBox = styled.div`
   .viewer {
     width: 100%;
     z-index: 0;
+    display: flex;
+    justify-content: center;
   }
 `;
 
 const Content = styled.div`
-  width: 90%;
+  width: calc(100% - 5rem);
   padding: 0.3rem;
+`;
+
+const ViewerBox = styled.div`
+  width: 70%;
 `;
 
 const LikeButtonBox = styled.div`

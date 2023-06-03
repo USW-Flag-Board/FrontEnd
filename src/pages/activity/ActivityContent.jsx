@@ -4,7 +4,8 @@ import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
 import { Header, ReaderButtonBox, WriterButtonBox } from "../../components";
 import { SessionStorage } from "../../utils/browserStorage";
-
+import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+import { Viewer } from "@toast-ui/react-editor";
 const ContentArea = styled.div`
   display: flex;
   justify-content: center;
@@ -102,10 +103,25 @@ const DetailTitle = styled.div`
 `;
 
 const DescriptionBox = styled.div`
+  width: 100%;
+  min-height: 19rem;
   border: 1px solid #ced4da;
   border-radius: 0.5rem;
-  padding: 1rem;
-  min-height: 20rem;
+  padding: 0 0.5rem;
+  .viewer {
+    width: 100%;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+  }
+`;
+
+const Content = styled.div`
+  width: 100%;
+`;
+
+const ViewerBox = styled.div`
+  width: 100%;
 `;
 
 const ActivityContent = () => {
@@ -204,7 +220,13 @@ const ActivityContent = () => {
           </InfoBox>
           <ContentDetail>
             <DetailTitle>활동 내용</DetailTitle>
-            <DescriptionBox>{description}</DescriptionBox>
+            <DescriptionBox>
+              <Content className="viewer">
+                <ViewerBox>
+                  {description && <Viewer initialValue={description || ""} />}
+                </ViewerBox>
+              </Content>
+            </DescriptionBox>
           </ContentDetail>
           {writerName !== leader && status === "RECRUIT" && (
             <ReaderButtonBox onApply={handleApplyClick} apply={apply} />

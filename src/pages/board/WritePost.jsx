@@ -16,10 +16,7 @@ const WritePost = () => {
   const [board, setBoard] = useState("");
   const [selectedBoard, setSelectedBoard] = useState("");
   const [totalImages, setTotalImages] = useState([]);
-  const [deleteImages, setDeleteImages] = useState([]);
-  const [saveImages, setSaveImages] = useState([]);
   const editorRef = useRef();
-  console.log(totalImages);
   const handleBoardChange = (e) => {
     setSelectedBoard(e.target.value);
   };
@@ -29,7 +26,7 @@ const WritePost = () => {
     formData.append("image", blob);
     try {
       const response = await instance.post("/images/post", formData);
-      setTotalImages((prev) => [...prev, imgUrl + response.data.message]);
+      setTotalImages((prev) => [...prev, imgUrl + response.data?.message]);
       callback(imgUrl + response.data.message, "image");
     } catch (error) {
       console.log(error);
@@ -37,15 +34,16 @@ const WritePost = () => {
   };
   const handleContent = () => {
     setContent(editorRef.current?.getInstance().getMarkdown());
-    console.log(content);
   };
 
   const handleCancelClick = () => {
     navigate("/board");
   };
   const handlePostClick = async () => {
-    setSaveImages(totalImages.filter((img) => content?.includes(img)));
-    setDeleteImages(totalImages.filter((img) => !content?.includes(img)));
+    const saveImages = totalImages.filter((img) => content?.includes(img));
+    const deleteImages = totalImages.filter(
+      (img) => !saveImages?.includes(img)
+    );
     const data = {
       boardName: selectedBoard,
       content: content,
@@ -53,14 +51,16 @@ const WritePost = () => {
       deleteImages: deleteImages,
       saveImages: saveImages,
     };
-    try {
-      const reponse = await instance.post("/posts", data);
-      if (reponse.status === 201) {
-        alert("게시글이 작성되었습니다.");
-        navigate("/board");
+    if (content.trim() !== "" && title.trim() !== "") {
+      try {
+        const reponse = await instance.post("/posts", data);
+        if (reponse.status === 201) {
+          alert("게시글이 작성되었습니다.");
+          navigate("/board");
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -114,9 +114,9 @@ const WritePost = () => {
               toolbarItems={[
                 ["heading", "bold", "italic", "strike"],
                 ["hr", "quote"],
-                ["ul", "ol", "task", "indent", "outdent"],
+                ["ul", "ol"],
                 ["table", "image", "link"],
-                ["code", "codeblock"],
+                ["code"],
               ]}
               useCommandShortcut={false}
               plugins={[colorSyntax]}

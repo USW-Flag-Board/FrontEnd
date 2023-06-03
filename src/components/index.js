@@ -4,7 +4,6 @@ export { default as SearchList } from "./board/SearchList";
 export { default as HomeFeedBox } from "./home/HomeFeedBox";
 export { default as MenuModal } from "./home/MenuModal";
 export { default as ActivityCard } from "./activity/ActivityCard";
-export { default as WriteModal } from "./activity/WriteModal";
 export { default as WriterButtonBox } from "./activity/WriterButtonBox";
 export { default as ReaderButtonBox } from "./activity/ReaderButtonBox";
 export { default as MyProfile } from "./myPage/MyProfile";

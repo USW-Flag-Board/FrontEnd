@@ -31,7 +31,7 @@ export const ACTIVITY_CATEGORIE = [
 export const SELECT_OPTION = [
   {
     id: 0,
-    title: "카테고리를 선택해주세요.",
+    title: "카테고리",
   },
   {
     id: 1,
@@ -50,12 +50,12 @@ export const SELECT_OPTION = [
 export const BOOK_RADIO_OPTION = [
   {
     id: 1,
-    option: "Yes",
+    option: "사용",
     value: "USE",
   },
   {
     id: 2,
-    option: "No",
+    option: "미사용",
     value: "NOT_USE",
   },
 ];
