@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
-import { Header, PostComment } from "../../components";
+import { Header, PostComment, ReportModal } from "../../components";
 import { useElapsedTime } from "../../hooks/useElaspedTime";
 import { SessionStorage } from "../../utils/browserStorage";
 
@@ -23,6 +23,10 @@ const PostContentPage = () => {
   const [postData, setPostData] = useState({});
   const [replies, setReplies] = useState("");
   const [liked, setLiked] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleModalOpen = (state) => {
+    setModalOpen(state);
+  };
   const [createdAt, setCreatedAt] = useState([]);
   const {
     content,
@@ -124,6 +128,15 @@ const PostContentPage = () => {
   return (
     <>
       <Header />
+      {modalOpen && (
+        <ReportModal
+          content={title}
+          type="POST"
+          id={id}
+          nickname={nickname}
+          handleModalOpen={handleModalOpen}
+        />
+      )}
       <PostArea>
         <PostBox>
           <ContentArea>
@@ -171,12 +184,18 @@ const PostContentPage = () => {
                   <Icon icon={faComment} className="comment" />
                   <span>{replies.length}</span>
                 </InfoBox>
-                {loginId === SessionStorage.get("User_id") && (
+                {loginId === SessionStorage.get("User_id") ? (
                   <>
                     <StyledLink to={`/board/post/${postId}/edit`}>
                       <InfoBox>수정하기</InfoBox>
                     </StyledLink>
                     <InfoBox onClick={handleDeleteClick}>삭제하기</InfoBox>
+                  </>
+                ) : (
+                  <>
+                    <InfoBox onClick={() => handleModalOpen(true)}>
+                      신고하기
+                    </InfoBox>
                   </>
                 )}
               </PostInfoBox>

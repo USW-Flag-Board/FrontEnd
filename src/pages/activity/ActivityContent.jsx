@@ -228,10 +228,12 @@ const ActivityContent = () => {
               </Content>
             </DescriptionBox>
           </ContentDetail>
-          {writerName !== leader && status === "RECRUIT" && (
+          {writerName && writerName !== leader && status === "RECRUIT" && (
             <ReaderButtonBox onApply={handleApplyClick} apply={apply} />
           )}
-          {writerName === leader && <WriterButtonBox status={status} id={id} />}
+          {writerName && writerName === leader && (
+            <WriterButtonBox status={status} id={id} />
+          )}
         </ContentBox>
       </ContentArea>
     </div>

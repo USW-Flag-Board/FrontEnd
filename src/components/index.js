@@ -1,4 +1,5 @@
 export { default as Header } from "./Header";
+export { default as ReportModal } from "./ReportModal";
 export { default as ListThem } from "./board/ListThem";
 export { default as SearchList } from "./board/SearchList";
 export { default as HomeFeedBox } from "./home/HomeFeedBox";
