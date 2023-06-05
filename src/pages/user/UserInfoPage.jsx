@@ -36,6 +36,7 @@ const UserInfoPage = () => {
           handleModalOpen={handleModalOpen}
           loginId={loginId}
           nickname={nickname}
+          type="USER"
         />
       )}
       <PageArea>

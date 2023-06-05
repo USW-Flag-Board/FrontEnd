@@ -191,7 +191,7 @@ const ReportModal = ({
             <InfoTitle>유저</InfoTitle>
             <InfoContent>{nickname}</InfoContent>
           </InfoBox>
-          {loginId ? (
+          {type === "USER" || type === "REPLY" ? (
             ""
           ) : (
             <InfoBox>

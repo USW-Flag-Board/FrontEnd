@@ -18,7 +18,6 @@ const EditPost = () => {
   const [selectedBoard, setSelectedBoard] = useState("");
   const [totalImages, setTotalImages] = useState([]);
   const { postId } = useParams();
-  console.log(totalImages);
   const handleCancelClick = () => {
     navigate(`/board/post/${postId}`);
   };

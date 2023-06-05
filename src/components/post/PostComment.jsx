@@ -65,7 +65,6 @@ const PostComment = ({ comment, postId, handleDeleteComment }) => {
     <CommentBox>
       {modalOpen && (
         <ReportModal
-          content={content}
           type="REPLY"
           id={id}
           nickname={nickname}

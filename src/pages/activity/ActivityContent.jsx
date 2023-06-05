@@ -1,11 +1,18 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
-import instance from "../../apis/AxiosInterceptorSetup";
-import { Header, ReaderButtonBox, WriterButtonBox } from "../../components";
-import { SessionStorage } from "../../utils/browserStorage";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import { Viewer } from "@toast-ui/react-editor";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
+import instance from "../../apis/AxiosInterceptorSetup";
+import {
+  ApplyCheckModal,
+  Header,
+  ReaderButtonBox,
+  SelectedCheckModal,
+  WriterButtonBox,
+} from "../../components";
+import { SessionStorage } from "../../utils/browserStorage";
+
 const ContentArea = styled.div`
   display: flex;
   justify-content: center;
@@ -125,10 +132,13 @@ const ViewerBox = styled.div`
 `;
 
 const ActivityContent = () => {
-  const navigate = useNavigate();
   const writerName = SessionStorage.get("name");
   const { activityId } = useParams();
-  const [apply, setApply] = useState(null);
+  const [apply, setApply] = useState(false);
+  const [openModal, setOpenModal] = useState({
+    applyCheck: false,
+    selectedCheck: false,
+  });
   const [activityData, setActivityData] = useState([]);
   const {
     type,
@@ -147,30 +157,48 @@ const ActivityContent = () => {
     async function fetchData() {
       try {
         const response = await instance.get(`/activities/${activityId}`);
+        const applyCheck = await instance.post(
+          `/activities/${activityId}/check`
+        );
+        if (applyCheck.data.payload.exist === true) setApply(true);
+        else setApply(false);
         setActivityData(response.data.payload);
       } catch (error) {
         console.log(error);
       }
     }
     fetchData();
-  }, [activityId]);
+  }, [activityId, status]);
 
-  const handleApplyClick = async (apply) => {
+  const handleApplyClick = async () => {
     try {
       if (apply) {
-        const response = await instance.delete(`activities/${id}/apply`);
-        if (response.data.status === 201) setApply(false);
+        const response = await instance.delete(`/activities/${id}/apply`);
+        if (response.status === 200) setApply(false);
       } else {
-        const response = await instance.post(`activities/${id}/apply`);
-        if (response.data.status === 201) setApply(true);
+        const response = await instance.post(`/activities/${id}/apply`);
+        if (response.status === 201) setApply(true);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
+  const handleModal = (name, value) => {
+    setOpenModal((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   return (
     <div>
+      {openModal.applyCheck && (
+        <ApplyCheckModal handleModal={handleModal} activityId={activityId} />
+      )}
+      {openModal.selectedCheck && (
+        <SelectedCheckModal handleModal={handleModal} activityId={activityId} />
+      )}
       <Header />
       <ContentArea>
         <ContentBox>
@@ -232,7 +260,11 @@ const ActivityContent = () => {
             <ReaderButtonBox onApply={handleApplyClick} apply={apply} />
           )}
           {writerName && writerName === leader && (
-            <WriterButtonBox status={status} id={id} />
+            <WriterButtonBox
+              status={status}
+              id={id}
+              handleModal={handleModal}
+            />
           )}
         </ContentBox>
       </ContentArea>

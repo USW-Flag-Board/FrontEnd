@@ -4,6 +4,11 @@ import instance from "../apis/AxiosInterceptorSetup";
 
 const Admin = () => {
   const [boardItems, setBoardItems] = useState("");
+  const [reports, setReports] = useState({
+    memberReportResponses: [],
+    postReportResponses: [],
+    replyReportResponses: [],
+  });
   const [board, setBoard] = useState({
     create: "",
     update: "",
@@ -59,7 +64,14 @@ const Admin = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await instance.get("/boards?type=main");
+        const response = await instance.get("/boards?type=MAIN");
+        const reportsResponse = await instance.get("/admin/reports");
+        const reports = reportsResponse.data.payload;
+        setReports({
+          memberReportResponses: reports.memberReportResponses,
+          postReportResponses: reports.postReportResponses,
+          replyReportResponses: reports.replyReportResponses,
+        });
         setBoardItems(response.data.payload.boards);
       } catch (error) {
         console.log(error);
@@ -119,9 +131,30 @@ const Admin = () => {
         <JoinArea>
           <AreaTitle>가입요청</AreaTitle>
         </JoinArea>
-        <ReportArea>
+        <ReportsArea>
           <AreaTitle>신고</AreaTitle>
-        </ReportArea>
+          <ReportsBox>
+            <ReportsTitle>멤버</ReportsTitle>
+            {Array.isArray(reports.memberReportResponses) &&
+              reports.memberReportResponses.map(
+                ({
+                  detailExplanation,
+                  id,
+                  loginId,
+                  reportCategory,
+                  reported,
+                }) => (
+                  <>
+                    <div>{reportCategory}</div>
+                    <div>{detailExplanation}</div>
+                    <div>{id}</div>
+                    <div>{loginId}</div>
+                    <div>{reported}</div>
+                  </>
+                )
+              )}
+          </ReportsBox>
+        </ReportsArea>
       </AdminBox>
     </AdminArea>
   );
@@ -194,4 +227,11 @@ const BoardItem = styled.div`
 
 const JoinArea = styled.div``;
 
-const ReportArea = styled.div``;
+const ReportsArea = styled.div`
+  display: flex;
+  gap: 2rem;
+`;
+
+const ReportsBox = styled.div``;
+
+const ReportsTitle = styled.div``;

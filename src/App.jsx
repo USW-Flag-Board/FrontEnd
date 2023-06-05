@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
   Activity,
   ActivityContent,
+  ActivityEdit,
   ActivityWrite,
   Admin,
   BulletinBoard,
@@ -36,6 +37,7 @@ const App = () => {
         />
 
         <Route path="/activity/write" element={<ActivityWrite />} />
+        <Route path="/activity/edit/:activityId" element={<ActivityEdit />} />
         <Route path="/board/post/:postId" element={<PostContentPage />} />
         <Route path="/board/post/:postId/edit" element={<EditPost />} />
         <Route path="/userInfo/:userId" element={<UserInfoPage />} />
