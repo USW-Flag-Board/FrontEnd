@@ -201,8 +201,13 @@ const ContentButtonBox = styled.div`
   width: 100%;
   height: 3rem;
   display: flex;
+  justify-content: flex-end;
+  align-items: center;
   gap: 1rem;
   margin-top: 1.5rem;
+  @media screen and (max-width: 480px) {
+    margin-top: 0.5rem;
+  }
 `;
 
 const ContentButton = styled.button`
@@ -217,6 +222,10 @@ const ContentButton = styled.button`
   &:nth-child(2) {
     background-color: #339af0;
     color: white;
+  }
+  @media screen and (max-width: 480px) {
+    height: 90%;
+    font-size: 0.8rem;
   }
 `;
 

@@ -139,7 +139,7 @@ const ActivityContent = () => {
     applyCheck: false,
     selectedCheck: false,
   });
-  const [activityData, setActivityData] = useState([]);
+  const [activityData, setActivityData] = useState({});
   const {
     type,
     id,
@@ -153,6 +153,14 @@ const ActivityContent = () => {
     bookName,
     createdAt,
   } = activityData;
+
+  const updateStatus = (value) => {
+    setActivityData((prev) => ({
+      ...prev,
+      status: value,
+    }));
+  };
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -194,7 +202,11 @@ const ActivityContent = () => {
   return (
     <div>
       {openModal.applyCheck && (
-        <ApplyCheckModal handleModal={handleModal} activityId={activityId} />
+        <ApplyCheckModal
+          handleModal={handleModal}
+          activityId={activityId}
+          updateStatus={updateStatus}
+        />
       )}
       {openModal.selectedCheck && (
         <SelectedCheckModal handleModal={handleModal} activityId={activityId} />
@@ -261,6 +273,7 @@ const ActivityContent = () => {
           )}
           {writerName && writerName === leader && (
             <WriterButtonBox
+              updateStatus={updateStatus}
               status={status}
               id={id}
               handleModal={handleModal}

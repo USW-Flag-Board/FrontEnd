@@ -235,6 +235,7 @@ const PostListBox = styled.div`
   min-height: 100rem;
   @media screen and (max-width: 480px) {
     width: 80%;
+    min-height: 60rem;
   }
 `;
 

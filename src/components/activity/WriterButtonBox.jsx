@@ -19,7 +19,7 @@ const Button = styled.button`
   color: white;
 `;
 
-const WriterButtonBox = ({ status, id, handleModal }) => {
+const WriterButtonBox = ({ status, id, handleModal, updateStatus }) => {
   const navigate = useNavigate();
 
   const handledDelteClick = async () => {
@@ -39,6 +39,7 @@ const WriterButtonBox = ({ status, id, handleModal }) => {
       try {
         await instance.patch(`activities/${id}/finish`);
         alert("활동이 종료되었습니다.");
+        updateStatus("OFF");
       } catch (error) {
         console.log(error);
       }
@@ -48,11 +49,15 @@ const WriterButtonBox = ({ status, id, handleModal }) => {
   return (
     <ButtonBox>
       <Button onClick={handledDelteClick}>활동삭제</Button>
-      <Button onClick={() => navigate(`/activity/edit/${id}`)}>수정하기</Button>
       {status === "RECRUIT" && (
-        <Button onClick={() => handleModal("applyCheck", true)}>
-          신청자 보기
-        </Button>
+        <>
+          <Button onClick={() => navigate(`/activity/edit/${id}`)}>
+            수정하기
+          </Button>
+          <Button onClick={() => handleModal("applyCheck", true)}>
+            신청자 보기
+          </Button>
+        </>
       )}
       {status === "ON" && (
         <>

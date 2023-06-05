@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import instance from "../../apis/AxiosInterceptorSetup";
 
-const ApplyCheckModal = ({ activityId, handleModal }) => {
+const ApplyCheckModal = ({ activityId, handleModal, updateStatus }) => {
   const [applyMember, setApplyMembers] = useState("");
   const [selectedMember, setSelectedMember] = useState([]);
 
@@ -28,9 +28,13 @@ const ApplyCheckModal = ({ activityId, handleModal }) => {
   const handleCloseRecruit = async () => {
     const members = selectedMember.map((member) => member.loginId);
     try {
-      await instance.patch(`/activities/${activityId}/close`, {
+      const response = await instance.patch(`/activities/${activityId}/close`, {
         loginIdList: members,
       });
+      if (response.status === 200) {
+        handleModal("applyCheck", false);
+        updateStatus("ON");
+      }
     } catch (error) {
       console.log(error);
     }

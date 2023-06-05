@@ -70,6 +70,7 @@ const ListThemBox = styled.div`
   @media screen and (max-width: 480px) {
     padding: 0.6rem 0 0.9rem 0;
     font-size: 0.8rem;
+    height: 6rem;
   }
 `;
 
