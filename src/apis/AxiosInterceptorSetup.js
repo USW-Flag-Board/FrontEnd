@@ -36,7 +36,6 @@ instance.interceptors.response.use(
 
 async function handleUnauthorizedError(error, originalRequest) {
   const status = error.response.status;
-  console.log(status);
   if (status === 401) {
     const { accessToken, refreshToken } = await refreshTokens();
     updateTokens(accessToken, refreshToken);

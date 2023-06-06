@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
-import { Header } from "../../components";
+import { Header, ReportModal } from "../../components";
 import { useParams } from "react-router-dom";
+import { SessionStorage } from "../../utils/browserStorage";
 
 const UserInfoPage = () => {
+  const imgUrl = process.env.REACT_APP_IMAGE_BASE_URL;
   const [userData, setUserData] = useState("");
   const { bio, nickname, profileImg, loginId } = userData;
   const { userId } = useParams();
-  console.log(userId);
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleModalOpen = (state) => {
+    setModalOpen(state);
+  };
   useEffect(() => {
     async function fetchData() {
       try {
@@ -26,13 +31,29 @@ const UserInfoPage = () => {
   return (
     <>
       <Header />
+      {modalOpen && (
+        <ReportModal
+          handleModalOpen={handleModalOpen}
+          loginId={loginId}
+          nickname={nickname}
+          type="USER"
+        />
+      )}
       <PageArea>
         <PageBox>
           <TopPage>
             <UserPageBox>
               <ProfileArea>
                 <ProfileBox>
-                  <ProfileImg src={profileImg} />
+                  <ProfileImg src={imgUrl + profileImg} />
+                  {SessionStorage.get("User_id") !== loginId && (
+                    <ReportButton
+                      type="button"
+                      onClick={() => handleModalOpen(true)}
+                    >
+                      신고하기
+                    </ReportButton>
+                  )}
                 </ProfileBox>
                 <NickNameArea>
                   <NickName>{nickname}</NickName>
@@ -102,6 +123,17 @@ const ProfileBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 1.5rem;
+`;
+
+const ReportButton = styled.button`
+  padding: 0.4rem;
+  border-radius: 0.2rem;
+  border: 1px solid white;
+  color: white;
+  background-color: #339af0;
+  cursor: pointer;
 `;
 
 const NickNameArea = styled.div`

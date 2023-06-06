@@ -20,15 +20,14 @@
     "react-slick": "^0.29.0",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
-    "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.6",
     "styled-reset": "^4.4.2",
     "universal-cookie": "^4.0.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "eslint && react-scripts build",
+    "start": "set \"GENERATE_SOURCEMAP=false\" && react-scripts start",
+    "build": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "eslint": "eslint"

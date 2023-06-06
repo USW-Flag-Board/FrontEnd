@@ -10,45 +10,64 @@ import Header from "../../components/Header";
 
 const WritePost = () => {
   const navigate = useNavigate();
+  const imgUrl = process.env.REACT_APP_IMAGE_BASE_URL;
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [board, setBoard] = useState("");
+  const [selectedBoard, setSelectedBoard] = useState("");
+  const [totalImages, setTotalImages] = useState([]);
   const editorRef = useRef();
   const handleBoardChange = (e) => {
-    setBoard(e.target.value);
+    setSelectedBoard(e.target.value);
   };
+
   const onUploadImage = async (blob, callback) => {
-    console.log(blob);
+    const formData = new FormData();
+    formData.append("image", blob);
+    try {
+      const response = await instance.post("/images/post", formData);
+      setTotalImages((prev) => [...prev, imgUrl + response.data?.message]);
+      callback(imgUrl + response.data.message, "image");
+    } catch (error) {
+      console.log(error);
+    }
   };
   const handleContent = () => {
     setContent(editorRef.current?.getInstance().getMarkdown());
-    console.log(content);
   };
 
   const handleCancelClick = () => {
     navigate("/board");
   };
   const handlePostClick = async () => {
-    // const data = {
-    //   boardName: board,
-    //   content: content,
-    //   title: title,
-    // };
-    // try {
-    //   const reponse = await instance.post("/posts", data);
-    //   if (reponse.status === 201) {
-    //     alert("게시글이 작성되었습니다.");
-    //     navigate("/board");
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    const saveImages = totalImages.filter((img) => content?.includes(img));
+    const deleteImages = totalImages.filter(
+      (img) => !saveImages?.includes(img)
+    );
+    const data = {
+      boardName: selectedBoard,
+      content: content,
+      title: title,
+      deleteImages: deleteImages,
+      saveImages: saveImages,
+    };
+    if (content.trim() !== "" && title.trim() !== "") {
+      try {
+        const reponse = await instance.post("/posts", data);
+        if (reponse.status === 201) {
+          alert("게시글이 작성되었습니다.");
+          navigate("/board");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const boardResponse = await instance.get("/boards?type=main");
+        const boardResponse = await instance.get("/boards?type=MAIN");
         setBoard(boardResponse.data.payload.boards);
       } catch (error) {
         console.log(error);
@@ -95,9 +114,9 @@ const WritePost = () => {
               toolbarItems={[
                 ["heading", "bold", "italic", "strike"],
                 ["hr", "quote"],
-                ["ul", "ol", "task", "indent", "outdent"],
+                ["ul", "ol"],
                 ["table", "image", "link"],
-                ["code", "codeblock"],
+                ["code"],
               ]}
               useCommandShortcut={false}
               plugins={[colorSyntax]}
@@ -131,7 +150,7 @@ const ContentArea = styled.div`
 
 const ContentLabel = styled.label`
   font-weight: bold;
-  font-size: 0.8rem;
+  font-size: 1rem;
   ::after {
     content: "*";
     color: rgb(240, 61, 12);
@@ -182,8 +201,13 @@ const ContentButtonBox = styled.div`
   width: 100%;
   height: 3rem;
   display: flex;
+  justify-content: flex-end;
+  align-items: center;
   gap: 1rem;
   margin-top: 1.5rem;
+  @media screen and (max-width: 480px) {
+    margin-top: 0.5rem;
+  }
 `;
 
 const ContentButton = styled.button`
@@ -198,6 +222,10 @@ const ContentButton = styled.button`
   &:nth-child(2) {
     background-color: #339af0;
     color: white;
+  }
+  @media screen and (max-width: 480px) {
+    height: 90%;
+    font-size: 0.8rem;
   }
 `;
 

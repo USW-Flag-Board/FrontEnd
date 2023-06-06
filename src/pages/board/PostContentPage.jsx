@@ -1,24 +1,32 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faEye,
   faComment,
+  faEye,
   faThumbsUp,
+  faFlag,
 } from "@fortawesome/free-regular-svg-icons";
-import { SessionStorage } from "../../utils/browserStorage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+import { Viewer } from "@toast-ui/react-editor";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
-import { PostComment, Header } from "../../components";
+import { Header, PostComment, ReportModal } from "../../components";
 import { useElapsedTime } from "../../hooks/useElaspedTime";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { SessionStorage } from "../../utils/browserStorage";
 
 const PostContentPage = () => {
   const { postId } = useParams();
+  const imgUrl = process.env.REACT_APP_IMAGE_BASE_URL;
   const navigate = useNavigate();
   const [comment, setComment] = useState("");
   const [postData, setPostData] = useState({});
   const [replies, setReplies] = useState("");
   const [liked, setLiked] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleModalOpen = (state) => {
+    setModalOpen(state);
+  };
   const [createdAt, setCreatedAt] = useState([]);
   const {
     content,
@@ -120,13 +128,22 @@ const PostContentPage = () => {
   return (
     <>
       <Header />
+      {modalOpen && (
+        <ReportModal
+          content={title}
+          type="POST"
+          id={id}
+          nickname={nickname}
+          handleModalOpen={handleModalOpen}
+        />
+      )}
       <PostArea>
         <PostBox>
           <ContentArea>
             <ContentInner>
               <Title>{title}</Title>
               <WriterInfoBox>
-                <WriterImg src={profileImage} />
+                <WriterImg src={imgUrl + profileImage} />
                 <Info>
                   <WriterName>{nickname}</WriterName>
                   <ElaspsedTime>
@@ -152,7 +169,11 @@ const PostContentPage = () => {
                     </LikeButton>
                   </LikeButtonBox>
                 )}
-                <Content>{content}</Content>
+                <Content className="viewer">
+                  <ViewerBox>
+                    {content && <Viewer initialValue={content || ""} />}
+                  </ViewerBox>
+                </Content>
               </ContentBox>
               <PostInfoBox>
                 <InfoBox>
@@ -163,12 +184,18 @@ const PostContentPage = () => {
                   <Icon icon={faComment} className="comment" />
                   <span>{replies.length}</span>
                 </InfoBox>
-                {loginId === SessionStorage.get("User_id") && (
+                {loginId === SessionStorage.get("User_id") ? (
                   <>
                     <StyledLink to={`/board/post/${postId}/edit`}>
                       <InfoBox>수정하기</InfoBox>
                     </StyledLink>
                     <InfoBox onClick={handleDeleteClick}>삭제하기</InfoBox>
+                  </>
+                ) : (
+                  <>
+                    <InfoBox onClick={() => handleModalOpen(true)}>
+                      신고하기
+                    </InfoBox>
                   </>
                 )}
               </PostInfoBox>
@@ -292,12 +319,22 @@ const ElaspsedTime = styled.div`
 const ContentBox = styled.div`
   display: flex;
   width: 100%;
-  height: 10rem;
+  min-height: 10rem;
+  .viewer {
+    width: 100%;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 const Content = styled.div`
-  width: 90%;
+  width: calc(100% - 5rem);
   padding: 0.3rem;
+`;
+
+const ViewerBox = styled.div`
+  width: 70%;
 `;
 
 const LikeButtonBox = styled.div`
@@ -311,7 +348,7 @@ const LikeButtonBox = styled.div`
 
 const LikeButton = styled.button`
   width: 90%;
-  height: 25%;
+  height: 3rem;
   background: none;
   cursor: pointer;
   border: 0.0625rem solid rgb(215, 226, 235);

@@ -1,15 +1,15 @@
-import { useState, useLayoutEffect, useEffect } from "react";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { Header, ListThem } from "../../components";
-import { SessionStorage } from "../../utils/browserStorage";
 import instance from "../../apis/AxiosInterceptorSetup";
+import { Header, ListThem } from "../../components";
 import {
   SEARCH_SELECT_ITEMS_OPTION,
   SEARCH_SELECT_ITEMS_PERIOD,
 } from "../../constants/board";
+import { SessionStorage } from "../../utils/browserStorage";
 
 const BulletinBoard = () => {
   const navigate = useNavigate();
@@ -39,6 +39,13 @@ const BulletinBoard = () => {
     handleSerchClick();
   };
 
+  const handlePageClick = (num) => {
+    setPage((prev) => ({
+      ...prev,
+      pageNumber: num,
+    }));
+  };
+
   const handleSerchClick = async () => {
     const { keyword, option, period } = searchQuery;
     try {
@@ -65,7 +72,7 @@ const BulletinBoard = () => {
         const response = await instance.get(
           `/posts?board=${board}&page=${page.pageNumber - 1}`
         );
-        const boardResponse = await instance.get("/boards?type=main");
+        const boardResponse = await instance.get("/boards?type=MAIN");
         setBoardItems(boardResponse.data.payload.boards);
         setPosts(response.data.payload.content);
         setPage((prevPage) => ({
@@ -121,55 +128,51 @@ const BulletinBoard = () => {
           </PostListBox>
           <PaginationArea>
             <PaginationBox>
-              {/* {page.pagination.map((num) => (
-                  <PagenitionNum key={num}>{num}</PagenitionNum>
-                ))} */}
-              <PagenitionNum>1</PagenitionNum>
-              <PagenitionNum>2</PagenitionNum>
-              <PagenitionNum>3</PagenitionNum>
-              <PagenitionNum>4</PagenitionNum>
-              <PagenitionNum>5</PagenitionNum>
-              <PagenitionNum>6</PagenitionNum>
-              <PagenitionNum>7</PagenitionNum>
-              <PagenitionNum>8</PagenitionNum>
+              {page.pagination.map((num) => (
+                <PagenitionNum key={num} onClick={() => handlePageClick(num)}>
+                  {num}
+                </PagenitionNum>
+              ))}
             </PaginationBox>
           </PaginationArea>
-          <SelectBox onSubmit={handleSubmit}>
-            <Select
-              name="period"
-              onChange={upDateSearchQuery}
-              value={searchQuery.period}
-            >
-              {SEARCH_SELECT_ITEMS_PERIOD.map(({ id, option, value }) => (
-                <option key={id} value={value}>
-                  {option}
-                </option>
-              ))}
-            </Select>
-            <Select
-              name="option"
-              onChange={upDateSearchQuery}
-              value={searchQuery.option}
-            >
-              {SEARCH_SELECT_ITEMS_OPTION.map(({ id, option, value }) => (
-                <option key={id} value={value}>
-                  {option}
-                </option>
-              ))}
-            </Select>
-            <PostSearchBox>
-              <PostSearch
-                type="text"
-                placeholder="검색어를 입력해주세요"
-                name="keyword"
+          {posts.length !== 0 && (
+            <SelectBox onSubmit={handleSubmit}>
+              <Select
+                name="period"
                 onChange={upDateSearchQuery}
-                value={searchQuery.keyword}
-              />
-              <SearchButton type="submit" onClick={handleSerchClick}>
-                검색
-              </SearchButton>
-            </PostSearchBox>
-          </SelectBox>
+                value={searchQuery.period}
+              >
+                {SEARCH_SELECT_ITEMS_PERIOD.map(({ id, option, value }) => (
+                  <option key={id} value={value}>
+                    {option}
+                  </option>
+                ))}
+              </Select>
+              <Select
+                name="option"
+                onChange={upDateSearchQuery}
+                value={searchQuery.option}
+              >
+                {SEARCH_SELECT_ITEMS_OPTION.map(({ id, option, value }) => (
+                  <option key={id} value={value}>
+                    {option}
+                  </option>
+                ))}
+              </Select>
+              <PostSearchBox>
+                <PostSearch
+                  type="text"
+                  placeholder="검색어를 입력해주세요"
+                  name="keyword"
+                  onChange={upDateSearchQuery}
+                  value={searchQuery.keyword}
+                />
+                <SearchButton type="submit" onClick={handleSerchClick}>
+                  검색
+                </SearchButton>
+              </PostSearchBox>
+            </SelectBox>
+          )}
         </ListArea>
       </BoardArea>
     </div>
@@ -178,7 +181,7 @@ const BulletinBoard = () => {
 
 const BoardArea = styled.div`
   width: 100%;
-  height: 80rem;
+  margin-bottom: 10rem;
 `;
 
 const ListArea = styled.div`
@@ -229,9 +232,10 @@ const BarItem = styled.div`
 const PostListBox = styled.div`
   width: 70%;
   margin: 1rem 0;
-  min-height: 47rem;
+  min-height: 100rem;
   @media screen and (max-width: 480px) {
     width: 80%;
+    min-height: 60rem;
   }
 `;
 

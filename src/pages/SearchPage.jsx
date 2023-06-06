@@ -88,7 +88,10 @@ const SearchPage = () => {
               <ActivitiesResultBox>
                 {activities.searchResults.map(
                   ({ name, type, semester, id, leader }) => (
-                    <Card key={id}>
+                    <Card
+                      key={id}
+                      onClick={() => navigate(`/activity/content/${id}`)}
+                    >
                       <ActivityCard
                         title={name}
                         name={leader}
@@ -147,7 +150,7 @@ const Card = styled.div`
   width: 23%;
   height: 10rem;
   @media screen and (max-width: 480px) {
-    width: 30%;
+    width: 45%;
     height: 8rem;
   }
 `;

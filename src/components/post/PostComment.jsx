@@ -5,8 +5,11 @@ import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { SessionStorage } from "../../utils/browserStorage";
 import { useState } from "react";
 import instance from "../../apis/AxiosInterceptorSetup";
+import ReportModal from "../ReportModal";
 
 const PostComment = ({ comment, postId, handleDeleteComment }) => {
+  const imgUrl = process.env.REACT_APP_IMAGE_BASE_URL;
+
   const { content, createdAt, nickname, profileImage, edited, loginId, id } =
     comment;
   const timeAgo = useElapsedTime(
@@ -20,6 +23,10 @@ const PostComment = ({ comment, postId, handleDeleteComment }) => {
     liked: comment.like.liked,
     likeCount: comment.like.likeCount,
   });
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleModalOpen = (state) => {
+    setModalOpen(state);
+  };
 
   const handleEditClick = async () => {
     try {
@@ -56,9 +63,17 @@ const PostComment = ({ comment, postId, handleDeleteComment }) => {
 
   return (
     <CommentBox>
+      {modalOpen && (
+        <ReportModal
+          type="REPLY"
+          id={id}
+          nickname={nickname}
+          handleModalOpen={handleModalOpen}
+        />
+      )}
       <CommentHeader>
         <WriterInfoBox>
-          <WriterImg src={profileImage} />
+          <WriterImg src={imgUrl + profileImage} />
           <WriterInfo>
             <WriterName>{nickname}</WriterName>
             <ElaspedTime>
@@ -89,7 +104,11 @@ const PostComment = ({ comment, postId, handleDeleteComment }) => {
             </>
           ) : (
             <>
-              <Button type="button" className="edit-delete">
+              <Button
+                type="button"
+                className="edit-delete"
+                onClick={() => handleModalOpen(true)}
+              >
                 신고
               </Button>
             </>

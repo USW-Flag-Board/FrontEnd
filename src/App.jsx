@@ -1,6 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
   Activity,
+  ActivityContent,
+  ActivityEdit,
+  ActivityWrite,
   Admin,
   BulletinBoard,
   EditPost,
@@ -28,6 +31,13 @@ const App = () => {
         <Route path="/board/write" element={<WritePost />} />
         <Route path="/search/:something" element={<SearchPage />} />
         <Route path="/activity" element={<Activity />} />
+        <Route
+          path="/activity/content/:activityId"
+          element={<ActivityContent />}
+        />
+
+        <Route path="/activity/write" element={<ActivityWrite />} />
+        <Route path="/activity/edit/:activityId" element={<ActivityEdit />} />
         <Route path="/board/post/:postId" element={<PostContentPage />} />
         <Route path="/board/post/:postId/edit" element={<EditPost />} />
         <Route path="/userInfo/:userId" element={<UserInfoPage />} />

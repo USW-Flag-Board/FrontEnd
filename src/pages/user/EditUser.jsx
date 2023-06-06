@@ -11,6 +11,7 @@ import { SessionStorage } from "../../utils/browserStorage";
 import { cookiesOption } from "../../utils/cookiesOption";
 
 const EditUser = () => {
+  const imgUrl = process.env.REACT_APP_IMAGE_BASE_URL;
   const [barName, setBarName] = useState("내프로필");
   const [userData, setUserData] = useState({
     loginId: "",
@@ -20,7 +21,7 @@ const EditUser = () => {
     nickname: "",
     studentId: "",
   });
-  const [profileImg, setProfileImg] = useState(null);
+  const [profileImg, setProfileImg] = useState("");
   const { bio, email, major, name, nickname, studentId, loginId } = userData;
   const navigate = useNavigate();
 
@@ -32,21 +33,32 @@ const EditUser = () => {
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
-    const reader = new FileReader();
     const formData = new FormData();
     formData.append("image", file);
 
     try {
-      await instance.put("/members/avatar/image", formData);
-
-      reader.onload = () => {
-        setProfileImg(reader.result);
-      };
+      const response = await instance.post("/images/profile", formData);
+      if (response.status === 201) {
+        await instance.put("/members/avatar/profile-image", {
+          profileImage: response.data.message,
+        });
+        setProfileImg(imgUrl + response.data.message);
+      }
     } catch (error) {
       console.log(error);
     }
+  };
 
-    reader.readAsDataURL(file);
+  const handleImgReset = async () => {
+    const defaultImg = "avatar/default_image.jpg";
+    try {
+      await instance.put("/members/avatar/profile-image", {
+        profileImage: defaultImg,
+      });
+      setProfileImg(imgUrl + defaultImg);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleBarNameClick = (name) => {
@@ -67,21 +79,12 @@ const EditUser = () => {
     }
   };
 
-  const handleImgReset = async () => {
-    try {
-      const response = await instance.put(`/members/avatar/reset`);
-      setProfileImg(response.data.payload);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await instance.get("/members");
         const data = response.data.payload;
-        setProfileImg(data.profileImg);
+        setProfileImg(imgUrl + data.profileImg);
         setUserData((prevState) => ({
           ...prevState,
           bio: data.bio,
@@ -195,6 +198,7 @@ const EditPage = styled.div`
   display: flex;
   @media screen and (max-width: 480px) {
     flex-direction: column;
+    width: 90%;
   }
 `;
 

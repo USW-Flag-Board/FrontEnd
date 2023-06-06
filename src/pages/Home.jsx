@@ -1,10 +1,12 @@
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import recruit from "../assets/images/recruit(가로).png";
 import instance from "../apis/AxiosInterceptorSetup";
-import { Header, HomeFeedBox, ImageSlider } from "../components";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Header, HomeFeedBox } from "../components";
+
 const Home = () => {
   const navigate = useNavigate();
   const [postsData, setPostData] = useState({
@@ -42,9 +44,9 @@ const Home = () => {
     <>
       <Header />
       <HomeArea>
-        <BookImgBox>
-          <ImageSlider />
-        </BookImgBox>
+        <HomeImgBox>
+          <HomeImg src={recruit} />
+        </HomeImgBox>
         <HomeContents>
           <HomeSearchBox onSubmit={handleSearchCotent}>
             <SearchInputBox>
@@ -94,8 +96,13 @@ const HomeContents = styled.div`
   }
 `;
 
-const BookImgBox = styled.div`
-  overflow: hidden;
+const HomeImgBox = styled.div`
+  width: 100%;
+`;
+
+const HomeImg = styled.img`
+  width: 100%;
+  height: 15rem;
 `;
 
 const PostsArea = styled.div`

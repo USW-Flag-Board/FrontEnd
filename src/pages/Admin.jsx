@@ -4,6 +4,11 @@ import instance from "../apis/AxiosInterceptorSetup";
 
 const Admin = () => {
   const [boardItems, setBoardItems] = useState("");
+  const [reports, setReports] = useState({
+    memberReportResponses: [],
+    postReportResponses: [],
+    replyReportResponses: [],
+  });
   const [board, setBoard] = useState({
     create: "",
     update: "",
@@ -18,9 +23,32 @@ const Admin = () => {
     }));
   };
 
-  const fetchBoard = async () => {
+  const addBoard = async () => {
     try {
-      await instance.post("/admin/board");
+      const response = await instance.post("/admin/board", {
+        boardType: "MAIN",
+        name: board.create,
+      });
+      if (response.status === 200) alert("게시판 생성 완료");
+    } catch (error) {
+      if (error.response.status === 409)
+        alert("이미 같은 게시판이 존재합니다.");
+    }
+  };
+  const putBoard = async () => {
+    try {
+      await instance.put(`/admin/board/${board.delete}`, {
+        boardType: "MAIN",
+        name: board.update,
+      });
+    } catch (error) {
+      if (error.response.status === 409)
+        alert("이미 같은 게시판이 존재합니다.");
+    }
+  };
+  const deleteBoard = async () => {
+    try {
+      await instance.delete(`/admin/board/${board.delete}`);
     } catch (error) {
       console.log(error);
     }
@@ -36,7 +64,14 @@ const Admin = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await instance.get("/boards?type=main");
+        const response = await instance.get("/boards?type=MAIN");
+        const reportsResponse = await instance.get("/admin/reports");
+        const reports = reportsResponse.data.payload;
+        setReports({
+          memberReportResponses: reports.memberReportResponses,
+          postReportResponses: reports.postReportResponses,
+          replyReportResponses: reports.replyReportResponses,
+        });
         setBoardItems(response.data.payload.boards);
       } catch (error) {
         console.log(error);
@@ -70,7 +105,7 @@ const Admin = () => {
                 name="create"
                 onChange={updateBoard}
               />
-              <BoardButton onClick={fetchBoard}>추가</BoardButton>
+              <BoardButton onClick={addBoard}>추가</BoardButton>
             </FunctionItem>
             <FunctionItem>
               <BoardInput
@@ -79,7 +114,7 @@ const Admin = () => {
                 name="update"
                 onChange={updateBoard}
               />
-              <BoardButton>수정</BoardButton>
+              <BoardButton onClick={putBoard}>수정</BoardButton>
             </FunctionItem>
             <FunctionItem>
               <BoardInput
@@ -89,16 +124,37 @@ const Admin = () => {
                 disabled={true}
                 onChange={updateBoard}
               />
-              <BoardButton>삭제</BoardButton>
+              <BoardButton onClick={deleteBoard}>삭제</BoardButton>
             </FunctionItem>
           </FunctionBox>
         </BoardArea>
         <JoinArea>
           <AreaTitle>가입요청</AreaTitle>
         </JoinArea>
-        <ReportArea>
+        <ReportsArea>
           <AreaTitle>신고</AreaTitle>
-        </ReportArea>
+          <ReportsBox>
+            <ReportsTitle>멤버</ReportsTitle>
+            {Array.isArray(reports.memberReportResponses) &&
+              reports.memberReportResponses.map(
+                ({
+                  detailExplanation,
+                  id,
+                  loginId,
+                  reportCategory,
+                  reported,
+                }) => (
+                  <>
+                    <div>{reportCategory}</div>
+                    <div>{detailExplanation}</div>
+                    <div>{id}</div>
+                    <div>{loginId}</div>
+                    <div>{reported}</div>
+                  </>
+                )
+              )}
+          </ReportsBox>
+        </ReportsArea>
       </AdminBox>
     </AdminArea>
   );
@@ -171,4 +227,11 @@ const BoardItem = styled.div`
 
 const JoinArea = styled.div``;
 
-const ReportArea = styled.div``;
+const ReportsArea = styled.div`
+  display: flex;
+  gap: 2rem;
+`;
+
+const ReportsBox = styled.div``;
+
+const ReportsTitle = styled.div``;

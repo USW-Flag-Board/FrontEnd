@@ -4,64 +4,116 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import instance from "../../apis/AxiosInterceptorSetup";
 
-const SelectedCheckModal = ({ setSelectedMembersCheck, id }) => {
+const SelectedCheckModal = ({ handleModal, activityId }) => {
   const [selectedMember, setSelectedMember] = useState([]);
-
+  {
+    selectedMember &&
+      selectedMember.map(({ name, major, loginId }) => (
+        <MembersBox key={loginId}>
+          <MemberIcon icon={faUser} />
+          <span>{name}</span>
+          <span>{major}</span>
+        </MembersBox>
+      ));
+  }
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await instance.get(`activities/${id}/participant`);
+        const response = await instance.get(
+          `activities/${activityId}/participant`
+        );
         setSelectedMember(response.data.payload);
-        console.log(response.data.payload);
       } catch (error) {
         console.log(error);
       }
     }
     fetchData();
-  }, [id]);
+  }, [activityId]);
 
   return (
-    <>
-      <ContentBox>
-        <Content className="content-area">
-          <MembersTitle>참여자 정보 확인</MembersTitle>
-          {selectedMember &&
-            selectedMember.map(({ name, major, loginId }) => (
-              <MembersBox key={loginId}>
-                <MemberIcon icon={faUser} />
-                <span>{name}</span>
-                <span>{major}</span>
-              </MembersBox>
-            ))}
-        </Content>
-      </ContentBox>
-      <ButtonArea>
-        <ButtonBox>
-          <ModalButton
-            type="button"
-            onClick={() => setSelectedMembersCheck(false)}
-          >
-            뒤로가기
-          </ModalButton>
-        </ButtonBox>
-      </ButtonArea>
-    </>
+    <ModalArea>
+      <ModalBox>
+        <ModalBox>
+          <TitleBox>
+            <Title>참여자 보기</Title>
+          </TitleBox>
+          <CheckMembersBox>
+            <MembersTitle>참여자</MembersTitle>
+            <ContentBox>
+              <Content className="content-area">
+                {selectedMember &&
+                  selectedMember.map(({ name, major, loginId }) => (
+                    <MembersBox key={loginId}>
+                      <MemberIcon icon={faUser} />
+                      <span>{name}</span>
+                      <span>({major})</span>
+                    </MembersBox>
+                  ))}
+              </Content>
+            </ContentBox>
+          </CheckMembersBox>
+          <ButtonBox>
+            <Button onClick={() => handleModal("selectedCheck", false)}>
+              닫기
+            </Button>
+          </ButtonBox>
+        </ModalBox>
+      </ModalBox>
+    </ModalArea>
   );
 };
 
 export default SelectedCheckModal;
 
-const ContentBox = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  height: 80%;
-  margin: 1rem 1rem 1rem 0;
-  padding-right: 1rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  border: 1px solid #8e8e8e;
-  border-radius: 20px;
+const ModalArea = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+`;
 
+const ModalBox = styled.div`
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 10px;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  @media screen and (max-width: 480px) {
+    width: 90%;
+  }
+`;
+
+const CheckMembersBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0 2rem;
+`;
+
+const TitleBox = styled.div`
+  border-bottom: 1px solid #dcdcdc;
+`;
+
+const Title = styled.div`
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 1.5rem 2rem;
+`;
+
+const ContentBox = styled.div`
+  width: 100%;
+  min-height: 13rem;
+  border: 1px solid #8e8e8e;
+  border-radius: 0.3rem;
+  padding: 1rem 0;
   :nth-child(2) {
     height: 30%;
   }
@@ -74,7 +126,6 @@ const Content = styled.div`
   height: 100%;
   resize: none;
   overflow-y: auto;
-
   /* 스크롤바 전체 */
   ::-webkit-scrollbar {
     width: 1rem;
@@ -95,13 +146,12 @@ const Content = styled.div`
 `;
 
 const MembersTitle = styled.div`
-  font-size: 1.5rem;
+  font-size: 0.9rem;
   font-weight: bold;
   margin-bottom: 1rem;
 `;
 
 const MembersBox = styled.div`
-  cursor: pointer;
   margin-bottom: 0.6rem;
   width: fit-content;
 `;
@@ -110,27 +160,34 @@ const MemberIcon = styled(FontAwesomeIcon)`
   margin-right: 0.5rem;
 `;
 
-const ButtonArea = styled.div`
+const ButtonBox = styled.div`
   width: 100%;
-  height: 15%;
+  height: 2.7rem;
+  padding: 0 2rem;
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 1.5rem;
+  @media screen and (max-width: 480px) {
+    height: 2.3rem;
+    font-size: 0.4rem;
+  }
 `;
 
-const ButtonBox = styled.div`
+const Button = styled.button`
+  border-radius: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: bold;
   width: 20%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const ModalButton = styled.button`
-  border: 1px solid #8e8e8e;
-  border-radius: 20px;
-  width: 100%;
-  height: 50%;
-  background-color: #404040;
-  color: white;
+  border: none;
+  padding: 0.3rem 0.2rem;
   cursor: pointer;
+  &:nth-child(2) {
+    background-color: #339af0;
+    color: white;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 0.8rem;
+    width: 25%;
+  }
 `;

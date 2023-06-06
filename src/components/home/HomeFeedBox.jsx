@@ -81,7 +81,7 @@ const HomeFeedBox = ({ post, title }) => {
               onClick={
                 title !== "모집중인 활동"
                   ? () => handlePostClick(item.id)
-                  : undefined
+                  : () => navigate(`/activity/content/${item.id}`)
               }
             >
               <HomePosts post={item} headerTitle={title} />

@@ -1,36 +1,38 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import boardData from "../../constants/board";
-import { Header } from "../../components";
+import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
+import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import { Editor } from "@toast-ui/react-editor";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
+import { Header } from "../../components";
 
 const EditPost = () => {
   const navigate = useNavigate();
+  const imgUrl = process.env.REACT_APP_IMAGE_BASE_URL;
+  const [boards, setBoard] = useState("");
+  const editorRef = useRef();
+  const [content, setContent] = useState("");
+  const [title, setTitle] = useState("");
+  const [selectedBoard, setSelectedBoard] = useState("");
+  const [totalImages, setTotalImages] = useState([]);
   const { postId } = useParams();
-  const [postData, setPostData] = useState({});
-  const [post, setPost] = useState({
-    title: postData.title,
-    content: postData.content,
-    board: postData.board,
-  });
-  const handleContentChange = (e) => {
-    const { name, value } = e.target;
-    setPost({
-      ...post,
-      [name]: value,
-    });
-  };
-
   const handleCancelClick = () => {
     navigate(`/board/post/${postId}`);
   };
 
   const handlePostClick = async () => {
+    const saveImages = totalImages.filter((img) => content?.includes(img));
+    const deleteImages = totalImages.filter(
+      (img) => !saveImages?.includes(img)
+    );
     const data = {
-      boardName: post.board,
-      content: post.content,
-      title: post.title,
+      boardName: selectedBoard,
+      content: content,
+      title: title,
+      deleteImages: deleteImages,
+      saveImages: saveImages,
     };
     try {
       const reponse = await instance.put(`/posts/${postId}`, data);
@@ -43,11 +45,33 @@ const EditPost = () => {
     }
   };
 
+  const onUploadImage = async (blob, callback) => {
+    const formData = new FormData();
+    formData.append("image", blob);
+    try {
+      const response = await instance.post("/images/post", formData);
+      setTotalImages((prev) => [...prev, imgUrl + response.data.message]);
+      callback(imgUrl + response.data.message, "image");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleContent = () => {
+    setContent(editorRef.current?.getInstance().getMarkdown());
+  };
+
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await instance.get(`/posts/${postId}`);
-        setPostData(response.data.payload.postDetail);
+        const boardResponse = await instance.get("/boards?type=MAIN");
+        const postResponse = response.data.payload.postDetail;
+        setTotalImages(response.data.payload.imageKeys);
+        setSelectedBoard(postResponse.board);
+        setTitle(postResponse.title);
+        setContent(postResponse.content);
+        editorRef.current?.getInstance().setMarkdown(postResponse.content);
+        setBoard(boardResponse.data.payload.boards);
       } catch (error) {
         console.log(error);
       }
@@ -56,14 +80,6 @@ const EditPost = () => {
     fetchData();
   }, [postId]);
 
-  useEffect(() => {
-    setPost({
-      title: postData.title,
-      content: postData.content,
-      board: postData.board,
-    });
-  }, [postData]);
-
   return (
     <>
       <Header />
@@ -71,35 +87,49 @@ const EditPost = () => {
         <ContentArea>
           <ContentLabel>게시판</ContentLabel>
           <BoardSelect
-            onChange={handleContentChange}
+            onChange={(e) => setSelectedBoard(e.target.value)}
             name="board"
-            value={post.board}
+            value={selectedBoard}
           >
             <option>게시판을 선택해주세요</option>
-            {boardData.BOARD_NAMES.map(({ id, krName }) => (
-              <option key={id} value={krName}>
-                {krName}
-              </option>
-            ))}
+            {Array.isArray(boards) &&
+              boards.map(({ id, boardName }) => (
+                <option key={id} value={boardName}>
+                  {boardName}
+                </option>
+              ))}
           </BoardSelect>
           <ContentLabel>제목</ContentLabel>
           <TitleInputBox>
             <TitleInput
               type="text"
               name="title"
-              value={post.title}
+              value={title}
               placeholder="제목을 입력해주세요."
-              onChange={handleContentChange}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </TitleInputBox>
           <ContentLabel>내용</ContentLabel>
           <ContentInputBox>
-            <ContentInput
-              value={post.content}
-              type="text"
-              name="content"
-              placeholder="내용을 입력해주세요."
-              onChange={handleContentChange}
+            <Editor
+              height="35rem"
+              placeholder="내용을 입력해 주세요"
+              previewStyle="vertical"
+              initialEditType="wysiwyg"
+              ref={editorRef}
+              onChange={handleContent}
+              toolbarItems={[
+                ["heading", "bold", "italic", "strike"],
+                ["hr", "quote"],
+                ["ul", "ol"],
+                ["table", "image", "link"],
+                ["code"],
+              ]}
+              useCommandShortcut={false}
+              plugins={[colorSyntax]}
+              hooks={{
+                addImageBlobHook: onUploadImage,
+              }}
             />
           </ContentInputBox>
           <ContentButtonBox>
@@ -140,27 +170,19 @@ const BoardSelect = styled.select`
   width: 20%;
   height: 2.5rem;
   border: 1px solid #ced4da;
-  border-radius: 7px;
   box-sizing: border-box;
   padding: 0 1rem;
   font-weight: 600;
   margin-bottom: 2rem;
-  &:hover {
-    border: 1px solid #339af0;
-  }
 `;
 
 const TitleInputBox = styled.div`
   width: 100%;
   height: 2.5rem;
-  border-radius: 5px;
   box-sizing: border-box;
   border: 1px solid #ced4da;
   padding: 0.5rem 1rem;
   margin-bottom: 2rem;
-  &:hover {
-    border: 1px solid #339af0;
-  }
 `;
 
 const TitleInput = styled.input`
@@ -177,21 +199,20 @@ const TitleInput = styled.input`
 const ContentInputBox = styled.div`
   box-sizing: border-box;
   width: 100%;
-  height: 60%;
-  border: 1px solid #ced4da;
-  border-radius: 7px;
-  padding: 1rem 1rem;
   margin-bottom: 2rem;
-  &:hover {
-    border: 1px solid #339af0;
-  }
 `;
 
 const ContentButtonBox = styled.div`
   width: 100%;
   height: 3rem;
   display: flex;
+  justify-content: flex-end;
+  align-items: center;
   gap: 1rem;
+  margin-top: 1.5rem;
+  @media screen and (max-width: 480px) {
+    margin-top: 0.5rem;
+  }
 `;
 
 const ContentButton = styled.button`
@@ -207,19 +228,9 @@ const ContentButton = styled.button`
     background-color: #339af0;
     color: white;
   }
-`;
-
-const ContentInput = styled.textarea`
-  width: 100%;
-  height: 24rem;
-  resize: none;
-  caret-color: black;
-  border: none;
-  &:focus {
-    outline: none;
-  }
-  ::placeholder {
-    font-size: 1rem;
+  @media screen and (max-width: 480px) {
+    height: 90%;
+    font-size: 0.8rem;
   }
 `;
 
