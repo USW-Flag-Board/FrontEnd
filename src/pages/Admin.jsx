@@ -1,9 +1,167 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import instance from "../apis/AxiosInterceptorSetup";
+import ReportsEtcModal from "../components/admin/ReportsEtcModal";
+import { AxiosHeaders } from "axios";
+const AdminArea = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
+
+const AdminBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  padding: 2rem 0;
+`;
+
+const AreaTitle = styled.div`
+  font-weight: bold;
+  font-size: 1.2rem;
+  ::after {
+    content: "*";
+    color: rgb(240, 61, 12);
+    margin-left: 0.4rem;
+  }
+  margin-bottom: 1rem;
+`;
+
+const BoardArea = styled.div`
+  margin-bottom: 2rem;
+  display: flex;
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+  }
+`;
+
+const FunctionBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 10rem;
+`;
+
+const FunctionItem = styled.div`
+  display: flex;
+`;
+
+const BoardInput = styled.input`
+  @media screen and (max-width: 480px) {
+    width: 100%;
+  }
+`;
+
+const BoardButton = styled.button`
+  cursor: pointer;
+  height: 2rem;
+`;
+
+const BoardItmesBox = styled.div`
+  border: 1px solid black;
+  border-radius: 0.8rem;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 10rem;
+  padding: 1rem;
+  margin-right: 2rem;
+  @media screen and (max-width: 480px) {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+`;
+
+const BoardItem = styled.div`
+  cursor: pointer;
+  font-size: 1rem;
+`;
+
+const JoinArea = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const JoinBox = styled.div`
+  width: 50%;
+  margin-bottom: 1.5rem;
+  min-height: 10rem;
+  border: 1px solid black;
+  border-radius: 0.8rem;
+  @media screen and (max-width: 480px) {
+    width: 100%;
+  }
+`;
+
+const ReportsArea = styled.div`
+  display: flex;
+  gap: 3rem;
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+  }
+`;
+
+const ReportsBox = styled.div`
+  width: 30%;
+  margin-bottom: 1.5rem;
+  min-height: 20rem;
+  @media screen and (max-width: 480px) {
+    width: 100%;
+  }
+`;
+
+const ReportBox = styled.div`
+  border: 1px solid black;
+  border-radius: 0.8rem;
+  width: 100%;
+  height: 100%;
+  padding: 0.3rem 0.5rem;
+`;
+
+const ReportTitle = styled.div`
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+`;
+
+const ReportBoxHeader = styled.div`
+  display: flex;
+  align-items: center;
+  height: 3rem;
+  border-bottom: 1px solid black;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+`;
+
+const Box = styled.div`
+  display: flex;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+  :hover {
+    color: blue;
+  }
+`;
+
+const TypeAndId = styled.div`
+  width: 50%;
+  display: flex;
+  justify-content: center;
+`;
 
 const Admin = () => {
   const [boardItems, setBoardItems] = useState("");
+  const [reportModal, setReportModal] = useState(false);
+  const [modalContents, setModalContents] = useState({
+    id: "",
+    loginId: "",
+    detailExplanation: "",
+    postId: "",
+    reportCategory: "",
+    category: "",
+  });
+
   const [reports, setReports] = useState({
     memberReportResponses: [],
     postReportResponses: [],
@@ -21,6 +179,10 @@ const Admin = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleEtcModal = (value) => {
+    setReportModal(value);
   };
 
   const addBoard = async () => {
@@ -81,6 +243,12 @@ const Admin = () => {
   }, []);
   return (
     <AdminArea>
+      {reportModal && (
+        <ReportsEtcModal
+          handleEtcModal={handleEtcModal}
+          modalContents={modalContents}
+        />
+      )}
       <AdminBox>
         <AreaTitle>게시판</AreaTitle>
         <BoardArea>
@@ -128,31 +296,131 @@ const Admin = () => {
             </FunctionItem>
           </FunctionBox>
         </BoardArea>
+        <AreaTitle>가입요청</AreaTitle>
         <JoinArea>
-          <AreaTitle>가입요청</AreaTitle>
+          <JoinBox></JoinBox>
         </JoinArea>
+        <AreaTitle>신고</AreaTitle>
         <ReportsArea>
-          <AreaTitle>신고</AreaTitle>
           <ReportsBox>
-            <ReportsTitle>멤버</ReportsTitle>
-            {Array.isArray(reports.memberReportResponses) &&
-              reports.memberReportResponses.map(
-                ({
-                  detailExplanation,
-                  id,
-                  loginId,
-                  reportCategory,
-                  reported,
-                }) => (
-                  <>
-                    <div>{reportCategory}</div>
-                    <div>{detailExplanation}</div>
-                    <div>{id}</div>
-                    <div>{loginId}</div>
-                    <div>{reported}</div>
-                  </>
-                )
-              )}
+            <ReportTitle>멤버</ReportTitle>
+            <ReportBox>
+              <ReportBoxHeader>
+                <TypeAndId>신고 타입</TypeAndId>
+                <TypeAndId>유저 아이디</TypeAndId>
+                <TypeAndId>아이디</TypeAndId>
+              </ReportBoxHeader>
+              {Array.isArray(reports.memberReportResponses) &&
+                reports.memberReportResponses.map(
+                  ({
+                    detailExplanation,
+                    id,
+                    loginId,
+                    reportCategory,
+                    reported,
+                  }) => (
+                    <Box
+                      key={id}
+                      onClick={() => {
+                        setReportModal(true);
+                        setModalContents({
+                          id: id,
+                          loginId: loginId,
+                          detailExplanation: detailExplanation,
+                          board: "",
+                          postId: "",
+                          category: "user",
+                          reportCategory: reportCategory,
+                        });
+                      }}
+                    >
+                      <TypeAndId>{reportCategory}</TypeAndId>
+                      <TypeAndId>{loginId}</TypeAndId>
+                      <TypeAndId>{reported}</TypeAndId>
+                    </Box>
+                  )
+                )}
+            </ReportBox>
+          </ReportsBox>
+          <ReportsBox>
+            <ReportTitle>게시글</ReportTitle>
+            <ReportBox>
+              <ReportBoxHeader>
+                <TypeAndId>신고 타입</TypeAndId>
+                <TypeAndId>게시판</TypeAndId>
+                <TypeAndId>게시글 아이디</TypeAndId>
+              </ReportBoxHeader>
+              {Array.isArray(reports.postReportResponses) &&
+                reports.postReportResponses.map(
+                  ({
+                    detailExplanation,
+                    board,
+                    id,
+                    postId,
+                    reportCategory,
+                    reported,
+                  }) => (
+                    <Box
+                      key={id}
+                      onClick={() => {
+                        setReportModal(true);
+                        setModalContents({
+                          id: id,
+                          loginId: "",
+                          detailExplanation: detailExplanation,
+                          postId: postId,
+                          category: "post",
+                          reportCategory: reportCategory,
+                        });
+                      }}
+                    >
+                      <TypeAndId>{reportCategory}</TypeAndId>
+                      <TypeAndId>{board}</TypeAndId>
+                      <TypeAndId>{postId}</TypeAndId>
+                    </Box>
+                  )
+                )}
+            </ReportBox>
+          </ReportsBox>
+          <ReportsBox>
+            <ReportTitle>멤버</ReportTitle>
+            <ReportBox>
+              <ReportBoxHeader>
+                <TypeAndId>신고 타입</TypeAndId>
+                <TypeAndId>게시글 아이디</TypeAndId>
+                <TypeAndId>댓글 아이디</TypeAndId>
+              </ReportBoxHeader>
+              {Array.isArray(reports.replyReportResponses) &&
+                reports.replyReportResponses.map(
+                  ({
+                    detailExplanation,
+                    id,
+                    postId,
+                    reportCategory,
+                    reported,
+                    replyId,
+                  }) => (
+                    <Box
+                      key={id}
+                      onClick={() => {
+                        setReportModal(true);
+                        setModalContents({
+                          id: id,
+                          loginId: "",
+                          detailExplanation: detailExplanation,
+                          postId: postId,
+                          category: "reply",
+                          reportCategory: reportCategory,
+                        });
+                      }}
+                    >
+                      <TypeAndId>{reportCategory}</TypeAndId>
+                      <TypeAndId>{postId}</TypeAndId>
+                      <TypeAndId>{replyId}</TypeAndId>
+                    </Box>
+                  )
+                )}
+            </ReportBox>
           </ReportsBox>
         </ReportsArea>
       </AdminBox>
@@ -161,77 +429,3 @@ const Admin = () => {
 };
 
 export default Admin;
-
-const AdminArea = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-`;
-
-const AdminBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  padding: 2rem 0;
-`;
-
-const AreaTitle = styled.div`
-  font-weight: bold;
-  font-size: 1.2rem;
-  ::after {
-    content: "*";
-    color: rgb(240, 61, 12);
-    margin-left: 0.4rem;
-  }
-  margin-bottom: 1rem;
-`;
-
-const BoardArea = styled.div`
-  margin-bottom: 2rem;
-  display: flex;
-`;
-
-const FunctionBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  height: 10rem;
-`;
-
-const FunctionItem = styled.div`
-  display: flex;
-`;
-
-const BoardInput = styled.input``;
-
-const BoardButton = styled.button`
-  cursor: pointer;
-  height: 2rem;
-`;
-
-const BoardItmesBox = styled.div`
-  border: 1px solid black;
-  border-radius: 0.8rem;
-  width: 30%;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-  margin-right: 2rem;
-`;
-
-const BoardItem = styled.div`
-  cursor: pointer;
-  font-size: 1rem;
-`;
-
-const JoinArea = styled.div``;
-
-const ReportsArea = styled.div`
-  display: flex;
-  gap: 2rem;
-`;
-
-const ReportsBox = styled.div``;
-
-const ReportsTitle = styled.div``;

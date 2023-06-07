@@ -76,6 +76,10 @@ const Title = styled.input`
   padding: 0 0.6rem;
   border: 1px solid #ced4da;
   border-radius: 0.5rem;
+  @media screen and (max-width: 480px) {
+    width: 100%;
+    font-size: 0.8rem;
+  }
 `;
 
 const InfoBox = styled.ul`
@@ -100,6 +104,7 @@ const InfoItem = styled.li`
   gap: 1rem;
   @media screen and (max-width: 480px) {
     font-size: 0.8rem;
+    width: 100%;
   }
 `;
 
@@ -139,6 +144,9 @@ const Select = styled.select`
   padding-left: 0.5rem;
   border-radius: 0.2rem;
   cursor: pointer;
+  @media screen and (max-width: 480px) {
+    font-size: 0.7rem;
+  }
 `;
 
 const ContentDetail = styled.div`

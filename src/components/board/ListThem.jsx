@@ -62,7 +62,6 @@ const ListThem = ({ post }) => {
 
 const ListThemBox = styled.div`
   width: 100%;
-  height: 10rem;
   padding: 1rem 0;
   border-bottom: 1px solid #dee2e6;
   cursor: pointer;
@@ -70,7 +69,6 @@ const ListThemBox = styled.div`
   @media screen and (max-width: 480px) {
     padding: 0.6rem 0 0.9rem 0;
     font-size: 0.8rem;
-    height: 6rem;
   }
 `;
 
@@ -79,6 +77,7 @@ const NoticeBox = styled.div`
   width: 100%;
   align-items: center;
   padding-bottom: 0.75rem;
+  height: 2rem;
 `;
 
 const Notice = styled.div`
@@ -109,8 +108,10 @@ const EditedNotice = styled.div`
 const Title = styled.div`
   font-weight: bold;
   padding-bottom: 1.5rem;
+  font-size: 1.3rem;
   @media screen and (max-width: 480px) {
     padding-bottom: 0.4rem;
+    font-size: 1rem;
   }
 `;
 

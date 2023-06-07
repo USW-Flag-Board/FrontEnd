@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
-import { ActivityCard, Header, WriteModal } from "../../components";
+import { ActivityCard, Header } from "../../components";
 import { ACTIVITY_CATEGORIE } from "../../constants/activity";
 import { SessionStorage } from "../../utils/browserStorage";
 
@@ -113,7 +113,7 @@ const ActivityArea = styled.div`
   flex-direction: column;
   align-items: center;
   @media screen and (max-width: 480px) {
-    padding: 1.5rem 2rem;
+    padding: 1.5rem 1rem;
   }
 `;
 

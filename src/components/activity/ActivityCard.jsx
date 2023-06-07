@@ -1,9 +1,16 @@
 import styled from "styled-components";
 
-const ActivityCard = ({ title, name, type, semester }) => {
+const ActivityCard = ({ title, name, type, semester, status }) => {
   return (
-    <Mainbox type={type}>
-      <Type type={type}>{type}</Type>
+    <Mainbox activityType={type}>
+      <TypeAndStatus>
+        <Type activityType={type}>{type}</Type>
+        <Notice>
+          {status === "RECRUIT" && "모집중"}
+          {status === "ON" && "활동중"}
+          {status === "OFF" && "활동종료"}
+        </Notice>
+      </TypeAndStatus>
       <Title>{title}</Title>
       <Deadline>
         기간: <span>{semester}</span>
@@ -22,7 +29,7 @@ const Mainbox = styled.div`
   cursor: pointer;
   padding: 1rem 1rem 1.5rem 1rem;
   background-color: ${(props) => {
-    switch (props.type) {
+    switch (props.activityType) {
       case "PROJECT":
         return "#e7f5ff";
       case "STUDY":
@@ -36,7 +43,7 @@ const Mainbox = styled.div`
   &:hover {
     border: 1px solid;
     border-color: ${(props) => {
-      switch (props.type) {
+      switch (props.activityType) {
         case "PROJECT":
           return "#a5d8ff";
         case "STUDY":
@@ -53,10 +60,25 @@ const Mainbox = styled.div`
   }
 `;
 
+const TypeAndStatus = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const Notice = styled.div`
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background-color: rgb(234, 244, 255);
+  color: rgb(0, 120, 255);
+`;
+
 const Type = styled.div`
   font-weight: bold;
   color: ${(props) => {
-    switch (props.type) {
+    switch (props.activityType) {
       case "PROJECT":
         return "#4dabf7";
       case "STUDY":

@@ -226,15 +226,27 @@ const ActivityContent = () => {
           <InfoBox>
             <InfoItem>
               <InfoTitle>모집 구분</InfoTitle>
-              <InfoContent>{type}</InfoContent>
+              <InfoContent>
+                {type === "STUDY" && "스터디"}
+                {type === "PROJECT" && "프로젝트"}
+                {type === "MENTORING" && "멘토링"}
+              </InfoContent>
             </InfoItem>
             <InfoItem>
               <InfoTitle>모집 상태</InfoTitle>
-              <InfoContent>{status}</InfoContent>
+              <InfoContent>
+                {status === "RECRUIT" && "모집중"}
+                {status === "ON" && "활동중"}
+                {status === "OFF" && "활동종료"}
+              </InfoContent>
             </InfoItem>
             <InfoItem>
               <InfoTitle>진행 방식</InfoTitle>
-              <InfoContent>{proceed}</InfoContent>
+              <InfoContent>
+                {proceed === "ONLINE" && "온라인"}
+                {proceed === "OFFLINE" && "오프라인"}
+                {proceed === "BOTH" && "온라인/오프라인 혼합"}
+              </InfoContent>
             </InfoItem>
             {type === "PROJECT" ? (
               <InfoItem className="github">
@@ -248,7 +260,10 @@ const ActivityContent = () => {
             ) : (
               <InfoItem>
                 <InfoTitle>책 사용</InfoTitle>
-                <InfoContent>{bookUsage}</InfoContent>
+                <InfoContent>
+                  {bookUsage === "USE" && "사용"}
+                  {bookUsage === "NOT_USE" && "미사용"}
+                </InfoContent>
               </InfoItem>
             )}
             {bookUsage === "USE" && (
