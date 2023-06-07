@@ -146,6 +146,9 @@ const Select = styled.select`
   padding-left: 0.5rem;
   border-radius: 0.2rem;
   cursor: pointer;
+  @media screen and (max-width: 480px) {
+    font-size: 0.7rem;
+  }
 `;
 
 const ContentDetail = styled.div`
