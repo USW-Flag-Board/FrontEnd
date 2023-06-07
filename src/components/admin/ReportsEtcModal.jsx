@@ -121,20 +121,20 @@ const MembersTitle = styled.div`
   margin-bottom: 1rem;
 `;
 
-const MembersBox = styled.div`
-  margin-bottom: 0.6rem;
-  width: fit-content;
-`;
-
 const ReportsEtcModal = ({ handleEtcModal, modalContents }) => {
   const navigate = useNavigate();
   const { id, loginId, postId, reportCategory, category, detailExplanation } =
     modalContents;
 
-  const handelReport = async (id) => {
+  const handelReport = async (method, id) => {
     try {
-      const response = await instance.delete(`/admin/reports/${id}`);
-      if (response.status === 200) handleEtcModal(false);
+      if (method === "post") {
+        const response = await instance.delete(`/admin/reports/handle/${id}`);
+        if (response.status === 200) handleEtcModal(false);
+      } else {
+        const response = await instance.delete(`/admin/reports/${id}`);
+        if (response.status === 200) handleEtcModal(false);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -183,7 +183,12 @@ const ReportsEtcModal = ({ handleEtcModal, modalContents }) => {
               해당 댓글 보기
             </Button>
           )}
-          <Button onClick={() => handelReport(id)}>신고 처리하기</Button>
+          <Button onClick={() => handelReport("post", id)}>
+            신고 처리하기
+          </Button>
+          <Button onClick={() => handelReport("delete", id)}>
+            신고 삭제하기
+          </Button>
           <Button onClick={() => handleEtcModal(false)}>닫기</Button>
         </ButtonBox>
       </ModalBox>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import instance from "../apis/AxiosInterceptorSetup";
 import ReportsEtcModal from "../components/admin/ReportsEtcModal";
-import { AxiosHeaders } from "axios";
+
 const AdminArea = styled.div`
   display: flex;
   justify-content: center;
@@ -14,6 +14,9 @@ const AdminBox = styled.div`
   flex-direction: column;
   width: 80%;
   padding: 2rem 0;
+  @media screen and (max-width: 480px) {
+    width: 90%;
+  }
 `;
 
 const AreaTitle = styled.div`
@@ -48,13 +51,16 @@ const FunctionItem = styled.div`
 
 const BoardInput = styled.input`
   @media screen and (max-width: 480px) {
-    width: 100%;
+    width: 80%;
   }
 `;
 
 const BoardButton = styled.button`
   cursor: pointer;
   height: 2rem;
+  @media screen and (max-width: 480px) {
+    width: 20%;
+  }
 `;
 
 const BoardItmesBox = styled.div`
@@ -86,13 +92,35 @@ const JoinArea = styled.div`
 `;
 
 const JoinBox = styled.div`
-  width: 50%;
+  width: 70%;
   margin-bottom: 1.5rem;
   min-height: 10rem;
   border: 1px solid black;
   border-radius: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  .join-box {
+    width: 100%;
+  }
   @media screen and (max-width: 480px) {
     width: 100%;
+    .join-box {
+      font-size: 0.7rem;
+      padding: 0 0.4rem;
+    }
+  }
+  .name {
+    width: 10%;
+  }
+  .major {
+    width: 20%;
+  }
+  .email {
+    width: 40%;
+  }
+  .approve-reject {
+    width: 30%;
   }
 `;
 
@@ -126,12 +154,11 @@ const ReportTitle = styled.div`
   padding-left: 1rem;
 `;
 
-const ReportBoxHeader = styled.div`
+const BoxHeader = styled.div`
   display: flex;
   align-items: center;
   height: 3rem;
   border-bottom: 1px solid black;
-  padding-bottom: 1rem;
   margin-bottom: 1rem;
 `;
 
@@ -144,10 +171,27 @@ const Box = styled.div`
   }
 `;
 
-const TypeAndId = styled.div`
+const DataContent = styled.div`
   width: 50%;
   display: flex;
   justify-content: center;
+  align-items: center;
+`;
+
+const JoinButtonBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const AllDeleteButton = styled.button`
+  height: 2rem;
+  width: 20%;
+  margin-bottom: 1rem;
+  @media screen and (max-width: 480px) {
+    width: 40%;
+  }
 `;
 
 const Admin = () => {
@@ -172,6 +216,7 @@ const Admin = () => {
     update: "",
     delete: "",
   });
+  const [joinRequests, setJoinRequests] = useState([]);
 
   const updateBoard = (e) => {
     const { name, value } = e.target;
@@ -187,7 +232,7 @@ const Admin = () => {
 
   const addBoard = async () => {
     try {
-      const response = await instance.post("/admin/board", {
+      const response = await instance.post("/admin/boards", {
         boardType: "MAIN",
         name: board.create,
       });
@@ -199,7 +244,7 @@ const Admin = () => {
   };
   const putBoard = async () => {
     try {
-      await instance.put(`/admin/board/${board.delete}`, {
+      await instance.put(`/admin/boards/${board.delete}`, {
         boardType: "MAIN",
         name: board.update,
       });
@@ -210,7 +255,7 @@ const Admin = () => {
   };
   const deleteBoard = async () => {
     try {
-      await instance.delete(`/admin/board/${board.delete}`);
+      await instance.delete(`/admin/boards/${board.delete}`);
     } catch (error) {
       console.log(error);
     }
@@ -223,12 +268,44 @@ const Admin = () => {
       delete: item,
     }));
   };
+
+  const handleJoinRequests = async (value, id) => {
+    try {
+      if (value === "approve") {
+        const response = await instance.post(
+          `/admin/join-requests/${id}/approval`
+        );
+        if (response.status === 201)
+          setJoinRequests(joinRequests.filter((el) => el.id !== id));
+      } else {
+        const response = await instance.delete(
+          `/admin/join-requests/${id}/rejection`
+        );
+        if (response.status === 200)
+          setJoinRequests(joinRequests.filter((el) => el.id !== id));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const allDeleteReports = async () => {
+    try {
+      const response = await instance.delete("/admin/reports");
+      if (response.status === 200) alert("모든 신고가 삭제되었습니다.");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await instance.get("/boards?type=MAIN");
         const reportsResponse = await instance.get("/admin/reports");
+        const joinResponse = await instance.get("/admin/join-requests");
         const reports = reportsResponse.data.payload;
+        setJoinRequests(joinResponse.data.payload);
         setReports({
           memberReportResponses: reports.memberReportResponses,
           postReportResponses: reports.postReportResponses,
@@ -298,18 +375,44 @@ const Admin = () => {
         </BoardArea>
         <AreaTitle>가입요청</AreaTitle>
         <JoinArea>
-          <JoinBox></JoinBox>
+          <JoinBox>
+            <BoxHeader>
+              <DataContent className="name">이름</DataContent>
+              <DataContent className="major">전공</DataContent>
+              <DataContent className="email">이메일</DataContent>
+              <DataContent className="approve-reject">승인/거절</DataContent>
+            </BoxHeader>
+            {Array.isArray(joinRequests) &&
+              joinRequests.map(({ id, email, major, name }) => (
+                <Box key={id} className="join-box">
+                  <DataContent className="name">{name}</DataContent>
+                  <DataContent className="major">{major}</DataContent>
+                  <DataContent className="email">{email}</DataContent>
+                  <JoinButtonBox className="approve-reject">
+                    <button onClick={() => handleJoinRequests("approve", id)}>
+                      승인
+                    </button>
+                    <button onClick={() => handleJoinRequests("reject", id)}>
+                      거절
+                    </button>
+                  </JoinButtonBox>
+                </Box>
+              ))}
+          </JoinBox>
         </JoinArea>
         <AreaTitle>신고</AreaTitle>
+        <AllDeleteButton onClick={allDeleteReports}>
+          모든 신고 삭제
+        </AllDeleteButton>
         <ReportsArea>
           <ReportsBox>
             <ReportTitle>멤버</ReportTitle>
             <ReportBox>
-              <ReportBoxHeader>
-                <TypeAndId>신고 타입</TypeAndId>
-                <TypeAndId>유저 아이디</TypeAndId>
-                <TypeAndId>아이디</TypeAndId>
-              </ReportBoxHeader>
+              <BoxHeader>
+                <DataContent>신고 타입</DataContent>
+                <DataContent>유저 아이디</DataContent>
+                <DataContent>아이디</DataContent>
+              </BoxHeader>
               {Array.isArray(reports.memberReportResponses) &&
                 reports.memberReportResponses.map(
                   ({
@@ -334,9 +437,9 @@ const Admin = () => {
                         });
                       }}
                     >
-                      <TypeAndId>{reportCategory}</TypeAndId>
-                      <TypeAndId>{loginId}</TypeAndId>
-                      <TypeAndId>{reported}</TypeAndId>
+                      <DataContent>{reportCategory}</DataContent>
+                      <DataContent>{loginId}</DataContent>
+                      <DataContent>{reported}</DataContent>
                     </Box>
                   )
                 )}
@@ -345,11 +448,11 @@ const Admin = () => {
           <ReportsBox>
             <ReportTitle>게시글</ReportTitle>
             <ReportBox>
-              <ReportBoxHeader>
-                <TypeAndId>신고 타입</TypeAndId>
-                <TypeAndId>게시판</TypeAndId>
-                <TypeAndId>게시글 아이디</TypeAndId>
-              </ReportBoxHeader>
+              <BoxHeader>
+                <DataContent>신고 타입</DataContent>
+                <DataContent>게시판</DataContent>
+                <DataContent>게시글 아이디</DataContent>
+              </BoxHeader>
               {Array.isArray(reports.postReportResponses) &&
                 reports.postReportResponses.map(
                   ({
@@ -358,7 +461,6 @@ const Admin = () => {
                     id,
                     postId,
                     reportCategory,
-                    reported,
                   }) => (
                     <Box
                       key={id}
@@ -374,9 +476,9 @@ const Admin = () => {
                         });
                       }}
                     >
-                      <TypeAndId>{reportCategory}</TypeAndId>
-                      <TypeAndId>{board}</TypeAndId>
-                      <TypeAndId>{postId}</TypeAndId>
+                      <DataContent>{reportCategory}</DataContent>
+                      <DataContent>{board}</DataContent>
+                      <DataContent>{postId}</DataContent>
                     </Box>
                   )
                 )}
@@ -385,11 +487,11 @@ const Admin = () => {
           <ReportsBox>
             <ReportTitle>멤버</ReportTitle>
             <ReportBox>
-              <ReportBoxHeader>
-                <TypeAndId>신고 타입</TypeAndId>
-                <TypeAndId>게시글 아이디</TypeAndId>
-                <TypeAndId>댓글 아이디</TypeAndId>
-              </ReportBoxHeader>
+              <BoxHeader>
+                <DataContent>신고 타입</DataContent>
+                <DataContent>게시글 아이디</DataContent>
+                <DataContent>댓글 아이디</DataContent>
+              </BoxHeader>
               {Array.isArray(reports.replyReportResponses) &&
                 reports.replyReportResponses.map(
                   ({
@@ -414,9 +516,9 @@ const Admin = () => {
                         });
                       }}
                     >
-                      <TypeAndId>{reportCategory}</TypeAndId>
-                      <TypeAndId>{postId}</TypeAndId>
-                      <TypeAndId>{replyId}</TypeAndId>
+                      <DataContent>{reportCategory}</DataContent>
+                      <DataContent>{postId}</DataContent>
+                      <DataContent>{replyId}</DataContent>
                     </Box>
                   )
                 )}
