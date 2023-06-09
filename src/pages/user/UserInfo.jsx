@@ -5,7 +5,7 @@ import { Header, ReportModal } from "../../components";
 import { useParams } from "react-router-dom";
 import { SessionStorage } from "../../utils/browserStorage";
 
-const UserInfoPage = () => {
+const UserInfo = () => {
   const imgUrl = process.env.REACT_APP_IMAGE_BASE_URL;
   const [userData, setUserData] = useState("");
   const { bio, nickname, profileImg, loginId } = userData;
@@ -176,4 +176,4 @@ const HistoryArea = styled.div`
   height: 100%;
 `;
 
-export default UserInfoPage;
+export default UserInfo;

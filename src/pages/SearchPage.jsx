@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../apis/AxiosInterceptorSetup";
-import { ActivityCard, Header, ListThem } from "../components";
+import { ActivityCard, Header, ListThem, Pagination } from "../components";
 
 const SearchPage = () => {
   const params = useParams();
@@ -10,6 +10,17 @@ const SearchPage = () => {
   const [users, setUsers] = useState({ resultCount: 0, searchResults: [] });
   const [posts, setPosts] = useState({ resultCount: 0, searchResults: [] });
   const [activities, setActivities] = useState([]);
+  const [currentItems, setCurrentItems] = useState({
+    postsItems: [],
+    activitiesItems: [],
+  });
+
+  const updateCurrentItems = (name, value) => {
+    setCurrentItems((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   useEffect(() => {
     fetchData();
@@ -70,7 +81,7 @@ const SearchPage = () => {
             <SearchListBox>
               <ResultCount>{`게시글 (${posts.resultCount})`}</ResultCount>
               <PostsResultBox>
-                {posts.searchResults.slice(0, 5).map((post) => (
+                {posts.searchResults.map((post) => (
                   <PostBox
                     key={post.id}
                     onClick={() => navigate(`/board/post/${post.id}`)}
@@ -79,6 +90,12 @@ const SearchPage = () => {
                   </PostBox>
                 ))}
               </PostsResultBox>
+              <Pagination
+                items={posts.searchResults}
+                itemsPerPage={5}
+                updateCurrentItems={updateCurrentItems}
+                itemsTitle={"postsItems"}
+              />
             </SearchListBox>
           ) : null}
           {Array.isArray(activities.searchResults) &&

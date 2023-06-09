@@ -53,7 +53,10 @@ const HomeFeedBox = ({ post, title }) => {
       case "모집중인 활동":
         navigate("/activity");
         break;
-      case "인기글" || "최신글":
+      case "인기글":
+        navigate("/board");
+        break;
+      case "최신글":
         navigate("/board");
         break;
       default:

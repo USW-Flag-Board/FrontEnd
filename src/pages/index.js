@@ -5,7 +5,7 @@ export { default as ActivityContent } from "./activity/ActivityContent";
 export { default as ActivityWrite } from "./activity/ActivityWrite";
 export { default as ActivityEdit } from "./activity/ActivityEdit";
 export { default as EditUser } from "./user/EditUser";
-export { default as UserInfoPage } from "./user/UserInfoPage";
+export { default as UserInfo } from "./user/UserInfo";
 export { default as LoginPage } from "./login/LoginPage";
 export { default as SignUpPage } from "./login/SignUpPage";
 export { default as BulletinBoard } from "./board/BulletinBoard";
