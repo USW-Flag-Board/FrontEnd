@@ -14,22 +14,25 @@ const StyledPaginateContainer = styled.div`
     margin: 0.6rem;
     font-size: 1rem;
     padding: 0.4rem 0.6rem;
+    font-weight: bold;
     cursor: pointer;
-    &:hover {
-      border-radius: 7px;
-      background-color: #4b4b4b;
-    }
+  }
+  .disabled {
+    color: #e9ecef;
+  }
+  .active {
+    color: blue;
   }
 `;
 
-const Pagination = ({ itemsPerPage, items, updateCurrentItems }) => {
+const Pagination = ({ itemsPerPage, items, setCurrentItems }) => {
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
-    updateCurrentItems("", items.slice(itemOffset, endOffset));
+    setCurrentItems(items.slice(itemOffset, endOffset));
     setPageCount(Math.ceil((items.length ?? 0) / itemsPerPage));
-  }, [itemOffset, itemsPerPage, updateCurrentItems, items]);
+  }, [itemOffset, itemsPerPage, setCurrentItems, items]);
 
   const handlePageClick = (e) => {
     setItemOffset((e.selected * itemsPerPage) % items.length);
@@ -38,14 +41,14 @@ const Pagination = ({ itemsPerPage, items, updateCurrentItems }) => {
     <StyledPaginateContainer>
       <ReactPaginate
         pageCount={pageCount}
+        activeClassName="active"
         pageRangeDisplayed={itemsPerPage}
         breakLabel={""}
-        previousLabel={"< PREV"}
-        nextLabel={"NEXT >"}
+        nextLabel={">"}
+        previousLabel={"<"}
         containerClassName={"pagination"}
-        previousClassName={"pageLabel-btn"}
-        nextClassName={"pageLabel-btn"}
         onPageChange={handlePageClick}
+        disabledClassName="disabled"
       />
     </StyledPaginateContainer>
   );

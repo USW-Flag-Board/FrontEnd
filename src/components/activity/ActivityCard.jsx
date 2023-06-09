@@ -71,8 +71,8 @@ const Notice = styled.div`
   font-weight: 700;
   border-radius: 0.25rem;
   padding: 0.25rem 0.5rem;
-  background-color: rgb(234, 244, 255);
-  color: rgb(0, 120, 255);
+  background-color: #f1f3f5;
+  color: #212529;
 `;
 
 const Type = styled.div`

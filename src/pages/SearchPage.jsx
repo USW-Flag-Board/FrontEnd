@@ -10,17 +10,8 @@ const SearchPage = () => {
   const [users, setUsers] = useState({ resultCount: 0, searchResults: [] });
   const [posts, setPosts] = useState({ resultCount: 0, searchResults: [] });
   const [activities, setActivities] = useState([]);
-  const [currentItems, setCurrentItems] = useState({
-    postsItems: [],
-    activitiesItems: [],
-  });
-
-  const updateCurrentItems = (name, value) => {
-    setCurrentItems((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const [postsCurrentItems, setpostsCurrentItems] = useState([]);
+  const [activitiesCurrentItems, setActivitiesCurrentItems] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -81,7 +72,7 @@ const SearchPage = () => {
             <SearchListBox>
               <ResultCount>{`게시글 (${posts.resultCount})`}</ResultCount>
               <PostsResultBox>
-                {posts.searchResults.map((post) => (
+                {postsCurrentItems.map((post) => (
                   <PostBox
                     key={post.id}
                     onClick={() => navigate(`/board/post/${post.id}`)}
@@ -90,12 +81,14 @@ const SearchPage = () => {
                   </PostBox>
                 ))}
               </PostsResultBox>
-              <Pagination
-                items={posts.searchResults}
-                itemsPerPage={5}
-                updateCurrentItems={updateCurrentItems}
-                itemsTitle={"postsItems"}
-              />
+              <PaginationBox>
+                <Pagination
+                  items={posts.searchResults}
+                  itemsPerPage={5}
+                  setCurrentItems={setpostsCurrentItems}
+                  itemsTitle={"postsItems"}
+                />
+              </PaginationBox>
             </SearchListBox>
           ) : null}
           {Array.isArray(activities.searchResults) &&
@@ -103,8 +96,8 @@ const SearchPage = () => {
             <SearchListBox>
               <ResultCount>{`활동 (${activities.resultCount})`}</ResultCount>
               <ActivitiesResultBox>
-                {activities.searchResults.map(
-                  ({ name, type, semester, id, leader }) => (
+                {activitiesCurrentItems.map(
+                  ({ name, type, semester, id, leader, status }) => (
                     <Card
                       key={id}
                       onClick={() => navigate(`/activity/content/${id}`)}
@@ -113,12 +106,21 @@ const SearchPage = () => {
                         title={name}
                         name={leader}
                         type={type}
+                        status={status}
                         semester={semester}
                       />
                     </Card>
                   )
                 )}
               </ActivitiesResultBox>
+              <PaginationBox>
+                <Pagination
+                  items={activities.searchResults}
+                  itemsPerPage={8}
+                  setCurrentItems={setActivitiesCurrentItems}
+                  itemsTitle={"postsItems"}
+                />
+              </PaginationBox>
             </SearchListBox>
           ) : null}
         </SearchBox>
@@ -167,8 +169,8 @@ const Card = styled.div`
   width: 23%;
   height: 10rem;
   @media screen and (max-width: 480px) {
-    width: 45%;
-    height: 8rem;
+    width: 100%;
+    height: 9rem;
   }
 `;
 
@@ -207,4 +209,10 @@ const SearchListBox = styled.div`
 
 const PostBox = styled.div`
   cursor: pointer;
+`;
+
+const PaginationBox = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
 `;
