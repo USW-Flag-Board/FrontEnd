@@ -4,14 +4,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
-import { ActivityCard, Header } from "../../components";
+import { ActivityCard, Header, Pagination } from "../../components";
 import { ACTIVITY_CATEGORIE } from "../../constants/activity";
 import { SessionStorage } from "../../utils/browserStorage";
 
 const Activity = () => {
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
-
   const [kategorie, setKategorie] = useState("ALL");
   const [activities, setActivities] = useState({
     ALL: [],
@@ -19,7 +17,7 @@ const Activity = () => {
     STUDY: [],
     MENTORING: [],
   });
-
+  const [activitiesCurrentItems, setActivitiesCurrentItems] = useState([]);
   useEffect(() => {
     async function fetchData() {
       try {
@@ -39,7 +37,7 @@ const Activity = () => {
       }
     }
     fetchData();
-  }, [isOpen]);
+  }, []);
 
   function filterActivities(activities, type) {
     return activities.filter((activity) => activity.type === type);
@@ -75,14 +73,14 @@ const Activity = () => {
                 type="button"
               >
                 <WriteButtonIcon icon={faPencil} />
-                <WriteButton>글쓰기</WriteButton>
+                <span>글쓰기</span>
               </ActivityWriteButton>
             ) : null}
           </SwitchArea>
         </ActivityBox>
         <CardArea>
           {activities &&
-            activities[kategorie].map(
+            activitiesCurrentItems.map(
               ({ id, name, leader, type, semester, status }) => (
                 <Card
                   key={id}
@@ -99,6 +97,11 @@ const Activity = () => {
               )
             )}
         </CardArea>
+        <Pagination
+          items={activities[kategorie]}
+          itemsPerPage={12}
+          setCurrentItems={setActivitiesCurrentItems}
+        />
       </ActivityArea>
     </>
   );
@@ -115,6 +118,7 @@ const ActivityArea = styled.div`
   @media screen and (max-width: 480px) {
     padding: 1.5rem 1rem;
   }
+  margin-bottom: 2rem;
 `;
 
 const ActivityBox = styled.div`
@@ -191,12 +195,10 @@ const WriteButtonIcon = styled(FontAwesomeIcon)`
   box-sizing: border-box;
 `;
 
-const WriteButton = styled.span``;
-
 const CardArea = styled.div`
   box-sizing: border-box;
   width: 80%;
-  margin-top: 2rem;
+  margin: 2rem 0;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;

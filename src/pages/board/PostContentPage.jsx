@@ -249,7 +249,7 @@ const PostBox = styled.div`
     background-color: #f9fafb;
     padding: 1rem 0;
     border-top: 0.0625rem solid #e7e7e7;
-    height: auto;
+    min-height: 43vh;
   }
 `;
 
