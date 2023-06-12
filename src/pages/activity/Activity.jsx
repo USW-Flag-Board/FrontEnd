@@ -118,6 +118,7 @@ const ActivityArea = styled.div`
   @media screen and (max-width: 480px) {
     padding: 1.5rem 1rem;
   }
+  margin-bottom: 2rem;
 `;
 
 const ActivityBox = styled.div`

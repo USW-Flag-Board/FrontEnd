@@ -86,7 +86,6 @@ const SearchPage = () => {
                   items={posts.searchResults}
                   itemsPerPage={5}
                   setCurrentItems={setpostsCurrentItems}
-                  itemsTitle={"postsItems"}
                 />
               </PaginationBox>
             </SearchListBox>
@@ -118,7 +117,6 @@ const SearchPage = () => {
                   items={activities.searchResults}
                   itemsPerPage={8}
                   setCurrentItems={setActivitiesCurrentItems}
-                  itemsTitle={"postsItems"}
                 />
               </PaginationBox>
             </SearchListBox>

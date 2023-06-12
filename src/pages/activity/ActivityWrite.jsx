@@ -1,17 +1,17 @@
-import { useState, useEffect, useRef } from "react";
+import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
+import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import { Editor } from "@toast-ui/react-editor";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
 import { Header } from "../../components";
 import {
-  SELECT_OPTION,
-  ONLINE_RADIO_OPTION,
   BOOK_RADIO_OPTION,
+  ONLINE_RADIO_OPTION,
+  SELECT_OPTION,
 } from "../../constants/activity";
-import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
-import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
-import "@toast-ui/editor/dist/toastui-editor.css";
-import { Editor } from "@toast-ui/react-editor";
 
 const ContentArea = styled.div`
   display: flex;
