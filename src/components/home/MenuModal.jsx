@@ -1,6 +1,6 @@
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, createSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../../assets/images/logo2.png";
 import { MODAL_MENU_TTEMS } from "../../constants/header";
@@ -12,7 +12,12 @@ const MenuModal = ({ handleModalOpen }) => {
   const handleItemClick = (name) => {
     switch (name) {
       case "BOARD":
-        navigate("/board");
+        navigate({
+          pathname: `/board/${"자유게시판"}`,
+          search: createSearchParams({
+            page: 1,
+          }).toString(),
+        });
         break;
       case "ACTIVITY":
         navigate("/activity");

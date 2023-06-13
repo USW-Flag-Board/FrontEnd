@@ -1,7 +1,7 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, createSearchParams, useParams } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
 import { Header, ListThem } from "../../components";
@@ -44,6 +44,12 @@ const BulletinBoard = () => {
       ...prev,
       pageNumber: num,
     }));
+    navigate({
+      pathname: `/board/${board}`,
+      search: createSearchParams({
+        page: num,
+      }).toString(),
+    });
   };
 
   const handleSerchClick = async () => {
@@ -53,7 +59,6 @@ const BulletinBoard = () => {
         `/posts/search?board=${board}&keyword=${keyword}&option=${option}&period=${period}`
       );
       setPosts(response.data.payload.searchResults);
-      console.log(response.data.payload.searchResults);
     } catch (error) {
       console.lop(error);
     }
@@ -101,7 +106,15 @@ const BulletinBoard = () => {
                   <BarItem
                     key={id}
                     selected={board === boardName}
-                    onClick={() => setBoard(boardName)}
+                    onClick={() => {
+                      setBoard(boardName);
+                      navigate({
+                        pathname: `/board/${boardName}`,
+                        search: createSearchParams({
+                          page: 1,
+                        }).toString(),
+                      });
+                    }}
                   >
                     {boardName}
                   </BarItem>
@@ -119,10 +132,11 @@ const BulletinBoard = () => {
           </BarArea>
           <PostListBox>
             {posts?.map((post) => (
-              <PostList key={post.id}>
-                <StyledLink to={`/board/post/${post.id}`}>
-                  <ListThem post={post} />
-                </StyledLink>
+              <PostList
+                key={post.id}
+                onClick={() => navigate(`/board/post/${post.id}`)}
+              >
+                <ListThem post={post} />
               </PostList>
             ))}
           </PostListBox>
@@ -232,19 +246,13 @@ const BarItem = styled.div`
 const PostListBox = styled.div`
   width: 70%;
   margin: 1rem 0;
-  min-height: 100rem;
   @media screen and (max-width: 480px) {
     width: 80%;
-    min-height: 60rem;
   }
 `;
 
 const PostList = styled.div`
   text-decoration: none;
-`;
-
-const StyledLink = styled(Link)`
-  color: black;
 `;
 
 const WriteButtonBox = styled.div`
@@ -282,6 +290,7 @@ const SelectBox = styled.form`
   margin-bottom: 1rem;
   width: 70%;
   justify-content: center;
+  align-items: center;
   @media screen and (max-width: 480px) {
     width: 80%;
   }

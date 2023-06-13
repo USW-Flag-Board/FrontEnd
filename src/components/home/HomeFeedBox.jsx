@@ -10,7 +10,11 @@ const HomePosts = ({ post, headerTitle }) => {
         <>
           <PostInfoItem>{name}</PostInfoItem>
           <PostInfoItem>{leader}</PostInfoItem>
-          <PostInfoItem>{type}</PostInfoItem>
+          <PostInfoItem>
+            {type === "MENTORING" && "멘토링"}
+            {type === "STUDY" && "스터디"}
+            {type === "PROJECT" && "프로젝트"}
+          </PostInfoItem>
         </>
       ) : (
         <>
