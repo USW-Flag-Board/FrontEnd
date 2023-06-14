@@ -16,6 +16,9 @@ const StyledPaginateContainer = styled.div`
     padding: 0.4rem 0.6rem;
     font-weight: bold;
     cursor: pointer;
+    @media screen and (max-width: 480px) {
+      font-size: 0.8rem;
+    }
   }
   .disabled {
     color: #e9ecef;

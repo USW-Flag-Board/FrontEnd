@@ -1,10 +1,10 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { useNavigate, createSearchParams, useParams } from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
-import { Header, ListThem } from "../../components";
+import { Header, ListThem, Pagination } from "../../components";
 import {
   SEARCH_SELECT_ITEMS_OPTION,
   SEARCH_SELECT_ITEMS_PERIOD,
@@ -15,6 +15,7 @@ const BulletinBoard = () => {
   const navigate = useNavigate();
   const [board, setBoard] = useState("자유게시판");
   const [posts, setPosts] = useState([]);
+  const [isSearched, setIsSearched] = useState(false);
   const [boardItems, setBoardItems] = useState([]);
   const [page, setPage] = useState({
     pageNumber: 1,
@@ -59,6 +60,7 @@ const BulletinBoard = () => {
         `/posts/search?board=${board}&keyword=${keyword}&option=${option}&period=${period}`
       );
       setPosts(response.data.payload.searchResults);
+      setIsSearched(true);
     } catch (error) {
       console.lop(error);
     }
@@ -141,13 +143,22 @@ const BulletinBoard = () => {
             ))}
           </PostListBox>
           <PaginationArea>
-            <PaginationBox>
-              {page.pagination.map((num) => (
-                <PagenitionNum key={num} onClick={() => handlePageClick(num)}>
-                  {num}
-                </PagenitionNum>
-              ))}
-            </PaginationBox>
+            {/* {isSearched && (
+              <Pagination
+                items={posts}
+                itemsPerPage={10}
+                setCurrentItems={setPosts}
+              />
+            )} */}
+            {!isSearched && (
+              <PaginationBox>
+                {page.pagination.map((num) => (
+                  <PagenitionNum key={num} onClick={() => handlePageClick(num)}>
+                    {num}
+                  </PagenitionNum>
+                ))}
+              </PaginationBox>
+            )}
           </PaginationArea>
           {posts.length !== 0 && (
             <SelectBox onSubmit={handleSubmit}>
@@ -333,6 +344,7 @@ const PaginationArea = styled.div`
   width: 70%;
   display: flex;
   align-items: center;
+  justify-content: center;
 `;
 
 const PaginationBox = styled.ul`
