@@ -165,11 +165,13 @@ const ActivityContent = () => {
     async function fetchData() {
       try {
         const response = await instance.get(`/activities/${activityId}`);
-        const applyCheck = await instance.post(
-          `/activities/${activityId}/check`
-        );
-        if (applyCheck.data.payload.exist === true) setApply(true);
-        else setApply(false);
+        if (SessionStorage.get("User_id")) {
+          const applyCheck = await instance.post(
+            `/activities/${activityId}/check`
+          );
+          if (applyCheck.data.payload.exist === true) setApply(true);
+          else setApply(false);
+        }
         setActivityData(response.data.payload);
       } catch (error) {
         console.log(error);
@@ -283,9 +285,12 @@ const ActivityContent = () => {
               </Content>
             </DescriptionBox>
           </ContentDetail>
-          {writerName && writerName !== leader && status === "RECRUIT" && (
-            <ReaderButtonBox onApply={handleApplyClick} apply={apply} />
-          )}
+          {writerName &&
+            writerName !== leader &&
+            status === "RECRUIT" &&
+            SessionStorage.get("User_id") && (
+              <ReaderButtonBox onApply={handleApplyClick} apply={apply} />
+            )}
           {writerName && writerName === leader && (
             <WriterButtonBox
               updateStatus={updateStatus}

@@ -40,7 +40,6 @@ const LoginPage = () => {
         password: idPassword.password,
       });
 
-      console.log(response);
       const accessToken = response.data.payload.accessToken;
       const accessTokenExpiresIn = response.data.payload.accessTokenExpiresIn;
       SessionStorage.set("expire", accessTokenExpiresIn);
