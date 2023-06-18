@@ -3,7 +3,7 @@ import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/react-editor";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, createSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
 import Header from "../../components/Header";
@@ -39,6 +39,7 @@ const WritePost = () => {
   const handleCancelClick = () => {
     navigate("/board");
   };
+
   const handlePostClick = async () => {
     const saveImages = totalImages.filter((img) => content?.includes(img));
     const deleteImages = totalImages.filter(
@@ -56,7 +57,12 @@ const WritePost = () => {
         const reponse = await instance.post("/posts", data);
         if (reponse.status === 201) {
           alert("게시글이 작성되었습니다.");
-          navigate("/board");
+          navigate({
+            pathname: `/board/${board}`,
+            search: createSearchParams({
+              page: 1,
+            }).toString(),
+          });
         }
       } catch (error) {
         console.log(error);

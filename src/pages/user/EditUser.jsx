@@ -66,9 +66,6 @@ const EditUser = () => {
       case "내프로필":
         setBarName("내프로필");
         break;
-      case "나의활동":
-        setBarName("나의활동");
-        break;
       case "로그아웃":
         if (window.confirm("로그아웃 하시겠습니까?")) {
           handleLogOutClick();

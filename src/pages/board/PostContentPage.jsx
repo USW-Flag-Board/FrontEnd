@@ -367,7 +367,8 @@ const LikeButton = styled.button`
   height: 3rem;
   background: none;
   cursor: pointer;
-  border: 0.0625rem solid rgb(215, 226, 235);
+  border: 0.0625rem solid
+    ${(props) => (props.liked ? "#339af0" : "rgb(215, 226, 235)")};
   color: ${(props) => (props.liked ? "#339af0" : "rgb(215, 226, 235)")};
   border-radius: 0.25rem;
   .like-count {

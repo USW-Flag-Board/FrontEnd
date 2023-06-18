@@ -174,6 +174,9 @@ const BoardSelect = styled.select`
   padding: 0 1rem;
   font-weight: 600;
   margin-bottom: 2rem;
+  @media screen and (max-width: 480px) {
+    width: 60%;
+  }
 `;
 
 const TitleInputBox = styled.div`

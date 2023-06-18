@@ -4,6 +4,13 @@ import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
 import { Header, ListThem, Pagination, ReportModal } from "../../components";
 import { SessionStorage } from "../../utils/browserStorage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faComment,
+  faEye,
+  faThumbsUp,
+  faFlag,
+} from "@fortawesome/free-regular-svg-icons";
 
 const ProfileImg = styled.img`
   width: 6rem;
@@ -24,36 +31,25 @@ const PageBox = styled.div`
   }
 `;
 
-const TopPage = styled.div`
-  width: 100%;
-  height: 20rem;
-  display: flex;
-  @media screen and (max-width: 480px) {
-    flex-direction: column;
-  }
-`;
-
-const BottomPage = styled.div`
+const PostArea = styled.div`
   width: 100%;
   margin: 2rem 0;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
   gap: 1.5rem;
 `;
 
 const UserPageBox = styled.div`
-  width: 40%;
+  width: 100%;
+  height: 10rem;
   background-color: #e7f5ff;
   display: flex;
-  @media screen and (max-width: 480px) {
-    width: 100%;
-  }
+  align-items: center;
 `;
 
 const ProfileArea = styled.div`
   width: 100%;
-  height: 100%;
+  height: 80%;
   display: flex;
   @media screen and (max-width: 480px) {
     padding: 1rem 0;
@@ -61,48 +57,43 @@ const ProfileArea = styled.div`
 `;
 
 const ProfileBox = styled.div`
-  width: 35%;
-  height: 100%;
+  width: 10%;
+  height: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  gap: 1.5rem;
 `;
 
-const ReportButton = styled.button`
+const ReportButton = styled(FontAwesomeIcon)`
   padding: 0.4rem;
-  border-radius: 0.2rem;
-  border: 1px solid white;
-  color: white;
-  background-color: #339af0;
+  height: 40%;
+  color: red;
   cursor: pointer;
 `;
 
 const NickNameArea = styled.div`
   display: flex;
-  width: 65%;
+  width: 90%;
   height: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 `;
 
-const NickName = styled.div`
+const NickNameBox = styled.div`
   width: 100%;
   height: 40%;
   font-size: 2rem;
   font-weight: bold;
   display: flex;
-  align-items: flex-end;
-  padding-bottom: 0.5rem;
+  align-items: center;
+  gap: 1rem;
 `;
 
 const Introduce = styled.div`
   font-size: 1rem;
   width: 100%;
   height: 50%;
-  padding-top: 1rem;
 `;
 
 const UserId = styled.div`
@@ -113,20 +104,14 @@ const UserId = styled.div`
   align-items: center;
 `;
 
-const HistoryArea = styled.div`
+const ActivityArea = styled.div`
   background-color: #f1f3f5;
-  width: 60%;
+  width: 45%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  @media screen and (max-width: 480px) {
-    width: 100%;
-  }
 `;
 
 const PostListBox = styled.div`
-  width: 100%;
+  width: 45%;
   height: 100%;
   @media screen and (max-width: 480px) {
     width: 80%;
@@ -239,28 +224,46 @@ const UserInfo = () => {
       )}
       <PageArea>
         <PageBox>
-          <TopPage>
-            <UserPageBox>
-              <ProfileArea>
-                <ProfileBox>
-                  <ProfileImg src={imgUrl + profileImg} />
+          <UserPageBox>
+            <ProfileArea>
+              <ProfileBox>
+                <ProfileImg src={imgUrl + profileImg} />
+              </ProfileBox>
+              <NickNameArea>
+                <NickNameBox>
+                  <div>{nickname}</div>
                   {SessionStorage.get("User_id") !== loginId && (
                     <ReportButton
-                      type="button"
+                      icon={faFlag}
                       onClick={() => handleModalOpen(true)}
                     >
                       신고하기
                     </ReportButton>
                   )}
-                </ProfileBox>
-                <NickNameArea>
-                  <NickName>{nickname}</NickName>
-                  <UserId>{loginId}</UserId>
-                  <Introduce>{bio}</Introduce>
-                </NickNameArea>
-              </ProfileArea>
-            </UserPageBox>
-            <HistoryArea>
+                </NickNameBox>
+                <UserId>{loginId}</UserId>
+                <Introduce>{bio}</Introduce>
+              </NickNameArea>
+            </ProfileArea>
+          </UserPageBox>
+          <PostArea>
+            <PostListBox>
+              {Array.isArray(userData.posts) &&
+                postsCurrentItems.map((post) => (
+                  <PostList
+                    key={post.id}
+                    onClick={() => navigate(`/board/post/${post.id}`)}
+                  >
+                    <ListThem post={post} />
+                  </PostList>
+                ))}
+              <Pagination
+                items={userData.posts}
+                itemsPerPage={5}
+                setCurrentItems={setpostsCurrentItems}
+              />
+            </PostListBox>
+            <ActivityArea>
               <ActivitiesBox>
                 {Array.isArray(userData.activities) &&
                   userData.activities.map(
@@ -275,26 +278,8 @@ const UserInfo = () => {
                     )
                   )}
               </ActivitiesBox>
-            </HistoryArea>
-          </TopPage>
-          <BottomPage>
-            <PostListBox>
-              {Array.isArray(userData.posts) &&
-                postsCurrentItems.map((post) => (
-                  <PostList
-                    key={post.id}
-                    onClick={() => navigate(`/board/post/${post.id}`)}
-                  >
-                    <ListThem post={post} />
-                  </PostList>
-                ))}
-            </PostListBox>
-            <Pagination
-              items={userData.posts}
-              itemsPerPage={5}
-              setCurrentItems={setpostsCurrentItems}
-            />
-          </BottomPage>
+            </ActivityArea>
+          </PostArea>
         </PageBox>
       </PageArea>
     </>
