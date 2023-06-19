@@ -1,16 +1,17 @@
+import { faFlag } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
-import { Header, ListThem, Pagination, ReportModal } from "../../components";
-import { SessionStorage } from "../../utils/browserStorage";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faComment,
-  faEye,
-  faThumbsUp,
-  faFlag,
-} from "@fortawesome/free-regular-svg-icons";
+  Header,
+  Pagination,
+  ReportModal,
+  UserPost,
+  UserActivity,
+} from "../../components";
+import { SessionStorage } from "../../utils/browserStorage";
 
 const ProfileImg = styled.img`
   width: 6rem;
@@ -33,16 +34,34 @@ const PageBox = styled.div`
 
 const PostArea = styled.div`
   width: 100%;
-  margin: 2rem 0;
+  padding: 2rem 1rem;
   display: flex;
   justify-content: space-between;
   gap: 1.5rem;
+  min-height: calc(89vh - 10rem);
+  @media screen and (max-width: 480px) {
+    padding: 0 1rem;
+    flex-direction: column;
+    margin: 2rem 0;
+  }
+`;
+
+const BoxTitle = styled.h2`
+  font-weight: bold;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  width: fit-content;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid black;
+  @media screen and (max-width: 480px) {
+    font-size: 1rem;
+  }
 `;
 
 const UserPageBox = styled.div`
   width: 100%;
   height: 10rem;
-  background-color: #e7f5ff;
+  background-color: #d0ebff;
   display: flex;
   align-items: center;
 `;
@@ -51,22 +70,19 @@ const ProfileArea = styled.div`
   width: 100%;
   height: 80%;
   display: flex;
-  @media screen and (max-width: 480px) {
-    padding: 1rem 0;
-  }
+  gap: 1rem;
+  padding: 0 1rem;
 `;
 
 const ProfileBox = styled.div`
-  width: 10%;
-  height: 80%;
+  height: 90%;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 const ReportButton = styled(FontAwesomeIcon)`
-  padding: 0.4rem;
-  height: 40%;
+  height: 50%;
   color: red;
   cursor: pointer;
 `;
@@ -77,12 +93,13 @@ const NickNameArea = styled.div`
   height: 100%;
   flex-direction: column;
   align-items: center;
+  gap: 0.5rem;
   justify-content: center;
 `;
 
 const NickNameBox = styled.div`
   width: 100%;
-  height: 40%;
+  height: 30%;
   font-size: 2rem;
   font-weight: bold;
   display: flex;
@@ -93,86 +110,84 @@ const NickNameBox = styled.div`
 const Introduce = styled.div`
   font-size: 1rem;
   width: 100%;
-  height: 50%;
 `;
 
 const UserId = styled.div`
   font-size: 1rem;
   width: 100%;
-  height: 10%;
   display: flex;
   align-items: center;
 `;
 
 const ActivityArea = styled.div`
-  background-color: #f1f3f5;
-  width: 45%;
+  width: 54%;
   height: 100%;
+  @media screen and (max-width: 480px) {
+    width: 100%;
+  }
 `;
 
 const PostListBox = styled.div`
   width: 45%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   @media screen and (max-width: 480px) {
-    width: 80%;
+    width: 100%;
   }
+`;
+
+const PostBox = styled.div`
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 `;
 
 const PostList = styled.div`
   text-decoration: none;
   font-size: 1rem;
-`;
-
-const ActivitiesBox = styled.div`
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-const ActivityBox = styled.div`
   width: 100%;
+`;
+
+const PostBoxHeader = styled.div`
   display: flex;
+  height: 3rem;
   font-weight: bold;
+  background-color: #f8f9fa;
+  border-radius: 10px 10px 0 0;
+  width: 100%;
+  .title {
+    width: 40%;
+  }
+  .date {
+    width: 30%;
+  }
+  .writer {
+    width: 30%;
+  }
+  .year {
+    width: 15%;
+  }
+  .semester {
+    width: 25%;
+  }
+  .status {
+    width: 15%;
+  }
+  .name {
+    width: 45%;
+  }
 `;
 
-const ActivityYear = styled.div`
-  width: 10%;
-  @media screen and (max-width: 480px) {
-    width: 20%;
-  }
+const PostBoxHeaderItem = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
-const ActivityStatus = styled.div`
-  width: 10%;
-  margin-right: 1rem;
-  @media screen and (max-width: 480px) {
-    width: 20%;
-  }
-`;
-const ActivityName = styled.div`
-  width: 50%;
-`;
-const ActivitySemester = styled.div`
-  width: 30%;
-  @media screen and (max-width: 480px) {
-    display: none;
-  }
-`;
-
-const Activity = ({ activityStatus, name, semester, year }) => {
-  return (
-    <ActivityBox>
-      <ActivityYear>{year}</ActivityYear>
-      <ActivitySemester>{semester}</ActivitySemester>
-      <ActivityStatus>
-        {activityStatus === "RECRUIT" && "모집중"}
-        {activityStatus === "ON" && "활동중"}
-        {activityStatus === "OFF" && "활동종료"}
-      </ActivityStatus>
-      <ActivityName>{name}</ActivityName>
-    </ActivityBox>
-  );
-};
 
 const UserInfo = () => {
   const imgUrl = process.env.REACT_APP_IMAGE_BASE_URL;
@@ -181,7 +196,8 @@ const UserInfo = () => {
     posts: [],
     activities: [],
   });
-  const [postsCurrentItems, setpostsCurrentItems] = useState([]);
+  const [postsCurrentItems, setPostsCurrentItems] = useState([]);
+  const [activityCurrentItems, setActivityCurrentItems] = useState([]);
   const { bio, nickname, profileImg, loginId } = userData.members;
   const { userId } = useParams();
   const navigate = useNavigate();
@@ -232,14 +248,13 @@ const UserInfo = () => {
               <NickNameArea>
                 <NickNameBox>
                   <div>{nickname}</div>
-                  {SessionStorage.get("User_id") !== loginId && (
-                    <ReportButton
-                      icon={faFlag}
-                      onClick={() => handleModalOpen(true)}
-                    >
-                      신고하기
-                    </ReportButton>
-                  )}
+                  {SessionStorage.get("User_id") &&
+                    SessionStorage.get("User_id") !== loginId && (
+                      <ReportButton
+                        icon={faFlag}
+                        onClick={() => handleModalOpen(true)}
+                      />
+                    )}
                 </NickNameBox>
                 <UserId>{loginId}</UserId>
                 <Introduce>{bio}</Introduce>
@@ -248,27 +263,50 @@ const UserInfo = () => {
           </UserPageBox>
           <PostArea>
             <PostListBox>
-              {Array.isArray(userData.posts) &&
-                postsCurrentItems.map((post) => (
-                  <PostList
-                    key={post.id}
-                    onClick={() => navigate(`/board/post/${post.id}`)}
-                  >
-                    <ListThem post={post} />
-                  </PostList>
-                ))}
-              <Pagination
-                items={userData.posts}
-                itemsPerPage={5}
-                setCurrentItems={setpostsCurrentItems}
-              />
+              <BoxTitle>작성한 게시글</BoxTitle>
+              <PostBox>
+                <PostBoxHeader>
+                  <PostBoxHeaderItem className="title">제목</PostBoxHeaderItem>
+                  <PostBoxHeaderItem className="date">작성일</PostBoxHeaderItem>
+                  <PostBoxHeaderItem className="writer">
+                    작성자
+                  </PostBoxHeaderItem>
+                </PostBoxHeader>
+                {Array.isArray(userData.posts) &&
+                  postsCurrentItems.map((post) => (
+                    <PostList
+                      key={post.id}
+                      onClick={() => navigate(`/board/post/${post.id}`)}
+                    >
+                      <UserPost
+                        title={post.title}
+                        date={post.createdAt}
+                        writer={post.author}
+                      />
+                    </PostList>
+                  ))}
+                <Pagination
+                  items={userData.posts}
+                  itemsPerPage={5}
+                  setCurrentItems={setPostsCurrentItems}
+                />
+              </PostBox>
             </PostListBox>
             <ActivityArea>
-              <ActivitiesBox>
+              <BoxTitle>참여한 활동</BoxTitle>
+              <PostBox>
+                <PostBoxHeader>
+                  <PostBoxHeaderItem className="year">연도</PostBoxHeaderItem>
+                  <PostBoxHeaderItem className="semester">
+                    학기
+                  </PostBoxHeaderItem>
+                  <PostBoxHeaderItem className="status">상태</PostBoxHeaderItem>
+                  <PostBoxHeaderItem className="name">활동명</PostBoxHeaderItem>
+                </PostBoxHeader>
                 {Array.isArray(userData.activities) &&
-                  userData.activities.map(
+                  activityCurrentItems.map(
                     ({ id, semester, name, activityStatus, year }) => (
-                      <Activity
+                      <UserActivity
                         key={id}
                         semester={semester}
                         name={name}
@@ -277,7 +315,12 @@ const UserInfo = () => {
                       />
                     )
                   )}
-              </ActivitiesBox>
+                <Pagination
+                  items={userData.activities}
+                  itemsPerPage={5}
+                  setCurrentItems={setActivityCurrentItems}
+                />
+              </PostBox>
             </ActivityArea>
           </PostArea>
         </PageBox>
