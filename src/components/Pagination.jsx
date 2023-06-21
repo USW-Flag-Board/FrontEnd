@@ -5,16 +5,16 @@ import styled from "styled-components";
 const StyledPaginateContainer = styled.div`
   .pagination {
     display: flex;
+    gap: 0.5rem;
   }
   li {
-    box-sizing: border-box;
     display: flex;
+    border: 1px solid #adb5bd;
+    border-radius: 4px;
     justify-content: center;
     align-items: center;
-    margin: 0.6rem;
     font-size: 1rem;
     padding: 0.4rem 0.6rem;
-    font-weight: bold;
     cursor: pointer;
     @media screen and (max-width: 480px) {
       font-size: 0.8rem;
@@ -24,7 +24,7 @@ const StyledPaginateContainer = styled.div`
     color: #e9ecef;
   }
   .active {
-    color: blue;
+    background-color: #e9ecef;
   }
 `;
 
@@ -46,9 +46,9 @@ const Pagination = ({ itemsPerPage, items, setCurrentItems }) => {
         pageCount={pageCount}
         activeClassName="active"
         pageRangeDisplayed={itemsPerPage}
-        breakLabel={""}
-        nextLabel={">"}
-        previousLabel={"<"}
+        breakLabel="..."
+        nextLabel={"다음"}
+        previousLabel={"이전"}
         containerClassName={"pagination"}
         onPageChange={handlePageClick}
         disabledClassName="disabled"

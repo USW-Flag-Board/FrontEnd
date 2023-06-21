@@ -60,16 +60,16 @@ const Home = () => {
             </SearchInputBox>
           </HomeSearchBox>
           <PostsArea>
-            <HomeFeedBox
-              post={postsData.activityPostData}
-              title={"모집중인 활동"}
-            />
-            <HomeFeedBox
-              post={postsData.activityPostData}
-              title={"모집중인 활동"}
-            />
             <HomeFeedBox post={postsData.likePostData} title={"인기글"} />
             <HomeFeedBox post={postsData.latestPostData} title={"최신글"} />
+            <HomeFeedBox
+              post={postsData.activityPostData}
+              title={"모집중인 활동"}
+            />
+            <HomeFeedBox
+              post={postsData.activityPostData}
+              title={"모집중인 활동"}
+            />
           </PostsArea>
         </HomeContents>
       </HomeArea>

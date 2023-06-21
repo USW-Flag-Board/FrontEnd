@@ -124,22 +124,6 @@ const HeaderArea = styled.div`
     height: 9vh;
     padding: 0 1rem;
   }
-
-  /* 태블릿 */
-  @media (min-width: 481px) and (max-width: 1024px) {
-    /* 태블릿에서 적용할 스타일 */
-    width: 100%;
-  }
-
-  /* 노트북 */
-  @media (min-width: 1025px) and (max-width: 1366px) {
-    /* 노트북에서 적용할 스타일 */
-  }
-
-  /* 데스크탑 */
-  @media (min-width: 1367px) {
-    /* 데스크탑에서 적용할 스타일 */
-  }
 `;
 
 const HeaderBox = styled.div`

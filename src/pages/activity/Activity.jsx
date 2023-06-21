@@ -45,6 +45,20 @@ const Activity = () => {
 
   const KategorieClick = (title) => {
     setKategorie(title);
+    switch (title) {
+      case "All":
+        setActivitiesCurrentItems(activities.ALL);
+        break;
+      case "PROJECT":
+        setActivitiesCurrentItems(activities.PROJECT);
+        break;
+      case "STUDY":
+        setActivitiesCurrentItems(activities.STUDY);
+        break;
+      case "MENTORING":
+        setActivitiesCurrentItems(activities.MENTORING);
+        break;
+    }
   };
 
   return (

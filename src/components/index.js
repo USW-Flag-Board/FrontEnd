@@ -14,6 +14,7 @@ export { default as MenuModal } from "./home/MenuModal";
 export { default as FindId } from "./login/FindId";
 export { default as FindPw } from "./login/FindPw";
 export { default as MyProfile } from "./myPage/MyProfile";
+export { default as CustomPagination } from "./post/CustomPagination";
 export { default as PostComment } from "./post/PostComment";
-export { default as UserPost } from "./user/UserPost";
 export { default as UserActivity } from "./user/UserActivity";
+export { default as UserPost } from "./user/UserPost";

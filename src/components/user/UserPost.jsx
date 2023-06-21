@@ -4,7 +4,6 @@ const PostBox = styled.div`
   width: 100%;
   display: flex;
   font-size: 0.8rem;
-
   justify-content: center;
   height: 2rem;
   cursor: pointer;

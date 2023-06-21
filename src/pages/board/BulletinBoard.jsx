@@ -1,10 +1,10 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
-import { Header, ListThem, Pagination } from "../../components";
+import { CustomPagination, Header, ListThem } from "../../components";
 import {
   SEARCH_SELECT_ITEMS_OPTION,
   SEARCH_SELECT_ITEMS_PERIOD,
@@ -15,13 +15,14 @@ const BulletinBoard = () => {
   const navigate = useNavigate();
   const [board, setBoard] = useState("자유게시판");
   const [posts, setPosts] = useState([]);
-  const [isSearched, setIsSearched] = useState(false);
-  const [boardItems, setBoardItems] = useState([]);
-  const [page, setPage] = useState({
-    pageNumber: 1,
-    totalPages: 0,
-    pagination: [],
+  const [searchPosts, setSearchPosts] = useState({
+    resultCount: 0,
+    searchResults: [],
   });
+  const [boardItems, setBoardItems] = useState([]);
+  const [totalPosts, setTotalPosts] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const [searchQuery, setSearchQuery] = useState({
     keyword: "",
     option: "TITLE",
@@ -41,10 +42,7 @@ const BulletinBoard = () => {
   };
 
   const handlePageClick = (num) => {
-    setPage((prev) => ({
-      ...prev,
-      pageNumber: num,
-    }));
+    setCurrentPage(num);
     navigate({
       pathname: `/board/${board}`,
       search: createSearchParams({
@@ -59,42 +57,39 @@ const BulletinBoard = () => {
       const response = await instance.get(
         `/posts/search?board=${board}&keyword=${keyword}&option=${option}&period=${period}`
       );
-      setPosts(response.data.payload.searchResults);
-      setIsSearched(true);
+      setSearchPosts({
+        resultCount: response.data.payload.resultCount,
+        searchResults: response.data.payload.searchResults,
+      });
     } catch (error) {
       console.lop(error);
     }
   };
 
   useEffect(() => {
-    setPage((prevPage) => ({
-      ...prevPage,
-      pageNumber: 1,
-    }));
+    setCurrentPage(1);
   }, [board]);
 
-  useLayoutEffect(() => {
-    async function fetchData() {
+  useEffect(() => {
+    const fetchData = async () => {
       try {
         const response = await instance.get(
-          `/posts?board=${board}&page=${page.pageNumber - 1}`
+          `/posts?board=${board}&page=${currentPage - 1}`
         );
         const boardResponse = await instance.get("/boards?type=MAIN");
         setBoardItems(boardResponse.data.payload.boards);
         setPosts(response.data.payload.content);
-        setPage((prevPage) => ({
-          ...prevPage,
-          totalPages: response.data.payload.totalPages,
-          pagination: [...Array(response.data.payload.totalPages).keys()].map(
-            (num) => num + 1
-          ),
-        }));
+        setTotalPosts(response.data.payload.totalElements);
+        setSearchPosts({
+          resultCount: 0,
+          searchResults: [],
+        });
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     fetchData();
-  }, [board, page.pageNumber]);
+  }, [board, currentPage]);
 
   return (
     <div>
@@ -132,36 +127,9 @@ const BulletinBoard = () => {
               ) : null}
             </ListBar>
           </BarArea>
-          <PostListBox>
-            {posts?.map((post) => (
-              <PostList
-                key={post.id}
-                onClick={() => navigate(`/board/post/${post.id}`)}
-              >
-                <ListThem post={post} />
-              </PostList>
-            ))}
-          </PostListBox>
-          <PaginationArea>
-            {/* {isSearched && (
-              <Pagination
-                items={posts}
-                itemsPerPage={10}
-                setCurrentItems={setPosts}
-              />
-            )} */}
-            {!isSearched && (
-              <PaginationBox>
-                {page.pagination.map((num) => (
-                  <PagenitionNum key={num} onClick={() => handlePageClick(num)}>
-                    {num}
-                  </PagenitionNum>
-                ))}
-              </PaginationBox>
-            )}
-          </PaginationArea>
-          {posts.length !== 0 && (
-            <SelectBox onSubmit={handleSubmit}>
+
+          <SearchArea onSubmit={handleSubmit}>
+            <SelectBox>
               <Select
                 name="period"
                 onChange={upDateSearchQuery}
@@ -184,19 +152,36 @@ const BulletinBoard = () => {
                   </option>
                 ))}
               </Select>
-              <PostSearchBox>
-                <PostSearch
-                  type="text"
-                  placeholder="검색어를 입력해주세요"
-                  name="keyword"
-                  onChange={upDateSearchQuery}
-                  value={searchQuery.keyword}
-                />
-                <SearchButton type="submit" onClick={handleSerchClick}>
-                  검색
-                </SearchButton>
-              </PostSearchBox>
             </SelectBox>
+            <PostSearchBox>
+              <PostSearch
+                type="text"
+                placeholder="검색어를 입력해주세요"
+                name="keyword"
+                onChange={upDateSearchQuery}
+                value={searchQuery.keyword}
+              />
+              <SearchButton type="submit" onClick={handleSerchClick}>
+                검색
+              </SearchButton>
+            </PostSearchBox>
+          </SearchArea>
+          <PostListBox>
+            {posts?.map((post) => (
+              <PostList
+                key={post.id}
+                onClick={() => navigate(`/board/post/${post.id}`)}
+              >
+                <ListThem post={post} />
+              </PostList>
+            ))}
+          </PostListBox>
+          {totalPosts > 10 && searchPosts.resultCount === 0 && (
+            <CustomPagination
+              totalPosts={totalPosts}
+              currentPage={currentPage}
+              handlePageClick={handlePageClick}
+            />
           )}
         </ListArea>
       </BoardArea>
@@ -206,7 +191,7 @@ const BulletinBoard = () => {
 
 const BoardArea = styled.div`
   width: 100%;
-  margin-bottom: 10rem;
+  margin-bottom: 3rem;
 `;
 
 const ListArea = styled.div`
@@ -224,12 +209,11 @@ const BarArea = styled.div`
 `;
 
 const ListBar = styled.div`
-  width: 80%;
+  width: 60%;
   display: flex;
   justify-content: space-between;
   @media screen and (max-width: 480px) {
-    width: 100%;
-    padding: 0 1rem;
+    width: 90%;
   }
 `;
 
@@ -255,15 +239,18 @@ const BarItem = styled.div`
 `;
 
 const PostListBox = styled.div`
-  width: 70%;
-  margin: 1rem 0;
+  width: 60%;
+  margin-bottom: 1rem;
   @media screen and (max-width: 480px) {
-    width: 80%;
+    width: 90%;
   }
 `;
 
 const PostList = styled.div`
   text-decoration: none;
+  :hover {
+    background-color: #f8f9fa;
+  }
 `;
 
 const WriteButtonBox = styled.div`
@@ -295,75 +282,58 @@ const FaPen = styled(FontAwesomeIcon)`
   margin-right: 0.5rem;
 `;
 
-const SelectBox = styled.form`
+const SearchArea = styled.form`
   display: flex;
-  gap: 0.6rem;
-  margin-bottom: 1rem;
-  width: 70%;
+  gap: 1rem;
+  flex-direction: column;
+  padding: 1rem 0;
+  background-color: #f8f9fa;
+  width: 60%;
   justify-content: center;
   align-items: center;
   @media screen and (max-width: 480px) {
-    width: 80%;
+    width: 90%;
   }
 `;
 
 const Select = styled.select`
   padding: 0.7rem;
+  width: 49.3%;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
   @media screen and (max-width: 480px) {
-    width: 6rem;
     font-size: 0.5rem;
   }
 `;
 
+const SelectBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
 const PostSearchBox = styled.div`
   display: flex;
+  width: 100%;
 `;
 
 const PostSearch = styled.input`
   padding: 0.7rem;
+  width: 80%;
+  border: 1px solid #ced4da;
+  border-radius: 4px 0 0 4px;
   @media screen and (max-width: 480px) {
-    width: 8rem;
     font-size: 0.6rem;
   }
 `;
 
 const SearchButton = styled.button`
-  width: 4rem;
+  width: 20%;
   background-color: #339af0;
   border: none;
   cursor: pointer;
   color: #fff;
-  @media screen and (max-width: 480px) {
-    display: none;
-  }
-`;
-
-const PaginationArea = styled.div`
-  margin-bottom: 1rem;
-  height: 3rem;
-  width: 70%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const PaginationBox = styled.ul`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-`;
-
-const PagenitionNum = styled.li`
-  font-size: 1rem;
-  padding: 0.4rem;
-  cursor: pointer;
-  font-weight: 700;
-  @media screen and (max-width: 480px) {
-    font-size: 0.8rem;
-  }
+  border-radius: 0 4px 4px 0;
 `;
 
 export default BulletinBoard;
