@@ -17,7 +17,7 @@ const SearchPage = () => {
     fetchData();
   }, [params]);
 
-  async function fetchData() {
+  const fetchData = async () => {
     try {
       const [userSearchResponse, postSearchResponse, activitySearchResponse] =
         await Promise.all([
@@ -43,7 +43,7 @@ const SearchPage = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <>

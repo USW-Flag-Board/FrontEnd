@@ -1,10 +1,15 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
-import { CustomPagination, Header, ListThem } from "../../components";
+import {
+  CustomPagination,
+  Header,
+  ListThem,
+  Pagination,
+} from "../../components";
 import {
   SEARCH_SELECT_ITEMS_OPTION,
   SEARCH_SELECT_ITEMS_PERIOD,
@@ -13,21 +18,21 @@ import { SessionStorage } from "../../utils/browserStorage";
 
 const BulletinBoard = () => {
   const navigate = useNavigate();
+  const params = useParams();
   const [board, setBoard] = useState("자유게시판");
   const [posts, setPosts] = useState([]);
-  const [searchPosts, setSearchPosts] = useState({
-    resultCount: 0,
-    searchResults: [],
-  });
+  const [currentSearchedPosts, setCurrentSearchedPosts] = useState([]);
+  const [searchPosts, setSearchPosts] = useState([]);
   const [boardItems, setBoardItems] = useState([]);
   const [totalPosts, setTotalPosts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [isSearched, setIsSearched] = useState(false);
   const [searchQuery, setSearchQuery] = useState({
     keyword: "",
     option: "TITLE",
     period: "ALL",
   });
+
   const upDateSearchQuery = (e) => {
     const { name, value } = e.target;
     setSearchQuery((prev) => ({
@@ -38,6 +43,12 @@ const BulletinBoard = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    navigate({
+      pathname: `/board/${board}`,
+      search: createSearchParams({
+        search: searchQuery.keyword,
+      }).toString(),
+    });
     handleSerchClick();
   };
 
@@ -57,18 +68,21 @@ const BulletinBoard = () => {
       const response = await instance.get(
         `/posts/search?board=${board}&keyword=${keyword}&option=${option}&period=${period}`
       );
-      setSearchPosts({
-        resultCount: response.data.payload.resultCount,
-        searchResults: response.data.payload.searchResults,
-      });
+      setSearchPosts(response.data.payload.searchResults);
+      setIsSearched(true);
     } catch (error) {
-      console.lop(error);
+      console.log(error);
     }
   };
 
   useEffect(() => {
     setCurrentPage(1);
+    setIsSearched(false);
   }, [board]);
+
+  useEffect(() => {
+    handleSerchClick();
+  }, [params]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,10 +94,7 @@ const BulletinBoard = () => {
         setBoardItems(boardResponse.data.payload.boards);
         setPosts(response.data.payload.content);
         setTotalPosts(response.data.payload.totalElements);
-        setSearchPosts({
-          resultCount: 0,
-          searchResults: [],
-        });
+        setIsSearched(false);
       } catch (error) {
         console.log(error);
       }
@@ -127,7 +138,6 @@ const BulletinBoard = () => {
               ) : null}
             </ListBar>
           </BarArea>
-
           <SearchArea onSubmit={handleSubmit}>
             <SelectBox>
               <Select
@@ -167,16 +177,33 @@ const BulletinBoard = () => {
             </PostSearchBox>
           </SearchArea>
           <PostListBox>
-            {posts?.map((post) => (
-              <PostList
-                key={post.id}
-                onClick={() => navigate(`/board/post/${post.id}`)}
-              >
-                <ListThem post={post} />
-              </PostList>
-            ))}
+            {!isSearched &&
+              posts.map((post) => (
+                <PostList
+                  key={post.id}
+                  onClick={() => navigate(`/board/post/${post.id}`)}
+                >
+                  <ListThem post={post} />
+                </PostList>
+              ))}
+            {isSearched &&
+              currentSearchedPosts.map((searchedPost) => (
+                <PostList
+                  key={searchedPost.id}
+                  onClick={() => navigate(`/board/post/${searchedPost.id}`)}
+                >
+                  <ListThem post={searchedPost} />
+                </PostList>
+              ))}
           </PostListBox>
-          {totalPosts > 10 && searchPosts.resultCount === 0 && (
+          {searchPosts.length > 10 && isSearched && (
+            <Pagination
+              itemsPerPage={10}
+              items={searchPosts}
+              setCurrentItems={setCurrentSearchedPosts}
+            />
+          )}
+          {totalPosts > 10 && !isSearched && (
             <CustomPagination
               totalPosts={totalPosts}
               currentPage={currentPage}

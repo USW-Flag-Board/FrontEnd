@@ -102,7 +102,6 @@ const EditedNoticeBox = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  padding-bottom: 0.3rem;
   font-size: 0.8rem;
   color: #868e96;
 `;
@@ -113,10 +112,8 @@ const EditedNotice = styled.div`
 
 const Title = styled.div`
   font-weight: bold;
-  padding-bottom: 1.5rem;
   font-size: 1.3rem;
   @media screen and (max-width: 480px) {
-    padding-bottom: 0.4rem;
     font-size: 1rem;
   }
 `;

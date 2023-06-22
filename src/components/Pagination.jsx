@@ -31,6 +31,7 @@ const StyledPaginateContainer = styled.div`
 const Pagination = ({ itemsPerPage, items, setCurrentItems }) => {
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
+
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
     setCurrentItems(items.slice(itemOffset, endOffset));

@@ -23,11 +23,14 @@ const Home = () => {
   };
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
+      const [likeResponse, latestResponse, activityResponse] =
+        await Promise.all([
+          await instance.get("posts/top/like"),
+          await instance.get("posts/top/latest"),
+          await instance.get("activities/recruit"),
+        ]);
       try {
-        const likeResponse = await instance.get("posts/top/like");
-        const latestResponse = await instance.get("posts/top/latest");
-        const activityResponse = await instance.get("activities/recruit");
         setPostData({
           likePostData: likeResponse.data.payload,
           latestPostData: latestResponse.data.payload,
@@ -36,7 +39,7 @@ const Home = () => {
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     fetchData();
   }, []);
 
