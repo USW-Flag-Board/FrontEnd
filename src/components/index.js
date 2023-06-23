@@ -8,7 +8,7 @@ export { default as SelectedCheckModal } from "./activity/SelectedCheckModal";
 export { default as WriterButtonBox } from "./activity/WriterButtonBox";
 export { default as ReportsEtcModal } from "./admin/ReportsEtcModal";
 export { default as ListThem } from "./board/ListThem";
-export { default as SearchList } from "./board/SearchList";
+export { default as PostSearchBox } from "./board/PostSearchBox";
 export { default as HomeFeedBox } from "./home/HomeFeedBox";
 export { default as MenuModal } from "./home/MenuModal";
 export { default as FindId } from "./login/FindId";

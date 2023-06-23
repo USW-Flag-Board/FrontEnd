@@ -14,36 +14,37 @@ const SearchPage = () => {
   const [activitiesCurrentItems, setActivitiesCurrentItems] = useState([]);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [userSearchResponse, postSearchResponse, activitySearchResponse] =
+          await Promise.all([
+            instance.get(`/members/search?name=${params.something}`),
+            instance.get(
+              `/posts/integration-search?keyword=${params.something}`
+            ),
+            instance.get(`/activities/search?keyword=${params.something}`),
+          ]);
+
+        setUsers({
+          resultCount: userSearchResponse.data.payload.resultCount,
+          searchResults: userSearchResponse.data.payload.searchResults,
+        });
+
+        setPosts({
+          resultCount: postSearchResponse.data.payload.resultCount,
+          searchResults: postSearchResponse.data.payload.searchResults,
+        });
+
+        setActivities({
+          resultCount: activitySearchResponse.data.payload.resultCount,
+          searchResults: activitySearchResponse.data.payload.searchResults,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
     fetchData();
   }, [params]);
-
-  const fetchData = async () => {
-    try {
-      const [userSearchResponse, postSearchResponse, activitySearchResponse] =
-        await Promise.all([
-          instance.get(`/members/search?name=${params.something}`),
-          instance.get(`/posts/integration-search?keyword=${params.something}`),
-          instance.get(`/activities/search?keyword=${params.something}`),
-        ]);
-
-      setUsers({
-        resultCount: userSearchResponse.data.payload.resultCount,
-        searchResults: userSearchResponse.data.payload.searchResults,
-      });
-
-      setPosts({
-        resultCount: postSearchResponse.data.payload.resultCount,
-        searchResults: postSearchResponse.data.payload.searchResults,
-      });
-
-      setActivities({
-        resultCount: activitySearchResponse.data.payload.resultCount,
-        searchResults: activitySearchResponse.data.payload.searchResults,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <>

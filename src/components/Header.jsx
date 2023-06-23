@@ -32,7 +32,7 @@ const Header = () => {
         break;
       case "BOARD":
         navigate({
-          pathname: `/board/${"자유게시판"}`,
+          pathname: `/board/자유게시판`,
           search: createSearchParams({
             page: 1,
           }).toString(),

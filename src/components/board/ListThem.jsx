@@ -120,7 +120,6 @@ const Title = styled.div`
 
 const WriterName = styled.div`
   font-size: 1rem;
-  padding-left: 1rem;
   @media screen and (max-width: 480px) {
     font-size: 0.8rem;
   }
@@ -142,10 +141,10 @@ const PostInfoArea = styled.div`
 
 const PostInfoBox = styled.div`
   display: flex;
+  gap: 0.8rem;
 `;
 
 const InfoBox = styled.div`
-  margin-right: 0.8rem;
   .view {
     color: #adb5bd;
   }

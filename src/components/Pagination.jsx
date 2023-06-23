@@ -5,6 +5,7 @@ import styled from "styled-components";
 const StyledPaginateContainer = styled.div`
   .pagination {
     display: flex;
+    justify-content: center;
     gap: 0.5rem;
   }
   li {
@@ -25,6 +26,12 @@ const StyledPaginateContainer = styled.div`
   }
   .active {
     background-color: #e9ecef;
+  }
+  .off-previous {
+    display: none;
+  }
+  .off-next {
+    display: none;
   }
 `;
 
@@ -48,9 +55,11 @@ const Pagination = ({ itemsPerPage, items, setCurrentItems }) => {
         activeClassName="active"
         pageRangeDisplayed={itemsPerPage}
         breakLabel="..."
-        nextLabel={"다음"}
-        previousLabel={"이전"}
-        containerClassName={"pagination"}
+        nextLabel="다음"
+        previousLabel="이전"
+        previousClassName={items.length === 0 ? "off-previous" : null}
+        nextClassName={items.length === 0 ? "off-next" : null}
+        containerClassName="pagination"
         onPageChange={handlePageClick}
         disabledClassName="disabled"
       />

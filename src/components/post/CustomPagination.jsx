@@ -1,10 +1,8 @@
-import { useState } from "react";
 import styled from "styled-components";
 
 const PaginationArea = styled.div`
-  margin-bottom: 1rem;
   height: 3rem;
-  width: 70%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -15,6 +15,7 @@ import {
   SignUpPage,
   UserInfo,
   WritePost,
+  SearchedPosts,
 } from "./pages";
 import GlobalStyle from "./styles/GlobalStyle";
 
@@ -28,6 +29,11 @@ const App = () => {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/edit" element={<EditUser />} />
         <Route path="/board/:boardName" element={<BulletinBoard />} />
+
+        <Route
+          path="/board/:boardName/:option/:period/:keyword"
+          element={<SearchedPosts />}
+        />
         <Route path="/board/write" element={<WritePost />} />
         <Route path="/search/:something" element={<SearchPage />} />
         <Route path="/activity" element={<Activity />} />
