@@ -14,3 +14,4 @@ export { default as WritePost } from "./board/WritePost";
 export { default as EditPost } from "./board/EditPost";
 export { default as SearchedPosts } from "./board/SearchedPosts";
 export { default as Admin } from "./Admin";
+export { default as Introduction } from "./Introduction";

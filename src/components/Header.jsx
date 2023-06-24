@@ -42,7 +42,7 @@ const Header = () => {
         navigate("/activity");
         break;
       case "INTRODUCTION":
-        navigate("/resume");
+        navigate("/introduction");
         break;
       default:
         break;
