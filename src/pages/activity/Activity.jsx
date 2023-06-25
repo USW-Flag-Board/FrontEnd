@@ -136,7 +136,7 @@ const ActivityArea = styled.div`
 `;
 
 const ActivityBox = styled.div`
-  width: 80%;
+  width: 70%;
   height: 5%;
   display: flex;
   justify-content: space-between;
@@ -162,7 +162,7 @@ const Kategorie = styled.div`
   font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;
-  color: ${(props) => (props.selected ? "#212529" : "#adb5bd")};
+  color: ${(props) => (props.selected ? "#339af0" : "#adb5bd")};
   @media (max-width: 480px) {
     font-size: 1rem;
     display: flex;
@@ -210,12 +210,11 @@ const WriteButtonIcon = styled(FontAwesomeIcon)`
 `;
 
 const CardArea = styled.div`
-  box-sizing: border-box;
-  width: 80%;
+  width: 70%;
   margin: 2rem 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.2rem;
   @media (max-width: 480px) {
     width: 100%;
   }

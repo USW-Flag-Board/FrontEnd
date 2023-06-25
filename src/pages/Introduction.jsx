@@ -49,7 +49,7 @@ const SignUpButton = styled.button`
 
 const ClubLeaderArea = styled.div`
   width: 100%;
-  margin-top: 2rem;
+  padding-top: 2rem;
 `;
 
 const ClubLeadersBox = styled.div`
@@ -137,6 +137,24 @@ const Description = styled.div`
   display: flex;
 `;
 
+const ClubActivityArea = styled.div`
+  height: 10rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: #edf2ff;
+`;
+
+const ClubActivityTitle = styled.h2`
+  font-weight: bold;
+  width: 80%;
+  height: 6rem;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+`;
+
 const Introduction = () => {
   const navigate = useNavigate();
   return (
@@ -191,6 +209,9 @@ const Introduction = () => {
               </ClubLeaderBox>
             </ClubLeadersBox>
           </ClubLeaderArea>
+          <ClubActivityArea>
+            <ClubActivityTitle>동아리 활동 소개</ClubActivityTitle>
+          </ClubActivityArea>
         </IntroductionBox>
       </IntroductionArea>
     </div>

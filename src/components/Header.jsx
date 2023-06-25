@@ -30,7 +30,7 @@ const Header = () => {
       case "회원가입":
         navigate("/signup");
         break;
-      case "BOARD":
+      case "게시판":
         navigate({
           pathname: `/board/자유게시판`,
           search: createSearchParams({
@@ -38,10 +38,10 @@ const Header = () => {
           }).toString(),
         });
         break;
-      case "ACTIVITY":
+      case "활동":
         navigate("/activity");
         break;
-      case "INTRODUCTION":
+      case "소개":
         navigate("/introduction");
         break;
       default:
@@ -180,7 +180,7 @@ const LogoImg = styled.img`
 `;
 
 const MenuItemBox = styled.div`
-  width: 50%;
+  width: 40%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -198,12 +198,12 @@ const MenuItems = styled.div`
 `;
 
 const MenuItem = styled.div`
-  width: 8rem;
+  width: 20%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: bold;
   color: black;
   cursor: pointer;
@@ -215,7 +215,7 @@ const MenuItem = styled.div`
 
 const SearchBox = styled.form`
   box-sizing: border-box;
-  width: ${(props) => (props.login ? "25%" : "20%")};
+  width: ${(props) => (props.login ? "25%" : "30%")};
   height: 60%;
   display: flex;
   align-items: center;
@@ -231,6 +231,7 @@ const SearchPaper = styled.div`
   align-items: center;
   height: 100%;
   border: 1px solid #dee2e6;
+  border-radius: 1rem;
 `;
 
 const InputBase = styled.input`
@@ -257,9 +258,6 @@ const UserBox = styled.div`
   gap: 0.7rem;
   justify-content: flex-end;
   @media (max-width: 480px) {
-    /* width: 35%;
-    height: 80%;
-    font-size: 0.4rem; */
     display: none;
   }
 `;
@@ -268,10 +266,11 @@ const UserButton = styled.button`
   width: ${(props) => (props.login ? "80%" : "45%")};
   height: 90%;
   border: none;
-  background-color: #339af0;
-  color: white;
+  border-radius: 0.6rem;
+  background-color: white;
   &:nth-child(2) {
-    background-color: #748ffc;
+    background-color: #339af0;
+    color: white;
   }
   @media (max-width: 480px) {
     width: 50%;

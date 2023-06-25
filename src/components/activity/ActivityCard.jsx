@@ -2,9 +2,9 @@ import styled from "styled-components";
 
 const ActivityCard = ({ title, name, type, semester, status }) => {
   return (
-    <Mainbox activityType={type}>
+    <Mainbox>
       <TypeAndStatus>
-        <Type activityType={type}>{type}</Type>
+        <Type>{type}</Type>
         <Notice>
           {status === "RECRUIT" && "모집중"}
           {status === "ON" && "활동중"}
@@ -25,36 +25,10 @@ const Mainbox = styled.div`
   width: 100%;
   height: 100%;
   border-radius: 1rem;
-  border: 1px solid white;
+  border: 1px solid #dee2e6;
   cursor: pointer;
   padding: 1rem 1rem 1.5rem 1rem;
-  background-color: ${(props) => {
-    switch (props.activityType) {
-      case "PROJECT":
-        return "#e7f5ff";
-      case "STUDY":
-        return "#fff9db";
-      case "MENTORING":
-        return "#f4fce3";
-      default:
-        break;
-    }
-  }};
-  &:hover {
-    border: 1px solid;
-    border-color: ${(props) => {
-      switch (props.activityType) {
-        case "PROJECT":
-          return "#a5d8ff";
-        case "STUDY":
-          return "#ffec99";
-        case "MENTORING":
-          return "#d8f5a2";
-        default:
-          break;
-      }
-    }};
-  }
+
   @media (max-width: 480px) {
     padding: 0.8rem 1rem 0.8rem 1rem;
   }
@@ -77,18 +51,7 @@ const Notice = styled.div`
 
 const Type = styled.div`
   font-weight: bold;
-  color: ${(props) => {
-    switch (props.activityType) {
-      case "PROJECT":
-        return "#4dabf7";
-      case "STUDY":
-        return "#fcc419";
-      case "MENTORING":
-        return "#66a80f";
-      default:
-        break;
-    }
-  }};
+  color: #339af0;
   @media (max-width: 480px) {
     font-size: 1rem;
   }
