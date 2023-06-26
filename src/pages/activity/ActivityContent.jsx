@@ -178,7 +178,7 @@ const ActivityContent = () => {
       }
     }
     fetchData();
-  }, [activityId, status]);
+  }, [activityId]);
 
   const handleApplyClick = async () => {
     try {

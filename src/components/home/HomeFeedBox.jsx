@@ -80,7 +80,7 @@ const HomeFeedBox = ({ post, title }) => {
         </MoreContentButton>
       </FeedBoxHeader>
       <div>
-        {/* <HomePostsBar headerTitle={title} /> */}
+        <HomePostsBar headerTitle={title} />
         {Array.isArray(post) &&
           post.map((item) => (
             <PostsBox

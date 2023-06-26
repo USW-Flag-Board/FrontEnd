@@ -22,6 +22,9 @@ const MenuModal = ({ handleModalOpen }) => {
       case "활동":
         navigate("/activity");
         break;
+      case "소개":
+        navigate("/introduction");
+        break;
       case "마이페이지":
         navigate("/edit");
         break;

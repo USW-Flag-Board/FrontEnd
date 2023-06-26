@@ -25,7 +25,8 @@ const StyledPaginateContainer = styled.div`
     color: #e9ecef;
   }
   .active {
-    background-color: #e9ecef;
+    border: 1px solid #339af0;
+    color: #339af0;
   }
   .off-previous {
     display: none;

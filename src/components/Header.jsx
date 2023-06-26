@@ -266,7 +266,7 @@ const UserButton = styled.button`
   width: ${(props) => (props.login ? "80%" : "45%")};
   height: 90%;
   border: none;
-  border-radius: 0.6rem;
+  border-radius: 1.2rem;
   background-color: white;
   &:nth-child(2) {
     background-color: #339af0;

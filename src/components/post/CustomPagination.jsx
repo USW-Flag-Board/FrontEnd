@@ -19,10 +19,10 @@ const PaginationBox = styled.ul`
 
 const PagenitionNum = styled.li`
   font-size: 1rem;
-  border: 1px solid #adb5bd;
+  border: 1px solid ${(props) => (props.selected ? "#339af0" : "#adb5bd")};
   border-radius: 4px;
   padding: 0.4rem 0.6rem;
-  background-color: ${(props) => (props.selected ? "#e9ecef" : null)};
+  color: ${(props) => (props.selected ? "#339af0" : null)};
   cursor: pointer;
   @media screen and (max-width: 480px) {
     font-size: 0.8rem;
