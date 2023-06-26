@@ -29,11 +29,17 @@ const ListThem = ({ post }) => {
 
   return (
     <ListThemBox>
-      <NoticeBox>{newPost ? <Notice>새로운 글</Notice> : null}</NoticeBox>
+      {newPost ? (
+        <NoticeBox>
+          <Notice>새로운 글</Notice>
+        </NoticeBox>
+      ) : null}
       <Title>{title}</Title>
-      <EditedNoticeBox className="edited-post">
-        <EditedNotice>{edited ? "수정됨" : ""}</EditedNotice>
-      </EditedNoticeBox>
+      {edited ? (
+        <EditedNoticeBox className="edited-post">
+          <EditedNotice>수정됨</EditedNotice>
+        </EditedNoticeBox>
+      ) : null}
       <PostInfoArea>
         <PostInfoBox>
           <InfoBox>
@@ -62,12 +68,15 @@ const ListThem = ({ post }) => {
 
 const ListThemBox = styled.div`
   width: 100%;
-  padding: 1rem 0;
+  padding: 1rem 0.8rem;
   border-bottom: 1px solid #dee2e6;
   cursor: pointer;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   @media screen and (max-width: 480px) {
-    padding: 0.6rem 0 0.9rem 0;
+    padding: 0.6rem 0.5rem;
     font-size: 0.8rem;
   }
 `;
@@ -76,8 +85,6 @@ const NoticeBox = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
-  padding-bottom: 0.75rem;
-  height: 2rem;
 `;
 
 const Notice = styled.div`
@@ -95,29 +102,24 @@ const EditedNoticeBox = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  padding-bottom: 0.3rem;
   font-size: 0.8rem;
   color: #868e96;
 `;
 
 const EditedNotice = styled.div`
   width: fit-content;
-  height: 1rem;
 `;
 
 const Title = styled.div`
   font-weight: bold;
-  padding-bottom: 1.5rem;
   font-size: 1.3rem;
   @media screen and (max-width: 480px) {
-    padding-bottom: 0.4rem;
     font-size: 1rem;
   }
 `;
 
 const WriterName = styled.div`
   font-size: 1rem;
-  padding-left: 1rem;
   @media screen and (max-width: 480px) {
     font-size: 0.8rem;
   }
@@ -135,15 +137,14 @@ const CreatedAt = styled.div`
 const PostInfoArea = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 40%;
 `;
 
 const PostInfoBox = styled.div`
   display: flex;
+  gap: 0.8rem;
 `;
 
 const InfoBox = styled.div`
-  margin-right: 0.8rem;
   .view {
     color: #adb5bd;
   }

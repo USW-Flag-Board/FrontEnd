@@ -184,20 +184,22 @@ const PostContentPage = () => {
                   <Icon icon={faComment} className="comment" />
                   <span>{replies.length}</span>
                 </InfoBox>
-                {loginId === SessionStorage.get("User_id") ? (
+                {loginId === SessionStorage.get("User_id") && (
                   <>
                     <StyledLink to={`/board/post/${postId}/edit`}>
                       <InfoBox>수정하기</InfoBox>
                     </StyledLink>
                     <InfoBox onClick={handleDeleteClick}>삭제하기</InfoBox>
                   </>
-                ) : (
-                  <>
-                    <InfoBox onClick={() => handleModalOpen(true)}>
-                      신고하기
-                    </InfoBox>
-                  </>
                 )}
+                {SessionStorage.get("User_id") &&
+                  loginId !== SessionStorage.get("User_id") && (
+                    <>
+                      <InfoBox onClick={() => handleModalOpen(true)}>
+                        신고하기
+                      </InfoBox>
+                    </>
+                  )}
               </PostInfoBox>
             </ContentInner>
           </ContentArea>
@@ -214,7 +216,7 @@ const PostContentPage = () => {
                     handleDeleteComment={handleDeleteComment}
                   />
                 ))}
-              {SessionStorage.get("User_id") && (
+              {SessionStorage.get("User_id") ? (
                 <>
                   <CommentBox>
                     <CommentInputBox>
@@ -231,6 +233,20 @@ const PostContentPage = () => {
                     </ContentButton>
                   </ContentButtonBox>
                 </>
+              ) : (
+                <CommentUnLoginedBox>
+                  <CommentMessageBox>
+                    댓글 이용은 로그인시 가능합니다.
+                  </CommentMessageBox>
+                  <ContentButtonBox className="unlogin-button-box">
+                    <ContentButton
+                      className="unlogin-button"
+                      onClick={() => navigate("/login")}
+                    >
+                      로그인하기
+                    </ContentButton>
+                  </ContentButtonBox>
+                </CommentUnLoginedBox>
               )}
             </ContentInner>
           </ContentArea>
@@ -294,6 +310,7 @@ const WriterInfoBox = styled.div`
   align-items: center;
   margin-bottom: 2rem;
   height: 3rem;
+  gap: 0.5rem;
 `;
 
 const WriterImg = styled.img`
@@ -324,21 +341,20 @@ const ContentBox = styled.div`
     width: 100%;
     z-index: 0;
     display: flex;
-    justify-content: center;
   }
 `;
 
 const Content = styled.div`
-  width: calc(100% - 5rem);
+  width: 80%;
   padding: 0.3rem;
 `;
 
 const ViewerBox = styled.div`
-  width: 70%;
+  width: 90%;
 `;
 
 const LikeButtonBox = styled.div`
-  width: 5rem;
+  width: 20%;
   color: ${(props) => (props.liked ? "#339af0" : "rgb(215, 226, 235)")};
   .like {
     font-size: 1.3rem;
@@ -347,16 +363,21 @@ const LikeButtonBox = styled.div`
 `;
 
 const LikeButton = styled.button`
-  width: 90%;
+  width: 70%;
   height: 3rem;
   background: none;
   cursor: pointer;
-  border: 0.0625rem solid rgb(215, 226, 235);
+  border: 0.0625rem solid
+    ${(props) => (props.liked ? "#339af0" : "rgb(215, 226, 235)")};
   color: ${(props) => (props.liked ? "#339af0" : "rgb(215, 226, 235)")};
   border-radius: 0.25rem;
   .like-count {
     font-size: 1rem;
     font-weight: 400;
+  }
+  @media screen and (max-width: 480px) {
+    min-width: 80%;
+    height: 2.5rem;
   }
 `;
 
@@ -385,14 +406,36 @@ const Icon = styled(FontAwesomeIcon)`
 const CommentBox = styled.div`
   border: 0.0625rem solid rgb(215, 226, 235);
   border-radius: 0.25rem;
-  width: 100%;
   background-color: white;
+  width: 100%;
   margin-bottom: 1rem;
 `;
 
 const CommentInputBox = styled.div`
   height: 10rem;
   padding: 1rem;
+`;
+
+const CommentUnLoginedBox = styled.div`
+  height: 10rem;
+  padding: 1rem;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  border: 0.0625rem solid rgb(215, 226, 235);
+  border-radius: 0.25rem;
+  background-color: white;
+  .unlogin-button-box {
+    width: 30%;
+  }
+`;
+
+const CommentMessageBox = styled.div`
+  width: 40%;
+  @media screen and (max-width: 480px) {
+    width: 70%;
+  }
 `;
 
 const CommentInput = styled.textarea`
@@ -410,6 +453,11 @@ const ContentButtonBox = styled.div`
   height: 3rem;
   display: flex;
   justify-content: flex-end;
+  .unlogin-button {
+    font-size: 0.8rem;
+    align-items: center;
+    background-color: #69db7c;
+  }
 `;
 
 const ContentButton = styled.button`
@@ -419,7 +467,6 @@ const ContentButton = styled.button`
   width: 6rem;
   height: 100%;
   border: none;
-  padding: 0.3rem 0 0 0;
   cursor: pointer;
   background-color: #339af0;
   color: white;

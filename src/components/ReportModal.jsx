@@ -102,6 +102,7 @@ const EtcInput = styled.textarea`
   width: 100%;
   min-height: 5rem;
   border: 1px solid #dcdcdc;
+  padding: 1rem;
   border-radius: 0.3rem;
 `;
 

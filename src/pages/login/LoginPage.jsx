@@ -40,7 +40,6 @@ const LoginPage = () => {
         password: idPassword.password,
       });
 
-      console.log(response);
       const accessToken = response.data.payload.accessToken;
       const accessTokenExpiresIn = response.data.payload.accessTokenExpiresIn;
       SessionStorage.set("expire", accessTokenExpiresIn);
@@ -50,8 +49,10 @@ const LoginPage = () => {
         "refresh_token",
         response.data.payload.refreshToken
       );
-      const myInfo = await instance.get("/members");
-      SessionStorage.set("name", myInfo.data.payload.name);
+      if (SessionStorage.get("User_id") !== "gmlwh124") {
+        const myInfo = await instance.get("/members");
+        SessionStorage.set("name", myInfo.data.payload.name);
+      }
       navigate("/");
     } catch (error) {
       const status = error.response.status;
@@ -185,8 +186,8 @@ const LoginButton = styled.button`
   color: #ffffff;
   margin-top: 1.2rem;
   margin-bottom: 1.9rem;
-  height: 60px;
-  width: 350px;
+  height: 3.75rem;
+  width: 21.9rem;
   border: 0px;
   transition: 0.2s;
   font-size: 1rem;

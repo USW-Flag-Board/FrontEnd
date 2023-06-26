@@ -1,7 +1,7 @@
 import { faBars, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useLayoutEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, createSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/images/logo2.png";
 import { HEADER_ITEMS, LOGOUT_USER_ITEMS } from "../constants/header";
@@ -30,14 +30,19 @@ const Header = () => {
       case "회원가입":
         navigate("/signup");
         break;
-      case "BOARD":
-        navigate("/board");
+      case "게시판":
+        navigate({
+          pathname: `/board/자유게시판`,
+          search: createSearchParams({
+            page: 1,
+          }).toString(),
+        });
         break;
-      case "ACTIVITY":
+      case "활동":
         navigate("/activity");
         break;
-      case "INTRODUCTION":
-        navigate("/resume");
+      case "소개":
+        navigate("/introduction");
         break;
       default:
         break;
@@ -119,22 +124,6 @@ const HeaderArea = styled.div`
     height: 9vh;
     padding: 0 1rem;
   }
-
-  /* 태블릿 */
-  @media (min-width: 481px) and (max-width: 1024px) {
-    /* 태블릿에서 적용할 스타일 */
-    width: 100%;
-  }
-
-  /* 노트북 */
-  @media (min-width: 1025px) and (max-width: 1366px) {
-    /* 노트북에서 적용할 스타일 */
-  }
-
-  /* 데스크탑 */
-  @media (min-width: 1367px) {
-    /* 데스크탑에서 적용할 스타일 */
-  }
 `;
 
 const HeaderBox = styled.div`
@@ -191,7 +180,7 @@ const LogoImg = styled.img`
 `;
 
 const MenuItemBox = styled.div`
-  width: 50%;
+  width: 40%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -209,12 +198,12 @@ const MenuItems = styled.div`
 `;
 
 const MenuItem = styled.div`
-  width: 8rem;
+  width: 20%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: bold;
   color: black;
   cursor: pointer;
@@ -226,7 +215,7 @@ const MenuItem = styled.div`
 
 const SearchBox = styled.form`
   box-sizing: border-box;
-  width: ${(props) => (props.login ? "25%" : "20%")};
+  width: ${(props) => (props.login ? "25%" : "30%")};
   height: 60%;
   display: flex;
   align-items: center;
@@ -242,6 +231,7 @@ const SearchPaper = styled.div`
   align-items: center;
   height: 100%;
   border: 1px solid #dee2e6;
+  border-radius: 1rem;
 `;
 
 const InputBase = styled.input`
@@ -268,9 +258,6 @@ const UserBox = styled.div`
   gap: 0.7rem;
   justify-content: flex-end;
   @media (max-width: 480px) {
-    /* width: 35%;
-    height: 80%;
-    font-size: 0.4rem; */
     display: none;
   }
 `;
@@ -279,10 +266,11 @@ const UserButton = styled.button`
   width: ${(props) => (props.login ? "80%" : "45%")};
   height: 90%;
   border: none;
-  background-color: #339af0;
-  color: white;
+  border-radius: 1.2rem;
+  background-color: white;
   &:nth-child(2) {
-    background-color: #748ffc;
+    background-color: #339af0;
+    color: white;
   }
   @media (max-width: 480px) {
     width: 50%;

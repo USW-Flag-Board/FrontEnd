@@ -1,6 +1,6 @@
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, createSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../../assets/images/logo2.png";
 import { MODAL_MENU_TTEMS } from "../../constants/header";
@@ -11,19 +11,27 @@ const MenuModal = ({ handleModalOpen }) => {
   const navigate = useNavigate();
   const handleItemClick = (name) => {
     switch (name) {
-      case "BOARD":
-        navigate("/board");
+      case "게시판":
+        navigate({
+          pathname: `/board/${"자유게시판"}`,
+          search: createSearchParams({
+            page: 1,
+          }).toString(),
+        });
         break;
-      case "ACTIVITY":
+      case "활동":
         navigate("/activity");
         break;
-      case "MY PAGE":
+      case "소개":
+        navigate("/introduction");
+        break;
+      case "마이페이지":
         navigate("/edit");
         break;
-      case "LOGIN":
+      case "로그인":
         navigate("/login");
         break;
-      case "SIGN UP":
+      case "회원가입":
         navigate("/signup");
         break;
     }
@@ -54,10 +62,10 @@ const MenuModal = ({ handleModalOpen }) => {
             ))}
             {SessionStorage.get("User_id") && (
               <MenuBarItem
-                id="MY PAGE"
+                id="마이페이지"
                 onClick={(e) => handleItemClick(e.target.id)}
               >
-                MY PAGE
+                마이페이지
               </MenuBarItem>
             )}
           </MenuBarItemsBox>
@@ -74,14 +82,14 @@ const MenuModal = ({ handleModalOpen }) => {
               ) : (
                 <>
                   <ButtonItem
-                    id="LOGIN"
+                    id="로그인"
                     type="button"
                     onClick={(e) => handleItemClick(e.target.id)}
                   >
                     로그인
                   </ButtonItem>
                   <ButtonItem
-                    id="SIGN UP"
+                    id="회원가입"
                     type="button"
                     onClick={(e) => handleItemClick(e.target.id)}
                   >
