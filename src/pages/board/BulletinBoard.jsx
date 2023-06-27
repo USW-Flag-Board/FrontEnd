@@ -1,12 +1,7 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
-import {
-  createSearchParams,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { createSearchParams, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../apis/AxiosInterceptorSetup";
 import {
@@ -41,7 +36,8 @@ const ListBar = styled.div`
   display: flex;
   justify-content: space-between;
   @media screen and (max-width: 480px) {
-    width: 90%;
+    width: 100%;
+    padding: 0 1rem;
   }
 `;
 
@@ -59,7 +55,7 @@ const BarItem = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 500;
   padding-top: 0.7rem;
   cursor: pointer;
   border-bottom: ${(props) =>

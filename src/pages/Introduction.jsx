@@ -31,7 +31,7 @@ const FlagIntroductionContents = styled.div`
   display: flex;
   align-items: center;
   font-size: 4.5rem;
-  font-weight: bold;
+  font-weight: 700;
   padding-left: 4rem;
   height: 25%;
   @media screen and (max-width: 480px) {
@@ -76,7 +76,7 @@ const ClubLeadersBox = styled.div`
 `;
 
 const ClubLeaderTitle = styled.h2`
-  font-weight: bold;
+  font-weight: 600;
   width: 80%;
   height: 6rem;
   font-size: 1.5rem;
@@ -126,7 +126,7 @@ const Generation = styled.div`
   display: flex;
   align-items: center;
   font-size: 1.2rem;
-  font-weight: bold;
+  font-weight: 600;
   @media screen and (max-width: 480px) {
     font-size: 0.8rem;
     justify-content: center;
@@ -140,7 +140,7 @@ const LeaderName = styled.div`
   display: flex;
   align-items: center;
   font-size: 1.2rem;
-  font-weight: bold;
+  font-weight: 600;
   color: white;
   background-color: #339af0;
   @media screen and (max-width: 480px) {
@@ -192,7 +192,7 @@ const ClubActivityArea = styled.div`
 `;
 
 const ClubActivityTitle = styled.h2`
-  font-weight: bold;
+  font-weight: 600;
   width: 80%;
   height: 6rem;
   font-size: 1.5rem;
@@ -233,7 +233,7 @@ const ActivityCategory = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 500;
   cursor: pointer;
   color: ${(props) => (props.selected ? "white" : "black")};
   background-color: ${(props) => (props.selected ? "#339af0" : null)};
@@ -290,6 +290,9 @@ const HistoryItem = styled.div`
   .project-titel {
     width: 80%;
   }
+  @media screen and (max-width: 480px) {
+    gap: 1rem;
+  }
 `;
 
 const Semester = styled.div`
@@ -303,14 +306,16 @@ const Semester = styled.div`
 `;
 
 const ProjectUrl = styled.a`
-  width: 20%;
+  width: 95%;
   display: flex;
-  justify-content: center;
+  padding-left: 2rem;
+  justify-content: flex-start;
   cursor: pointer;
   text-decoration: none;
   color: black;
   @media screen and (max-width: 480px) {
-    width: 50%;
+    width: 85%;
+    padding-left: 1rem;
   }
 `;
 
@@ -429,11 +434,8 @@ const Introduction = () => {
                             (item) => (
                               <HistoryItem key={item.name}>
                                 <ProjectUrl href={item.url} target="_blank">
-                                  {item.url}
-                                </ProjectUrl>
-                                <Content className="project-title">
                                   {item.name}
-                                </Content>
+                                </ProjectUrl>
                               </HistoryItem>
                             )
                           )}

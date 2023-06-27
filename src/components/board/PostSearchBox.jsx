@@ -16,13 +16,15 @@ const SearchArea = styled.form`
   justify-content: center;
   align-items: center;
   @media screen and (max-width: 480px) {
-    width: 90%;
+    width: 100%;
+    padding: 1rem 1rem;
   }
 `;
 
 const Select = styled.select`
   padding: 0.7rem;
   width: 49.3%;
+  height: 100%;
   border-radius: 4px;
   border: 1px solid #ced4da;
   @media screen and (max-width: 480px) {
@@ -34,6 +36,7 @@ const SelectBox = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  height: 2.5rem;
 `;
 
 const PostSearchArea = styled.div`
@@ -44,6 +47,7 @@ const PostSearchArea = styled.div`
 const PostSearch = styled.input`
   padding: 0.7rem;
   width: 80%;
+  height: 2.5rem;
   border: 1px solid #ced4da;
   border-radius: 4px 0 0 4px;
   @media screen and (max-width: 480px) {
