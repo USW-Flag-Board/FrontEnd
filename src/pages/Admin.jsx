@@ -387,7 +387,7 @@ const Admin = () => {
 
   const handlePostClick = async () => {
     const data = {
-      board: "Notice",
+      board: "NOTICE",
       content: noticeContent,
       title: noticeTitle,
     };
