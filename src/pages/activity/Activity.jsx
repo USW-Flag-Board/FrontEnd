@@ -19,7 +19,7 @@ const Activity = () => {
   });
   const [activitiesCurrentItems, setActivitiesCurrentItems] = useState([]);
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       try {
         const response = await instance.get("/activities");
         const allActivities = response.data.payload.allActivities;
@@ -35,7 +35,7 @@ const Activity = () => {
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     fetchData();
   }, []);
 

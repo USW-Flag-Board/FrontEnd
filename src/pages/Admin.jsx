@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import instance from "../apis/AxiosInterceptorSetup";
 import ReportsEtcModal from "../components/admin/ReportsEtcModal";
+import { Editor } from "@toast-ui/react-editor";
+import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
+import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
 
 const AdminArea = styled.div`
   display: flex;
@@ -194,9 +198,86 @@ const AllDeleteButton = styled.button`
   }
 `;
 
+const NoticeBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+`;
+
+const ContentLabel = styled.label`
+  font-weight: bold;
+  font-size: 1rem;
+  ::after {
+    content: "*";
+    color: rgb(240, 61, 12);
+    margin-left: 0.125rem;
+  }
+  margin-bottom: 1rem;
+`;
+
+const TitleInputBox = styled.div`
+  width: 100%;
+  height: 2.5rem;
+  border: 1px solid #ced4da;
+  padding: 0.5rem 1rem;
+  margin-bottom: 2rem;
+`;
+
+const TitleInput = styled.input`
+  width: 100%;
+  height: 99%;
+  border: none;
+  font-size: 1rem;
+  caret-color: black;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const ContentInputBox = styled.div`
+  width: 100%;
+  margin-bottom: 2rem;
+`;
+
+const ContentButtonBox = styled.div`
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  @media screen and (max-width: 480px) {
+    margin-top: 0.5rem;
+  }
+`;
+
+const ContentButton = styled.button`
+  border-radius: 0.3rem;
+  font-size: 1rem;
+  font-weight: bold;
+  width: 6rem;
+  height: 100%;
+  border: none;
+  padding: 0.3rem 0 0 0;
+  cursor: pointer;
+  &:nth-child(2) {
+    background-color: #339af0;
+    color: white;
+  }
+  @media screen and (max-width: 480px) {
+    height: 90%;
+    font-size: 0.8rem;
+  }
+`;
+
 const Admin = () => {
   const [boardItems, setBoardItems] = useState("");
+  const [noticeTitle, setNoticeTitle] = useState("");
+  const [noticeContent, setNoticeContent] = useState("");
   const [reportModal, setReportModal] = useState(false);
+  const editorRef = useRef();
+
   const [modalContents, setModalContents] = useState({
     id: "",
     loginId: "",
@@ -228,6 +309,10 @@ const Admin = () => {
 
   const handleEtcModal = (value) => {
     setReportModal(value);
+  };
+
+  const handleContent = () => {
+    setNoticeContent(editorRef.current?.getInstance().getMarkdown());
   };
 
   const addBoard = async () => {
@@ -291,8 +376,28 @@ const Admin = () => {
 
   const allDeleteReports = async () => {
     try {
-      const response = await instance.delete("/admin/reports");
-      if (response.status === 200) alert("모든 신고가 삭제되었습니다.");
+      if (window.confirm("모든 신고를 삭제하시겠습니까?")) {
+        const response = await instance.delete("/admin/reports");
+        if (response.status === 200) alert("모든 신고가 삭제되었습니다.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handlePostClick = async () => {
+    const data = {
+      board: "NOTICE",
+      content: noticeContent,
+      title: noticeTitle,
+    };
+    try {
+      const reponse = await instance.post("/admin/posts/notice", data);
+      if (reponse.status === 200) {
+        setNoticeContent("");
+        setNoticeTitle("");
+        alert("공지사항이 작성되었습니다.");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -327,6 +432,46 @@ const Admin = () => {
         />
       )}
       <AdminBox>
+        <AreaTitle>공지사항</AreaTitle>
+        <NoticeBox>
+          <ContentLabel>제목</ContentLabel>
+          <TitleInputBox>
+            <TitleInput
+              value={noticeTitle}
+              onChange={(e) => setNoticeTitle(e.target.value)}
+            />
+          </TitleInputBox>
+          <ContentLabel>내용</ContentLabel>
+          <ContentInputBox>
+            <Editor
+              height="35rem"
+              placeholder="내용을 입력해 주세요"
+              previewStyle="vertical"
+              initialEditType="wysiwyg"
+              ref={editorRef}
+              onChange={handleContent}
+              toolbarItems={[
+                ["heading", "bold", "italic", "strike"],
+                ["hr", "quote"],
+                ["ul", "ol"],
+                ["table", "link"],
+              ]}
+              useCommandShortcut={false}
+              plugins={[colorSyntax]}
+            />
+          </ContentInputBox>
+          <ContentButtonBox>
+            <ContentButton
+              onClick={() => {
+                setNoticeTitle("");
+                setNoticeContent("");
+              }}
+            >
+              취소
+            </ContentButton>
+            <ContentButton onClick={handlePostClick}>등록</ContentButton>
+          </ContentButtonBox>
+        </NoticeBox>
         <AreaTitle>게시판</AreaTitle>
         <BoardArea>
           <BoardItmesBox>

@@ -180,7 +180,6 @@ const BoardSelect = styled.select`
 const TitleInputBox = styled.div`
   width: 100%;
   height: 2.5rem;
-  box-sizing: border-box;
   border: 1px solid #ced4da;
   padding: 0.5rem 1rem;
   margin-bottom: 2rem;
@@ -198,7 +197,6 @@ const TitleInput = styled.input`
 `;
 
 const ContentInputBox = styled.div`
-  box-sizing: border-box;
   width: 100%;
   margin-bottom: 2rem;
 `;
