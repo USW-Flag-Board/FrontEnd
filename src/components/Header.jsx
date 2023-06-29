@@ -231,7 +231,7 @@ const SearchPaper = styled.div`
   align-items: center;
   height: 100%;
   border: 1px solid #dee2e6;
-  border-radius: 1rem;
+  border-radius: 20px;
 `;
 
 const InputBase = styled.input`
@@ -266,7 +266,7 @@ const UserButton = styled.button`
   width: ${(props) => (props.login ? "80%" : "45%")};
   height: 90%;
   border: none;
-  border-radius: 1.2rem;
+  border-radius: 22px;
   background-color: white;
   &:nth-child(2) {
     background-color: #339af0;

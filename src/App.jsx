@@ -9,14 +9,15 @@ import {
   EditPost,
   EditUser,
   Home,
+  Introduction,
   LoginPage,
+  NotFound,
   PostContentPage,
   SearchPage,
+  SearchedPosts,
   SignUpPage,
   UserInfo,
   WritePost,
-  SearchedPosts,
-  Introduction,
 } from "./pages";
 import GlobalStyle from "./styles/GlobalStyle";
 
@@ -50,6 +51,7 @@ const App = () => {
         <Route path="/board/post/:postId/edit" element={<EditPost />} />
         <Route path="/userInfo/:userId" element={<UserInfo />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
