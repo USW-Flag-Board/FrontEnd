@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, createSearchParams, Outlet } from "react-router-dom";
 import styled from "styled-components";
 import logo2 from "../../assets/images/logo2.png";
 import {
@@ -42,6 +42,35 @@ const SignUpPage = () => {
       setProgressValue((prev) => (prev += 20));
       setSignUpIndex((signUpIndex) => signUpIndex + 1);
     }
+    switch (signUpIndex) {
+      case 0:
+        navigate("joinType");
+        break;
+      case 1:
+        navigate({
+          pathname: `/signUp`,
+          search: createSearchParams({
+            stage: "id&password",
+          }).toString(),
+        });
+        break;
+      case 2:
+        navigate({
+          pathname: `/signUp`,
+          search: createSearchParams({
+            stage: "id&password",
+          }).toString(),
+        });
+        break;
+      case 3:
+        navigate({
+          pathname: `/signUp`,
+          search: createSearchParams({
+            stage: "email",
+          }).toString(),
+        });
+        break;
+    }
   };
 
   const finishSignUp = async () => {
@@ -78,7 +107,9 @@ const SignUpPage = () => {
           <ProgressBox>
             <Progress value={progressValue} max={100} />
           </ProgressBox>
-          {signUpIndex === 0 && (
+          <ServiceAgree setButtonState={handleButtonState} />
+          <Outlet />
+          {/* {signUpIndex === 0 && (
             <ServiceAgree setButtonState={handleButtonState} />
           )}
 
@@ -111,7 +142,7 @@ const SignUpPage = () => {
               certification={certification}
               setCertification={handleCertification}
             />
-          )}
+          )} */}
 
           <AccountButton
             className={buttonState ? "open" : "close"}
