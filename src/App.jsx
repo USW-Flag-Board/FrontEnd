@@ -10,6 +10,7 @@ import {
   EditUser,
   Home,
   Introduction,
+  JoinType,
   LoginPage,
   NotFound,
   PostContentPage,
@@ -18,14 +19,10 @@ import {
   SignUpPage,
   UserInfo,
   WritePost,
+  ServiceAgree,
 } from "./pages";
 import GlobalStyle from "./styles/GlobalStyle";
-import {
-  EmailAuth,
-  IdPassword,
-  JoinTypeSelect,
-  Privacy,
-} from "./components/signUp";
+import { EmailAuth, IdPassword, Privacy } from "./components/signUp";
 
 const App = () => {
   return (
@@ -34,12 +31,12 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />}>
-          <Route path="joinType" element={<JoinTypeSelect />} />
-          <Route path="idPassword" element={<IdPassword />} />
-          <Route path="privacy" element={<Privacy />} />
-          <Route path="emailAuth" element={<EmailAuth />} />
-        </Route>
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/signUp/serviceAgree" element={<ServiceAgree />} />
+        <Route path="/signUp/joinType" element={<JoinType />} />
+        <Route path="/signUp/idPassword" element={<IdPassword />} />
+        <Route path="/signUp/privacy" element={<Privacy />} />
+        <Route path="/signUp/emailAuth" element={<EmailAuth />} />
         <Route path="/edit" element={<EditUser />} />
         <Route path="/board/:boardName" element={<BulletinBoard />} />
         <Route path="/introduction" element={<Introduction />} />

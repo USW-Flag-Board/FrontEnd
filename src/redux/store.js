@@ -9,7 +9,7 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import boardSliceReducer from "./slice/boardSlice";
+import signUpSliceReducer from "./slice/signUpSlice";
 import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
@@ -19,7 +19,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  boardSlice: boardSliceReducer,
+  signUpSlice: signUpSliceReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -165,7 +165,6 @@ const WriteArea = styled.input`
   border: 1px solid #adb5bd;
   outline: none;
   margin: 1.25rem;
-  transition: 0.2s;
   ::placeholder {
     color: black;
   }
