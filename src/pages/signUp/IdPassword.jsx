@@ -23,8 +23,6 @@ const IdPassword = () => {
   });
   const { id, password, passwordConfirm } = state;
   const { idMessage, passwordMessage, passwordConfirmMessage } = state;
-  const data = useSelector((state) => state.signUpSlice);
-  console.log(data);
   const handleIdCheck = async () => {
     const value = id;
     try {
@@ -53,6 +51,12 @@ const IdPassword = () => {
       passwordConfirmMessage === "비밀번호와 일치합니다."
     ) {
       setButtonState(true);
+      dispatch(
+        setUserData({
+          loginId: id,
+          password: password,
+        })
+      );
     } else {
       setButtonState(false);
     }
@@ -156,15 +160,7 @@ const IdPassword = () => {
             type="button"
             className={buttonState ? "open" : "close"}
             disabled={!buttonState}
-            onClick={() => {
-              navigate("/signUp/idPassword");
-              dispatch(
-                setUserData({
-                  loginId: id,
-                  password: password,
-                })
-              );
-            }}
+            onClick={() => navigate("/signUp/privacy")}
           >
             계속
           </Button>

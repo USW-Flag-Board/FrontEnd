@@ -17,5 +17,6 @@ export { default as JoinType } from "./signUp/JoinType";
 export { default as SignUpPage } from "./signUp/SignUpPage";
 export { default as IdPassword } from "./signUp/IdPassword";
 export { default as ServiceAgree } from "./signUp/ServiceAgree";
+export { default as Privacy } from "./signUp/Privacy";
 export { default as EditUser } from "./user/EditUser";
 export { default as UserInfo } from "./user/UserInfo";

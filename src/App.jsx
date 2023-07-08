@@ -21,9 +21,10 @@ import {
   WritePost,
   ServiceAgree,
   IdPassword,
+  Privacy,
 } from "./pages";
 import GlobalStyle from "./styles/GlobalStyle";
-import { EmailAuth, Privacy } from "./components/signUp";
+import { EmailAuth } from "./components/signUp";
 
 const App = () => {
   return (
