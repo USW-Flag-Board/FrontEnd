@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { SORTBOX_DATA } from "../../constants/signUp";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { signUpActions } from "../../redux/slice/signUpSlice.js";
+import { setUserData } from "../../redux/slice/signUpSlice.js";
 
 const SortBox = ({
   qualification,
@@ -34,14 +34,10 @@ const JoinType = () => {
   const dispatch = useDispatch();
   const [checkedValues, setCheckedValues] = useState([]);
   const [buttonState, setButtonState] = useState(false);
-  const ejoinType = useSelector((state) => state.signUpData);
-  console.log(ejoinType);
-  const [joinType, setJoinType] = useState("");
   const handleCheckboxChange = (value) => {
     const newCheckedValues = checkedValues.includes(value) ? [] : [value];
     setCheckedValues(newCheckedValues);
-    setJoinType(newCheckedValues[0]);
-    dispatch(signUpActions.setUserData({ joinType: joinType }));
+    dispatch(setUserData({ joinType: newCheckedValues[0] }));
   };
 
   useEffect(() => {
@@ -72,7 +68,7 @@ const JoinType = () => {
             type="button"
             className={buttonState ? "open" : "close"}
             disabled={!buttonState}
-            onClick={() => navigate("/signUp/joinType")}
+            onClick={() => navigate("/signUp/idPassword")}
           >
             계속
           </Button>

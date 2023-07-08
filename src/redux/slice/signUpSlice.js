@@ -22,6 +22,6 @@ const signUpSlice = createSlice({
   },
 });
 
-export const signUpActions = signUpSlice.actions;
+export const { setUserData } = signUpSlice.actions;
 
 export default signUpSlice.reducer;

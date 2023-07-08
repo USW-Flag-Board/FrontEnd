@@ -20,9 +20,10 @@ import {
   UserInfo,
   WritePost,
   ServiceAgree,
+  IdPassword,
 } from "./pages";
 import GlobalStyle from "./styles/GlobalStyle";
-import { EmailAuth, IdPassword, Privacy } from "./components/signUp";
+import { EmailAuth, Privacy } from "./components/signUp";
 
 const App = () => {
   return (

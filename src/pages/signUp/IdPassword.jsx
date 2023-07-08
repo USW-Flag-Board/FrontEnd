@@ -4,8 +4,14 @@ import { loginRegex } from "../../constants/signUp";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import instance from "../../apis/AxiosInterceptorSetup";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserData } from "../../redux/slice/signUpSlice";
 
-const IdPassword = ({ setIdPassword, setButtonState }) => {
+const IdPassword = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [buttonState, setButtonState] = useState(false);
   const [state, setState] = useState({
     id: "",
     password: "",
@@ -17,7 +23,8 @@ const IdPassword = ({ setIdPassword, setButtonState }) => {
   });
   const { id, password, passwordConfirm } = state;
   const { idMessage, passwordMessage, passwordConfirmMessage } = state;
-
+  const data = useSelector((state) => state.signUpSlice);
+  console.log(data);
   const handleIdCheck = async () => {
     const value = id;
     try {
@@ -46,10 +53,6 @@ const IdPassword = ({ setIdPassword, setButtonState }) => {
       passwordConfirmMessage === "비밀번호와 일치합니다."
     ) {
       setButtonState(true);
-      setIdPassword({
-        loginId: id,
-        password: password,
-      });
     } else {
       setButtonState(false);
     }
@@ -105,51 +108,94 @@ const IdPassword = ({ setIdPassword, setButtonState }) => {
   };
 
   return (
-    <IdPasswordArea>
-      <IntroduceArea>
-        로그인에 사용할
-        <br />
-        아이디, 비밀번호를 입력해주세요
-      </IntroduceArea>
-      <InputBox className="loginId-box">
-        <WriteArea
-          className="loginId"
-          name="id"
-          type="text"
-          placeholder="아이디"
-          value={id}
-          onChange={handleInputChange}
-        />
-        <IdCheckButton onClick={handleIdCheck}>중복체크</IdCheckButton>
-      </InputBox>
-      <InfoState>{idMessage}</InfoState>
-      <InputBox>
-        <WriteArea
-          name="password"
-          type="password"
-          placeholder="비밀번호"
-          value={password}
-          onChange={handleInputChange}
-        />
-        <Icon icon={faLock} />
-      </InputBox>
-      <InfoState>{passwordMessage}</InfoState>
-      <InputBox>
-        <WriteArea
-          name="passwordConfirm"
-          type="password"
-          placeholder="비밀번호 확인"
-          value={passwordConfirm}
-          onChange={handleInputChange}
-        />
-        <Icon icon={faLock} />
-      </InputBox>
-      <InfoState>{passwordConfirmMessage}</InfoState>
-    </IdPasswordArea>
+    <PageArea>
+      <PageBox>
+        <IdPasswordArea>
+          <IntroduceArea>
+            로그인에 사용할
+            <br />
+            아이디, 비밀번호를 입력해주세요.
+          </IntroduceArea>
+          <InputBox className="loginId-box">
+            <WriteArea
+              className="loginId"
+              name="id"
+              type="text"
+              placeholder="아이디"
+              value={id}
+              onChange={handleInputChange}
+            />
+            <IdCheckButton onClick={handleIdCheck}>중복체크</IdCheckButton>
+          </InputBox>
+          <InfoState>{idMessage}</InfoState>
+          <InputBox>
+            <WriteArea
+              name="password"
+              type="password"
+              placeholder="비밀번호"
+              value={password}
+              onChange={handleInputChange}
+            />
+            <Icon icon={faLock} />
+          </InputBox>
+          <InfoState>{passwordMessage}</InfoState>
+          <InputBox>
+            <WriteArea
+              name="passwordConfirm"
+              type="password"
+              placeholder="비밀번호 확인"
+              value={passwordConfirm}
+              onChange={handleInputChange}
+            />
+            <Icon icon={faLock} />
+          </InputBox>
+          <InfoState>{passwordConfirmMessage}</InfoState>
+        </IdPasswordArea>
+        <ButtonBox>
+          <Button
+            type="button"
+            className={buttonState ? "open" : "close"}
+            disabled={!buttonState}
+            onClick={() => {
+              navigate("/signUp/idPassword");
+              dispatch(
+                setUserData({
+                  loginId: id,
+                  password: password,
+                })
+              );
+            }}
+          >
+            계속
+          </Button>
+        </ButtonBox>
+      </PageBox>
+    </PageArea>
   );
 };
 
 export default IdPassword;
+
+const PageArea = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const PageBox = styled.div`
+  width: 30rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  @media (max-width: 480px) {
+    border: none;
+  }
+`;
 
 const IdPasswordArea = styled.div`
   display: flex;
@@ -179,6 +225,7 @@ const InputBox = styled.div`
   align-items: center;
   width: 80%;
   border: 1px solid #9a9a9a;
+  border-radius: 10px;
   .loginId {
     width: 75%;
     border: 1px solid #9a9a9a;
@@ -187,6 +234,7 @@ const InputBox = styled.div`
 
 const IdCheckButton = styled.button`
   width: 20%;
+  border-radius: 10px;
   height: 3.1rem;
   background-color: #228be6;
   border: none;
@@ -208,6 +256,7 @@ const WriteArea = styled.input`
   outline: none;
   border: none;
   padding: 0 1rem;
+  border-radius: 10px;
   ::placeholder {
     color: #9a9a9a;
   }
@@ -222,4 +271,27 @@ const InfoState = styled.div`
   height: 0.7rem;
   margin-top: 0.6rem;
   margin-bottom: 1.2rem;
+`;
+
+const ButtonBox = styled.div`
+  width: 80%;
+  margin-bottom: 2rem;
+`;
+
+const Button = styled.button`
+  color: white;
+  height: 4rem;
+  width: 100%;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  background: #228be6;
+  border-radius: 10px;
+  &.close {
+    background: #a5d8ff;
+  }
+
+  &.open {
+    background: #228be6;
+  }
 `;
