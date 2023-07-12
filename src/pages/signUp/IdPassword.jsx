@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { loginRegex } from "../../constants/signUp";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import instance from "../../apis/AxiosInterceptorSetup";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+import instance from "../../apis/AxiosInterceptorSetup";
+import { loginRegex } from "../../constants/signUp";
 import { setUserData } from "../../redux/slice/signUpSlice";
 
 const IdPassword = () => {

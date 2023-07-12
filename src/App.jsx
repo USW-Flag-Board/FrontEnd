@@ -22,9 +22,9 @@ import {
   ServiceAgree,
   IdPassword,
   Privacy,
+  EmailAuth,
 } from "./pages";
 import GlobalStyle from "./styles/GlobalStyle";
-import { EmailAuth } from "./components/signUp";
 
 const App = () => {
   return (
