@@ -12,16 +12,16 @@ const initialState = {
   },
 };
 
-const boardSlice = createSlice({
-  name: "boardSlice",
+const signUpSlice = createSlice({
+  name: "signUpSlice",
   initialState,
   reducers: {
     setUserData: (state, action) => {
-      state.signUpData = action.payload;
+      state.signUpData = { ...state.signUpData, ...action.payload };
     },
   },
 });
 
-export const postActions = boardSlice.actions;
+export const { setUserData } = signUpSlice.actions;
 
-export default boardSlice.reducer;
+export default signUpSlice.reducer;

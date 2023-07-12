@@ -10,6 +10,7 @@ import {
   EditUser,
   Home,
   Introduction,
+  JoinType,
   LoginPage,
   NotFound,
   PostContentPage,
@@ -18,6 +19,10 @@ import {
   SignUpPage,
   UserInfo,
   WritePost,
+  ServiceAgree,
+  IdPassword,
+  Privacy,
+  EmailAuth,
 } from "./pages";
 import GlobalStyle from "./styles/GlobalStyle";
 
@@ -29,6 +34,11 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/signUp/serviceAgree" element={<ServiceAgree />} />
+        <Route path="/signUp/joinType" element={<JoinType />} />
+        <Route path="/signUp/idPassword" element={<IdPassword />} />
+        <Route path="/signUp/privacy" element={<Privacy />} />
+        <Route path="/signUp/emailAuth" element={<EmailAuth />} />
         <Route path="/edit" element={<EditUser />} />
         <Route path="/board/:boardName" element={<BulletinBoard />} />
         <Route path="/introduction" element={<Introduction />} />

@@ -347,10 +347,16 @@ const ContentBox = styled.div`
 const Content = styled.div`
   width: 80%;
   padding: 0.3rem;
+  @media screen and (max-width: 480px) {
+    width: 70%;
+  }
 `;
 
 const ViewerBox = styled.div`
   width: 90%;
+  @media screen and (max-width: 480px) {
+    width: 100%;
+  }
 `;
 
 const LikeButtonBox = styled.div`
@@ -359,6 +365,9 @@ const LikeButtonBox = styled.div`
   .like {
     font-size: 1.3rem;
     color: ${(props) => (props.liked ? "#339af0" : "rgb(215, 226, 235)")};
+  }
+  @media screen and (max-width: 480px) {
+    width: 30%;
   }
 `;
 
@@ -428,6 +437,9 @@ const CommentUnLoginedBox = styled.div`
   background-color: white;
   .unlogin-button-box {
     width: 30%;
+  }
+  @media screen and (max-width: 480px) {
+    font-size: 0.8rem;
   }
 `;
 
