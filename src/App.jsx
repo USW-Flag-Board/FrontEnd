@@ -23,6 +23,7 @@ import {
   IdPassword,
   Privacy,
   EmailAuth,
+  FinishSignUp,
 } from "./pages";
 import GlobalStyle from "./styles/GlobalStyle";
 
@@ -39,6 +40,7 @@ const App = () => {
         <Route path="/signUp/idPassword" element={<IdPassword />} />
         <Route path="/signUp/privacy" element={<Privacy />} />
         <Route path="/signUp/emailAuth" element={<EmailAuth />} />
+        <Route path="/signUp/finishSignUp" element={<FinishSignUp />} />
         <Route path="/edit" element={<EditUser />} />
         <Route path="/board/:boardName" element={<BulletinBoard />} />
         <Route path="/introduction" element={<Introduction />} />

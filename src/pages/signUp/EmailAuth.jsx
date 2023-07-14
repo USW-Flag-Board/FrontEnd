@@ -58,6 +58,24 @@ const EmailAuth = () => {
     }
   };
 
+  const finishSignUp = async () => {
+    try {
+      await instance.post("/auth/sign-up", {
+        certification: certification,
+        email: userData.email,
+      });
+      navigate("/signUp/finishSignUp");
+    } catch (error) {
+      if (error.response.status === 400) {
+        navigate("/signup");
+      } else if (error.response.status === 404) {
+        alert("존재하지 않는 가입정보입니다.");
+      } else if (error.response.status === 409) {
+        alert("인증번호가 일치하지 않습니다.");
+      }
+    }
+  };
+
   return (
     <PageArea>
       <PageBox>
@@ -93,7 +111,7 @@ const EmailAuth = () => {
             type="button"
             className={buttonState ? "open" : "close"}
             disabled={!buttonState}
-            onClick={() => navigate("/login")}
+            onClick={() => finishSignUp()}
           >
             회원가입 완료
           </Button>

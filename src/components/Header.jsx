@@ -85,7 +85,7 @@ const Header = () => {
               />
             </SearchPaper>
           </SearchBox>
-          <UserBox loging={login}>
+          <UserBox login={login}>
             {login ? (
               <UserButton
                 login={login}
@@ -215,7 +215,7 @@ const MenuItem = styled.div`
 
 const SearchBox = styled.form`
   box-sizing: border-box;
-  width: ${(props) => (props.login ? "25%" : "30%")};
+  width: ${(props) => (props.login ? "30%" : "30%")};
   height: 60%;
   display: flex;
   align-items: center;
@@ -256,14 +256,14 @@ const UserBox = styled.div`
   height: 70%;
   color: #bababa;
   gap: 0.7rem;
-  justify-content: flex-end;
+  justify-content: ${(props) => (props.login ? "center" : "flex-end")};
   @media (max-width: 480px) {
     display: none;
   }
 `;
 
 const UserButton = styled.button`
-  width: ${(props) => (props.login ? "80%" : "45%")};
+  width: ${(props) => (props.login ? "60%" : "45%")};
   height: 90%;
   border: none;
   border-radius: 22px;

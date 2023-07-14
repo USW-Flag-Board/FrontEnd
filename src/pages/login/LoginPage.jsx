@@ -163,6 +163,7 @@ const WriteArea = styled.input`
   height: 60px;
   width: 350px;
   border: 1px solid #adb5bd;
+  border-radius: 10px;
   outline: none;
   margin: 1.25rem;
   ::placeholder {
@@ -182,13 +183,12 @@ const RelativeArea = styled.div`
 
 const LoginButton = styled.button`
   background-color: #4dabf7;
+  border-radius: 10px;
   color: #ffffff;
-  margin-top: 1.2rem;
-  margin-bottom: 1.9rem;
+  margin: 1.2rem 0;
   height: 3.75rem;
   width: 21.9rem;
   border: 0px;
-  transition: 0.2s;
   font-size: 1rem;
   cursor: pointer;
 `;
