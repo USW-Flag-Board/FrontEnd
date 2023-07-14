@@ -275,7 +275,6 @@ const ContentButton = styled.button`
   width: 6rem;
   height: 100%;
   border: none;
-  padding: 0.3rem 0 0 0;
   &:nth-child(2) {
     background-color: #339af0;
     color: white;

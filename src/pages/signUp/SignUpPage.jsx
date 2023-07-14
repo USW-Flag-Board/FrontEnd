@@ -5,34 +5,6 @@ import logo2 from "../../assets/images/logo2.png";
 const SignUpPage = () => {
   const navigate = useNavigate();
 
-  // const NextIndex = () => {
-  //   if (signUpIndex !== 4) {
-  //     setProgressValue((prev) => (prev += 20));
-  //     setSignUpIndex((signUpIndex) => signUpIndex + 1);
-  //   }
-  // };
-
-  // const finishSignUp = async () => {
-  //   try {
-  //     await instance.post("/auth/sign-up", {
-  //       certification: certification,
-  //       email: signUpData.email,
-  //     });
-  //     navigate("/login");
-  //   } catch (error) {
-  //     if (error.response.status === 400) {
-  //       navigate("/signup");
-  //     } else if (error.response.status === 404) {
-  //       alert("존재하지 않는 가입정보입니다.");
-  //     } else if (error.response.status === 409) {
-  //       alert("인증번호가 일치하지 않습니다.");
-  //     }
-  //   }
-  // };
-
-  // const handleCertification = (value) => {
-  //   setCertification(value);
-  // };
   return (
     <PageArea>
       <PageBox>
@@ -43,13 +15,13 @@ const SignUpPage = () => {
           onClick={() => navigate("/")}
         />
         <SignUpArea>
-          <StartTitle>가입을 시작합니다!</StartTitle>
-          <StartMessageBox>
-            <StartMessage>Flagound에서</StartMessage>
-            <StartMessage>
+          <Title>가입을 시작합니다!</Title>
+          <MessageBox>
+            <Message>Flaground에서</Message>
+            <Message>
               IT지식을 서로 공유하거나 동아리 활동에 참여해보세요.
-            </StartMessage>
-          </StartMessageBox>
+            </Message>
+          </MessageBox>
           <ButtonBox>
             <Button
               type="button"
@@ -98,11 +70,11 @@ const SignUpArea = styled.div`
   width: 100%;
   height: 100%;
   gap: 1rem;
-  padding: 1 rem 0.5rem;
   border: 1px solid #dee2e6;
   border-radius: 12px;
   @media (max-width: 480px) {
     border: none;
+    padding: 0;
   }
 `;
 
@@ -133,13 +105,13 @@ const Button = styled.button`
   border-radius: 10px;
 `;
 
-const StartTitle = styled.h2`
+const Title = styled.h2`
   font-weight: 700;
   font-size: 1.6rem;
   margin: 1rem 0;
 `;
 
-const StartMessageBox = styled.div`
+const MessageBox = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -147,7 +119,7 @@ const StartMessageBox = styled.div`
   margin-bottom: 2rem;
 `;
 
-const StartMessage = styled.p`
+const Message = styled.p`
   font-weight: 500;
   color: #868e96;
 `;

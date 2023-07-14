@@ -250,7 +250,6 @@ const Button = styled.button`
   width: 20%;
   height: 100%;
   border: none;
-  padding: 0.3rem 0 0 0;
   cursor: pointer;
   &:nth-child(2) {
     background-color: #339af0;

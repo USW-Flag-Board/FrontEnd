@@ -236,6 +236,7 @@ const LogoBox = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
+  padding-left: 1rem;
 `;
 
 const LogoImg = styled.img`
