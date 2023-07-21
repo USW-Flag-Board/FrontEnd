@@ -133,6 +133,12 @@ const BulletinBoard = () => {
 
   useEffect(() => {
     setCurrentPage(1);
+    navigate({
+      pathname: `/board/${board}`,
+      search: createSearchParams({
+        page: 1,
+      }).toString(),
+    });
   }, [board]);
 
   useEffect(() => {
@@ -176,12 +182,6 @@ const BulletinBoard = () => {
                     selected={board === boardName}
                     onClick={() => {
                       setBoard(boardName);
-                      navigate({
-                        pathname: `/board/${board}`,
-                        search: createSearchParams({
-                          page: 1,
-                        }).toString(),
-                      });
                     }}
                   >
                     {boardName}

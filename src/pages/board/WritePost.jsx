@@ -58,7 +58,7 @@ const WritePost = () => {
         if (reponse.status === 201) {
           alert("게시글이 작성되었습니다.");
           navigate({
-            pathname: `/board/${board}`,
+            pathname: `/board/${selectedBoard}`,
             search: createSearchParams({
               page: 1,
             }).toString(),

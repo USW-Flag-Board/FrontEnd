@@ -237,6 +237,9 @@ const LogoBox = styled.div`
   align-items: center;
   margin-bottom: 1rem;
   padding-left: 1rem;
+  @media screen and (max-width: 480px) {
+    padding: 0;
+  }
 `;
 
 const LogoImg = styled.img`
