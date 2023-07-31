@@ -19,7 +19,6 @@ const IdPassword = () => {
     idMessage: "",
     passwordMessage: "",
     passwordConfirmMessage: "",
-    idCheck: false,
   });
   const { id, password, passwordConfirm } = state;
   const { idMessage, passwordMessage, passwordConfirmMessage } = state;
